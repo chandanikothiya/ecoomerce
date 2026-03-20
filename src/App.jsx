@@ -7,6 +7,8 @@ import Footer from './components/Footer/Footer'
 import Homepage from './container/Homepage/Homepage'
 import './App.css'
 import Authendication from './container/Authendication/Authendication'
+import Cart from './container/Cart/Cart'
+import Contact from './container/Contact/Contact'
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
     <>
       <Header/>
       {/* <Homepage/> */}
-      <Authendication/>
+      {/* <Authendication/> */}
+      {/* <Cart/> */}
+      <Contact/>
       <Footer/>
     </>
   )

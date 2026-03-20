@@ -161,7 +161,7 @@ function Authendication() {
                                     {
                                         authtype === 'forgetpassword' &&
                                         <>
-                                            <button type="submit" className="submit-btn my-custome-button" onClick={() => setAuthtype(OTPverify)}>Send OTP</button>
+                                            <button type="submit" className="submit-btn my-custome-button">Send OTP</button>
                                         </>
                                     }
 
