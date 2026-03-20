@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, Typography } from "@mui/material";
 import '../../../public/assets/style/headerfooter.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AppleIcon from '@mui/icons-material/Apple';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Grid as SwiperGrid } from 'swiper/modules';
 import 'swiper/css';
 import { Autoplay, Navigation } from "swiper/modules";
 import 'swiper/css/grid';
+import 'swiper/css/pagination';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -371,7 +373,7 @@ function Homepage() {
 
                     </div>
 
-                    <a href="#" className="my-custome-button" style={{ margin: '80px auto 0 auto' }}>View More Product</a>
+                    <a href="#" className="my-custome-button" style={{ margin: '60px auto 0 auto' }}>View More Product</a>
                 </section>
 
                 <hr />
@@ -574,190 +576,132 @@ function Homepage() {
                             <Typography sx={{ fontWeight: 600 }}>Our Products</Typography>
                         </Box>
 
-                        <Box sx={{ position: 'relative', mt: 2, mb: 7 }}>
+                        <Box sx={{ position: 'relative', mt: 2 }}>
                             <Typography variant="h4" sx={{ fontWeight: 600 }}>Explore Our Products</Typography>
+
+                            <div style={{ width: '100%', marginTop: '56px' }}>
+                                <Swiper
+                                    slidesPerView={4}
+                                    grid={{ rows: 2, fill: "row" }}
+                                    spaceBetween={30}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    modules={[Navigation, SwiperGrid, Pagination]}
+                                    navigation={true}
+                                    className="mySwiper"
+
+                                >
+                                    {products.map((v, i) => {
+                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                        // console.log(r)
+                                        const rate = r / v.rating.length;
+                                        console.log(rate)
+                                        return (
+                                            <SwiperSlide key={v.id}>
+                                                <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
+                                                    <Box
+                                                        className="carttop"
+                                                        sx={{
+                                                            bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
+                                                        }}>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="140"
+                                                            className="cardimg"
+                                                            sx={{ objectFit: "contain" }}
+                                                            image={v.img}
+                                                            title="productimg"
+
+                                                        />
+
+
+                                                        <Typography
+                                                            className="addcart"
+                                                            sx={{
+                                                                bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                            }}
+                                                        >
+                                                            Add To Cart
+                                                        </Typography>
+                                                    </Box>
+
+
+                                                    <CardContent sx={{ outline: 0 }}>
+                                                        <Typography gutterBottom variant="h6" component="div">
+                                                            {v.name}
+                                                        </Typography>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center' }}>
+
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                {v.price}
+                                                            </Typography>
+
+
+                                                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1,height:'fit-content' }}>
+                                                                <Typography sx={{ color: '#FFAD33' }}>
+                                                                    <Stack spacing={1}>
+                                                                        <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
+                                                                    </Stack>
+                                                                </Typography>
+                                                                <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                                    {`(${r})`}
+                                                                </Typography>
+                                                            </Box>
+                                                        </Box>
+
+
+
+                                                        {
+                                                            v.new ?
+                                                                <Box sx={{ bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
+                                                                    <Typography variant="body2">NEW</Typography>
+                                                                </Box> :
+                                                                ""
+                                                        }
+
+                                                        <Box sx={{ display: 'flex', columnGap: 1, mt: 1 }}>
+                                                            {
+
+                                                                v?.colors?.map((v1) => (
+
+                                                                    <Button variant="outlined" className="product-color-btn">
+                                                                        <Avatar sx={{ bgcolor: v1, width: 12, height: 12 }}> </Avatar>
+                                                                    </Button>
+
+                                                                ))
+                                                            }
+                                                        </Box>
+
+                                                    </CardContent>
+
+                                                    <CardActions
+                                                        sx={{
+                                                            flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                            '& .MuiIconButton-root': {
+                                                                marginLeft: 0
+                                                            }
+                                                        }}
+                                                    >
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                            <FavoriteBorderIcon />
+                                                        </IconButton>
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                            <RemoveRedEyeOutlinedIcon />
+                                                        </IconButton>
+                                                    </CardActions>
+                                                </Card>
+                                            </SwiperSlide>
+                                        )
+                                    })}
+                                </Swiper>
+                            </div>
                         </Box>
-                        {/* 
-                        <Grid container spacing={3}>
-                            {
-                                products.map((v, i) => {
-                                    const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                    // console.log(r)
-                                    const rate = r / v.rating.length;
-                                    console.log(rate)
 
-                                    return (
-                                        <Grid size={3}>
-                                            <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                                <Box
-                                                    className="carttop"
-                                                    sx={{
-                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
-                                                    }}>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="140"
-                                                        className="cardimg"
-                                                        sx={{ objectFit: "contain" }}
-                                                        image={v.img}
-                                                        title="productimg"
-
-                                                    />
-
-
-                                                    <Typography
-                                                        className="addcart"
-                                                        sx={{
-                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                            bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
-                                                        }}
-                                                    >
-                                                        Add To Cart
-                                                    </Typography>
-                                                </Box>
-
-
-                                                <CardContent sx={{ outline: 0 }}>
-                                                    <Typography gutterBottom variant="h6" component="div">
-                                                        {v.name}
-                                                    </Typography>
-                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-
-                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                            {v.price}
-                                                        </Typography>
-                                                    </Box>
-
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                        <Typography sx={{ color: '#FFAD33' }}>
-                                                            <Stack spacing={1}>
-                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
-                                                            </Stack>
-                                                        </Typography>
-                                                        <Typography sx={{ color: 'grey', fontWeight: '600' }}>
-                                                            {`(${r})`}
-                                                        </Typography>
-                                                    </Box>
-                                                </CardContent>
-
-                                                <CardActions
-                                                    sx={{
-                                                        flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                        '& .MuiIconButton-root': {
-                                                            marginLeft: 0
-                                                        }
-                                                    }}
-                                                >
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                        <FavoriteBorderIcon />
-                                                    </IconButton>
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                        <RemoveRedEyeOutlinedIcon />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </Card>
-                                        </Grid>
-                                    )
-                                })
-                            }
-
-                        </Grid> */}
-
-                        <div style={{width:'100%',padding:'10px'}}>
-                            <Swiper
-                                slidesPerView={4}
-                                grid={{ rows: 2, fill: "row" }}
-                                spaceBetween={30}
-                                pagination={{
-                                    clickable: true,
-                                }}
-                                modules={[Grid, Pagination]}
-                                className="mySwiper"
-                            >
-                                {products.map((v, i) => {
-                                    const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                    // console.log(r)
-                                    const rate = r / v.rating.length;
-                                    console.log(rate)
-                                    return (
-                                        <SwiperSlide key={v.id}>
-                                            <Card sx={{ maxWidth:'100%', position: 'relative', boxShadow: 0 }}>
-                                                <Box
-                                                    className="carttop"
-                                                    sx={{
-                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
-                                                    }}>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="140"
-                                                        className="cardimg"
-                                                        sx={{ objectFit: "contain" }}
-                                                        image={v.img}
-                                                        title="productimg"
-
-                                                    />
-
-
-                                                    <Typography
-                                                        className="addcart"
-                                                        sx={{
-                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                            bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
-                                                        }}
-                                                    >
-                                                        Add To Cart
-                                                    </Typography>
-                                                </Box>
-
-
-                                                <CardContent sx={{ outline: 0 }}>
-                                                    <Typography gutterBottom variant="h6" component="div">
-                                                        {v.name}
-                                                    </Typography>
-                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-
-                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                            {v.price}
-                                                        </Typography>
-                                                    </Box>
-
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                        <Typography sx={{ color: '#FFAD33' }}>
-                                                            <Stack spacing={1}>
-                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
-                                                            </Stack>
-                                                        </Typography>
-                                                        <Typography sx={{ color: 'grey', fontWeight: '600' }}>
-                                                            {`(${r})`}
-                                                        </Typography>
-                                                    </Box>
-                                                </CardContent>
-
-                                                <CardActions
-                                                    sx={{
-                                                        flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                        '& .MuiIconButton-root': {
-                                                            marginLeft: 0
-                                                        }
-                                                    }}
-                                                >
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                        <FavoriteBorderIcon />
-                                                    </IconButton>
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                        <RemoveRedEyeOutlinedIcon />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </Card>
-                                        </SwiperSlide>
-                                    )
-                                })}
-                            </Swiper>
-                        </div>
+                        <a href="#" className="my-custome-button" style={{ margin: '20px auto 0 auto' }}>View More Product</a>
                     </div>
                 </section>
 

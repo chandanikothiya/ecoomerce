@@ -21,7 +21,7 @@ function Header() {
 
     return (
         <>
-            <header className="header">
+            <header id="header">
                 <div className="top-header">
                     <div className="container first-header">
                         <p>Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! <a href="#">ShopNow</a></p>

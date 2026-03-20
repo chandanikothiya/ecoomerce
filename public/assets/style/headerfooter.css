@@ -7,14 +7,28 @@
 
 :root {
     --primary-color: black;
-    --secondary-color: #DB4444
+    --secondary-color: #DB4444;
 }
 
-/* .header{
+a{
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+body{
+    padding-top: 160.5px;
+}
+
+#header{
     position: fixed;
-    top:0%;
+    top:0;
+    left:0;
     width: 100%;
-} */
+    z-index: 9999;
+}
 
 .top-header {
     background-color: black;
@@ -47,6 +61,7 @@
 }
 
 .second-header {
+    background-color: white;
     padding: 32px 24px 17px 24px;
     /* padding-bottom: 20px; */
     border-bottom: solid rgb(224, 222, 224) 1px;
@@ -99,6 +114,7 @@
 
 /* footer */
 .footer {
+    margin-top:70px;
     background-color: rgb(15, 15, 15);
     color: white;
     padding: 60px;
@@ -268,7 +284,7 @@ section {
     border-radius: 50%;
     margin-top: auto;
     position: absolute;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .todays .swiper-button-prev {
@@ -328,20 +344,25 @@ hr {
 }
 
 #whychoosus {
-    margin-top: 140px;
+    margin:70px 0;
+    padding: 60px 0;
 }
 
 /* #category{
     position: relative;
 } */
 
-#category .swiper-button-prev {
+#category .swiper-button-prev,
+#allproducts .swiper-button-prev
+{
     top: 0;
     right: 5%;
     transform: rotate(180deg);
 }
 
-#category .swiper-button-next {
+#category .swiper-button-next,
+#allproducts .swiper-button-next
+{
     top: 0;
     right: 0;
 }
@@ -401,4 +422,65 @@ hr {
 
 #allproducts .SwiperSlide{
     width: auto !important;
+}
+
+.product-color-btn{
+    padding:0 !important;
+    border-radius: 50% !important;
+
+    /* display: inline-block; */
+    min-width:20px !important;
+    min-height:20px !important;
+    
+}
+
+
+/* authendication */
+
+.my-cutome-textfiled{
+    width: 100% !important;
+    margin-top: 40px  !important;
+}
+
+#authendication .submit-btn{
+    width: 100%;
+    text-align: center;
+    border: none !important;
+    margin-top: 40px !important;
+}
+
+.social-auth{
+    border: solid 2px grey !important;
+   width: 100% ;
+   background-color: white !important;
+   color: black;
+   text-align: center;
+}
+
+.authlink{
+    margin-top: 32px !important;
+    text-align: center !important;
+    font-size: 18px !important;
+}
+
+.authlink a{
+   font-size: 18px;
+   text-decoration: none;
+   padding-bottom: 3px;
+   border-bottom: solid 2px grey;
+   margin-left: 5px;
+}
+
+#authendication span{
+    margin-bottom: 0;
+}
+
+#authendication form span{
+    color: red;
+}
+
+.login-btn{
+    width: fit-content;
+    padding:15px 48px;
+    border: none;
 }

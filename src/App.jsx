@@ -6,6 +6,7 @@ import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import Homepage from './container/Homepage/Homepage'
 import './App.css'
+import Authendication from './container/Authendication/Authendication'
 
 
 function App() {
@@ -14,8 +15,8 @@ function App() {
   return (
     <>
       <Header/>
-
-      <Homepage/>
+      {/* <Homepage/> */}
+      <Authendication/>
       <Footer/>
     </>
   )
