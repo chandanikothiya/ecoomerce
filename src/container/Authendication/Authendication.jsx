@@ -68,7 +68,7 @@ function Authendication() {
                 <section id="authendication">
                     <Grid container alignItems="stretch">
                         <Grid size={6}>
-                            <img src="../../../public/assets/images/authendication.png" alt="" />
+                            <img src="../../../public/assets/images/authendication.png" alt="" width='100%'/>
                         </Grid>
 
                         <Grid size={6} display='flex'>

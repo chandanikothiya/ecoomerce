@@ -18,9 +18,9 @@ function App() {
     <>
       <Header/>
       {/* <Homepage/> */}
-      {/* <Authendication/> */}
+      <Authendication/>
       {/* <Cart/> */}
-      <Contact/>
+      {/* <Contact/> */}
       <Footer/>
     </>
   )
