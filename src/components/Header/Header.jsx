@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import '../../../public/assets/style/headerfooter.css'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -7,6 +7,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from '@mui/icons-material/Close';
+import { NavLink } from "react-router-dom";
 
 function Header() {
 
@@ -18,6 +22,8 @@ function Header() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const [openMenu, setOpenMenu] = useState(false);
 
     return (
         <>
@@ -67,10 +73,10 @@ function Header() {
 
                             <div className="menus">
                                 <ul>
-                                    <li>Home</li>
-                                    <li>Contact</li>
+                                    <li><NavLink to="/">Home</NavLink></li>
+                                    <li><NavLink to="/contact">Contact</NavLink></li>
                                     <li>About</li>
-                                    <li>Sign Up</li>
+                                    <li><NavLink to="/signup">Sign Up</NavLink></li>
                                 </ul>
                             </div>
 
@@ -87,12 +93,24 @@ function Header() {
                                 <ShoppingCartOutlinedIcon />
                             </div>
 
+                            <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
+                                <MenuIcon />
+                            </IconButton>
                         </div>
-
-
-
+                    </div>
+                    <div className={`responsive-menu ${openMenu ? "active" : ""}`}>
+                        <IconButton onClick={() => setOpenMenu(false)}>
+                            <CloseIcon />
+                        </IconButton>
+                        <ul>
+                            <li>Home</li>
+                            <li>Contact</li>
+                            <li>About</li>
+                            <li>Sign Up</li>
+                        </ul>
                     </div>
                 </div>
+
             </header>
 
 

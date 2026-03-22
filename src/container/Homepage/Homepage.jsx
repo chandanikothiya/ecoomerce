@@ -270,108 +270,109 @@ function Homepage() {
 
                     </div>
 
-                    <div style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }}>
-                        <Swiper
-                            slidesPerView={3.5}
-                            spaceBetween={30}
-                            modules={[Navigation]}
-                            navigation={true}
-                            className="mySwiper"
-                            loop={true}
-                        >
-                            {
-                                fsale.map((v, i) => {
-                                    const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                    // console.log(r)
-                                    const rate = r / v.rating.length;
-                                    // console.log(rate)
-                                    return (
-                                        <SwiperSlide>
-                                            <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                                <Box
-                                                    className="carttop"
-                                                    sx={{
-                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
-                                                    }}>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="140"
-                                                        className="cardimg"
-                                                        sx={{ objectFit: "contain" }}
-                                                        image={v.img}
-                                                        title="green iguana"
-
-                                                    />
-
-
-                                                    <Typography
-                                                        className="addcart"
+                    {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
+                    <div className="container" style={{marginTop:'40px'}}>
+                            <Swiper
+                                slidesPerView={3.5}
+                                spaceBetween={30}
+                                modules={[Navigation]}
+                                navigation={true}
+                                className="mySwiper"
+                                loop={true}
+                                
+                            >
+                                {
+                                    fsale.map((v, i) => {
+                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                        // console.log(r)
+                                        const rate = r / v.rating.length;
+                                        // console.log(rate)
+                                        return (
+                                            <SwiperSlide>
+                                                <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                                    <Box
+                                                        className="carttop"
                                                         sx={{
-                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                            bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                            bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
+                                                        }}>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="140"
+                                                            className="cardimg"
+                                                            sx={{ objectFit: "contain" }}
+                                                            image={v.img}
+                                                            title="green iguana"
+
+                                                        />
+
+
+                                                        <Typography
+                                                            className="addcart"
+                                                            sx={{
+                                                                bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                            }}
+                                                        >
+                                                            Add To Cart
+                                                        </Typography>
+                                                    </Box>
+
+
+                                                    <CardContent sx={{ outline: 0 }}>
+                                                        <Typography gutterBottom variant="h5" component="div">
+                                                            {v.name}
+                                                        </Typography>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                {v.discoutprice}
+                                                            </Typography>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                {v.price}
+                                                            </Typography>
+                                                        </Box>
+
+                                                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                            <Typography sx={{ color: '#FFAD33' }}>
+                                                                <Stack spacing={1}>
+                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
+                                                                </Stack>
+                                                            </Typography>
+                                                            <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                                {`(${r})`}
+                                                            </Typography>
+                                                        </Box>
+
+                                                        <Box sx={{ bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
+                                                            <Typography variant="body2">{v.discount}</Typography>
+                                                        </Box>
+
+                                                    </CardContent>
+
+                                                    <CardActions
+                                                        sx={{
+                                                            flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                            '& .MuiIconButton-root': {
+                                                                marginLeft: 0
+                                                            }
                                                         }}
                                                     >
-                                                        Add To Cart
-                                                    </Typography>
-                                                </Box>
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                            <FavoriteBorderIcon />
+                                                        </IconButton>
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                            <RemoveRedEyeOutlinedIcon />
+                                                        </IconButton>
+                                                    </CardActions>
+                                                </Card>
+                                            </SwiperSlide>
+                                        )
+                                    })
+                                }
 
-
-                                                <CardContent sx={{ outline: 0 }}>
-                                                    <Typography gutterBottom variant="h5" component="div">
-                                                        {v.name}
-                                                    </Typography>
-                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                            {v.discoutprice}
-                                                        </Typography>
-                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                            {v.price}
-                                                        </Typography>
-                                                    </Box>
-
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                        <Typography sx={{ color: '#FFAD33' }}>
-                                                            <Stack spacing={1}>
-                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
-                                                            </Stack>
-                                                        </Typography>
-                                                        <Typography sx={{ color: 'grey', fontWeight: '600' }}>
-                                                            {`(${r})`}
-                                                        </Typography>
-                                                    </Box>
-
-                                                    <Box sx={{ bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
-                                                        <Typography variant="body2">{v.discount}</Typography>
-                                                    </Box>
-
-                                                </CardContent>
-
-                                                <CardActions
-                                                    sx={{
-                                                        flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                        '& .MuiIconButton-root': {
-                                                            marginLeft: 0
-                                                        }
-                                                    }}
-                                                >
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                        <FavoriteBorderIcon />
-                                                    </IconButton>
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                        <RemoveRedEyeOutlinedIcon />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </Card>
-                                        </SwiperSlide>
-                                    )
-                                })
-                            }
-
-                        </Swiper>
-
-                    </div>
+                            </Swiper>
+                        </div>
 
                     <a href="#" className="my-custome-button" style={{ margin: '60px auto 0 auto' }}>View More Product</a>
                 </section>
@@ -461,18 +462,7 @@ function Homepage() {
                                                         title="green iguana"
 
                                                     />
-                                                    {/* 
 
-                                            <Typography
-                                                className="addcart"
-                                                sx={{
-                                                    bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                    textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                    bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
-                                                }}
-                                            >
-                                                Add To Cart
-                                            </Typography> */}
                                                 </Box>
 
 
@@ -527,7 +517,7 @@ function Homepage() {
 
 
                 {/* Enhance Your Music Experience section */}
-                <section id="musicexp">
+                {/* <section id="musicexp">
                     <div className="container">
                         <Box sx={{ bgcolor: 'black', padding: '60px 66px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
@@ -559,13 +549,12 @@ function Homepage() {
                                 <a href="#" className="my-custome-button">Buy Now!</a>
                             </Box>
 
-                            {/* sx={{bgcolor:'white',boxShadow:'inset 0px 0px 20px 5px rgba(0,0,0,0.5)'}} */}
                             <Box >
                                 <img src="../../../public/assets/images/musicexp.png" alt="musicexp" />
                             </Box>
                         </Box>
                     </div>
-                </section>
+                </section> */}
 
 
                 {/* explore our product */}
@@ -641,7 +630,7 @@ function Homepage() {
                                                             </Typography>
 
 
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1,height:'fit-content' }}>
+                                                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, height: 'fit-content' }}>
                                                                 <Typography sx={{ color: '#FFAD33' }}>
                                                                     <Stack spacing={1}>
                                                                         <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
@@ -707,7 +696,7 @@ function Homepage() {
 
 
                 {/* new arraival fecutre section */}
-                <section id="newarrival">
+                {/* <section id="newarrival">
                     <div className="container" >
                         <Box className="todays-title">
                             <i className="fa-solid fa-square"></i>
@@ -720,7 +709,7 @@ function Homepage() {
 
 
                         <Grid container spacing={4} alignItems="stretch" >
-                            {/* 1st col */}
+                           
                             <Grid size={6} display="flex">
                                 <Box className='newarrival-grid-box'>
                                     <img src="../../../public/assets/images/newarrival/playstation.png" alt="" />
@@ -733,7 +722,7 @@ function Homepage() {
                                 </Box>
                             </Grid>
 
-                            {/* 2nd col */}
+                           
                             <Grid size={6} container direction='column' display="flex">
                                 <Grid>
                                     <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
@@ -747,9 +736,8 @@ function Homepage() {
                                     </Box>
                                 </Grid>
 
-                                {/* 2nd col last 2 */}
+                                
                                 <Grid container spacing={4} display="flex">
-
                                     <Grid size={6} display="flex">
                                         <Box className='newarrival-grid-box'>
                                             <img src="../../../public/assets/images/newarrival/speaker.png" alt="" />
@@ -774,13 +762,10 @@ function Homepage() {
                                         </Box>
                                     </Grid>
                                 </Grid>
-
                             </Grid>
-
                         </Grid>
-
                     </div>
-                </section>
+                </section> */}
 
 
                 {/* why choose us */}

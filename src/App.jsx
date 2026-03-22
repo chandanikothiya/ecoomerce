@@ -9,6 +9,10 @@ import './App.css'
 import Authendication from './container/Authendication/Authendication'
 import Cart from './container/Cart/Cart'
 import Contact from './container/Contact/Contact'
+import UserRoutes from './Routes/UserRoutes'
+import PrivateRoutes from './Routes/PrivateRoutes'
+import AdminRoutes from './Routes/AdminRoutes'
+import { Route, Routes } from 'react-router-dom'
 
 
 function App() {
@@ -16,12 +20,18 @@ function App() {
 
   return (
     <>
-      <Header/>
-      {/* <Homepage/> */}
-      <Authendication/>
+      {/* <Header/>
+      <Homepage/> */}
+      {/* <Authendication/> */}
       {/* <Cart/> */}
       {/* <Contact/> */}
-      <Footer/>
+      {/* <Footer/> */}
+      <Routes>
+        <Route path='/*' element={<UserRoutes />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path='/admin/*' element={<AdminRoutes />} />
+        </Route>
+      </Routes>
     </>
   )
 }
