@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Grid, Radio, Rating, Typography } from "@mui/material";
 import { PiLineVerticalThin } from "react-icons/pi";
 
 function Productdetail() {
 
     const [selectedValue, setSelectedValue] = React.useState('a');
+    const [counter,setCounter] = useState(1)
+    const [active,setActive] = useState()
+
+
+    const handleIncrese = () => {
+        setCounter(counter + 1)
+        setActive("increse")
+    }
+
+    const handleDecrese = () => {
+        if (counter > 0) {
+            setCounter(counter - 1)
+            setActive("decrese")
+        }
+    }
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
@@ -108,13 +123,14 @@ function Productdetail() {
                                 </Box>
 
                             </Box>
-
+                            
                             {/* counter */}
                             <Box sx={{ display: 'flex',mt:2 }}>
                                 <Box className='countbox'>
-                                    <button className="count-btn" style={{borderRight:'solid 1px black'}}>-</button>
-                                    <Typography sx={{padding:'0 20px'}}>1</Typography>
-                                     <button className="count-btn" style={{borderLeft:'solid 1px black'}}>+</button>
+                                    
+                                    <button className="count-btn" style={{borderRight:'solid 1px black', backgroundColor:active === 'decrese' ? '#DB4444' : 'white',color:active === 'decrese' ? 'white' : 'black'}} onClick={handleDecrese}>-</button>
+                                    <Typography sx={{padding:'0 20px'}}>{counter}</Typography>
+                                     <button className="count-btn" style={{borderLeft:'solid 1px black',backgroundColor:active === 'increse' ? '#DB4444' : 'white',color:active === 'increse' ? 'white' : 'black'}} onClick={handleIncrese}>+</button>
                                 </Box>
                             </Box>
                         </Grid>

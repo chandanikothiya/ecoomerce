@@ -658,9 +658,11 @@ hr {
 }
 
 .countbox{
- border-radius: 8px;
+ border-radius: 3px;
     border:solid 1.8px rgb(172, 167, 167) ;
     display: flex;
+    overflow: hidden;
+    align-items: center;
 }
 
 .count-btn{
@@ -668,3 +670,4 @@ hr {
     border: none;
     background-color:white;
 }
+
