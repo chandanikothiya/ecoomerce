@@ -213,7 +213,7 @@
                 5,
                 5
             ],
-             "new":true,
+            "new": true,
             "discoutprice": 370
         },
         {
@@ -272,7 +272,6 @@
                 "red",
                 "#EEFF61"
             ],
-            
             "discoutprice": 370
         },
         {
@@ -375,23 +374,81 @@
     "cart": [
         {
             "id": 1,
-            "product_id":"2"
+            "product_id": "2"
         },
         {
             "id": 2,
-            "product_id":"6"
+            "product_id": "6"
         },
         {
             "id": 3,
-            "product_id":"1"
+            "product_id": "1"
         },
         {
-            "id":4,
-            "product_id":"9"
+            "id": 4,
+            "product_id": "9"
         },
         {
-            "id":5,
-            "product_id":"7"
+            "id": 5,
+            "product_id": "7"
+        }
+    ],
+    "team": [
+        {
+            "id": 1,
+            "name": "Tom Cruise",
+            "role": "Founder & Chairman",
+            "instra-id": "Tom Cruise12",
+            "twitter": "Tom Cruise",
+            "img": "../../../public/assets/images/aboutus/tomcuise.png"
+        },
+        {
+            "id": 2,
+            "name": "Emma Watson",
+            "role": "Managing Director",
+            "instra-id": "Emma Watson32",
+            "twitter": "Emma Watson",
+            "img": "../../../public/assets/images/aboutus/emmawatson.png"
+        },
+         {
+            "id": 3 ,
+            "name": "Will Smith",
+            "role": "Product Designer",
+            "instra-id": "Will Smith32",
+            "twitter": "Will Smith52",
+            "img": "../../../public/assets/images/aboutus/willsmith.png"
+        },
+         {
+            "id":4 ,
+            "name": "Astrid Lindgren",
+            "role": "Product Designer",
+            "instra-id": "Astrid Lindgren2",
+            "twitter": "Astrid Lindgren",
+            "img": "../../../public/assets/images/aboutus/AstridLindgren.webp"
+        },
+        {
+            "id": 5,
+            "name": "Liam Rossi",
+            "role": "Founder & Chairman",
+            "instra-id": "Liam Rossi92",
+            "twitter": "Liam Rossi",
+            "img": "../../../public/assets/images/aboutus/LiamRossi.png"
+        },
+         {
+            "id":6 ,
+            "name": "Giulia Conti",
+            "role": "Product Designer",
+            "instra-id": "Giulia Conti45",
+            "twitter": "Giulia Conti",
+            "img": "../../../public/assets/images/aboutus/GiuliaConti.webp"
+        },
+        {
+            "id": 7,
+            "name": "Oliver Novak",
+            "role": "Founder & Chairman",
+            "instra-id": "Oliver Novak78",
+            "twitter": "Oliver Novak",
+            "img": "../../../public/assets/images/aboutus/OliverNovak.png"
         }
     ]
 }

@@ -75,7 +75,7 @@ function Header() {
                                 <ul>
                                     <li><NavLink to="/">Home</NavLink></li>
                                     <li><NavLink to="/contact">Contact</NavLink></li>
-                                    <li>About</li>
+                                    <li><NavLink to="/about">About</NavLink></li>
                                     <li><NavLink to="/signup">Sign Up</NavLink></li>
                                 </ul>
                             </div>

@@ -336,7 +336,7 @@ function Homepage() {
                                                         <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                             <Typography sx={{ color: '#FFAD33' }}>
                                                                 <Stack spacing={1}>
-                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
+                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} readOnly/>
                                                                 </Stack>
                                                             </Typography>
                                                             <Typography sx={{ color: 'grey', fontWeight: '600' }}>
@@ -482,7 +482,7 @@ function Homepage() {
                                                     <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                         <Typography sx={{ color: '#FFAD33' }}>
                                                             <Stack spacing={1}>
-                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
+                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} readOnly/>
                                                             </Stack>
                                                         </Typography>
                                                         <Typography sx={{ color: 'grey', fontWeight: '600' }}>
@@ -517,7 +517,7 @@ function Homepage() {
 
 
                 {/* Enhance Your Music Experience section */}
-                {/* <section id="musicexp">
+                <section id="musicexp">
                     <div className="container">
                         <Box sx={{ bgcolor: 'black', padding: '60px 66px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
@@ -554,7 +554,7 @@ function Homepage() {
                             </Box>
                         </Box>
                     </div>
-                </section> */}
+                </section>
 
 
                 {/* explore our product */}
@@ -696,7 +696,7 @@ function Homepage() {
 
 
                 {/* new arraival fecutre section */}
-                {/* <section id="newarrival">
+                <section id="newarrival">
                     <div className="container" >
                         <Box className="todays-title">
                             <i className="fa-solid fa-square"></i>
@@ -765,7 +765,7 @@ function Homepage() {
                             </Grid>
                         </Grid>
                     </div>
-                </section> */}
+                </section>
 
 
                 {/* why choose us */}

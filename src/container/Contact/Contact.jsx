@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -10,9 +10,9 @@ function Contact() {
                 <div className="container">
                     <Typography><span style={{ color: 'grey' }}>Home / </span> Contact</Typography>
 
-                    <Grid container sx={{padding:'40px'}} spacing={5}>
-                        <Grid size={3} sx={{mt:5}}>
-                            <Box sx={{mb:5}}>
+                    <Grid container sx={{ padding: '40px' }} spacing={20}>
+                        <Grid size={4} sx={{ mt: 5 }}>
+                            <Box sx={{ mb: 5 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                                     <CallOutlinedIcon sx={{ bgcolor: '#DB4444', borderRadius: '50%', p: 1, color: 'white', fontSize: '40px' }} />
                                     <Typography sx={{ fontSize: '20px' }}>Call To Us</Typography>
@@ -23,7 +23,7 @@ function Contact() {
 
                             <hr />
 
-                            <Box sx={{mt:5}}>
+                            <Box sx={{ mt: 5 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                                     <EmailOutlinedIcon sx={{ bgcolor: '#DB4444', borderRadius: '50%', p: 1, color: 'white', fontSize: '40px' }} />
                                     <Typography sx={{ fontSize: '20px' }}>Write To US</Typography>
@@ -35,17 +35,54 @@ function Contact() {
 
                         </Grid>
 
-                         <Grid size={9} sx={{mt:5}}>
-                            <Grid container size={12} sx={{bgcolor:'red'}}>
-                                <form>
-                                <Grid size={4} sx={{bgcolor:'black'}}>
-                                    <TextField id="filled-basic" label="Filled" variant="filled" />
+                        <Grid container size={8} sx={{ mt: 5 }}>
+                            <form style={{width:"100%"}}>
+                                <Grid container size={12} spacing={3}>
+                                    <Grid size={4} >
+                                        <TextField
+                                            id="name"
+                                            name="name"
+                                            label="Your Name"
+                                            variant="filled"
+                                            InputProps={{ disableUnderline: true }}
+                                            className="contactus-textfiled"
+                                        />
+                                    </Grid>
+                                    <Grid size={4}>
+                                        <TextField
+                                            id="email"
+                                            name="email"
+                                            label="Your Email"
+                                            variant="filled" InputProps={{ disableUnderline: true }}
+                                           className="contactus-textfiled"
+                                        />
+                                    </Grid>
+                                    <Grid size={4}>
+                                        <TextField
+                                            id="phone"
+                                            name="phone"
+                                            label="Your Phone"
+                                            variant="filled"
+                                            InputProps={{ disableUnderline: true }}
+                                            className="contactus-textfiled"
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid size={4}>2</Grid>
-                                <Grid size={4}>3</Grid>
-                                <Grid size={12}>5</Grid>
-                               </form>
-                            </Grid>
+                                <Grid size={12} sx={{mt:5}}>
+                                    <TextField
+                                        id="message"
+                                        name="message"
+                                        label="Your Message"
+                                        multiline
+                                        rows={8}
+                                        variant="filled" InputProps={{ disableUnderline: true }}
+                                       className="contactus-textfiled"
+                                    />
+                                </Grid>
+
+                                <button type="submit" className="my-custome-button">Send Message</button>
+
+                            </form>
                         </Grid>
                     </Grid>
                 </div>
