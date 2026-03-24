@@ -8,6 +8,9 @@ import Footer from '../components/Footer/Footer';
 import Aboutus from '../container/Aboutus/Aboutus';
 import Notfound from '../container/NotFound/Notfound';
 import Productdetail from '../container/Productdetail/Productdetail';
+import Wishlist from '../container/Wishlist/Wishlist';
+import Cart from '../container/Cart/Cart';
+import Checkout from '../container/Checkout/Checkout';
 
 function UserRoutes(props) {
     return (
@@ -20,6 +23,9 @@ function UserRoutes(props) {
             <Route path='/about' element={<Aboutus/>}/>
             <Route path='/notfound' element={<Notfound/>}/>
             <Route path='/productdetail' element={<Productdetail/>}/>
+            <Route path='/wishlist' element={<Wishlist/>}/>
+            <Route path='/cart' element={<Cart/>}/>
+            <Route path='/checkout' element={<Checkout/>}/>
         </Routes>
         <Footer/>
         </>

@@ -13,7 +13,8 @@
             ],
             "price": 160,
             "discount": "35%",
-            "discoutprice": 120
+            "discoutprice": 120,
+            "sname":"H1 Gamepad"
         },
         {
             "id": 2,
@@ -28,7 +29,8 @@
             ],
             "price": 1160,
             "discount": "34%",
-            "discoutprice": 960
+            "discoutprice": 960,
+            "sname":"H1 Keyboard"
         },
         {
             "id": 3,
@@ -43,7 +45,8 @@
             ],
             "price": 400,
             "discount": "30%",
-            "discoutprice": 370
+            "discoutprice": 370,
+            "sname":"LED Monitor"
         },
         {
             "id": 4,
@@ -58,7 +61,8 @@
             ],
             "price": 400,
             "discount": "25%",
-            "discoutprice": 375
+            "discoutprice": 375,
+            "sname":"Chair"
         },
         {
             "id": 5,
@@ -73,7 +77,8 @@
             ],
             "price": 400,
             "discount": "30%",
-            "discoutprice": 370
+            "discoutprice": 370,
+             "sname":"Chair"
         }
     ],
     "bestproduct": [
@@ -371,7 +376,7 @@
             "discoutprice": 120
         }
     ],
-    "cart": [
+    "wishlist": [
         {
             "id": 1,
             "product_id": "2"
@@ -449,6 +454,20 @@
             "instra-id": "Oliver Novak78",
             "twitter": "Oliver Novak",
             "img": "../../../public/assets/images/aboutus/OliverNovak.png"
+        }
+    ],
+    "cart": [
+        {
+            "id": 1,
+            "product_id": "2"
+        },
+        {
+            "id": 2,
+            "product_id": "3"
+        },
+        {
+            "id": 3,
+            "product_id": "1"
         }
     ]
 }

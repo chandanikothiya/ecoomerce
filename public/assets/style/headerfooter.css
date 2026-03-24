@@ -304,13 +304,13 @@ section {
 
 .todays .swiper-button-prev {
     top: 7%;
-    right: 8%;
+    right:15%;
     transform: rotate(180deg);
 }
 
 .todays .swiper-button-next {
     top: 7%;
-    right: 3.5%;
+    right:11%;
 }
 
 .swiper,
@@ -532,9 +532,13 @@ hr {
     margin-left: auto;
 }
 
-.contactus-textfiled {
+.contactus-textfiled,
+.billing-textfiled
+{
     width: 100%;
 }
+
+
 
 
 /* aboutus */
@@ -564,8 +568,8 @@ hr {
     background-color: var(--secondary-color);
     color: white;
     border: none !important;
-     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25), 
-              -1px -1px 3px rgba(0, 0, 0, 0.25); 
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25),
+        -1px -1px 3px rgba(0, 0, 0, 0.25);
     background-image:
         linear-gradient(to right, #eb2d2d5b 1px, transparent 1px),
         linear-gradient(to bottom, #eb2d2d5b 1px, transparent 1px);
@@ -586,12 +590,12 @@ hr {
     color: black !important;
 }
 
-.teamcards{
+.teamcards {
     position: relative;
-    
+
 }
 
-.teamcards .swiper-pagination{
+.teamcards .swiper-pagination {
     bottom: -8% !important;
 }
 
@@ -604,16 +608,16 @@ hr {
 }
 
 .teamcards .swiper-pagination-bullet-active {
-   background-color: var(--secondary-color);
-   border: solid 1px rgb(173, 170, 170);
+    background-color: var(--secondary-color);
+    border: solid 1px rgb(173, 170, 170);
 }
 
-#aboutus-whychoosus{
-    margin:150px 0;
+#aboutus-whychoosus {
+    margin: 150px 0;
     margin-bottom: 100px;
 }
 
-.about-socialicone{
+.about-socialicone {
     color: black !important;
 }
 
@@ -624,50 +628,137 @@ hr {
 
 /* 404 not found page */
 
-#notfound .my-custome-button{
-    margin:80px auto;
+#notfound .my-custome-button {
+    margin: 80px auto;
 }
-#notfound .my-custome-button:hover{
-   color:white;
+
+#notfound .my-custome-button:hover {
+    color: white;
 }
 
 
 /* product detal page */
 
-.detailimg-box{
+.detailimg-box {
     text-align: center;
     background-color: #eef0f3;
     padding: 12px;
 }
 
-.deatail-main-img{
+.deatail-main-img {
     display: flex;
     align-items: center;
     padding: 0 27px;
 }
 
-.sizebox{
+.sizebox {
     width: 32px;
     height: 32px;
     text-align: center;
     padding: 5px;
-    border-radius:5px !important;
-    border:solid 1.8px;
-    border-color:rgb(172, 167, 167) ;
+    border-radius: 5px !important;
+    border: solid 1.8px;
+    border-color: rgb(172, 167, 167);
     font-size: 14px !important;
 }
 
-.countbox{
- border-radius: 3px;
-    border:solid 1.8px rgb(172, 167, 167) ;
+.countbox {
+    border-radius: 3px;
+    border: solid 1.8px rgb(172, 167, 167);
     display: flex;
     overflow: hidden;
     align-items: center;
 }
 
-.count-btn{
-    padding:5PX 15px;
+.count-btn {
+    padding: 5PX 20px;
     border: none;
-    background-color:white;
+    background-color: white;
+    height:100%;
 }
 
+.sizebox:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#product-detail .my-custome-button{
+    padding: 10px 49px;
+}
+
+.wishlist-deatil{
+    background-color: white;
+    border: 1px solid rgb(172, 167, 167) !important;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.delivery-box{
+    display: flex;
+    align-items:center;
+    column-gap: 20px;
+}
+
+.delivery-icone{
+    font-size: 30px;
+    font-weight: 600;
+    margin-left: 16px;
+}
+
+.delivery-box a{
+    text-decoration: underline;
+}
+
+#related-item{
+    margin-top: 100px;
+}
+
+/* cart */
+
+#cart .icone-btn{
+    padding: 0;
+    font-size: 16px;
+}
+
+.tabelcell{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#coupon .my-custome-button{
+    background-color: var(--secondary-color);
+    border: none;
+    color: white;
+    padding: 15px 49px;
+}
+
+.cart-total{
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0 ;
+}
+
+
+/* checkout */
+
+.billing-textfiled{
+    margin-top: 32px !important;
+}
+
+#billing .billing-textfiled span{
+    color: var(--secondary-color);
+
+}
+
+.input-label{
+    margin-bottom: 8px;
+}
+
+#billing .coupon-button{
+    padding: 10px 45px;
+} 

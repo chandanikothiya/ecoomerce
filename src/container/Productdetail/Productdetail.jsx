@@ -1,12 +1,28 @@
-import React, { useState } from "react";
-import { Box, Button, Grid, Radio, Rating, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, IconButton, Radio, Rating, Stack, Typography } from "@mui/material";
 import { PiLineVerticalThin } from "react-icons/pi";
+import { CiHeart } from "react-icons/ci";
+import { LuTruck } from "react-icons/lu";
+import { MdAutorenew } from "react-icons/md";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function Productdetail() {
 
     const [selectedValue, setSelectedValue] = React.useState('a');
-    const [counter,setCounter] = useState(1)
-    const [active,setActive] = useState()
+    const [counter, setCounter] = useState(1)
+    const [active, setActive] = useState()
+    const [allproducts, setAllproducts] = useState([]);
+    
+
+    useEffect(() => {
+        fetch("http://localhost:3000/flashsale")
+            .then(response => response.json())
+            .then(data => setAllproducts(data))
+    }, [])
+
+    console.log(allproducts)
 
 
     const handleIncrese = () => {
@@ -38,9 +54,9 @@ function Productdetail() {
                 <div className="container">
                     <Typography><span style={{ color: 'grey' }}>Home / Gaming / </span>Havic HV G-92 Gamepad</Typography>
 
-                    <Grid container sx={{ mt: 10 }} spacing={6}>
+                    <Grid container sx={{ mt: 10 }} spacing={15}>
                         <Grid size={7} container spacing={3} alignItems="stretch">
-                            <Grid size={3} container direction='column' spacing={2} >
+                            <Grid size={3} container direction='column' spacing={4} display="flex">
                                 <Grid>
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 57.png" alt="" />
@@ -123,19 +139,160 @@ function Productdetail() {
                                 </Box>
 
                             </Box>
-                            
+
                             {/* counter */}
-                            <Box sx={{ display: 'flex',mt:2 }}>
+                            <Box sx={{ display: 'flex', mt: 3, gap: 4 }}>
                                 <Box className='countbox'>
-                                    
-                                    <button className="count-btn" style={{borderRight:'solid 1px black', backgroundColor:active === 'decrese' ? '#DB4444' : 'white',color:active === 'decrese' ? 'white' : 'black'}} onClick={handleDecrese}>-</button>
-                                    <Typography sx={{padding:'0 20px'}}>{counter}</Typography>
-                                     <button className="count-btn" style={{borderLeft:'solid 1px black',backgroundColor:active === 'increse' ? '#DB4444' : 'white',color:active === 'increse' ? 'white' : 'black'}} onClick={handleIncrese}>+</button>
+                                    <button className="count-btn" style={{ borderRight: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'decrese' ? '#DB4444' : 'white', color: active === 'decrese' ? 'white' : 'black' }} onClick={handleDecrese}>-</button>
+                                    <Typography sx={{ padding: '0 35px' }}>{counter}</Typography>
+                                    <button className="count-btn" style={{ borderLeft: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'increse' ? '#DB4444' : 'white', color: active === 'increse' ? 'white' : 'black' }} onClick={handleIncrese}>+</button>
+                                </Box>
+
+                                <buton className="my-custome-button">Buy Now</buton>
+
+                                <button className="wishlist-deatil">
+                                    <CiHeart />
+                                </button>
+                            </Box>
+
+                            <Box sx={{ border: 1, borderColor: 'rgb(172, 167, 167)', borderRadius: 1, padding: '24px 0', mt: 5 }}>
+                                <Box className="delivery-box">
+                                    <LuTruck className="delivery-icone" />
+                                    <Box>
+                                        <Typography>Free Delivery</Typography>
+                                        <Typography sx={{ fontSize: '12px' }}><a href="#">Enter your postal code for Delivery Availability</a></Typography>
+                                    </Box>
+                                </Box>
+
+                                <hr style={{ margin: '20px 0' }} />
+
+                                <Box className="delivery-box">
+                                    <MdAutorenew className="delivery-icone" />
+                                    <Box>
+                                        <Typography>Return Delivery</Typography>
+                                        <Typography sx={{ fontSize: '12px' }}><a href="#">Free 30 Days Delivery Returns. Details</a></Typography>
+                                    </Box>
                                 </Box>
                             </Box>
+
                         </Grid>
                     </Grid>
 
+                </div>
+            </section>
+
+            <section id="related-item">
+                <div className="container">
+                    <Box className="related-title">
+                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1,color: '#DB4444'}}>
+                            <i className="fa-solid fa-square" style={{  fontSize: '30px' }}></i>
+                            <Typography variant="h6" sx={{ fontWeight: '400'}}>Related Item</Typography>
+                        </Box>
+                    </Box>
+
+                    <Grid container sx={{ mt: 7 }} spacing={4}>
+                        {
+                            allproducts.slice(0, 4).map((v) => {
+                                const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                // console.log(r)
+                                const rate = r / v.rating.length;
+                                // console.log(rate)
+                                return (
+                                    <Grid size={3}>
+                                        <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                            <Box
+                                                className="carttop"
+                                                sx={{
+                                                    bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                    alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
+                                                }}>
+                                                <CardMedia
+                                                    component="img"
+                                                    height="140"
+                                                    className="cardimg"
+                                                    sx={{ objectFit: "contain" }}
+                                                    image={v.img}
+                                                    title="green iguana"
+
+                                                />
+
+
+                                                <Typography
+                                                    className="addcart"
+                                                    sx={{
+                                                        bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                        textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                        bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                    }}
+                                                >
+                                                    <ShoppingCartOutlinedIcon /> Add To Cart
+                                                </Typography>
+                                            </Box>
+
+
+                                            <CardContent sx={{ outline: 0 }}>
+                                                <Typography gutterBottom variant="h6" component="div">
+                                                    {v.name}
+                                                </Typography>
+                                                <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                        {v.discoutprice}
+                                                    </Typography>
+                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                        {v.price}
+                                                    </Typography>
+                                                </Box>
+
+                                                <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                    <Typography sx={{ color: '#FFAD33' }}>
+                                                        <Stack spacing={1}>
+                                                            <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
+                                                        </Stack>
+                                                    </Typography>
+                                                    <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                        {`(${r})`}
+                                                    </Typography>
+                                                </Box>
+
+                                                {
+                                                    v.discount ?
+                                                        <Box sx={{ bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
+                                                            <Typography variant="body2">{v.discount}</Typography>
+                                                        </Box>
+                                                        : ""
+                                                }
+
+                                                {
+                                                    v.new ?
+                                                        <Box sx={{ bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
+                                                            <Typography variant="body2">NEW</Typography>
+                                                        </Box> :
+                                                        ""
+                                                }
+
+                                            </CardContent>
+
+                                            <CardActions
+                                                sx={{
+                                                    flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                    '& .MuiIconButton-root': {
+                                                        marginLeft: 0
+                                                    }
+                                                }}
+                                            >
+                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                    <FavoriteBorderIcon />
+                                                </IconButton>
+                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                    <RemoveRedEyeOutlinedIcon />
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                )
+                            })
+                        }
+                    </Grid>
                 </div>
             </section>
         </main>

@@ -7,7 +7,6 @@ import Footer from './components/Footer/Footer'
 import Homepage from './container/Homepage/Homepage'
 import './App.css'
 import Authendication from './container/Authendication/Authendication'
-import Cart from './container/Cart/Cart'
 import Contact from './container/Contact/Contact'
 import UserRoutes from './Routes/UserRoutes'
 import PrivateRoutes from './Routes/PrivateRoutes'
@@ -23,7 +22,6 @@ function App() {
       {/* <Header/>
       <Homepage/> */}
       {/* <Authendication/> */}
-      {/* <Cart/> */}
       {/* <Contact/> */}
       {/* <Footer/> */}
       <Routes>
