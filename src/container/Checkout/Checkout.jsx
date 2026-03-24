@@ -121,8 +121,8 @@ function Checkout() {
                             </form>
                         </Grid>
 
-                        <Grid size={6}>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <Grid size={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Box >
                                 <Box sx={{ maxWidth: '425px' }}>
                                     {
                                         cartdata.map((v) => (
