@@ -1,7 +1,8 @@
-import { Box, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, OutlinedInput, Radio, RadioGroup, TextField } from "@mui/material";
+import { Box, Breadcrumbs, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, OutlinedInput, Radio, RadioGroup, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Checkout() {
 
@@ -32,7 +33,35 @@ function Checkout() {
         <main>
             <section id="billing">
                 <div className="container">
-                    <Typography><span style={{ color: 'grey' }}>Home / My Account / Product / View Cart /</span> Contact</Typography>
+                    {/* <Typography><span style={{ color: 'grey' }}>Home / My Account / Product / View Cart /</span> Contact</Typography> */}
+
+                    <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+                        <Link underline="hover" color="inherit" href="/">
+                            Home
+                        </Link>
+                        <Link
+                            underline="hover"
+                            color="error"
+                            href="/material-ui/getting-started/installation/"
+                        >
+                            My Account
+                        </Link>
+                        <Link
+                            underline="hover"
+                            color="error"
+                            href="/material-ui/getting-started/installation/"
+                        >
+                           Product
+                        </Link>
+                        <Link
+                            underline="hover"
+                            color="error"
+                            href="/material-ui/getting-started/installation/"
+                        >
+                           View Cart
+                        </Link>
+                        <Typography sx={{ color: 'text.primary' }}>CheckOut</Typography>
+                    </Breadcrumbs>
 
                     <Typography variant="h4" sx={{ fontSize: '36px', mt: 8, mb: 2 }} >Billing Details</Typography>
 
@@ -121,7 +150,7 @@ function Checkout() {
                             </form>
                         </Grid>
 
-                        <Grid size={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
                             <Box >
                                 <Box sx={{ maxWidth: '425px' }}>
                                     {

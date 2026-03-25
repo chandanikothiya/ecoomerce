@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, IconButton, Radio, Rating, Stack, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Rating, Stack, Typography } from "@mui/material";
 import { PiLineVerticalThin } from "react-icons/pi";
 import { CiHeart } from "react-icons/ci";
 import { LuTruck } from "react-icons/lu";
@@ -7,14 +7,14 @@ import { MdAutorenew } from "react-icons/md";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { Link } from "react-router-dom";
 
 function Productdetail() {
 
-    const [selectedValue, setSelectedValue] = React.useState('a');
     const [counter, setCounter] = useState(1)
     const [active, setActive] = useState()
     const [allproducts, setAllproducts] = useState([]);
-    
+
 
     useEffect(() => {
         fetch("http://localhost:3000/flashsale")
@@ -42,9 +42,11 @@ function Productdetail() {
     };
 
     const availableColors = [
-        { value: '#E07575', label: 'Black' },
-        { value: '#8aa8d4', label: 'White' },
+        { value: '#E07575', label: 'red' },
+        { value: '#8aa8d4', label: 'blue' },
     ];
+    const [selectedValue, setSelectedValue] = React.useState(availableColors[0].label);
+
 
     const Size = ['XS', 'S', 'M', 'L', 'XL']
 
@@ -52,7 +54,21 @@ function Productdetail() {
         <main>
             <section id="product-detail">
                 <div className="container">
-                    <Typography><span style={{ color: 'grey' }}>Home / Gaming / </span>Havic HV G-92 Gamepad</Typography>
+                    {/* <Typography><span style={{ color: 'grey' }}>Home / Gaming / </span>Havic HV G-92 Gamepad</Typography> */}
+
+                    <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+                        <Link underline="hover" color="inherit" href="/">
+                            Home
+                        </Link>
+                        <Link
+                            underline="hover"
+                            color="error"
+                            href="/material-ui/getting-started/installation/"
+                        >
+                            Gaming
+                        </Link>
+                        <Typography sx={{ color: 'text.primary' }}>Havic HV G-92 Gamepad</Typography>
+                    </Breadcrumbs>
 
                     <Grid container sx={{ mt: 10 }} spacing={15}>
                         <Grid size={7} container spacing={3} alignItems="stretch">
@@ -101,29 +117,42 @@ function Productdetail() {
 
                             <hr />
 
-                            <Box sx={{ mt: 3, display: "flex", alignItems: 'center' }}>
+                            <Box sx={{ mt: 3, display: "flex", alignItems: 'center',columnGap:2 }}>
                                 <Typography sx={{ fontSize: '20px' }}>Colours :</Typography>
-                                <div>
-                                    {
-                                        availableColors.map((v) => (
-                                            <Radio
-                                                checked={selectedValue === 'a'}
-                                                onChange={handleChange}
-                                                value="a"
-                                                name="radio-buttons"
-                                                inputProps={{ 'aria-label': 'A' }}
-                                                sx={{
-                                                    color: v.value, // Unchecked
-                                                    '&.Mui-checked': {
-                                                        color: v.value, // Checked
-                                                    },
-                                                    padding: '5px'
-                                                }}
-                                            />
-                                        ))
-                                    }
+                                <RadioGroup
+                                    name="dynamic-radio-buttons-group"
+                                    value={selectedValue}
+                                    onChange={handleChange}
+                                   
+                                >
+                                    <div>
+                                        {
+                                            availableColors.map((v) => (
+                                                <FormControlLabel
+                                                    key={v.value}
+                                                    value={v.label}
+                                                   
+                                                    label={v.label}
+                                                    control={
+                                                        <Radio
+                                                            sx={{
+                                                                color:v.value,
+                                                                '&.Mui-checked': {
+                                                                    color:v.value,
+                                                                },
+                                                            }}
+                                                        />
+                                                    }
+                                                    // sx={{
+                                                    //     '& .css-9oxshb-MuiRadioButtonIcon-root': { color: v.value }
+                                                    // }}
+                                                />
 
-                                </div>
+                                            ))
+                                        }
+
+                                    </div>
+                                </RadioGroup>
                             </Box>
                             {/* size */}
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 3 }}>
@@ -184,9 +213,9 @@ function Productdetail() {
             <section id="related-item">
                 <div className="container">
                     <Box className="related-title">
-                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1,color: '#DB4444'}}>
-                            <i className="fa-solid fa-square" style={{  fontSize: '30px' }}></i>
-                            <Typography variant="h6" sx={{ fontWeight: '400'}}>Related Item</Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
+                            <i className="fa-solid fa-square" style={{ fontSize: '30px' }}></i>
+                            <Typography variant="h6" sx={{ fontWeight: '400' }}>Related Item</Typography>
                         </Box>
                     </Box>
 

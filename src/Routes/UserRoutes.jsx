@@ -11,6 +11,7 @@ import Productdetail from '../container/Productdetail/Productdetail';
 import Wishlist from '../container/Wishlist/Wishlist';
 import Cart from '../container/Cart/Cart';
 import Checkout from '../container/Checkout/Checkout';
+import Myaccount from '../container/Myaccount/Myaccount';
 
 function UserRoutes(props) {
     return (
@@ -26,6 +27,7 @@ function UserRoutes(props) {
             <Route path='/wishlist' element={<Wishlist/>}/>
             <Route path='/cart' element={<Cart/>}/>
             <Route path='/checkout' element={<Checkout/>}/>
+            <Route path='/myaccount' element={<Myaccount/>}/>
         </Routes>
         <Footer/>
         </>

@@ -1,17 +1,31 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Button, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import { Link } from "react-router-dom";
 
 function Contact() {
     return (
         <main>
             <section id="contactus">
                 <div className="container">
-                    <Typography><span style={{ color: 'grey' }}>Home / </span> Contact</Typography>
+                    {/* <Typography><span style={{ color: 'grey' }}>Home / </span> Contact</Typography> */}
 
-                    <Grid container sx={{ padding: '40px' }} spacing={20}>
-                        <Grid size={4} sx={{ mt: 5 }}>
+                     <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+
+                        <Link
+                            underline="hover"
+                            color="error"
+                            href="/material-ui/getting-started/installation/"
+                        >
+                            Home
+                        </Link>
+                        <Typography sx={{ color: 'text.primary' }}>Contact</Typography>
+                    </Breadcrumbs>
+
+
+                    <Grid container sx={{ padding: '40px' }} columnSpacing={{md:5, lg:10,xl:20 }} >
+                        <Grid size={{md:5, lg:4 }}  sx={{ mt: 5 }}>
                             <Box sx={{ mb: 5 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                                     <CallOutlinedIcon sx={{ bgcolor: '#DB4444', borderRadius: '50%', p: 1, color: 'white', fontSize: '40px' }} />
@@ -35,10 +49,10 @@ function Contact() {
 
                         </Grid>
 
-                        <Grid container size={8} sx={{ mt: 5 }}>
+                        <Grid container size={{md:7, lg:8 }}  sx={{ mt: 5 }}>
                             <form style={{width:"100%"}}>
                                 <Grid container size={12} spacing={3}>
-                                    <Grid size={4} >
+                                    <Grid size={{xs:12,sm:4}}>
                                         <TextField
                                             id="name"
                                             name="name"
@@ -48,7 +62,7 @@ function Contact() {
                                             className="contactus-textfiled"
                                         />
                                     </Grid>
-                                    <Grid size={4}>
+                                    <Grid size={{xs:12,sm:4}}>
                                         <TextField
                                             id="email"
                                             name="email"
@@ -57,7 +71,7 @@ function Contact() {
                                            className="contactus-textfiled"
                                         />
                                     </Grid>
-                                    <Grid size={4}>
+                                    <Grid size={{xs:12,sm:4}}>
                                         <TextField
                                             id="phone"
                                             name="phone"

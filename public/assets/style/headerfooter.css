@@ -110,11 +110,18 @@ body {
     column-gap: 16px;
 }
 
+.search_cart_wishlist .MuiMenu-list
+.MuiList-root
+{
+    border: rgba(0, 0, 0, 0.212) !important;
+}
+
 /* .responsive-menu ul{
     flex-direction: column;
 } */
 
-
+.profile-avtar:focus{
+}
 
 /* footer */
 .footer {
@@ -184,6 +191,9 @@ body {
     margin-left: 20px;
 }
 
+.footer-social{
+    font-size: 25px;
+}
 
 /* homepage */
 
@@ -337,7 +347,7 @@ hr {
     margin: 0 auto 0 auto;
 }
 
-.whychoose-box,
+/* .whychoose-box,
 .siteinfo-box {
     background-color: #c9cdcf !important;
     display: inline-block;
@@ -356,7 +366,7 @@ hr {
 .siteinfo-icone {
     color: white;
     font-size: 30px !important;
-}
+} */
 
 .whycoose-con {
     padding: 0 60px;
@@ -533,7 +543,8 @@ hr {
 }
 
 .contactus-textfiled,
-.billing-textfiled
+.billing-textfiled,
+.myaccount-textfiled
 {
     width: 100%;
 }
@@ -550,7 +561,7 @@ hr {
 }
 
 
-.siteinfo-box {
+/* .siteinfo-box {
     background-color: #adb0b3 !important;
     padding: 12px;
 }
@@ -562,7 +573,7 @@ hr {
 
 .siteinfo-icone {
     font-size: 40px !important;
-}
+} */
 
 .siteinfo-card:hover {
     background-color: var(--secondary-color);
@@ -592,8 +603,9 @@ hr {
 
 .teamcards {
     position: relative;
-
 }
+
+
 
 .teamcards .swiper-pagination {
     bottom: -8% !important;
@@ -762,3 +774,57 @@ hr {
 #billing .coupon-button{
     padding: 10px 45px;
 } 
+
+
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
+}
+
+.breadcrumbs a{
+    color: grey;
+}
+
+#myaccount .submenu{
+    color:grey;
+    padding: 4px 0px 4px 35px;
+}
+#myaccount .menu{
+    padding-left: 0;
+    font-weight: 600 !important;
+}
+
+#myaccount .menu .MuiListItemText-primary{
+    font-weight: 600 !important;
+}
+
+
+
+#myaccount .submenu:hover{
+    color: var(--secondary-color);
+    background-color: white;
+}
+
+.myaccount-textfiled{
+    margin-top: 24px !important;
+}
+
+#myaccount .MuiInputBase-input,
+ #myaccount.MuiFilledInput-input{
+    padding:14px 12px !important;
+ }
+
+ #myaccount .passwodtext-filed{
+    margin-top: 24px;
+ }
+
+ .cancel-btn{
+    background-color:white;
+    color: black;
+ }
+
+ #myaccount .my-custome-button{
+    width: 100%;
+    padding: 20px 36px;
+ }
+

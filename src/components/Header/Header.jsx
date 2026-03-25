@@ -11,8 +11,29 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import { NavLink } from "react-router-dom";
+import Avatar from '@mui/material/Avatar';
+import { FiUser } from "react-icons/fi";
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import { TbLogout2 } from "react-icons/tb";
+
 
 function Header() {
+
+    const [anchorEll, setAnchorEll] = React.useState(null);
+    const openl = Boolean(anchorEll);
+    const handleClickl = (event) => {
+        setAnchorEll(event.currentTarget);
+    };
+    const handleClosel = () => {
+        setAnchorEll(null);
+    };
+
+    const [openMenu, setOpenMenu] = useState(false);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -23,8 +44,6 @@ function Header() {
         setAnchorEl(null);
     };
 
-    const [openMenu, setOpenMenu] = useState(false);
-
     return (
         <>
             <header id="header">
@@ -34,10 +53,10 @@ function Header() {
                         <div>
                             <Button
                                 id="demo-positioned-button"
-                                aria-controls={open ? 'demo-positioned-menu' : undefined}
+                                aria-controls={openl ? 'demo-positioned-menu' : undefined}
                                 aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick}
+                                aria-expanded={openl ? 'true' : undefined}
+                                onClick={handleClickl}
                                 sx={{ color: 'white' }}
                                 endIcon={<KeyboardArrowDownIcon />}
                             >
@@ -46,9 +65,9 @@ function Header() {
                             <Menu
                                 id="demo-positioned-menu"
                                 aria-labelledby="demo-positioned-button"
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
+                                anchorEl={anchorEll}
+                                open={openl}
+                                onClose={handleClosel}
                                 anchorOrigin={{
                                     vertical: 'top',
                                     horizontal: 'left',
@@ -59,8 +78,8 @@ function Header() {
                                 }}
                                 sx={{ mt: 4 }}
                             >
-                                <MenuItem onClick={handleClose}>English</MenuItem>
-                                <MenuItem onClick={handleClose}>Hindi</MenuItem>
+                                <MenuItem onClick={handleClosel}>English</MenuItem>
+                                <MenuItem onClick={handleClosel}>Hindi</MenuItem>
                             </Menu>
                         </div>
                     </div>
@@ -69,7 +88,7 @@ function Header() {
                 <div className="second-header">
                     <div className="container">
                         <div className="menus-header">
-                            <h4>Exclusive</h4>
+                            <h4><NavLink to="/">Exclusive</NavLink></h4>
 
                             <div className="menus">
                                 <ul>
@@ -91,6 +110,77 @@ function Header() {
                                 <FavoriteBorderIcon />
 
                                 <ShoppingCartOutlinedIcon />
+
+                                <Tooltip title="Account settings">
+                                    <IconButton
+                                        onClick={handleClick}
+                                        size="small"
+                                        aria-controls={open ? 'account-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+
+                                    >
+                                        <Avatar sx={{ width: 32, height: 32, bgcolor: open ? '#DB4444' : 'white', color: open ? 'white' : 'black' }} className="profile-avtar"><FiUser /></Avatar>
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    id="account-menu"
+                                    open={open}
+                                    onClose={handleClose}
+                                    onClick={handleClose}
+                                    slotProps={{
+                                        paper: {
+                                            elevation: 0,
+                                            sx: {
+                                                overflow: 'visible',
+                                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                                mt: 1.5,
+                                                '& .MuiAvatar-root': {
+                                                    width: 32,
+                                                    height: 32,
+                                                    ml: -0.5,
+                                                    mr: 1,
+                                                },
+                                                '& .MuiMenu-list': { bgcolor: "rgba(0, 0, 0, 0.507)" },
+                                                boxShadow: 'none'
+                                            },
+                                        },
+                                    }}
+                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                >
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon sx={{ fontSize: '25px' }}>
+                                            <FiUser />
+                                        </ListItemIcon> Manage My Acoount
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon>
+                                            <LocalMallOutlinedIcon />
+                                        </ListItemIcon>
+                                        My Order
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon>
+                                            <CancelOutlinedIcon />
+                                        </ListItemIcon>
+                                        My Cancellation
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon>
+                                            <StarBorderRoundedIcon />
+                                        </ListItemIcon>
+                                        My Review
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon sx={{ fontSize: '25px' }}>
+                                            <TbLogout2 />
+                                        </ListItemIcon>
+                                        Logout
+                                    </MenuItem>
+                                </Menu>
                             </div>
 
                             <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
@@ -108,10 +198,84 @@ function Header() {
                             <li>About</li>
                             <li>Sign Up</li>
                         </ul>
+
+                        <Tooltip title="Account settings">
+                            <IconButton
+                                onClick={handleClick}
+                                size="small"
+                                aria-controls={open ? 'account-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+
+                            >
+                                <Avatar sx={{ width: 32, height: 32, bgcolor: open ? '#DB4444' : 'white', color: open ? 'white' : 'black' }} className="profile-avtar"><FiUser /></Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            anchorEl={anchorEl}
+                            id="account-menu"
+                            open={open}
+                            onClose={handleClose}
+                            onClick={handleClose}
+                            slotProps={{
+                                paper: {
+                                    elevation: 0,
+                                    sx: {
+                                        overflow: 'visible',
+                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                        mt: 1.5,
+                                        '& .MuiAvatar-root': {
+                                            width: 32,
+                                            height: 32,
+                                            ml: -0.5,
+                                            mr: 1,
+                                        },
+                                        '& .MuiMenu-list': { bgcolor: "rgba(0, 0, 0, 0.507)" },
+                                        boxShadow: 'none'
+                                    },
+                                },
+                            }}
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "right",
+                            }}
+                            
+                        >
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon sx={{ fontSize: '25px' }}>
+                                    <FiUser />
+                                </ListItemIcon> Manage My Acoount
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <LocalMallOutlinedIcon />
+                                </ListItemIcon>
+                                My Order
+                            </MenuItem>
+                            <Divider />
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <CancelOutlinedIcon />
+                                </ListItemIcon>
+                                My Cancellation
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <StarBorderRoundedIcon />
+                                </ListItemIcon>
+                                My Review
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon sx={{ fontSize: '25px' }}>
+                                    <TbLogout2 />
+                                </ListItemIcon>
+                                Logout
+                            </MenuItem>
+                        </Menu>
                     </div>
                 </div>
 
-            </header>
+            </header >
 
 
         </>

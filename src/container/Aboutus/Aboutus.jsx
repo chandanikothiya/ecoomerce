@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { Box, Card, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Card, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from "@mui/material";
 import OtherHousesOutlinedIcon from '@mui/icons-material/OtherHousesOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
@@ -17,6 +17,7 @@ import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
+import { Link } from "react-router-dom";
 
 function Aboutus() {
 
@@ -35,10 +36,22 @@ function Aboutus() {
             {/* our story */}
             <section id="ourstory">
                 <div className="container-fluid me-0 pe-0" style={{ paddingLeft: '180px' }} >
-                    <Typography><span style={{ color: 'grey' }}>Home / </span> About</Typography>
+                    {/* <Typography><span style={{ color: 'grey' }}>Home / </span> About</Typography> */}
+
+                    <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">\
+                        <Link
+                            underline="hover"
+                            color="error"
+                            href="/material-ui/getting-started/installation/"
+                        >
+                            Home
+                        </Link>
+                        <Typography sx={{ color: 'text.primary' }}>About</Typography>
+                    </Breadcrumbs>
 
 
-                    <Grid container spacing={15} alignItems="center">
+
+                    <Grid container spacing={15} alignItems="center" sx={{ mt: 5 }}>
                         <Grid size={6} >
                             <Typography variant="h3" sx={{ fontSize: '54px', fontWeight: "bold" }}>Our Story</Typography>
 
@@ -62,54 +75,64 @@ function Aboutus() {
             {/* second-about */}
             <section className="second-about">
                 <div className="container" >
-                    <Grid container spacing={4}>
-                        <Grid size={3} sx={{ textAlign: 'center' }} >
+                    <Grid
+                        container
+                        columnSpacing={{ xs: 10, sm: 4, md:2, lg: 4 }} rowSpacing={{ sm: 4, md: 6 }} 
+                        // sx={{
+                        //     flexDirection: {
+                        //         xs: 'column', // Column direction on extra-small screens
+                        //         md: 'row',
+                        //     },
+                        //     alignItems:'center'
+                        // }}
+                    >
+                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
                                         <OtherHousesOutlinedIcon className="siteinfo-icone" />
                                     </IconButton>
                                 </Box>
-                                <Typography variant="h4" sx={{ fontWeight: '600' }}>10.5k </Typography>
-                                <Typography variant="h6" sx={{ fontWeight: '500', mt: 1 }}>Sallers active our site</Typography>
+                                <Typography variant="h4" className="siteinfo-typography1" sx={{ fontWeight: '600' }}>10.5k </Typography>
+                                <Typography variant="h6" className="siteinfo-typography2" sx={{ fontWeight: '500', mt: 1 }}>Sallers active our site</Typography>
                             </Box>
 
                         </Grid>
 
-                        <Grid size={3} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
                                         <AttachMoneyOutlinedIcon className="siteinfo-icone" />
                                     </IconButton>
                                 </Box>
-                                <Typography variant="h4" sx={{ fontWeight: '600' }}>33k </Typography>
-                                <Typography variant="h6" sx={{ fontWeight: '500', mt: 1 }}>Mopnthly Produduct Sale</Typography>
+                                <Typography variant="h4" className="siteinfo-typography1" sx={{ fontWeight: '600' }}>33k </Typography>
+                                <Typography variant="h6" className="siteinfo-typography2" sx={{ fontWeight: '500', mt: 1 }}>Mopnthly Produduct Sale</Typography>
                             </Box>
                         </Grid>
 
-                        <Grid size={3} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
                                         <ShoppingBagOutlinedIcon className="siteinfo-icone" />
                                     </IconButton>
                                 </Box>
-                                <Typography variant="h4" sx={{ fontWeight: '600' }}>45.5k </Typography>
-                                <Typography variant="h6" sx={{ fontWeight: '500', mt: 1 }}>Customer active in our site</Typography>
+                                <Typography variant="h4" className="siteinfo-typography1" sx={{ fontWeight: '600' }}>45.5k </Typography>
+                                <Typography variant="h6" className="siteinfo-typography2" sx={{ fontWeight: '500', mt: 1 }}>Customer active in our site</Typography>
                             </Box>
 
                         </Grid>
 
-                        <Grid size={3} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
                                         <MonetizationOnOutlinedIcon className="siteinfo-icone" />
                                     </IconButton>
                                 </Box>
-                                <Typography variant="h4" sx={{ fontWeight: '600' }}>25k </Typography>
-                                <Typography variant="h6" sx={{ fontWeight: '500', mt: 1 }}>Anual gross sale in our site</Typography>
+                                <Typography variant="h4" className="siteinfo-typography1" sx={{ fontWeight: '600' }}>25k </Typography>
+                                <Typography variant="h6" className="siteinfo-typography2" sx={{ fontWeight: '500', mt: 1 }}>Anual gross sale in our site</Typography>
                             </Box>
 
                         </Grid>
