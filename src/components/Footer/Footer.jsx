@@ -18,7 +18,10 @@ function Footer() {
                 <div className="container">
                     <Grid container
                         sx={{
-                            justifyContent: "space-between"
+                            
+                            justifyContent:{
+                                lg:"space-between"
+                            } 
                         }}
                     >
                         <Grid size={{ md: 4, lg: 2 }} >
@@ -108,6 +111,8 @@ function Footer() {
                                 </Box>
                             </Box>
                         </Grid>
+
+                      
                     </Grid>
 
                     <Box sx={{ display: 'flex', mt: 8, justifyContent: 'center', color: '#a5a1a1', gap: '0 5px', alignItems: 'center' }}>

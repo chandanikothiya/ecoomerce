@@ -44,6 +44,7 @@ function Header() {
         setAnchorEl(null);
     };
 
+    const [showAccount, setShowAccount] = useState(false);
     return (
         <>
             <header id="header">
@@ -133,49 +134,44 @@ function Header() {
                                         paper: {
                                             elevation: 0,
                                             sx: {
-                                                overflow: 'visible',
-                                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                                mt: 1.5,
-                                                '& .MuiAvatar-root': {
-                                                    width: 32,
-                                                    height: 32,
-                                                    ml: -0.5,
-                                                    mr: 1,
-                                                },
-                                                '& .MuiMenu-list': { bgcolor: "rgba(0, 0, 0, 0.507)" },
-                                                boxShadow: 'none'
-                                            },
+                                                bgcolor: "rgba(0, 0, 0, 0.69)",   // ✅ FIX HERE
+                                                backdropFilter: "blur(10px)", // optional glass effect
+                                                boxShadow: "none",
+                                                color: "white",
+                                                mt:1,
+        zIndex: 9999,   // ✅ higher than navbar
+                                            }
                                         },
                                     }}
                                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ fontSize: '25px' }}>
+                                        <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
                                             <FiUser />
                                         </ListItemIcon> Manage My Acoount
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon>
+                                        <ListItemIcon sx={{color: 'white' }}>
                                             <LocalMallOutlinedIcon />
                                         </ListItemIcon>
                                         My Order
                                     </MenuItem>
                                     <Divider />
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon>
+                                        <ListItemIcon sx={{color: 'white' }}>
                                             <CancelOutlinedIcon />
                                         </ListItemIcon>
                                         My Cancellation
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon>
+                                        <ListItemIcon sx={{color: 'white' }}> 
                                             <StarBorderRoundedIcon />
                                         </ListItemIcon>
                                         My Review
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ fontSize: '25px' }}>
+                                        <ListItemIcon sx={{ fontSize: '25px',color: 'white' }}>
                                             <TbLogout2 />
                                         </ListItemIcon>
                                         Logout
@@ -198,80 +194,22 @@ function Header() {
                             <li>About</li>
                             <li>Sign Up</li>
                         </ul>
-
-                        <Tooltip title="Account settings">
-                            <IconButton
-                                onClick={handleClick}
-                                size="small"
-                                aria-controls={open ? 'account-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-
-                            >
-                                <Avatar sx={{ width: 32, height: 32, bgcolor: open ? '#DB4444' : 'white', color: open ? 'white' : 'black' }} className="profile-avtar"><FiUser /></Avatar>
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            anchorEl={anchorEl}
-                            id="account-menu"
-                            open={open}
-                            onClose={handleClose}
-                            onClick={handleClose}
-                            slotProps={{
-                                paper: {
-                                    elevation: 0,
-                                    sx: {
-                                        overflow: 'visible',
-                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                        mt: 1.5,
-                                        '& .MuiAvatar-root': {
-                                            width: 32,
-                                            height: 32,
-                                            ml: -0.5,
-                                            mr: 1,
-                                        },
-                                        '& .MuiMenu-list': { bgcolor: "rgba(0, 0, 0, 0.507)" },
-                                        boxShadow: 'none'
-                                    },
-                                },
-                            }}
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "right",
-                            }}
-                            
-                        >
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon sx={{ fontSize: '25px' }}>
-                                    <FiUser />
-                                </ListItemIcon> Manage My Acoount
-                            </MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon>
-                                    <LocalMallOutlinedIcon />
-                                </ListItemIcon>
-                                My Order
-                            </MenuItem>
-                            <Divider />
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon>
-                                    <CancelOutlinedIcon />
-                                </ListItemIcon>
-                                My Cancellation
-                            </MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon>
-                                    <StarBorderRoundedIcon />
-                                </ListItemIcon>
-                                My Review
-                            </MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon sx={{ fontSize: '25px' }}>
-                                    <TbLogout2 />
-                                </ListItemIcon>
-                                Logout
-                            </MenuItem>
-                        </Menu>
+                        <IconButton onClick={() => setShowAccount(!showAccount)}>
+                            <Avatar>
+                                <FiUser />
+                            </Avatar>
+                        </IconButton>
+                        <ul>
+                            {showAccount && (
+                                <div className="mobile-dropdown">
+                                    <li>Manage My Account</li>
+                                    <li>My Order</li>
+                                    <li>My Cancellation</li>
+                                    <li>My Review</li>
+                                    <li>Logout</li>
+                                </div>
+                            )}
+                        </ul>
                     </div>
                 </div>
 

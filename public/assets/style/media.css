@@ -67,7 +67,46 @@
             width: 100%;
         }
 
-        
+           .whychoose-box,
+        .siteinfo-box {
+            background-color: #c9cdcf !important;
+            display: inline-block;
+            padding: 8px !important;
+            border-radius: 50%;
+            margin-bottom: 24px;
+        }
+
+        .whychoos-iconebtn,
+        .siteinfo-iconebtn {
+            background-color: rgb(0, 0, 0) !important;
+            padding: 12px !important;
+        }
+
+        .whychoos-icone,
+        .siteinfo-icone {
+            color: white;
+            font-size: 25px !important;
+        }
+
+        .siteinfo-icone {
+            font-size: 30px !important;
+        }
+
+        .siteinfo-typography1 {
+            font-size: 25px !important;
+        }
+
+        .siteinfo-typography2 {
+            font-size: 15px !important;
+        }
+
+        .whychoose-typography1{
+            font-size:14px !important;
+        }
+
+        .whychoose-typography{
+            font-size: 12px !important;
+        }
     }
 
     /* sm */
@@ -105,11 +144,11 @@
             box-shadow: -8px 0 6px -6px rgba(0, 0, 0, 0.4);
             padding: 20px;
             transition: 0.3s ease;
-            z-index: 9999;
+            z-index: 1000;
             /* animation */
             transform: translateX(100%);
             opacity: 0;
-
+            overflow: visible !important;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
@@ -170,6 +209,14 @@
         .siteinfo-typography2 {
             font-size: 15px !important;
         }
+
+        .whychoose-typography1{
+            font-size:14px !important;
+        }
+
+        .whychoose-typography{
+            font-size: 12px !important;
+        }
     }
 
     /* md */
@@ -214,6 +261,14 @@
         .siteinfo-typography2 {
             font-size: 15px !important;
         }
+
+        .whychoose-typography1{
+            font-size:14px !important;
+        }
+
+        .whychoose-typography{
+            font-size: 12px !important;
+        }
     }
 
     /* lg */
@@ -228,6 +283,14 @@
 
         .responsive-menu {
             display: none;
+        }
+
+        .whychoose-typography1{
+            font-size:16px !important;
+        }
+
+        .whychoose-typography{
+            font-size: 11px !important;
         }
 
     }
@@ -275,6 +338,14 @@
 
         .siteinfo-icone {
             font-size: 40px !important;
+        }
+
+        .whychoose-typography1{
+            font-size: 20px !important;
+        }
+
+        .whychoose-typography{
+            font-size: 14px !important;
         }
 
     }

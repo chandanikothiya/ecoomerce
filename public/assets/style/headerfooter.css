@@ -28,7 +28,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 1000;
 }
 
 .top-header {
@@ -65,6 +65,7 @@ body {
     padding: 32px 24px 17px 24px;
     /* padding-bottom: 20px; */
     border-bottom: solid rgb(224, 222, 224) 1px;
+    overflow:visible !important
 }
 
 .second-header ul {
@@ -243,7 +244,6 @@ section {
     height: 100%;
 
 }
-
 .todays .swiper-slide,
 #bestsellingproduct .swiper-slide {
     max-width: 310px !important;
@@ -583,7 +583,7 @@ hr {
         -1px -1px 3px rgba(0, 0, 0, 0.25);
     background-image:
         linear-gradient(to right, #eb2d2d5b 1px, transparent 1px),
-        linear-gradient(to bottom, #eb2d2d5b 1px, transparent 1px);
+        linear-gradient(to bottom, #eb2d2d5b 1px, transparent 1px) !important;
     background-size: 12px 12px;
 
 }
@@ -604,8 +604,6 @@ hr {
 .teamcards {
     position: relative;
 }
-
-
 
 .teamcards .swiper-pagination {
     bottom: -8% !important;
@@ -828,3 +826,24 @@ hr {
     padding: 20px 36px;
  }
 
+.responsive-menu {
+    overflow: visible !important;  /* ✅ VERY IMPORTANT */
+}
+
+.mobile-dropdown {
+    background: #f5f5f5;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.mobile-dropdown p {
+    padding: 8px 0;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.mobile-dropdown p:last-child {
+    border-bottom: none;
+}

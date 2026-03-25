@@ -36,7 +36,6 @@ function Aboutus() {
             {/* our story */}
             <section id="ourstory">
                 <div className="container-fluid me-0 pe-0" style={{ paddingLeft: '180px' }} >
-                    {/* <Typography><span style={{ color: 'grey' }}>Home / </span> About</Typography> */}
 
                     <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">\
                         <Link
@@ -77,16 +76,15 @@ function Aboutus() {
                 <div className="container" >
                     <Grid
                         container
-                        columnSpacing={{ xs: 10, sm: 4, md:2, lg: 4 }} rowSpacing={{ sm: 4, md: 6 }} 
-                        // sx={{
-                        //     flexDirection: {
-                        //         xs: 'column', // Column direction on extra-small screens
-                        //         md: 'row',
-                        //     },
-                        //     alignItems:'center'
-                        // }}
+                        columnSpacing={{ xs:20, sm: 4, md:2, lg: 4 }} rowSpacing={{xs:4, sm: 4, md: 6 }} 
+                        sx={{
+                            justifyContent: {
+                                xs:'center'
+                            },
+                            
+                        }}
                     >
-                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -99,7 +97,7 @@ function Aboutus() {
 
                         </Grid>
 
-                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -111,7 +109,7 @@ function Aboutus() {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -124,7 +122,7 @@ function Aboutus() {
 
                         </Grid>
 
-                        <Grid size={{ xs: 6, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -210,33 +208,39 @@ function Aboutus() {
             {/* why choose us */}
             <section id="aboutus-whychoosus">
                 <div className="container whycoose-con">
-                    <Grid container spacing={10}>
-                        <Grid size={4} sx={{ textAlign: 'center' }}>
+                    <Grid container columnSpacing={10} rowSpacing={{xs:5}}
+                        sx={{
+                            justifyContent:{
+                                xs:'center'
+                            }
+                        }}
+                    >
+                        <Grid size={{xs:12,sm:6,md:4}} sx={{ textAlign: 'center' }}>
                             <Box className="whychoose-box">
                                 <IconButton aria-label="deleLocalShipping" className="whychoos-iconebtn">
                                     <LocalShippingOutlinedIcon className="whychoos-icone" />
                                 </IconButton>
                             </Box>
-                            <Typography variant="subtitle1" sx={{ fontSize: '20px', fontWeight: '600' }}>FREE AND FAST DELIVERY</Typography>
-                            <Typography variant="subtitle1" sx={{ fontSize: '14px', fontWeight: '500' }}> Free delivery for all orders over $140</Typography>
+                            <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>FREE AND FAST DELIVERY</Typography>
+                            <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> Free delivery for all orders over $140</Typography>
                         </Grid>
-                        <Grid size={4} sx={{ textAlign: 'center' }}>
+                        <Grid size={{xs:12,sm:6,md:4}} sx={{ textAlign: 'center' }}>
                             <Box className="whychoose-box">
                                 <IconButton aria-label="SupportAgent" className="whychoos-iconebtn">
                                     <SupportAgentIcon className="whychoos-icone" />
                                 </IconButton>
                             </Box>
-                            <Typography variant="subtitle1" sx={{ fontSize: '20px', fontWeight: '600' }}>24/7 CUSTOMER SERVICE</Typography>
-                            <Typography variant="subtitle1" sx={{ fontSize: '14px', fontWeight: '500' }}> Friendly 24/7 customer support</Typography>
+                            <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>24/7 CUSTOMER SERVICE</Typography>
+                            <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> Friendly 24/7 customer support</Typography>
                         </Grid>
-                        <Grid size={4} sx={{ textAlign: 'center' }}>
+                        <Grid size={{xs:12,sm:6,md:4}} sx={{ textAlign: 'center' }}>
                             <Box className="whychoose-box">
                                 <IconButton aria-label="GppGoodOutlined" className="whychoos-iconebtn">
                                     <GppGoodOutlinedIcon className="whychoos-icone" />
                                 </IconButton>
                             </Box>
-                            <Typography variant="subtitle1" sx={{ fontSize: '20px', fontWeight: '600' }}>MONEY BACK GUARANTEE</Typography>
-                            <Typography variant="subtitle1" sx={{ fontSize: '14px', fontWeight: '500' }}> We reurn money within 30 days</Typography>
+                            <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>MONEY BACK GUARANTEE</Typography>
+                            <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> We reurn money within 30 days</Typography>
                         </Grid>
                     </Grid>
                 </div>
