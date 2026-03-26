@@ -25,11 +25,11 @@ function Contact() {
 
 
                     <Grid container sx={{ padding: '40px' }} columnSpacing={{md:5, lg:10,xl:20 }} >
-                        <Grid size={{md:5, lg:4 }}  sx={{ mt: 5 }}>
+                        <Grid size={{md:4, lg:4 }}  sx={{ mt: 5 }}>
                             <Box sx={{ mb: 5 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                                     <CallOutlinedIcon sx={{ bgcolor: '#DB4444', borderRadius: '50%', p: 1, color: 'white', fontSize: '40px' }} />
-                                    <Typography sx={{ fontSize: '20px' }}>Call To Us</Typography>
+                                    <Typography sx={{ fontSize: '20px' }} className="conatct-left-title">Call To Us</Typography>
                                 </Box>
                                 <Typography className="contact-custome-text">We are available 24/7, 7 days a week.</Typography>
                                 <Typography className="contact-custome-text">Phone: +8801611112222</Typography>
@@ -40,7 +40,7 @@ function Contact() {
                             <Box sx={{ mt: 5 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                                     <EmailOutlinedIcon sx={{ bgcolor: '#DB4444', borderRadius: '50%', p: 1, color: 'white', fontSize: '40px' }} />
-                                    <Typography sx={{ fontSize: '20px' }}>Write To US</Typography>
+                                    <Typography sx={{ fontSize: '20px' }} className="conatct-left-title">Write To US</Typography>
                                 </Box>
                                 <Typography className="contact-custome-text">Fill out our form and we will contact you within 24 hours.</Typography>
                                 <Typography className="contact-custome-text">Emails: customer@exclusive.com</Typography>
@@ -49,7 +49,7 @@ function Contact() {
 
                         </Grid>
 
-                        <Grid container size={{md:7, lg:8 }}  sx={{ mt: 5 }}>
+                        <Grid container size={{md:8, lg:8 }}  sx={{ mt: 5 }}>
                             <form style={{width:"100%"}}>
                                 <Grid container size={12} spacing={3}>
                                     <Grid size={{xs:12,sm:4}}>

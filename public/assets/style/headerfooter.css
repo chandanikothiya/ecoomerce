@@ -404,8 +404,7 @@ hr {
 .musixexp-timebox {
     background-color: rgb(255, 255, 255);
     /* padding:10px 12px; */
-    height: 62px;
-    width: 62px;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -425,7 +424,6 @@ hr {
 
 .newarrival-grid-box {
     background-color: var(--primary-color);
-    padding: 48px;
     padding-bottom: 0;
     position: relative;
 }
@@ -476,12 +474,17 @@ hr {
     margin-top: 40px !important;
 }
 
+.socialauth-icon{
+    margin-right: 8px;
+}
+
 .social-auth {
     border: solid 2px grey !important;
     width: 100%;
     background-color: white !important;
     color: black;
     text-align: center;
+    
 }
 
 .authlink {
@@ -847,3 +850,7 @@ hr {
 .mobile-dropdown p:last-child {
     border-bottom: none;
 }
+
+/* .musicexp-imgbox img{
+    width: 100% !important;
+} */

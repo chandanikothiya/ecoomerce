@@ -76,15 +76,15 @@ function Aboutus() {
                 <div className="container" >
                     <Grid
                         container
-                        columnSpacing={{ xs:20, sm: 4, md:2, lg: 4 }} rowSpacing={{xs:4, sm: 4, md: 6 }} 
+                        columnSpacing={{ xs: 20, sm: 4, md: 2, lg: 4 }} rowSpacing={{ xs: 4, sm: 4, md: 6 }}
                         sx={{
                             justifyContent: {
-                                xs:'center'
+                                xs: 'center'
                             },
-                            
+
                         }}
                     >
-                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -97,7 +97,7 @@ function Aboutus() {
 
                         </Grid>
 
-                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -109,7 +109,7 @@ function Aboutus() {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -122,7 +122,7 @@ function Aboutus() {
 
                         </Grid>
 
-                        <Grid size={{ xs:10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
+                        <Grid size={{ xs: 10, sm: 5, md: 3, lg: 3 }} sx={{ textAlign: 'center' }} >
                             <Box className="siteinfo-card">
                                 <Box className="siteinfo-box">
                                     <IconButton aria-label="deleLocalShipping" className="siteinfo-iconebtn">
@@ -144,12 +144,30 @@ function Aboutus() {
 
                     <div className="teamcards">
                         <Swiper
-                            slidesPerView={3}
-                            spaceBetween={30}
+                            // slidesPerView={3}
+                            // spaceBetween={30}
                             className="mySwiper"
                             modules={[Pagination]}
                             pagination={{
                                 clickable: true,
+                            }}
+                            breakpoints={{
+                                320: {
+                                    slidesPerView:1,
+                                    spaceBetween: 20,
+                                },
+                                576: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 30,
+                                },
+                                768: {
+                                    slidesPerView:2,
+                                    spaceBetween: 30,
+                                },
+                                992: {
+                                    slidesPerView:3,
+                                    spaceBetween:30,
+                                },
                             }}
                         >
                             {
@@ -174,11 +192,11 @@ function Aboutus() {
 
 
                                             <CardContent sx={{ outline: 0 }}>
-                                                <Typography gutterBottom variant="h4" component="div">
+                                                <Typography gutterBottom variant="h4" component="div" className="teamname">
                                                     {v.name}
                                                 </Typography>
                                                 <Box sx={{ display: 'flex', columnGap: 2 }}>
-                                                    <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                                                    <Typography variant="h6" sx={{ fontWeight: 500 }} className="teamrole">
                                                         {v.role}
                                                     </Typography>
                                                 </Box>
@@ -208,14 +226,14 @@ function Aboutus() {
             {/* why choose us */}
             <section id="aboutus-whychoosus">
                 <div className="container whycoose-con">
-                    <Grid container columnSpacing={10} rowSpacing={{xs:5}}
+                    <Grid container columnSpacing={10} rowSpacing={{ xs: 5 }}
                         sx={{
-                            justifyContent:{
-                                xs:'center'
+                            justifyContent: {
+                                xs: 'center'
                             }
                         }}
                     >
-                        <Grid size={{xs:12,sm:6,md:4}} sx={{ textAlign: 'center' }}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ textAlign: 'center' }}>
                             <Box className="whychoose-box">
                                 <IconButton aria-label="deleLocalShipping" className="whychoos-iconebtn">
                                     <LocalShippingOutlinedIcon className="whychoos-icone" />
@@ -224,7 +242,7 @@ function Aboutus() {
                             <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>FREE AND FAST DELIVERY</Typography>
                             <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> Free delivery for all orders over $140</Typography>
                         </Grid>
-                        <Grid size={{xs:12,sm:6,md:4}} sx={{ textAlign: 'center' }}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ textAlign: 'center' }}>
                             <Box className="whychoose-box">
                                 <IconButton aria-label="SupportAgent" className="whychoos-iconebtn">
                                     <SupportAgentIcon className="whychoos-icone" />
@@ -233,7 +251,7 @@ function Aboutus() {
                             <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>24/7 CUSTOMER SERVICE</Typography>
                             <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> Friendly 24/7 customer support</Typography>
                         </Grid>
-                        <Grid size={{xs:12,sm:6,md:4}} sx={{ textAlign: 'center' }}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ textAlign: 'center' }}>
                             <Box className="whychoose-box">
                                 <IconButton aria-label="GppGoodOutlined" className="whychoos-iconebtn">
                                     <GppGoodOutlinedIcon className="whychoos-icone" />

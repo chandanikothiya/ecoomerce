@@ -273,12 +273,29 @@ function Homepage() {
                     {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
                     <div className="container" style={{marginTop:'40px'}}>
                             <Swiper
-                                slidesPerView={3.5}
-                                spaceBetween={30}
+                               
                                 modules={[Navigation]}
                                 navigation={true}
                                 className="mySwiper"
                                 loop={true}
+                                 breakpoints={{
+                                320: {
+                                    slidesPerView:1,
+                                    spaceBetween: 20,
+                                },
+                                576: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 30,
+                                },
+                                768: {
+                                    slidesPerView:3,
+                                    spaceBetween: 30,
+                                },
+                                992: {
+                                    slidesPerView:3.5,
+                                    spaceBetween:30,
+                                },
+                            }}
                                 
                             >
                                 {
@@ -519,12 +536,12 @@ function Homepage() {
                 {/* Enhance Your Music Experience section */}
                 <section id="musicexp">
                     <div className="container">
-                        <Box sx={{ bgcolor: 'black', padding: '60px 66px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box className="musix-main-box" sx={{ bgcolor: 'black', padding: '60px 66px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
                                 <Typography variant="h6" sx={{ color: '#00FF66' }}>Categories</Typography>
-                                <Typography variant="h3" sx={{ letterSpacing: 1, mt: 3 }}>Enhance Your <br /> Music Experience</Typography>
+                                <Typography variant="h3" sx={{ letterSpacing: 1, mt: 3 }} className="musixexp-title">Enhance Your <br /> Music Experience</Typography>
 
-                                <Box sx={{ display: 'flex', columnGap: 3, mt: 4 }}>
+                                <Box sx={{ display: 'flex', columnGap: 3, mt: 4 ,flexWrap:'wrap',rowGap:'20px'}}>
                                     <Box className="musixexp-timebox">
                                         <Typography variant="body1" sx={{ fontWeight: '600' }}>23</Typography>
                                         <Typography variant="caption" sx={{ mt: '-1px' }}>Hours</Typography>
@@ -549,8 +566,8 @@ function Homepage() {
                                 <a href="#" className="my-custome-button">Buy Now!</a>
                             </Box>
 
-                            <Box >
-                                <img src="../../../public/assets/images/musicexp.png" alt="musicexp" />
+                            <Box className="musicexp-imgbox">
+                                <img src="../../../public/assets/images/musicexp.png" alt="musicexp" width='100%'/>
                             </Box>
                         </Box>
                     </div>
@@ -708,11 +725,11 @@ function Homepage() {
                         </Box>
 
 
-                        <Grid container spacing={4} alignItems="stretch" >
+                        <Grid container columnSpacing={{md:4,lg:8,xl:0}} rowSpacing={4} alignItems="stretch" >
                            
-                            <Grid size={6} display="flex">
+                            <Grid size={{md:12}} display="flex" sx={{overflow:'hidden'}}>
                                 <Box className='newarrival-grid-box'>
-                                    <img src="../../../public/assets/images/newarrival/playstation.png" alt="" />
+                                    <img src="../../../public/assets/images/newarrival/playstation.png" alt="" width='100%' height='100%' />
 
                                     <div className="newarrival-grid-box-text">
                                         <Typography variant="h5" sx={{ fontWeight: 600 }}>PlayStation 5</Typography>
@@ -723,7 +740,7 @@ function Homepage() {
                             </Grid>
 
                            
-                            <Grid size={6} container direction='column' display="flex">
+                            <Grid size={{md:12}} container direction='column' display="flex" >
                                 <Grid>
                                     <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
                                         <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
@@ -737,10 +754,10 @@ function Homepage() {
                                 </Grid>
 
                                 
-                                <Grid container spacing={4} display="flex">
+                                <Grid container columnSpacing={{lg:4,xl:4}} display="flex">
                                     <Grid size={6} display="flex">
                                         <Box className='newarrival-grid-box'>
-                                            <img src="../../../public/assets/images/newarrival/speaker.png" alt="" />
+                                            <img src="../../../public/assets/images/newarrival/speaker.png" alt="" width='100%' height='100%' />
 
                                             <div className="newarrival-grid-box-text">
                                                 <Typography variant="h5" sx={{ fontWeight: 600 }}>Speakers</Typography>
@@ -752,7 +769,7 @@ function Homepage() {
 
                                     <Grid size={6} display="flex">
                                         <Box className='newarrival-grid-box'>
-                                            <img src="../../../public/assets/images/newarrival/perfume.png" alt="" />
+                                            <img src="../../../public/assets/images/newarrival/perfume.png" alt="" width='100%' height='100%' />
 
                                             <div className="newarrival-grid-box-text">
                                                 <Typography variant="h5" sx={{ fontWeight: 600 }}>Perfume</Typography>
@@ -802,8 +819,6 @@ function Homepage() {
                         </Grid>
                     </div>
                 </section>
-
-
             </main >
 
         </>

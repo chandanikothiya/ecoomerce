@@ -3,6 +3,8 @@ import { Box, Grid, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { object, string } from "yup";
+import { FcGoogle } from "react-icons/fc";
+
 
 function Authendication() {
     const [authtype, setAuthtype] = useState('signup');
@@ -66,21 +68,45 @@ function Authendication() {
         <>
             <main>
                 <section id="authendication">
-                    <Grid container alignItems="stretch">
-                        <Grid size={6}>
-                            <img src="../../../public/assets/images/authendication.png" alt="" width='100%'/>
+                    <Grid container
+                        alignItems="stretch"
+                        sx={{
+                            justifyContent: {
+                                xs: 'center',
+                                md: 'flex-start'
+                            }
+                        }}
+                    >
+                        <Grid  size={6}
+                            display='flex'
+                            sx={{
+                                display: {
+                                    xs: 'none',
+                                    md: 'block'
+                                }
+                            }}
+                        >
+                            <img src="../../../public/assets/images/authendication.png" alt="" width='100%' height='100%' />
                         </Grid>
 
-                        <Grid size={6} display='flex'>
-                            <Box sx={{ maxWidth: '371px', margin: '0 auto 0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                <Typography variant="h4" sx={{ fontSize: '36px', fontWeight: 500 }}>
+                        <Grid  size={{xs:10,sm:8,md:6}} display='flex'>
+                            <Box
+                                sx={{
+                                    maxWidth:{
+                                        md: '371px'
+                                    },
+                                    margin: '0 auto 0 auto', display: 'flex',
+                                    flexDirection: 'column', justifyContent: 'center'
+                                }}
+                            >
+                                <Typography variant="h4" sx={{ fontWeight: 500 }} className="auth-title">
                                     {authtype === 'signup' || authtype === 'login' ?
                                         authtype === 'signup' ? "Create an account" : "Log in to Exclusive" : ""}
                                     {
                                         authtype === 'forgetpassword' ? "Enter Email address" : ""
                                     }
                                 </Typography>
-                                <Typography variant="h6" sx={{ fontWeight: 400, mt: 3 }}>Enter your details below</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 400, mt: 3 }} className="authsub-title" >Enter your details below</Typography>
 
                                 <form onSubmit={handleSubmit}>
                                     {authtype === 'signup' || authtype === 'login' ?
@@ -144,7 +170,8 @@ function Authendication() {
                                         <>
                                             <button type="submit" className="submit-btn my-custome-button" >Create Account</button>
                                             <a href="#" className="social-auth my-custome-button" style={{ marginTop: '40px' }}>
-                                                <img src="../../../public/assets/images/google.png" alt="" width='25' style={{ marginRight: '8px' }} />
+                                                <FcGoogle className="socialauth-icon"/>
+                                                {/* <img src="../../../public/assets/images/google.png" alt="" width='25' style={{ marginRight: '8px' }} className="socialauth-icon"/> */}
                                                 Sign up with Google
                                             </a>
                                         </>
@@ -152,7 +179,7 @@ function Authendication() {
 
                                     {
                                         authtype === 'login' &&
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: "center", mt: 5 }}>
+                                        <Box className="login-forget-btn" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: "center", mt: 5 }}>
                                             <button type="submit" className="login-btn my-custome-button" >Log in </button>
                                             <a href="#" style={{ color: '#DB4444', textDecoration: 'none', fontWeight: '600' }} onClick={() => setAuthtype('forgetpassword')}>Forget Password ?</a>
                                         </Box>

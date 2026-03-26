@@ -8,6 +8,10 @@
             display: none;
         }
 
+        #contactus .my-custome-button {
+            font-size: 15px;
+        }
+
         /* .search_cart_wishlist {
                 display: none !important;
 
@@ -67,7 +71,7 @@
             width: 100%;
         }
 
-           .whychoose-box,
+        .whychoose-box,
         .siteinfo-box {
             background-color: #c9cdcf !important;
             display: inline-block;
@@ -100,12 +104,71 @@
             font-size: 15px !important;
         }
 
-        .whychoose-typography1{
-            font-size:14px !important;
+        .whychoose-typography1 {
+            font-size: 14px !important;
         }
 
-        .whychoose-typography{
+        .whychoose-typography {
             font-size: 12px !important;
+        }
+
+        .teamname {
+            font-size: 22px !important;
+        }
+
+        .teamrole {
+            font-size: 15px !important;
+        }
+
+
+
+        .contact-custome-text {
+            font-size: 12px !important;
+        }
+
+        .socialauth-icon {
+            font-size: 25px;
+        }
+
+        .social-auth {
+            padding: 20px 30px !important;
+        }
+
+        .auth-title {
+            font-size: 22px !important;
+        }
+
+        .authsub-title {
+            font-size: 18px !important;
+        }
+
+        .login-forget-btn {
+            flex-direction: column;
+            row-gap: 20px !important;
+            align-items: flex-start !important;
+        }
+
+        .login-btn {
+            width: 100% !important;
+        }
+
+        .musicexp-imgbox {
+            display: none !important;
+        }
+
+        .musixexp-timebox {
+            height: 58px;
+            width: 58px;
+        }
+
+
+        .musixexp-title {
+            font-size: 20px !important;
+        }
+
+        .musix-main-box {
+            padding: 60px 40px !important;
+            justify-content: center !important;
         }
     }
 
@@ -113,6 +176,10 @@
     @media screen and (min-width:576px) {
         .menus {
             display: none;
+        }
+
+        #contactus .my-custome-button {
+            font-size: 18px;
         }
 
         .menuicone {
@@ -177,7 +244,7 @@
             width: 100%;
         }
 
-          .whychoose-box,
+        .whychoose-box,
         .siteinfo-box {
             background-color: #c9cdcf !important;
             display: inline-block;
@@ -210,13 +277,65 @@
             font-size: 15px !important;
         }
 
-        .whychoose-typography1{
-            font-size:14px !important;
+        .whychoose-typography1 {
+            font-size: 14px !important;
         }
 
-        .whychoose-typography{
+        .whychoose-typography {
             font-size: 12px !important;
         }
+
+        .teamname {
+            font-size: 25px !important;
+        }
+
+        .teamrole {
+            font-size: 15px !important;
+        }
+
+
+        .contact-custome-text {
+            font-size: 14px !important;
+        }
+
+        .socialauth-icon {
+            font-size: 25px;
+        }
+
+        .social-auth {
+            padding: 20px 30px !important;
+        }
+
+        .auth-title {
+            font-size: 30px !important;
+        }
+
+        .authsub-title {
+            font-size: 18px !important;
+        }
+
+        .login-forget-btn {
+            flex-direction: row;
+            row-gap: 0 !important;
+        }
+
+        .login-btn {
+            width: fit-content !important;
+        }
+
+        .musicexp-imgbox {
+            display: none !important;
+        }
+
+        .musixexp-timebox {
+            height: 58px;
+            width: 58px;
+        }
+
+        .musixexp-title {
+            font-size: 30px !important;
+        }
+
     }
 
     /* md */
@@ -225,9 +344,7 @@
             font-size: 14px;
         }
 
-        #contactus .my-custome-button {
-            width: fit-content;
-        }
+
 
         .whychoose-box,
         .siteinfo-box {
@@ -262,19 +379,51 @@
             font-size: 15px !important;
         }
 
-        .whychoose-typography1{
-            font-size:14px !important;
+        .whychoose-typography1 {
+            font-size: 14px !important;
         }
 
-        .whychoose-typography{
+        .whychoose-typography {
             font-size: 12px !important;
         }
+
+        .contact-custome-text {
+            font-size: 14px !important;
+        }
+
+
+
+        .socialauth-icon {
+            font-size: 30px;
+        }
+
+        .social-auth {
+            padding: 20px 48px !important;
+        }
+
+        .musixexp-title {
+            font-size: 35px !important;
+        }
+
+        .musixexp-timebox {
+            height: 58px;
+            width: 58px;
+        }
+
+
+
+
+
     }
 
     /* lg */
     @media screen and (min-width:992px) {
         .menus {
             display: block;
+        }
+
+        #contactus .my-custome-button {
+            width: fit-content;
         }
 
         .menuicone {
@@ -285,14 +434,30 @@
             display: none;
         }
 
-        .whychoose-typography1{
-            font-size:16px !important;
+        .whychoose-typography1 {
+            font-size: 16px !important;
         }
 
-        .whychoose-typography{
+        .whychoose-typography {
             font-size: 11px !important;
         }
 
+        .teamname {
+            font-size: 28px !important;
+        }
+
+        .teamrole {
+            font-size: 18px !important;
+        }
+
+        .musicexp-imgbox {
+            width: 55% !important;
+            display: block !important;
+        }
+
+        .newarrival-grid-box {
+            padding: 48px 10px;
+        }
     }
 
     /* xl */
@@ -340,14 +505,48 @@
             font-size: 40px !important;
         }
 
-        .whychoose-typography1{
+        .whychoose-typography1 {
             font-size: 20px !important;
         }
 
-        .whychoose-typography{
+        .whychoose-typography {
             font-size: 14px !important;
         }
 
+        .teamname {
+            font-size: 34px !important;
+        }
+
+        .teamrole {
+            font-size: 20px !important;
+        }
+
+        .contact-custome-text {
+            font-size: 16px !important;
+        }
+
+        .auth-title {
+            font-size: 36px !important;
+        }
+
+        .authsub-title {
+            font-size: 20px !important;
+        }
+
+        .musixexp-title {
+            font-size: 48px !important;
+        }
+
+
+
+        .musicexp-imgbox {
+            width: 100%;
+
+        }
+
+        .newarrival-grid-box {
+            padding: 48px 25px;
+        }
     }
 
     /* xxl */
@@ -359,4 +558,9 @@
         .siteinfo-typography2 {
             font-size: 20px;
         }
+
+        .newarrival-grid-box {
+            padding: 48px;
+        }
+
     }
