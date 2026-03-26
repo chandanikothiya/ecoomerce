@@ -725,9 +725,9 @@ function Homepage() {
                         </Box>
 
 
-                        <Grid container columnSpacing={{md:4,lg:8,xl:0}} rowSpacing={4} alignItems="stretch" >
+                        <Grid container columnSpacing={{md:4,lg:8,xl:4}} rowSpacing={4} alignItems="stretch" >
                            
-                            <Grid size={{md:12}} display="flex" sx={{overflow:'hidden'}}>
+                            <Grid size={{md:12,lg:6}} display="flex" sx={{overflow:'hidden'}}>
                                 <Box className='newarrival-grid-box'>
                                     <img src="../../../public/assets/images/newarrival/playstation.png" alt="" width='100%' height='100%' />
 
@@ -740,7 +740,7 @@ function Homepage() {
                             </Grid>
 
                            
-                            <Grid size={{md:12}} container direction='column' display="flex" >
+                            <Grid size={{md:12,lg:6}} container direction='column' display="flex" >
                                 <Grid>
                                     <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
                                         <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
