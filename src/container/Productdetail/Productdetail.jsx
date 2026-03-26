@@ -70,10 +70,15 @@ function Productdetail() {
                         <Typography sx={{ color: 'text.primary' }}>Havic HV G-92 Gamepad</Typography>
                     </Breadcrumbs>
 
-                    <Grid container sx={{ mt: 10 }} spacing={15}>
-                        <Grid size={7} container spacing={3} alignItems="stretch">
-                            <Grid size={3} container direction='column' spacing={4} display="flex">
-                                <Grid>
+                    <Grid container sx={{ mt: 10 }} spacing={{ xs: 12, md: 5, lg: 6 }}>
+                        <Grid size={{ xs: 12, md: 10, lg: 7 }} container spacing={{ lg: 10, xl: 3 }} alignItems="stretch">
+                            <Grid size={{ xs: 12, sm: 3 }} sx={{
+                                flexDirection: {
+                                    xs: 'row',     // mobile → row
+                                    md: 'column'   // desktop → column
+                                }
+                            }} container spacing={4} display="flex">
+                                <Grid >
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 57.png" alt="" />
                                     </Box>
@@ -94,13 +99,13 @@ function Productdetail() {
                                     </Box>
                                 </Grid>
                             </Grid>
-                            <Grid size={9} display="flex">
+                            <Grid size={{ xs: 12, sm: 9 }} display="flex">
                                 <Box className="detailimg-box deatail-main-img">
                                     <img src="../../../public/assets/images/productdetail/image 63.png" alt="" width='100%' />
                                 </Box>
                             </Grid>
                         </Grid>
-                        <Grid size={5}>
+                        <Grid size={{ xs: 12, md: 10, lg: 5 }}>
                             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Havic HV G-92 Gamepad</Typography>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
@@ -117,13 +122,13 @@ function Productdetail() {
 
                             <hr />
 
-                            <Box sx={{ mt: 3, display: "flex", alignItems: 'center',columnGap:2 }}>
+                            <Box sx={{ mt: 3, display: "flex", alignItems: 'center', columnGap: 2 }}>
                                 <Typography sx={{ fontSize: '20px' }}>Colours :</Typography>
                                 <RadioGroup
                                     name="dynamic-radio-buttons-group"
                                     value={selectedValue}
                                     onChange={handleChange}
-                                   
+
                                 >
                                     <div>
                                         {
@@ -131,21 +136,21 @@ function Productdetail() {
                                                 <FormControlLabel
                                                     key={v.value}
                                                     value={v.label}
-                                                   
+
                                                     label={v.label}
                                                     control={
                                                         <Radio
                                                             sx={{
-                                                                color:v.value,
+                                                                color: v.value,
                                                                 '&.Mui-checked': {
-                                                                    color:v.value,
+                                                                    color: v.value,
                                                                 },
                                                             }}
                                                         />
                                                     }
-                                                    // sx={{
-                                                    //     '& .css-9oxshb-MuiRadioButtonIcon-root': { color: v.value }
-                                                    // }}
+                                                // sx={{
+                                                //     '& .css-9oxshb-MuiRadioButtonIcon-root': { color: v.value }
+                                                // }}
                                                 />
 
                                             ))
@@ -184,7 +189,12 @@ function Productdetail() {
                                 </button>
                             </Box>
 
-                            <Box sx={{ border: 1, borderColor: 'rgb(172, 167, 167)', borderRadius: 1, padding: '24px 0', mt: 5 }}>
+                            <Box sx={{
+                                border: 1, borderColor: 'rgb(172, 167, 167)', borderRadius: 1, padding: '24px 0', mt: 5, width: {
+                                    md: '470px',
+                                    lg: '100%'
+                                }
+                            }}>
                                 <Box className="delivery-box">
                                     <LuTruck className="delivery-icone" />
                                     <Box>
@@ -210,7 +220,7 @@ function Productdetail() {
                 </div>
             </section>
 
-            <section id="related-item">
+            {/* <section id="related-item">
                 <div className="container">
                     <Box className="related-title">
                         <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
@@ -323,7 +333,7 @@ function Productdetail() {
                         }
                     </Grid>
                 </div>
-            </section>
+            </section> */}
         </main>
     )
 }

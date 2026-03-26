@@ -547,6 +547,10 @@
         .newarrival-grid-box {
             padding: 48px 25px;
         }
+
+        #product-detail .my-custome-button{
+            padding: 10px 30px !important;
+        }
     }
 
     /* xxl */
@@ -563,4 +567,9 @@
             padding: 48px;
         }
 
+        #product-detail .my-custome-button{
+            padding: 20px 48px !important;
+        }
+
     }
+
