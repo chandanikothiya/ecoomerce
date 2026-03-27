@@ -65,7 +65,7 @@ body {
     padding: 32px 24px 17px 24px;
     /* padding-bottom: 20px; */
     border-bottom: solid rgb(224, 222, 224) 1px;
-    overflow:visible !important
+    overflow: visible !important
 }
 
 .second-header ul {
@@ -92,6 +92,8 @@ body {
     background-color: #F5F5F5;
 }
 
+
+
 .seachbox input {
     border: none;
     font-size: 13px;
@@ -111,9 +113,7 @@ body {
     column-gap: 16px;
 }
 
-.search_cart_wishlist .MuiMenu-list
-.MuiList-root
-{
+.search_cart_wishlist .MuiMenu-list .MuiList-root {
     border: rgba(0, 0, 0, 0.212) !important;
 }
 
@@ -121,8 +121,7 @@ body {
     flex-direction: column;
 } */
 
-.profile-avtar:focus{
-}
+.profile-avtar:focus {}
 
 /* footer */
 .footer {
@@ -192,7 +191,7 @@ body {
     margin-left: 20px;
 }
 
-.footer-social{
+.footer-social {
     font-size: 25px;
 }
 
@@ -208,14 +207,8 @@ section {
     border-right: solid 1px rgb(224, 222, 224);
 }
 
-.hero-rigth {
-    padding: 40px 0 0 40px;
-}
 
-.heroimage {
-    height: 350px;
-    width: 400px;
-}
+
 
 
 .hero {
@@ -223,13 +216,10 @@ section {
     margin-top: 0;
 }
 
-.hero-text {
-    padding-left: 50px;
-    padding-right: 70px;
-}
+
 
 .hero .my-custome-list {
-    margin-top: 12px;
+    margin-top:7.5px;
 }
 
 .hero-text a {
@@ -244,6 +234,7 @@ section {
     height: 100%;
 
 }
+
 .todays .swiper-slide,
 #bestsellingproduct .swiper-slide {
     max-width: 310px !important;
@@ -273,7 +264,17 @@ section {
 
 .my-time-typo2 {
     font-weight: bold !important;
-    font-size: 32px !important;
+}
+
+
+
+.hero .MuiTypography-root,
+.hero .MuiListItemText-primary,
+.hero .MuiTypography-body1,
+.hero .css-rizt0-MuiTypography-root {
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100% !important;
 }
 
 /* #F5F5F5 */
@@ -314,13 +315,13 @@ section {
 
 .todays .swiper-button-prev {
     top: 7%;
-    right:15%;
+    right: 15%;
     transform: rotate(180deg);
 }
 
 .todays .swiper-button-next {
     top: 7%;
-    right:11%;
+    right: 11%;
 }
 
 .swiper,
@@ -332,11 +333,10 @@ section {
 
 .my-custome-button {
     background-color: var(--secondary-color);
-    padding: 20px 48px;
     border-radius: 3px;
     color: white;
     text-decoration: none;
-    font-size: 18px;
+     
     display: block;
     width: fit-content;
     border: none;
@@ -394,9 +394,7 @@ hr {
     right: 0;
 }
 
-.caticone {
-    font-size: 50px !important;
-}
+
 
 
 /* musicexp */
@@ -404,7 +402,7 @@ hr {
 .musixexp-timebox {
     background-color: rgb(255, 255, 255);
     /* padding:10px 12px; */
-    
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -474,7 +472,7 @@ hr {
     margin-top: 40px !important;
 }
 
-.socialauth-icon{
+.socialauth-icon {
     margin-right: 8px;
 }
 
@@ -484,7 +482,7 @@ hr {
     background-color: white !important;
     color: black;
     text-align: center;
-    
+
 }
 
 .authlink {
@@ -523,7 +521,8 @@ hr {
     background-color: white;
     color: black;
     border: solid 2px rgb(172, 167, 167);
-    padding: 15px 48px;
+    padding-top: 11px;
+    padding-bottom: 11px;
 }
 
 .cart-title,
@@ -547,8 +546,7 @@ hr {
 
 .contactus-textfiled,
 .billing-textfiled,
-.myaccount-textfiled
-{
+.myaccount-textfiled {
     width: 100%;
 }
 
@@ -626,7 +624,7 @@ hr {
 }
 
 #aboutus-whychoosus {
-    margin: 150px 0;
+    margin: 90px 0;
     margin-bottom: 100px;
 }
 
@@ -687,7 +685,7 @@ hr {
     padding: 5PX 20px;
     border: none;
     background-color: white;
-    height:100%;
+    height: 100%;
 }
 
 .sizebox:hover {
@@ -695,11 +693,11 @@ hr {
     color: white;
 }
 
-#product-detail .my-custome-button{
+#product-detail .my-custome-button {
     padding: 10px 49px;
 }
 
-.wishlist-deatil{
+.wishlist-deatil {
     background-color: white;
     border: 1px solid rgb(172, 167, 167) !important;
     height: 50px;
@@ -711,126 +709,128 @@ hr {
     border-radius: 5px;
 }
 
-.delivery-box{
+.delivery-box {
     display: flex;
-    align-items:center;
+    align-items: center;
     column-gap: 20px;
 }
 
-.delivery-icone{
+.delivery-icone {
     font-size: 30px;
     font-weight: 600;
     margin-left: 16px;
 }
 
-.delivery-box a{
+.delivery-box a {
     text-decoration: underline;
 }
 
-#related-item{
+#related-item {
     margin-top: 100px;
 }
 
 /* cart */
 
-#cart .icone-btn{
+#cart .icone-btn {
     padding: 0;
     font-size: 16px;
 }
 
-.tabelcell{
+.tabelcell {
     padding-left: 0;
     padding-right: 0;
 }
 
-#coupon .my-custome-button{
+#coupon .my-custome-button {
     background-color: var(--secondary-color);
     border: none;
     color: white;
     padding: 15px 49px;
 }
 
-.cart-total{
+.cart-total {
     display: flex;
     justify-content: space-between;
-    margin: 16px 0 ;
+    margin: 16px 0;
 }
 
 
 /* checkout */
 
-.billing-textfiled{
+.billing-textfiled {
     margin-top: 32px !important;
 }
 
-#billing .billing-textfiled span{
+#billing .billing-textfiled span {
     color: var(--secondary-color);
 
 }
 
-.input-label{
+.input-label {
     margin-bottom: 8px;
 }
 
-#billing .coupon-button{
+#billing .coupon-button {
     padding: 10px 45px;
-} 
+}
 
 
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
 .MuiDataGrid-root .MuiDataGrid-cell:focus {
-  outline: none !important;
+    outline: none !important;
 }
 
-.breadcrumbs a{
+.breadcrumbs a {
     color: grey;
 }
 
-#myaccount .submenu{
-    color:grey;
+#myaccount .submenu {
+    color: grey;
     padding: 4px 0px 4px 35px;
 }
-#myaccount .menu{
+
+#myaccount .menu {
     padding-left: 0;
     font-weight: 600 !important;
 }
 
-#myaccount .menu .MuiListItemText-primary{
+#myaccount .menu .MuiListItemText-primary {
     font-weight: 600 !important;
 }
 
 
 
-#myaccount .submenu:hover{
+#myaccount .submenu:hover {
     color: var(--secondary-color);
     background-color: white;
 }
 
-.myaccount-textfiled{
+.myaccount-textfiled {
     margin-top: 24px !important;
 }
 
 #myaccount .MuiInputBase-input,
- #myaccount.MuiFilledInput-input{
-    padding:14px 12px !important;
- }
+#myaccount.MuiFilledInput-input {
+    padding: 14px 12px !important;
+}
 
- #myaccount .passwodtext-filed{
+#myaccount .passwodtext-filed {
     margin-top: 24px;
- }
+}
 
- .cancel-btn{
-    background-color:white;
+.cancel-btn {
+    background-color: white;
     color: black;
- }
+}
 
- #myaccount .my-custome-button{
+#myaccount .my-custome-button {
     width: 100%;
     padding: 20px 36px;
- }
+}
 
 .responsive-menu {
-    overflow: visible !important;  /* ✅ VERY IMPORTANT */
+    overflow: visible !important;
+    /* ✅ VERY IMPORTANT */
 }
 
 .mobile-dropdown {

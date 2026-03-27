@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, createTheme, Drawer, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, ThemeProvider, Toolbar, Typography } from "@mui/material";
 import '../../../public/assets/style/headerfooter.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AppleIcon from '@mui/icons-material/Apple';
@@ -25,6 +25,7 @@ import HeadphonesOutlinedIcon from '@mui/icons-material/HeadphonesOutlined';
 import VideogameAssetOutlinedIcon from '@mui/icons-material/VideogameAssetOutlined';
 import LaptopMacOutlinedIcon from '@mui/icons-material/LaptopMacOutlined';
 import { green } from "@mui/material/colors";
+import MenuIcon from "@mui/icons-material/Menu";
 
 
 function Homepage() {
@@ -42,6 +43,8 @@ function Homepage() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const [showNavigation, setShowNavigation] = useState(false);
 
     const obj = [
         {
@@ -89,15 +92,27 @@ function Homepage() {
 
     console.log(elecategory)
 
+    const theme = createTheme({
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 576,
+                md: 900,
+                lg: 1200,
+                xl: 1536,
+            },
+        },
+    });
+
     return (
         <>
             <main>
                 <section className="hero">
                     <div className="container">
                         <Grid container alignItems="stretch">
-                            <Grid size={2}>
+                            <Grid size={{ xs: 12, sm: 4, md: 3, lg: 2 }}>
                                 <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
-                                    <MenuList>
+                                    <MenuList className="heroleft-menu">
                                         <MenuItem className="my-custome-list">
                                             <ListItemText
                                                 id="basic-button"
@@ -105,6 +120,7 @@ function Homepage() {
                                                 aria-haspopup="true"
                                                 aria-expanded={open ? 'true' : undefined}
                                                 onClick={handleClick}
+                                                sx={{ width: "100%", display: 'flex', justifyContent: 'space-between' }}
                                             >
                                                 Woman’s Fashion
                                                 <IconButton sx={{ p: 0, ml: 2 }} >
@@ -140,8 +156,8 @@ function Homepage() {
                                                 aria-expanded={open ? 'true' : undefined}
                                                 onClick={handleClick}
                                             >
-                                                Men’s Fashion
-                                                <IconButton sx={{ p: 0, ml: 2 }} >
+                                                <Typography>Men’s Fashion</Typography>
+                                                <IconButton sx={{ p: 0 }} >
                                                     <ArrowForwardIosIcon sx={{ fontSize: '16px' }} />
                                                 </IconButton>
                                             </ListItemText>
@@ -188,10 +204,124 @@ function Homepage() {
                                             <ListItemText>Health & Beauty</ListItemText>
                                         </MenuItem>
                                     </MenuList>
+
+                                    {/* <Box>
+                                        <AppBar position="static">
+                                            <Toolbar>
+                                                <IconButton
+                                                    size="large"
+                                                    edge="start"
+                                                    aria-label="menu"
+                                                    onClick={() => setShowNavigation((prev) => !prev)}
+                                                >
+                                                    <Typography>View all Category</Typography>
+                                                </IconButton>
+                                            </Toolbar>
+                                        </AppBar>
+                                        <Drawer
+                                            anchor="top"
+                                            open={showNavigation}
+                                            onClose={() => setShowNavigation(false)}
+                                            disablePortal
+                                        >
+                                            <MenuList className="heroleft-menu">
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText
+                                                        id="basic-button"
+                                                        aria-controls={open ? 'basic-menu' : undefined}
+                                                        aria-haspopup="true"
+                                                        aria-expanded={open ? 'true' : undefined}
+                                                        onClick={handleClick}
+                                                        sx={{ width: "100%", display: 'flex', justifyContent: 'space-between' }}
+                                                    >
+                                                        Woman’s Fashion
+                                                        <IconButton sx={{ p: 0, ml: 2 }} >
+                                                            <ArrowForwardIosIcon sx={{ fontSize: '16px' }} />
+                                                        </IconButton>
+                                                    </ListItemText>
+                                                    <Menu
+                                                        id="basic-menu"
+                                                        anchorEl={anchorEl}
+                                                        open={open}
+                                                        onClose={handleClose}
+                                                        slotProps={{
+                                                            list: {
+                                                                'aria-labelledby': 'basic-button',
+                                                            },
+                                                        }}
+                                                        anchorOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'right',
+                                                        }}
+
+                                                    >
+                                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                                    </Menu>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText
+                                                        id="basic-button"
+                                                        aria-controls={open ? 'basic-menu' : undefined}
+                                                        aria-haspopup="true"
+                                                        aria-expanded={open ? 'true' : undefined}
+                                                        onClick={handleClick}
+                                                    >
+                                                        <Typography>Men’s Fashion</Typography>
+                                                        <IconButton sx={{ p: 0 }} >
+                                                            <ArrowForwardIosIcon sx={{ fontSize: '16px' }} />
+                                                        </IconButton>
+                                                    </ListItemText>
+                                                    <Menu
+                                                        id="basic-menu"
+                                                        anchorEl={anchorEl}
+                                                        open={open}
+                                                        onClose={handleClose}
+                                                        slotProps={{
+                                                            list: {
+                                                                'aria-labelledby': 'basic-button',
+                                                            },
+                                                        }}
+                                                        anchorOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'right',
+                                                        }}
+
+                                                    >
+                                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                                    </Menu>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Electronics</ListItemText>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Home & Lifestyle</ListItemText>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Medicine</ListItemText>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Sports & Outdoor</ListItemText>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Baby’s & Toys</ListItemText>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Groceries & Pets</ListItemText>
+                                                </MenuItem>
+                                                <MenuItem className="my-custome-list">
+                                                    <ListItemText>Health & Beauty</ListItemText>
+                                                </MenuItem>
+                                            </MenuList>
+                                        </Drawer>
+                                    </Box> */}
                                 </Box>
                             </Grid>
-                            <Grid size={10}>
-                                <Box className="hero-rigth">
+                            <Grid size={{ xs: 12, sm: 8, md: 9, lg: 10 }} className="gridhero-rigth">
+                                <Box className="hero-rigth" sx={{ height: '100%' }}>
                                     <Swiper
                                         onSlideChange={() => console.log('slide change')}
                                         onSwiper={(swiper) => console.log(swiper)}
@@ -206,21 +336,38 @@ function Homepage() {
                                     >
                                         {
                                             obj.map((v, i) => (
-                                                <SwiperSlide key={i}>
-                                                    <Box sx={{ bgcolor: 'black', color: 'white', display: 'flex', alignItems: 'center', padding: '16px 50px' }}>
+                                                <SwiperSlide key={i} sx={{ height: '100%' }}>
+                                                    <Box sx={{
+                                                        bgcolor: 'black', color: 'white', display: 'flex', alignItems: 'center', padding: '16px 50px', flexWrap: {
+                                                            sm: 'wrap',
+                                                            md: 'nowrap'
+                                                        }, justifyContent: 'center', rowGap: '10px'
+                                                    }}>
+                                                        <img src={v.image} alt="" className="heroimage img2hero" />
+
                                                         <Box className="hero-text" >
                                                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                                 {v.subtitle1.includes('iPhone') ? <AppleIcon sx={{ fontSize: '35px' }} /> : ''}
                                                                 <Typography variant="subtitle1">{v.subtitle1}</Typography>
                                                             </Box>
 
-                                                            <Typography variant="h3" sx={{ margin: '20px 0 20px 0', letterSpacing: 2 }}>
+                                                            <Typography variant="h3" sx={{
+                                                                margin: {
+                                                                    md: '20px 0 20px 0',
+                                                                    sm: '10px 0 10px 0'
+                                                                }, letterSpacing: 2,
+                                                                fontSize: {
+                                                                    lg: '48px',
+                                                                    md: '30px',
+                                                                    sm: '25px'
+                                                                }
+                                                            }}>
                                                                 {v.title3}
                                                             </Typography>
 
-                                                            <a href="#" >Shop Now</a><ArrowForwardIcon sx={{ fontSize: '20px', ml: 0.5 }} />
+                                                            <a href="#" >Shop Now</a><ArrowForwardIcon sx={{ fontSize: '20px', ml: { sm: 0, md: 0.5 } }} />
                                                         </Box>
-                                                        <img src={v.image} alt="" className="heroimage" />
+                                                        <img src={v.image} alt="" className="heroimage img1hero" />
                                                     </Box>
                                                 </SwiperSlide>
                                             ))
@@ -242,8 +389,14 @@ function Homepage() {
                             <Typography sx={{ fontWeight: 600 }}>Todays's</Typography>
                         </Box>
 
-                        <Box sx={{ display: 'flex', alignItems: 'end', mt: 2, columnGap: 10, position: 'relative' }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }}>Flash Sales</Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'end', mt:2, columnGap: 10, position: 'relative',
+                            flexWrap:{
+                                xs:'wrap',
+                                sm:'nowrap'
+                            },
+                            rowGap:2
+                         }}>
+                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Flash Sales</Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                 <Box>
                                     <Typography variant="subtitle2" className="my-time-typo1">Days</Typography>
@@ -271,16 +424,16 @@ function Homepage() {
                     </div>
 
                     {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
-                    <div className="container" style={{marginTop:'40px'}}>
-                            <Swiper
-                               
-                                modules={[Navigation]}
-                                navigation={true}
-                                className="mySwiper"
-                                loop={true}
-                                 breakpoints={{
+                    <div className="container" style={{ marginTop: '40px' }}>
+                        <Swiper
+
+                            modules={[Navigation]}
+                            navigation={true}
+                            className="mySwiper"
+                            loop={true}
+                            breakpoints={{
                                 320: {
-                                    slidesPerView:1,
+                                    slidesPerView: 1,
                                     spaceBetween: 20,
                                 },
                                 576: {
@@ -288,181 +441,24 @@ function Homepage() {
                                     spaceBetween: 30,
                                 },
                                 768: {
-                                    slidesPerView:3,
+                                    slidesPerView: 3,
                                     spaceBetween: 30,
                                 },
                                 992: {
-                                    slidesPerView:3.5,
-                                    spaceBetween:30,
+                                    slidesPerView: 3.5,
+                                    spaceBetween: 30,
                                 },
                             }}
-                                
-                            >
-                                {
-                                    fsale.map((v, i) => {
-                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                        // console.log(r)
-                                        const rate = r / v.rating.length;
-                                        // console.log(rate)
-                                        return (
-                                            <SwiperSlide>
-                                                <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                                    <Box
-                                                        className="carttop"
-                                                        sx={{
-                                                            bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
-                                                        }}>
-                                                        <CardMedia
-                                                            component="img"
-                                                            height="140"
-                                                            className="cardimg"
-                                                            sx={{ objectFit: "contain" }}
-                                                            image={v.img}
-                                                            title="green iguana"
 
-                                                        />
-
-
-                                                        <Typography
-                                                            className="addcart"
-                                                            sx={{
-                                                                bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                                textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                                bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
-                                                            }}
-                                                        >
-                                                            Add To Cart
-                                                        </Typography>
-                                                    </Box>
-
-
-                                                    <CardContent sx={{ outline: 0 }}>
-                                                        <Typography gutterBottom variant="h5" component="div">
-                                                            {v.name}
-                                                        </Typography>
-                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                {v.discoutprice}
-                                                            </Typography>
-                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                {v.price}
-                                                            </Typography>
-                                                        </Box>
-
-                                                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                            <Typography sx={{ color: '#FFAD33' }}>
-                                                                <Stack spacing={1}>
-                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} readOnly/>
-                                                                </Stack>
-                                                            </Typography>
-                                                            <Typography sx={{ color: 'grey', fontWeight: '600' }}>
-                                                                {`(${r})`}
-                                                            </Typography>
-                                                        </Box>
-
-                                                        <Box sx={{ bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
-                                                            <Typography variant="body2">{v.discount}</Typography>
-                                                        </Box>
-
-                                                    </CardContent>
-
-                                                    <CardActions
-                                                        sx={{
-                                                            flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                            '& .MuiIconButton-root': {
-                                                                marginLeft: 0
-                                                            }
-                                                        }}
-                                                    >
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                            <FavoriteBorderIcon />
-                                                        </IconButton>
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                            <RemoveRedEyeOutlinedIcon />
-                                                        </IconButton>
-                                                    </CardActions>
-                                                </Card>
-                                            </SwiperSlide>
-                                        )
-                                    })
-                                }
-
-                            </Swiper>
-                        </div>
-
-                    <a href="#" className="my-custome-button" style={{ margin: '60px auto 0 auto' }}>View More Product</a>
-                </section>
-
-                <hr />
-
-
-                {/* category section */}
-
-                <section id="category">
-                    <div className="container" >
-                        <Box className="todays-title">
-                            <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }}>Categories</Typography>
-                        </Box>
-
-                        <Box sx={{ position: 'relative', mt: 2 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }}>Browse By Category</Typography>
-
-
-                            <Box sx={{ marginTop: 8 }}>
-                                <Swiper
-                                    slidesPerView={6}
-                                    spaceBetween={45}
-                                    modules={[Navigation]}
-                                    navigation={true}
-                                    className="mySwiper"
-                                    loop={true}
-                                >
-                                    {
-                                        elecategory.map((v, i) => (
-                                            <SwiperSlide>
-                                                <Box sx={{ padding: '28px 56px', border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                    {caticone[v.name]}
-                                                    {/* <Box className="caticone">{caticone[v.name]}</Box> */}
-                                                    <Typography variant="h6" sx={{ fontWeight: '500', marginTop: 1, }}>{v.name}</Typography>
-                                                </Box>
-                                            </SwiperSlide>
-                                        ))
-                                    }
-                                </Swiper>
-                            </Box>
-                        </Box>
-
-                    </div>
-                </section>
-
-                <hr />
-
-
-                {/* best selling product */}
-                <section id="bestsellingproduct">
-                    <div className="container">
-                        <Box className="todays-title">
-                            <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }}>This Month</Typography>
-                        </Box>
-
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', mt: 2, columnGap: 10, position: 'relative' }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }}>Best Selling Products</Typography>
-                            <a href="#" className="my-custome-button">View All</a>
-                        </Box>
-
-                        <Grid container spacing={4} sx={{ mt: 7 }}>
+                        >
                             {
-                                bestsellp.map((v) => {
+                                fsale.map((v, i) => {
                                     const r = v.rating.reduce((acc, v) => acc + v, 0)
                                     // console.log(r)
                                     const rate = r / v.rating.length;
-                                    console.log(rate)
-
+                                    // console.log(rate)
                                     return (
-                                        <Grid size={3}>
+                                        <SwiperSlide>
                                             <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
                                                 <Box
                                                     className="carttop"
@@ -480,11 +476,22 @@ function Homepage() {
 
                                                     />
 
+
+                                                    <Typography
+                                                        className="addcart"
+                                                        sx={{
+                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                            bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                        }}
+                                                    >
+                                                        Add To Cart
+                                                    </Typography>
                                                 </Box>
 
 
                                                 <CardContent sx={{ outline: 0 }}>
-                                                    <Typography gutterBottom variant="h5" component="div">
+                                                    <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                         {v.name}
                                                     </Typography>
                                                     <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
@@ -499,13 +506,18 @@ function Homepage() {
                                                     <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                         <Typography sx={{ color: '#FFAD33' }}>
                                                             <Stack spacing={1}>
-                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} readOnly/>
+                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} readOnly />
                                                             </Stack>
                                                         </Typography>
                                                         <Typography sx={{ color: 'grey', fontWeight: '600' }}>
                                                             {`(${r})`}
                                                         </Typography>
                                                     </Box>
+
+                                                    <Box sx={{ bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
+                                                        <Typography variant="body2">{v.discount}</Typography>
+                                                    </Box>
+
                                                 </CardContent>
 
                                                 <CardActions
@@ -524,14 +536,195 @@ function Homepage() {
                                                     </IconButton>
                                                 </CardActions>
                                             </Card>
-                                        </Grid>
+                                        </SwiperSlide>
                                     )
                                 })
                             }
-                        </Grid>
+
+                        </Swiper>
+                    </div>
+
+                    <a href="#" className="my-custome-button" style={{ margin: '60px auto 0 auto' }}>View More Product</a>
+                </section>
+
+                <hr />
+
+
+                {/* category section */}
+
+                <section id="category">
+                    <div className="container" >
+                        <Box className="todays-title">
+                            <i className="fa-solid fa-square"></i>
+                            <Typography sx={{ fontWeight: 600 }}>Categories</Typography>
+                        </Box>
+
+                        <Box sx={{ position: 'relative', mt: 2 }}>
+                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Browse By Category</Typography>
+
+
+                            <Box sx={{ marginTop: 5 }}>
+                                <Swiper
+
+                                    modules={[Navigation]}
+                                    navigation={true}
+                                    className="mySwiper"
+                                    loop={true}
+                                    breakpoints={{
+                                        320: {
+                                            slidesPerView: 1,
+                                            spaceBetween: 45,
+                                        },
+                                        576: {
+                                            slidesPerView: 3,
+                                            spaceBetween: 30,
+                                        },
+                                        768: {
+                                            slidesPerView: 4,
+                                            spaceBetween: 30,
+                                        },
+                                        992: {
+                                            slidesPerView: 5,
+                                            spaceBetween: 45,
+                                        },
+                                        1200: {
+                                            slidesPerView: 6,
+                                            spaceBetween: 45,
+                                        }
+                                    }}
+                                >
+                                    {
+                                        elecategory.map((v, i) => (
+                                            <SwiperSlide>
+                                                <Box sx={{ border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }} className="category-title">
+                                                    {caticone[v.name]}
+                                                    {/* <Box className="caticone">{caticone[v.name]}</Box> */}
+                                                    <Typography variant="h6" sx={{ fontWeight: '500', marginTop: 1, }}>{v.name}</Typography>
+                                                </Box>
+                                            </SwiperSlide>
+                                        ))
+                                    }
+                                </Swiper>
+                            </Box>
+                        </Box>
+
                     </div>
                 </section>
 
+                <hr />
+
+                <ThemeProvider theme={theme}>
+                    {/* best selling product */}
+                    <section id="bestsellingproduct">
+                        <div className="container">
+                            <Box className="todays-title">
+                                <i className="fa-solid fa-square"></i>
+                                <Typography sx={{ fontWeight: 600 }}>This Month</Typography>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', mt: 1, columnGap: 10, position: 'relative' }}>
+                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Best Selling Products</Typography>
+                                <a href="#" className="bsleft-btn my-custome-button">View All</a>
+                            </Box>
+
+                            <Grid container spacing={{ xs: 2, sm: 2, md: 1, lg: 4 }}
+                                sx={{
+                                    mt: {
+                                        xs: 3,
+                                        sm: 5
+                                    },
+                                    justifyContent:'center'
+                                }}>
+                                {
+                                    bestsellp.map((v) => {
+                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                        // console.log(r)
+                                        const rate = r / v.rating.length;
+                                        console.log(rate)
+
+                                        return (
+                                            <Grid size={{ xs:10, sm: 6, md: 3 }}>
+                                                <Card sx={{ maxWidth:{
+                                                    xs:'100%',
+                                                    sm:310
+                                                }, position: 'relative', boxShadow: 0 }}>
+                                                    <Box
+                                                        className="carttop"
+                                                        sx={{
+                                                            bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
+                                                        }}>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="140"
+                                                            className="cardimg"
+                                                            sx={{ objectFit: "contain" }}
+                                                            image={v.img}
+                                                        />
+
+                                                    </Box>
+
+
+                                                    <CardContent sx={{ outline: 0, pl: 0 }}>
+                                                        <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
+                                                            {v.name}
+                                                        </Typography>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                {v.discoutprice}
+                                                            </Typography>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                {v.price}
+                                                            </Typography>
+                                                        </Box>
+
+                                                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                            <Typography sx={{ color: '#FFAD33' }}>
+                                                                <Stack spacing={1}>
+                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5}
+                                                                        sx={{
+                                                                            fontSize: {
+                                                                                xs: '18px',
+                                                                                sm: '18px',
+                                                                                md: '20px'
+                                                                            }
+                                                                        }} readOnly />
+                                                                </Stack>
+                                                            </Typography>
+                                                            <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                                {`(${r})`}
+                                                            </Typography>
+                                                        </Box>
+                                                    </CardContent>
+
+                                                    <CardActions
+                                                        sx={{
+                                                            flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                            '& .MuiIconButton-root': {
+                                                                marginLeft: 0
+                                                            }
+                                                        }}
+                                                    >
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                            <FavoriteBorderIcon />
+                                                        </IconButton>
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                            <RemoveRedEyeOutlinedIcon />
+                                                        </IconButton>
+                                                    </CardActions>
+                                                </Card>
+                                            </Grid>
+                                        )
+                                    })
+                                }
+                            </Grid>
+
+                            <a href="#" className="best-seal-btn my-custome-button">View All</a>
+
+                        </div>
+
+                    </section>
+                </ThemeProvider>
 
                 {/* Enhance Your Music Experience section */}
                 <section id="musicexp">
@@ -541,7 +734,7 @@ function Homepage() {
                                 <Typography variant="h6" sx={{ color: '#00FF66' }}>Categories</Typography>
                                 <Typography variant="h3" sx={{ letterSpacing: 1, mt: 3 }} className="musixexp-title">Enhance Your <br /> Music Experience</Typography>
 
-                                <Box sx={{ display: 'flex', columnGap: 3, mt: 4 ,flexWrap:'wrap',rowGap:'20px'}}>
+                                <Box sx={{ display: 'flex', columnGap: 3, mt: 4, flexWrap: 'wrap', rowGap: '20px' }}>
                                     <Box className="musixexp-timebox">
                                         <Typography variant="body1" sx={{ fontWeight: '600' }}>23</Typography>
                                         <Typography variant="caption" sx={{ mt: '-1px' }}>Hours</Typography>
@@ -567,7 +760,7 @@ function Homepage() {
                             </Box>
 
                             <Box className="musicexp-imgbox">
-                                <img src="../../../public/assets/images/musicexp.png" alt="musicexp" width='100%'/>
+                                <img src="../../../public/assets/images/musicexp.png" alt="musicexp" width='100%' />
                             </Box>
                         </Box>
                     </div>
@@ -583,19 +776,46 @@ function Homepage() {
                         </Box>
 
                         <Box sx={{ position: 'relative', mt: 2 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }}>Explore Our Products</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
 
-                            <div style={{ width: '100%', marginTop: '56px' }}>
+                            <div style={{ width: '100%', marginTop: '45px' }}>
                                 <Swiper
-                                    slidesPerView={4}
-                                    grid={{ rows: 2, fill: "row" }}
-                                    spaceBetween={30}
+                                    // slidesPerView={4}
+                                    grid={{ rows: 2,fill: "row" }}
+
                                     pagination={{
                                         clickable: true,
                                     }}
                                     modules={[Navigation, SwiperGrid, Pagination]}
                                     navigation={true}
                                     className="mySwiper"
+                                    breakpoints={{
+                                        0: {
+                                            slidesPerView: 1,
+                                            rows: 1,
+                                            spaceBetween: 20
+                                        },
+                                        576: {
+                                            slidesPerView: 2,
+                                            rows: 2,
+                                            spaceBetween: 20
+                                        },
+                                        768: {
+                                            slidesPerView: 3,
+                                            rows: 2,
+                                            spaceBetween: 20
+                                        },
+                                        992: {
+                                            slidesPerView: 4,
+                                            rows: 2,
+                                            spaceBetween: 20
+                                        },
+                                        1200: {
+                                            slidesPerView: 4,
+                                            rows: 2,
+                                            spaceBetween: 30
+                                        }
+                                    }}
 
                                 >
                                     {products.map((v, i) => {
@@ -637,7 +857,7 @@ function Homepage() {
 
 
                                                     <CardContent sx={{ outline: 0 }}>
-                                                        <Typography gutterBottom variant="h6" component="div">
+                                                        <Typography gutterBottom variant="h6" component="div" className="product-name">
                                                             {v.name}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center' }}>
@@ -707,7 +927,7 @@ function Homepage() {
                             </div>
                         </Box>
 
-                        <a href="#" className="my-custome-button" style={{ margin: '20px auto 0 auto' }}>View More Product</a>
+                        <a href="#" className="my-custome-button" style={{ margin: '0px auto 0 auto' }}>View More Product</a>
                     </div>
                 </section>
 
@@ -720,14 +940,14 @@ function Homepage() {
                             <Typography sx={{ fontWeight: 600 }}>Featured</Typography>
                         </Box>
 
-                        <Box sx={{ position: 'relative', mt: 2, mb: 7 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }}>New Arrival</Typography>
+                        <Box sx={{ position: 'relative', mt: 2, mb: 5 }}>
+                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">New Arrival</Typography>
                         </Box>
 
 
-                        <Grid container columnSpacing={{md:4,lg:8,xl:4}} rowSpacing={4} alignItems="stretch" >
-                           
-                            <Grid size={{md:12,lg:6}} display="flex" sx={{overflow:'hidden'}}>
+                        <Grid container columnSpacing={{ md: 4, lg: 8, xl: 4 }} rowSpacing={4} alignItems="stretch" >
+
+                            <Grid size={{ md: 12, lg: 6 }} display="flex" sx={{ overflow: 'hidden' }}>
                                 <Box className='newarrival-grid-box'>
                                     <img src="../../../public/assets/images/newarrival/playstation.png" alt="" width='100%' height='100%' />
 
@@ -739,8 +959,8 @@ function Homepage() {
                                 </Box>
                             </Grid>
 
-                           
-                            <Grid size={{md:12,lg:6}} container direction='column' display="flex" >
+
+                            <Grid size={{ md: 12, lg: 6 }} container direction='column' display="flex" >
                                 <Grid>
                                     <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
                                         <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
@@ -753,8 +973,8 @@ function Homepage() {
                                     </Box>
                                 </Grid>
 
-                                
-                                <Grid container columnSpacing={{lg:4,xl:4}} display="flex">
+
+                                <Grid container columnSpacing={{ lg: 4, xl: 4 }} display="flex">
                                     <Grid size={6} display="flex">
                                         <Box className='newarrival-grid-box'>
                                             <img src="../../../public/assets/images/newarrival/speaker.png" alt="" width='100%' height='100%' />
@@ -786,39 +1006,47 @@ function Homepage() {
 
 
                 {/* why choose us */}
-                <section id="whychoosus">
-                    <div className="container whycoose-con">
-                        <Grid container spacing={10}>
-                            <Grid size={4} sx={{ textAlign: 'center' }}>
-                                <Box className="whychoose-box">
-                                    <IconButton aria-label="deleLocalShipping" className="whychoos-iconebtn">
-                                        <LocalShippingOutlinedIcon className="whychoos-icone" />
-                                    </IconButton>
-                                </Box>
-                                <Typography variant="subtitle1" sx={{ fontSize: '20px', fontWeight: '600' }}>FREE AND FAST DELIVERY</Typography>
-                                <Typography variant="subtitle1" sx={{ fontSize: '14px', fontWeight: '500' }}> Free delivery for all orders over $140</Typography>
+                <ThemeProvider theme={theme}>
+                    <section id="aboutus-whychoosus">
+                        <div className="container whycoose-con">
+                            <Grid container columnSpacing={{ xs: 3, sm: 5, md: 10 }} rowSpacing={5}
+                                sx={{
+                                    justifyContent: {
+                                        xs: 'center'
+                                    }
+                                }}
+                            >
+                                <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ textAlign: 'center' }}>
+                                    <Box className="whychoose-box">
+                                        <IconButton aria-label="deleLocalShipping" className="whychoos-iconebtn">
+                                            <LocalShippingOutlinedIcon className="whychoos-icone" />
+                                        </IconButton>
+                                    </Box>
+                                    <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>FREE AND FAST DELIVERY</Typography>
+                                    <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> Free delivery for all orders over $140</Typography>
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ textAlign: 'center' }}>
+                                    <Box className="whychoose-box">
+                                        <IconButton aria-label="SupportAgent" className="whychoos-iconebtn">
+                                            <SupportAgentIcon className="whychoos-icone" />
+                                        </IconButton>
+                                    </Box>
+                                    <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>24/7 CUSTOMER SERVICE</Typography>
+                                    <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> Friendly 24/7 customer support</Typography>
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 7, md: 4 }} sx={{ textAlign: 'center' }}>
+                                    <Box className="whychoose-box">
+                                        <IconButton aria-label="GppGoodOutlined" className="whychoos-iconebtn">
+                                            <GppGoodOutlinedIcon className="whychoos-icone" />
+                                        </IconButton>
+                                    </Box>
+                                    <Typography variant="subtitle1" className="whychoose-typography1" sx={{ fontSize: '20px', fontWeight: '600' }}>MONEY BACK GUARANTEE</Typography>
+                                    <Typography variant="subtitle1" className="whychoose-typography2" sx={{ fontSize: '14px', fontWeight: '500' }}> We reurn money within 30 days</Typography>
+                                </Grid>
                             </Grid>
-                            <Grid size={4} sx={{ textAlign: 'center' }}>
-                                <Box className="whychoose-box">
-                                    <IconButton aria-label="SupportAgent" className="whychoos-iconebtn">
-                                        <SupportAgentIcon className="whychoos-icone" />
-                                    </IconButton>
-                                </Box>
-                                <Typography variant="subtitle1" sx={{ fontSize: '20px', fontWeight: '600' }}>24/7 CUSTOMER SERVICE</Typography>
-                                <Typography variant="subtitle1" sx={{ fontSize: '14px', fontWeight: '500' }}> Friendly 24/7 customer support</Typography>
-                            </Grid>
-                            <Grid size={4} sx={{ textAlign: 'center' }}>
-                                <Box className="whychoose-box">
-                                    <IconButton aria-label="GppGoodOutlined" className="whychoos-iconebtn">
-                                        <GppGoodOutlinedIcon className="whychoos-icone" />
-                                    </IconButton>
-                                </Box>
-                                <Typography variant="subtitle1" sx={{ fontSize: '20px', fontWeight: '600' }}>MONEY BACK GUARANTEE</Typography>
-                                <Typography variant="subtitle1" sx={{ fontSize: '14px', fontWeight: '500' }}> We reurn money within 30 days</Typography>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </section>
+                        </div>
+                    </section>
+                </ThemeProvider>
             </main >
 
         </>

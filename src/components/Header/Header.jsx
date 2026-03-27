@@ -112,7 +112,7 @@ function Header() {
 
                                 <ShoppingCartOutlinedIcon />
 
-                                <Tooltip title="Account settings">
+                                <Tooltip title="Account settings" className="account-menu1">
                                     <IconButton
                                         onClick={handleClick}
                                         size="small"
@@ -138,8 +138,8 @@ function Header() {
                                                 backdropFilter: "blur(10px)", // optional glass effect
                                                 boxShadow: "none",
                                                 color: "white",
-                                                mt:1,
-        zIndex: 9999,   // ✅ higher than navbar
+                                                mt: 1,
+                                                zIndex: 9999,   // ✅ higher than navbar
                                             }
                                         },
                                     }}
@@ -152,26 +152,26 @@ function Header() {
                                         </ListItemIcon> Manage My Acoount
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{color: 'white' }}>
+                                        <ListItemIcon sx={{ color: 'white' }}>
                                             <LocalMallOutlinedIcon />
                                         </ListItemIcon>
                                         My Order
                                     </MenuItem>
                                     <Divider />
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{color: 'white' }}>
+                                        <ListItemIcon sx={{ color: 'white' }}>
                                             <CancelOutlinedIcon />
                                         </ListItemIcon>
                                         My Cancellation
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{color: 'white' }}> 
+                                        <ListItemIcon sx={{ color: 'white' }}>
                                             <StarBorderRoundedIcon />
                                         </ListItemIcon>
                                         My Review
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ fontSize: '25px',color: 'white' }}>
+                                        <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
                                             <TbLogout2 />
                                         </ListItemIcon>
                                         Logout
@@ -194,7 +194,7 @@ function Header() {
                             <li>About</li>
                             <li>Sign Up</li>
                         </ul>
-                        <IconButton onClick={() => setShowAccount(!showAccount)}>
+                        <IconButton onClick={() => setShowAccount(!showAccount)} className="account-menu2">
                             <Avatar>
                                 <FiUser />
                             </Avatar>

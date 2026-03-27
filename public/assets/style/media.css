@@ -8,6 +8,10 @@
             display: none;
         }
 
+        .account-menu1 {
+            display: none !important;
+        }
+
         #contactus .my-custome-button {
             font-size: 15px;
         }
@@ -63,12 +67,24 @@
             width: 100% !important;
         }
 
+        .my-custome-button {
+            padding: 12px 25px;
+            font-size: 15px;
+        }
+
         .top-header p {
             font-size: 9px;
         }
 
         #contactus .my-custome-button {
             width: 100%;
+        }
+
+        #cart .my-custome-button,
+        #foryou .my-custome-button {
+            
+            padding-top:5px !important;
+            padding-bottom:5px !important;
         }
 
         .whychoose-box,
@@ -170,12 +186,66 @@
             padding: 60px 40px !important;
             justify-content: center !important;
         }
+
+        .caticone {
+            font-size: 32px !important;
+        }
+
+        .category-title {
+            padding: 28px 40px !important
+        }
+
+        .title {
+            font-size: 18px !important;
+        }
+
+        .bestseal-name,
+        .product-name,
+        .cart-name {
+            font-size: 15px !important;
+        }
+
+        .best-seal-btn {
+            display: block;
+            padding: 15px 60px !important;
+            margin: 10px auto 0 auto;
+        }
+
+        .bsleft-btn {
+            display: none !important;
+        }
+
+        .gridhero-rigth {
+            display: none;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            display: none !important;
+        }
+
+        .cardimg {
+            height: 80px !important;
+        }
     }
 
     /* sm */
     @media screen and (min-width:576px) {
         .menus {
             display: none;
+        }
+
+        .account-menu1 {
+            display: none !important;
+        }
+
+        .title {
+            font-size: 23px !important;
+        }
+
+        .my-custome-button {
+            padding: 12px 32px;
+            font-size: 16px;
         }
 
         #contactus .my-custome-button {
@@ -336,6 +406,55 @@
             font-size: 30px !important;
         }
 
+        .caticone {
+            font-size: 35px !important;
+        }
+
+        .category-title {
+            padding: 28px 56px !important
+        }
+
+        .bestseal-name,
+        .product-name,
+        .cart-name {
+            font-size: 20px !important;
+        }
+
+        .best-seal-btn {
+            display: none !important;
+        }
+
+        .bsleft-btn {
+            display: block !important;
+        }
+
+        .gridhero-rigth {
+            display: none;
+        }
+
+        /* .heroleft-menu {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 50px;
+            gap: 10px;
+        } */
+        .my-time-typo2 {
+            font-size: 20px !important;
+        }
+
+        .my-time-typo1 {
+            font-size: 12px !important;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            display: inline-block !important;
+        }
+
+        .cardimg {
+            height: 100px !important;
+        }
+
     }
 
     /* md */
@@ -344,7 +463,27 @@
             font-size: 14px;
         }
 
+        .account-menu1 {
+            display: block !important;
+        }
 
+        .account-menu2 {
+            display: none !important;
+        }
+
+        .heroleft-menu {
+            display: block;
+
+        }
+
+        .title {
+            font-size: 28px !important;
+        }
+
+        .my-custome-button {
+            padding: 12px 40px;
+            font-size: 18px;
+        }
 
         .whychoose-box,
         .siteinfo-box {
@@ -410,9 +549,55 @@
             width: 58px;
         }
 
+        .caticone {
+            font-size: 40px !important;
+        }
 
+        .bestseal-name,
+        .product-name,
+        .cart-name {
+            font-size: 20px !important;
+        }
 
+        .heroimage {
+            height: 300px;
+            width: 250px;
+        }
 
+        .hero-rigth {
+            padding: 0 !important;
+            padding-left: 10px !important;
+            padding-top: 20px !important;
+        }
+
+        .hero-text {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .img2hero {
+            display: block !important;
+        }
+
+        .img1hero {
+            display: none !important;
+        }
+
+        .gridhero-rigth {
+            display: block;
+        }
+
+        .my-time-typo2 {
+            font-size: 22px !important;
+        }
+
+        .my-time-typo1 {
+            font-size: 12px !important;
+        }
+
+        .cardimg {
+            height: 120px !important;
+        }
 
     }
 
@@ -429,6 +614,11 @@
         .menuicone {
             display: none !important;
         }
+
+        .title {
+            font-size: 30px !important;
+        }
+
 
         .responsive-menu {
             display: none;
@@ -457,6 +647,36 @@
 
         .newarrival-grid-box {
             padding: 48px 10px;
+        }
+
+        .heroimage {
+            height: 300px;
+            width: 350px;
+        }
+
+        .hero-rigth {
+            padding: 40px 0 0 20px !important;
+        }
+
+        .hero-text {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .img2hero {
+            display: none !important;
+        }
+
+        .img1hero {
+            display: block !important;
+        }
+
+        .my-time-typo1 {
+            font-size: 14px !important;
+        }
+
+        .cardimg {
+            height: 120px !important;
         }
     }
 
@@ -537,7 +757,9 @@
             font-size: 48px !important;
         }
 
-
+        .title {
+            font-size: 28px !important;
+        }
 
         .musicexp-imgbox {
             width: 100%;
@@ -548,8 +770,44 @@
             padding: 48px 25px;
         }
 
-        #product-detail .my-custome-button{
+        #product-detail .my-custome-button {
             padding: 10px 30px !important;
+        }
+
+        .caticone {
+            font-size: 50px !important;
+        }
+
+        .bestseal-name,
+        .product-name,
+        .cart-name {
+            font-size: 22px !important;
+        }
+
+        .heroimage {
+            height: 350px;
+            width: 400px;
+        }
+
+        .hero-rigth {
+            padding: 40px 0 0 40px;
+        }
+
+        .hero-text {
+            padding-left: 50px;
+            padding-right: 70px;
+        }
+
+        .my-time-typo2 {
+            font-size: 28px !important;
+        }
+
+        .cardimg {
+            height: 140px !important;
+        }
+
+        .my-custome-button {
+            padding: 12px 48px;
         }
     }
 
@@ -567,9 +825,10 @@
             padding: 48px;
         }
 
-        #product-detail .my-custome-button{
+        #product-detail .my-custome-button {
             padding: 20px 48px !important;
         }
 
-    }
 
+
+    }
