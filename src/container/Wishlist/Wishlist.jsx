@@ -51,7 +51,6 @@ function Wishlist() {
                                         console.log(cp)
                                         if (cp) {
                                             return (
-
                                                 <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
                                                     <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
                                                         <Box
@@ -135,8 +134,8 @@ function Wishlist() {
                                                         >
                                                             <IconButton size="small" sx={{ bgcolor: "white" }}>
                                                                 <DeleteForeverOutlinedIcon sx={{
-                                                                    fontSize: {
-                                                                        xs: '18px',
+                                                                     fontSize: {
+                                                                       xs: '18px',
                                                                         sx: '18px',
                                                                         md: '20px',
                                                                         lg: '25px'

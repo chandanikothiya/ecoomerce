@@ -389,13 +389,14 @@ function Homepage() {
                             <Typography sx={{ fontWeight: 600 }}>Todays's</Typography>
                         </Box>
 
-                        <Box sx={{ display: 'flex', alignItems: 'end', mt:2, columnGap: 10, position: 'relative',
-                            flexWrap:{
-                                xs:'wrap',
-                                sm:'nowrap'
+                        <Box sx={{
+                            display: 'flex', alignItems: 'end', mt: 2, columnGap: 10, position: 'relative',
+                            flexWrap: {
+                                xs: 'wrap',
+                                sm: 'nowrap'
                             },
-                            rowGap:2
-                         }}>
+                            rowGap: 2
+                        }}>
                             <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Flash Sales</Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                 <Box>
@@ -572,8 +573,8 @@ function Homepage() {
                                     loop={true}
                                     breakpoints={{
                                         320: {
-                                            slidesPerView: 1,
-                                            spaceBetween: 45,
+                                            slidesPerView: 2,
+                                            spaceBetween: 30,
                                         },
                                         576: {
                                             slidesPerView: 3,
@@ -596,7 +597,7 @@ function Homepage() {
                                     {
                                         elecategory.map((v, i) => (
                                             <SwiperSlide>
-                                                <Box sx={{ border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }} className="category-title">
+                                                <Box sx={{ border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }} className="category-title">
                                                     {caticone[v.name]}
                                                     {/* <Box className="caticone">{caticone[v.name]}</Box> */}
                                                     <Typography variant="h6" sx={{ fontWeight: '500', marginTop: 1, }}>{v.name}</Typography>
@@ -627,13 +628,12 @@ function Homepage() {
                                 <a href="#" className="bsleft-btn my-custome-button">View All</a>
                             </Box>
 
-                            <Grid container spacing={{ xs: 2, sm: 2, md: 1, lg: 4 }}
+                            <Grid container spacing={{ xs: 1, sm: 3, lg: 4 }}
                                 sx={{
                                     mt: {
                                         xs: 3,
                                         sm: 5
-                                    },
-                                    justifyContent:'center'
+                                    }
                                 }}>
                                 {
                                     bestsellp.map((v) => {
@@ -643,20 +643,21 @@ function Homepage() {
                                         console.log(rate)
 
                                         return (
-                                            <Grid size={{ xs:10, sm: 6, md: 3 }}>
-                                                <Card sx={{ maxWidth:{
-                                                    xs:'100%',
-                                                    sm:310
-                                                }, position: 'relative', boxShadow: 0 }}>
+                                            <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
+                                                <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
                                                     <Box
                                                         className="carttop"
                                                         sx={{
                                                             bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
+                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                            height: {
+                                                                xs: '150px',
+                                                                sm: '200px',
+                                                                lg: '250px'
+                                                            }, position: 'relative'
                                                         }}>
                                                         <CardMedia
                                                             component="img"
-                                                            height="140"
                                                             className="cardimg"
                                                             sx={{ objectFit: "contain" }}
                                                             image={v.img}
@@ -706,10 +707,24 @@ function Homepage() {
                                                         }}
                                                     >
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                            <FavoriteBorderIcon />
+                                                            <FavoriteBorderIcon sx={{
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sx: '18px',
+                                                                    md: '20px',
+                                                                    lg: '25px'
+                                                                }, color: 'black'
+                                                            }} />
                                                         </IconButton>
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                            <RemoveRedEyeOutlinedIcon />
+                                                            <RemoveRedEyeOutlinedIcon sx={{
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sx: '18px',
+                                                                    md: '20px',
+                                                                    lg: '25px'
+                                                                }, color: 'black'
+                                                            }} />
                                                         </IconButton>
                                                     </CardActions>
                                                 </Card>
@@ -781,7 +796,7 @@ function Homepage() {
                             <div style={{ width: '100%', marginTop: '45px' }}>
                                 <Swiper
                                     // slidesPerView={4}
-                                    grid={{ rows: 2,fill: "row" }}
+                                    grid={{ fill: "row" }}
 
                                     pagination={{
                                         clickable: true,
@@ -791,7 +806,7 @@ function Homepage() {
                                     className="mySwiper"
                                     breakpoints={{
                                         0: {
-                                            slidesPerView: 1,
+                                            slidesPerView: 1.5,
                                             rows: 1,
                                             spaceBetween: 20
                                         },
@@ -830,11 +845,15 @@ function Homepage() {
                                                         className="carttop"
                                                         sx={{
                                                             bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
+                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                            height: {
+                                                                xs: '150px',
+                                                                sm: '200px',
+                                                                lg: '250px'
+                                                            }, position: 'relative'
                                                         }}>
                                                         <CardMedia
                                                             component="img"
-                                                            height="140"
                                                             className="cardimg"
                                                             sx={{ objectFit: "contain" }}
                                                             image={v.img}
@@ -867,13 +886,25 @@ function Homepage() {
                                                             </Typography>
 
 
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, height: 'fit-content' }}>
+                                                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                                 <Typography sx={{ color: '#FFAD33' }}>
                                                                     <Stack spacing={1}>
-                                                                        <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
+                                                                        <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                            fontSize: {
+                                                                                xs: '15px',
+                                                                                sm: '18px',
+                                                                                md: '20px'
+                                                                            }
+                                                                        }} />
                                                                     </Stack>
                                                                 </Typography>
-                                                                <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                                <Typography sx={{
+                                                                    color: 'grey', fontWeight: '600',
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '16px'
+                                                                    }
+                                                                }}>
                                                                     {`(${r})`}
                                                                 </Typography>
                                                             </Box>
@@ -913,10 +944,24 @@ function Homepage() {
                                                         }}
                                                     >
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                            <FavoriteBorderIcon />
+                                                            <FavoriteBorderIcon sx={{
+                                                                fontSize: {
+                                                                    xs: '18px',
+                                                                    sx: '18px',
+                                                                    md: '20px',
+                                                                    lg: '25px'
+                                                                }
+                                                            }} />
                                                         </IconButton>
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                            <RemoveRedEyeOutlinedIcon />
+                                                            <RemoveRedEyeOutlinedIcon sx={{
+                                                                fontSize: {
+                                                                    xs: '18px',
+                                                                    sx: '18px',
+                                                                    md: '20px',
+                                                                    lg: '25px'
+                                                                }
+                                                            }} />
                                                         </IconButton>
                                                     </CardActions>
                                                 </Card>
@@ -944,63 +989,64 @@ function Homepage() {
                             <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">New Arrival</Typography>
                         </Box>
 
+                        <Box >
+                            <Grid container columnSpacing={{xs:10 ,sm:0,md: 4, lg: 8, xl: 4 }} rowSpacing={4} alignItems="stretch" sx={{ height: "100%" }} >
 
-                        <Grid container columnSpacing={{ md: 4, lg: 8, xl: 4 }} rowSpacing={4} alignItems="stretch" >
-
-                            <Grid size={{ md: 12, lg: 6 }} display="flex" sx={{ overflow: 'hidden' }}>
-                                <Box className='newarrival-grid-box'>
-                                    <img src="../../../public/assets/images/newarrival/playstation.png" alt="" width='100%' height='100%' />
-
-                                    <div className="newarrival-grid-box-text">
-                                        <Typography variant="h5" sx={{ fontWeight: 600 }}>PlayStation 5</Typography>
-                                        <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "16px 0" }}>Black and White version of the PS5 coming out on sale.</Typography>
-                                        <a href="#">Shop Now</a>
-                                    </div>
-                                </Box>
-                            </Grid>
-
-
-                            <Grid size={{ md: 12, lg: 6 }} container direction='column' display="flex" >
-                                <Grid>
-                                    <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
-                                        <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
+                                <Grid size={{ xs:12,md: 6, lg: 6 }}  sx={{ overflow: 'hidden' }}>
+                                    <Box className='newarrival-grid-box' >
+                                        <img src="../../../public/assets/images/newarrival/playstation.png" alt="" />
 
                                         <div className="newarrival-grid-box-text">
-                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>Women’s Collections</Typography>
-                                            <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "16px 0" }}>Featured woman collections that give you another vibe.</Typography>
+                                            <Typography variant="h5" sx={{ fontWeight: 600 }}>PlayStation 5</Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "16px 0" }}>Black and White version of the PS5 coming out on sale.</Typography>
                                             <a href="#">Shop Now</a>
                                         </div>
                                     </Box>
                                 </Grid>
 
 
-                                <Grid container columnSpacing={{ lg: 4, xl: 4 }} display="flex">
-                                    <Grid size={6} display="flex">
-                                        <Box className='newarrival-grid-box'>
-                                            <img src="../../../public/assets/images/newarrival/speaker.png" alt="" width='100%' height='100%' />
+                                <Grid size={{ sx:12,md: 6}} container display="flex" >
+                                    <Grid size={12} >
+                                        <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
+                                            <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
 
                                             <div className="newarrival-grid-box-text">
-                                                <Typography variant="h5" sx={{ fontWeight: 600 }}>Speakers</Typography>
-                                                <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "5px 0" }}>Amazon wireless speakers</Typography>
+                                                <Typography variant="h5" sx={{ fontWeight: 600 }}>Women’s Collections</Typography>
+                                                <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "16px 0" }}>Featured woman collections that give you another vibe.</Typography>
                                                 <a href="#">Shop Now</a>
                                             </div>
                                         </Box>
                                     </Grid>
 
-                                    <Grid size={6} display="flex">
-                                        <Box className='newarrival-grid-box'>
-                                            <img src="../../../public/assets/images/newarrival/perfume.png" alt="" width='100%' height='100%' />
 
-                                            <div className="newarrival-grid-box-text">
-                                                <Typography variant="h5" sx={{ fontWeight: 600 }}>Perfume</Typography>
-                                                <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "5px 0" }}>GUCCI INTENSE OUD EDP</Typography>
-                                                <a href="#">Shop Now</a>
-                                            </div>
-                                        </Box>
+                                    <Grid container columnSpacing={{xs:0,sm:2 ,lg: 4, xl: 4 }} display="flex" size={12}>
+                                        <Grid size={{xs:12,sm:6}} >
+                                            <Box className='newarrival-grid-box lastbox'>
+                                                <img src="../../../public/assets/images/newarrival/speaker.png" alt="" />
+
+                                                <div className="newarrival-grid-box-text">
+                                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Speakers</Typography>
+                                                    <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "5px 0" }}>Amazon wireless speakers</Typography>
+                                                    <a href="#">Shop Now</a>
+                                                </div>
+                                            </Box>
+                                        </Grid>
+
+                                        <Grid size={{xs:12,sm:6}} >
+                                            <Box className='newarrival-grid-box lastbox'>
+                                                <img src="../../../public/assets/images/newarrival/perfume.png" alt=""/>
+
+                                                <div className="newarrival-grid-box-text">
+                                                    <Typography variant="h5" sx={{ fontWeight: 600 }}>Perfume</Typography>
+                                                    <Typography variant="body2" sx={{ fontWeight: '400', maxWidth: '242px', margin: "5px 0" }}>GUCCI INTENSE OUD EDP</Typography>
+                                                    <a href="#">Shop Now</a>
+                                                </div>
+                                            </Box>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
                     </div>
                 </section>
 

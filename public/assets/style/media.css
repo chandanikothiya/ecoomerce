@@ -82,9 +82,9 @@
 
         #cart .my-custome-button,
         #foryou .my-custome-button {
-            
-            padding-top:5px !important;
-            padding-bottom:5px !important;
+
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
         }
 
         .whychoose-box,
@@ -227,7 +227,20 @@
         .cardimg {
             height: 80px !important;
         }
-    }
+
+        .newarrival-grid-box {
+            padding: 0px 10px;
+        }
+
+          /* .lastbox {
+            width: 100%;
+        }
+
+        .lastbox img {
+            width: 50% !important;
+            margin-left: auto;
+        }
+    } */
 
     /* sm */
     @media screen and (min-width:576px) {
@@ -455,12 +468,29 @@
             height: 100px !important;
         }
 
+        .newarrival-grid-box {
+            padding: 0px 10px;
+        }
+
+         .lastbox {
+            width: 100%;
+            display:flex;
+        }
+
+        .lastbox img {
+            width: 50% !important;
+            margin-left: auto;
+        }
     }
 
     /* md */
     @media screen and (min-width:768px) {
         .top-header p {
             font-size: 14px;
+        }
+
+        .firstbox {
+            width: 100% !important;
         }
 
         .account-menu1 {
@@ -599,6 +629,28 @@
             height: 120px !important;
         }
 
+        .newarrival-grid-box {
+            padding: 0px 10px;
+        }
+
+        /* /* .lastbox{
+            display: flex;
+            width: 100% !important;
+        } */
+
+        /* .lastbox img{
+            margin-left: auto;
+        } */
+
+        .lastbox {
+            width: 100%;
+            display:flex;
+        }
+
+        .lastbox img {
+            width: 60% !important;
+            margin-left: auto;
+        }
     }
 
     /* lg */
@@ -677,6 +729,22 @@
 
         .cardimg {
             height: 120px !important;
+        }
+
+        .newarrival-grid-box img {
+            width: 50%;
+            height: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .lastbox {
+            width: fit-content;
+        }
+
+        .lastbox img {
+            width: 100% !important;
+            margin-left: 0;
         }
     }
 
@@ -775,7 +843,7 @@
         }
 
         .caticone {
-            font-size: 50px !important;
+            font-size: 40px !important;
         }
 
         .bestseal-name,
@@ -828,7 +896,5 @@
         #product-detail .my-custome-button {
             padding: 20px 48px !important;
         }
-
-
 
     }

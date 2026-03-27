@@ -241,7 +241,7 @@ section {
 }
 
 #category .swiper-slide {
-    max-width: fit-content !important;
+    max-width:180 !important;
 }
 
 .todays-title {
@@ -853,4 +853,24 @@ hr {
 
 /* .musicexp-imgbox img{
     width: 100% !important;
+} */
+.newarrival-grid-box{
+    height: 100%;
+    /* padding: 10px 25px;
+    padding-right: 0; */
+}
+
+/* .newarrival-grid-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+} */
+
+/* .newarrival-grid-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 1;
 } */
