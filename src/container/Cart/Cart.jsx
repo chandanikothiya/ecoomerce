@@ -150,19 +150,20 @@ function Cart() {
 
 
 
-                    <Grid container id="coupon" sx={{ mt: 10 }} spacing={10}>
-                        <Grid size={6}>
+                    <Grid container id="coupon" sx={{ mt: 10 }} spacing={{xs:0,sm:10,md:4,lg:10,xl:6}} rowSpacing={5}>
+                        <Grid size={{xs:12,sm:6}}>
                             <form>
-                                <Box sx={{ display: 'flex', gap: 3 }}>
-                                    <TextField id="outlined-basic" label="Outlined" variant="outlined" sx={{ width: '300px' }} />
-                                    <button className="my-custome-button">Apply Coupon</button>
+                                <Box sx={{ display: 'flex', gap: 3}} className="cart-coupon-box">
+                                    <TextField id="outlined-basic" className="coupon-text" label="Outlined" variant="outlined" sx={{ width: {xs:'56%',lg:'280px',xl:'350px'}}} />
+                                    <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                 </Box>
 
                             </form>
                         </Grid>
 
-                        <Grid size={6}>
-                            <Box sx={{ border: 'solid 1px black', padding: '28px 24px', maxWidth: '470px', marginLeft: 'auto' }} >
+                        <Grid size={{xs:12,sm:6}}>
+                            <Box sx={{ border: 'solid 1px black', padding: '28px 24px',
+                                 maxWidth: {xs:'100%',sm:'550px'}, marginLeft: 'auto' }} >
                                 <Typography variant="h6">Cart Total</Typography>
 
                                 <Box className='cart-total'>
@@ -184,7 +185,7 @@ function Cart() {
                                     <Typography>$1750</Typography>
                                 </Box>
 
-                                <button className="my-custome-button" style={{ margin: '32px auto 0 auto ' }}>Procees to checkout</button>
+                                <button className="my-custome-button cardototal-btn" style={{ margin: '32px auto 0 auto ' }}>Procees to checkout</button>
                             </Box>
                         </Grid>
                     </Grid>

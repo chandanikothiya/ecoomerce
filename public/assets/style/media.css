@@ -1,5 +1,10 @@
     /* xs */
     @media screen and (max-width:576px) {
+        section {
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
         .menuicone {
             display: block;
         }
@@ -80,7 +85,7 @@
             width: 100%;
         }
 
-        #cart .my-custome-button,
+        #wishlist .my-custome-button,
         #foryou .my-custome-button {
 
             padding-top: 5px !important;
@@ -232,7 +237,7 @@
             padding: 0px 10px;
         }
 
-          /* .lastbox {
+        /* .lastbox {
             width: 100%;
         }
 
@@ -240,12 +245,50 @@
             width: 50% !important;
             margin-left: auto;
         }
-    } */
+     */
+        .cart-coupon-box {
+            flex-wrap: wrap;
+        }
+
+        .coupon-text {
+            width: 100% !important;
+        }
+
+        .accpont-menu {
+            display: none;
+        }
+
+        .cart-coupon-box-btn,
+        .cardototal-btn {
+            padding: 12px 20px !important;
+            margin: 0 auto;
+            font-size: 16px !important;
+        }
+
+        .checkout-typo{
+            font-size: 14px !important;
+        }
+
+        .checkout-box{
+            max-width: 300px !important;
+        }
+    }
 
     /* sm */
     @media screen and (min-width:576px) {
+
+        section {
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
         .menus {
             display: none;
+        }
+
+        #myaccount .MuiBreadcrumbs-li,
+        #myaccount .MuiBreadcrumbs-li .MuiTypography-body1 {
+            font-size: 14px !important;
         }
 
         .account-menu1 {
@@ -472,19 +515,57 @@
             padding: 0px 10px;
         }
 
-         .lastbox {
+        .lastbox {
             width: 100%;
-            display:flex;
+            display: flex;
         }
 
         .lastbox img {
             width: 50% !important;
             margin-left: auto;
         }
+
+        .accpont-menu {
+            display: none;
+        }
+
+        .cart-coupon-box-btn,
+        .cardototal-btn {
+            padding: 12px 30px !important;
+            margin: 0 auto;
+            font-size: 16px !important;
+        }
+
+        /* .place-order-btn{
+            margin: 0 auto;
+        } */
+
+        /* .coupon-textw{
+            width: ;
+        } */
+
+        .checkout-typo{
+            font-size: 16px !important;
+        }
+
+         .checkout-box{
+            max-width: 550px !important;
+        }
     }
 
     /* md */
     @media screen and (min-width:768px) {
+
+        section {
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        #myaccount .MuiBreadcrumbs-li,
+        #myaccount .MuiBreadcrumbs-li .MuiTypography-body1 {
+            font-size: 16px !important;
+        }
+
         .top-header p {
             font-size: 14px;
         }
@@ -644,17 +725,39 @@
 
         .lastbox {
             width: 100%;
-            display:flex;
+            display: flex;
         }
 
         .lastbox img {
             width: 60% !important;
             margin-left: auto;
         }
+
+        /* .myaccount-drawer{
+            display: none;
+        } */
+        .cart-coupon-box {
+            flex-wrap: wrap;
+
+        }
+
+        .cart-coupon-box-btn,
+        .cardototal-btn {
+            padding: 12px 30px !important;
+            margin: 0 auto;
+            font-size: 16px;
+        }
+
     }
 
     /* lg */
     @media screen and (min-width:992px) {
+
+        section {
+            margin-top: 80px;
+            margin-bottom: 60px;
+        }
+
         .menus {
             display: block;
         }
@@ -671,6 +774,10 @@
             font-size: 30px !important;
         }
 
+        /* .my-custome-button {
+            padding: 12px 40px !important;
+            font-size: 18px;
+        } */
 
         .responsive-menu {
             display: none;
@@ -745,6 +852,36 @@
         .lastbox img {
             width: 100% !important;
             margin-left: 0;
+        }
+
+        /* #myaccount .submenu .MuiListItemText-root .MuiTypography-root{
+            font-size: 16px !important;
+        } */
+
+        /* .my-form{
+            margin-left: 20px !important;
+        } */
+
+        #myaccount .MuiBreadcrumbs-li {
+            font-size: 16px !important;
+        }
+
+        .myaccount-drawer {
+            display: none;
+        }
+
+        .accpont-menu {
+            display: block;
+        }
+
+
+
+        .cart-coupon-box-btn {
+            padding: 12px 30px !important;
+        }
+
+        .cart-coupon-box {
+            flex-wrap: nowrap;
         }
     }
 
@@ -876,6 +1013,21 @@
 
         .my-custome-button {
             padding: 12px 48px;
+        }
+
+        #myaccount .submenu {
+            font-size: 16px !important;
+        }
+
+        #myaccount .my-custome-button {
+            width: 100%;
+            padding: 20px 36px;
+        }
+
+
+
+        .cart-coupon-box-btn {
+            padding: 12px 49px !important;
         }
     }
 

@@ -198,10 +198,7 @@ body {
 /* homepage */
 
 
-section {
-    margin-top: 80px;
-    margin-bottom: 60px;
-}
+
 
 .hero-left {
     border-right: solid 1px rgb(224, 222, 224);
@@ -823,10 +820,10 @@ hr {
     color: black;
 }
 
-#myaccount .my-custome-button {
+/* #myaccount .my-custome-button {
     width: 100%;
-    padding: 20px 36px;
-}
+    padding: 20px 45px;
+} */
 
 .responsive-menu {
     overflow: visible !important;

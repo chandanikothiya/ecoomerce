@@ -38,7 +38,7 @@ function Wishlist() {
             <ThemeProvider theme={theme}>
                 <main>
 
-                    <section id="cart">
+                    <section id="cart wishlist">
                         <div className="container">
                             <Box className="cart-title">
                                 <Typography variant="h5" sx={{ fontWeight: 600 }} className="title">Wishlist ({cartproducts.length})</Typography>

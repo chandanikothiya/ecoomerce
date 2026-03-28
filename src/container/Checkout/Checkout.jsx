@@ -51,22 +51,22 @@ function Checkout() {
                             color="error"
                             href="/material-ui/getting-started/installation/"
                         >
-                           Product
+                            Product
                         </Link>
                         <Link
                             underline="hover"
                             color="error"
                             href="/material-ui/getting-started/installation/"
                         >
-                           View Cart
+                            View Cart
                         </Link>
                         <Typography sx={{ color: 'text.primary' }}>CheckOut</Typography>
                     </Breadcrumbs>
 
                     <Typography variant="h4" sx={{ fontSize: '36px', mt: 8, mb: 2 }} >Billing Details</Typography>
 
-                    <Grid container spacing={21}>
-                        <Grid size={6}>
+                    <Grid container columnSpacing={{xs:0,sm:5,md:5, lg: 10, xl: 18 }} justifyContent='center'>
+                        <Grid size={{xs:12,sm:10,md:6}}>
                             <form>
 
                                 <FormControl className="billing-textfiled">
@@ -150,42 +150,42 @@ function Checkout() {
                             </form>
                         </Grid>
 
-                        <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Grid size={{xs:12,sm:10,md:6}} sx={{ display: 'flex', alignItems: 'center'}}>
                             <Box >
-                                <Box sx={{ maxWidth: '425px' }}>
+                                <Box sx={{ maxWidth: '425px' }} className="checkout-box">
                                     {
                                         cartdata.map((v) => (
                                             <Box sx={{ display: 'flex', alignItems: "center", justifyContent: 'space-between', mt: 4 }}>
                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                                     <img src={v.img} alt="" width='50' />
-                                                    <Typography>{v.sname}</Typography>
+                                                    <Typography className="checkout-typo">{v.sname}</Typography>
                                                 </Box>
-                                                <Typography>${v.price}</Typography>
+                                                <Typography className="checkout-typo">${v.price}</Typography>
                                             </Box>
                                         ))
                                     }
 
                                 </Box>
 
-                                <Box sx={{ mt: '32px', maxWidth: '425px' }} >
+                                <Box sx={{ mt: '32px', maxWidth:'550px'}} className="checkout-box">
 
                                     <Box className='cart-total'>
-                                        <Typography>Subtotal:</Typography>
-                                        <Typography>$1750</Typography>
+                                        <Typography className="checkout-typo">Subtotal:</Typography>
+                                        <Typography className="checkout-typo">$1750</Typography>
                                     </Box>
 
                                     <Divider />
 
                                     <Box className='cart-total'>
-                                        <Typography>Shipping:</Typography>
-                                        <Typography>Free</Typography>
+                                        <Typography className="checkout-typo">Shipping:</Typography>
+                                        <Typography className="checkout-typo">Free</Typography>
                                     </Box>
 
                                     <Divider />
 
                                     <Box className='cart-total'>
-                                        <Typography>Total:</Typography>
-                                        <Typography>$1750</Typography>
+                                        <Typography className="checkout-typo">Total:</Typography>
+                                        <Typography className="checkout-typo">$1750</Typography>
                                     </Box>
                                 </Box>
 
@@ -214,13 +214,13 @@ function Checkout() {
                                 </FormControl>
 
                                 <form style={{ margin: '32px 0' }}>
-                                    <Box sx={{ display: 'flex', gap: 3 }}>
-                                        <TextField id="outlined-basic" label="Outlined" variant="outlined" sx={{ width: '300px' }} />
-                                        <button className="my-custome-button coupon-button">Apply Coupon</button>
+                                    <Box sx={{ display: 'flex', gap: 3 }} className="cart-coupon-box">
+                                        <TextField id="outlined-basic" className="coupon-textw" label="Outlined" variant="outlined" sx={{ width: { xs: '50%', lg: '280px', xl: '350px' } }} />
+                                        <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                     </Box>
                                 </form>
 
-                                <button className="my-custome-button">Place Order</button>
+                                <button className="my-custome-button place-order-btn" >Place Order</button>
                             </Box>
 
                         </Grid>
