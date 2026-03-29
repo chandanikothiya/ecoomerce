@@ -1,7 +1,7 @@
 import React from "react"
 import '../../../public/assets/style/headerfooter.css'
 import Grid from '@mui/material/Grid';
-import { Box, ListItemText, MenuItem, MenuList, TextField, Typography } from "@mui/material";
+import { Box, createTheme, ListItemText, MenuItem, MenuList, TextField, ThemeProvider, Typography } from "@mui/material";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { GrFacebookOption } from "react-icons/gr";
@@ -12,8 +12,21 @@ import { FaLinkedinIn } from "react-icons/fa";
 
 function Footer() {
 
+     const theme = createTheme({
+            breakpoints: {
+                values: {
+                    xs: 0,
+                    sm: 576,
+                    md: 900,
+                    lg: 1200,
+                    xl: 1536,
+                },
+            },
+        });
+
     return (
         <>
+         <ThemeProvider theme={theme}>
             <div className="footer">
                 <div className="container">
                     <Grid container
@@ -23,8 +36,9 @@ function Footer() {
                                 lg:"space-between"
                             } 
                         }}
+                        rowSpacing={4}
                     >
-                        <Grid size={{ md: 4, lg: 2 }} >
+                        <Grid size={{xs:12,sm: 6, md: 4, lg: 3 }} >
                             <Box className="my-cutome-grid first-box">
                                 <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '24px' }}>Exclusive</Typography>
                                 <Typography variant="subtitle1" sx={{ mt: 1, mb: 1, fontWeight: 500, fontSize: '20px' }}>Subscribe</Typography>
@@ -37,7 +51,7 @@ function Footer() {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ md: 4, lg: 2 }} >
+                        <Grid size={{xs:12,sm: 6, md: 4, lg: 2 }} >
                             <Box className="my-cutome-grid support-box">
                                 <Typography variant="h6" className="my-custome-title">Support</Typography>
                                 <Typography className="my-custome-text">111 Bijoy sarani, Dhaka,  DH 1515, Bangladesh.</Typography>
@@ -46,7 +60,7 @@ function Footer() {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ md: 4, lg: 2 }} >
+                        <Grid size={{xs:12,sm: 6, md: 4, lg: 2 }} >
                             <Box className="my-cutome-grid account-box">
                                 <Typography variant="h6" className="my-custome-title">Account</Typography>
                                 <MenuList >
@@ -69,7 +83,7 @@ function Footer() {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ md: 4, lg: 2 }} >
+                        <Grid size={{xs:12,sm: 6, md: 4, lg: 2 }} >
                             <Box className="my-cutome-grid ">
                                 <Typography variant="h6" className="my-custome-title">Quick Link</Typography>
                                 <MenuList >
@@ -89,15 +103,15 @@ function Footer() {
                             </Box>
                         </Grid>
 
-                        <Grid size={{ md: 4, lg: 3 }} >
+                        <Grid size={{xs:12, sm: 9,md: 4, lg: 3 }} >
                             <Box className="my-cutome-grid last-box">
                                 <Typography variant="h6" className="my-custome-title">Download App</Typography>
                                 <Typography variant="subtitle2" className="my-custome-text">Save $3 with App New User Only</Typography>
-                                <Grid container columnSpacing={{ lg: 4, xl: 0 }} sx={{ mt: 1 }}>
-                                    <Grid size={4}>
+                                <Grid container columnSpacing={{ xs:2,sm: 4, xl: 0 }} sx={{ mt: 1 }}>
+                                    <Grid size={{xs:6,sm:4}} className="qrcode">
                                         <img src="../../../public/assets/images/Qr_Code.png" alt="qrcode" />
                                     </Grid>
-                                    <Grid size={8}>
+                                    <Grid size={{xs:6,sm:8}} >
                                         <img src="../../../public/assets/images/GooglePlay.png" alt="qrcode" />
                                         <img src="../../../public/assets/images/download-appstore.png" alt="qrcode" />
                                     </Grid>
@@ -120,6 +134,7 @@ function Footer() {
                     </Box>
                 </div>
             </div>
+        </ThemeProvider>
         </>
     )
 }

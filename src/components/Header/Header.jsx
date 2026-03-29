@@ -20,6 +20,7 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import { TbLogout2 } from "react-icons/tb";
+import { Box } from "@mui/material";
 
 
 function Header() {
@@ -50,15 +51,16 @@ function Header() {
             <header id="header">
                 <div className="top-header">
                     <div className="container first-header">
-                        <p>Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! <a href="#">ShopNow</a></p>
+                        <p className="topheader-p">Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! <a href="#">ShopNow</a></p>
                         <div>
                             <Button
-                                id="demo-positioned-button"
+                                id="demo-positioned-button "
                                 aria-controls={openl ? 'demo-positioned-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={openl ? 'true' : undefined}
                                 onClick={handleClickl}
-                                sx={{ color: 'white' }}
+                                sx={{ color: 'white'}}
+                                className="topheader-lang"
                                 endIcon={<KeyboardArrowDownIcon />}
                             >
                                 LANG
@@ -89,7 +91,13 @@ function Header() {
                 <div className="second-header">
                     <div className="container">
                         <div className="menus-header">
-                            <h4><NavLink to="/">Exclusive</NavLink></h4>
+
+                            <Box sx={{display:'flex',alignItems:'center'}}>
+                                <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
+                                    <MenuIcon />
+                                </IconButton>
+                                <h4><NavLink to="/">Exclusive</NavLink></h4>
+                            </Box>
 
                             <div className="menus">
                                 <ul>
@@ -108,9 +116,9 @@ function Header() {
                                     </div>
                                 </form>
 
-                                <FavoriteBorderIcon />
+                                <FavoriteBorderIcon className="header-icone"/>
 
-                                <ShoppingCartOutlinedIcon />
+                                <ShoppingCartOutlinedIcon className="header-icone"/>
 
                                 <Tooltip title="Account settings" className="account-menu1">
                                     <IconButton
@@ -179,9 +187,7 @@ function Header() {
                                 </Menu>
                             </div>
 
-                            <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
-                                <MenuIcon />
-                            </IconButton>
+
                         </div>
                     </div>
                     <div className={`responsive-menu ${openMenu ? "active" : ""}`}>
