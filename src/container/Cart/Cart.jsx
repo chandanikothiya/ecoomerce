@@ -39,7 +39,9 @@ function Cart() {
         {
             field: 'sname',
             headerName: 'Product',
-            width: 400,
+            // width: 400,
+            flex: 2,
+            minWidth: 200,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
                     <img src={params.row.img} alt="" width='50' height='50' style={{ objectFit: 'contain' }}></img>
@@ -50,14 +52,18 @@ function Cart() {
         {
             field: 'price',
             headerName: 'Price',
-            width: 350,
+            // width: 350,
+            flex: 1,
+            minWidth: 100,
         },
         {
 
             headerName: 'quantity',
             headerAlign: 'left',
             type: 'number',
-            width: 350,
+            // width: 350,
+            flex: 1,
+            minWidth: 120,
             editable: true,
             renderCell: (params) => (
                 <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
@@ -90,7 +96,9 @@ function Cart() {
             field: 'discoutprice',
             headerName: 'sub Total',
             headerAlign: 'rigth',
-            width: 150,
+            // width: 150,
+            flex: 1,
+            minWidth: 120,
             renderCell: (params) => (
                 <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{params.row.price * (quantity[params.row.id] || 1)}</Typography>
             ),
@@ -139,7 +147,8 @@ function Cart() {
                                     display: 'none',
                                 }
                             },
-                            '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' }
+                            '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                            '& .MuiDataGrid-row': { display: 'flex', justifyContent: 'space-between' }
                         }} //target every grid's child element with a class attribute that starts with MuiDataGrid
                     />
 
@@ -150,19 +159,21 @@ function Cart() {
 
 
 
-                    <Grid container id="coupon" sx={{ mt: 10 }} spacing={{xs:0,sm:10,md:4,lg:10,xl:6}} rowSpacing={5}>
-                        <Grid size={{xs:12,sm:6}}>
+                    <Grid container id="coupon" sx={{ mt: 10 }} spacing={{ xs: 0, sm: 10, md: 4, lg: 10, xl: 6 }} rowSpacing={5}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                             <form>
-                                <Box sx={{ display: 'flex', gap: 3}} className="cart-coupon-box">
-                                    <TextField id="outlined-basic" className="coupon-text" label="Outlined" variant="outlined" sx={{ width: {xs:'56%',lg:'280px',xl:'350px'}}} />
+                                <Box sx={{ display: 'flex', gap: 3 }} className="cart-coupon-box">
+                                    <TextField id="outlined-basic" className="coupon-text" label="Outlined" variant="outlined" sx={{ width: { xs: '56%', lg: '280px', xl: '350px' } }} />
                                     <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                 </Box>
                             </form>
                         </Grid>
 
-                        <Grid size={{xs:12,sm:6}}>
-                            <Box sx={{ border: 'solid 1px black', padding: '28px 24px',
-                                 maxWidth: {xs:'100%',sm:'550px'}, marginLeft: 'auto' }} >
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <Box sx={{
+                                border: 'solid 1px black', padding: '28px 24px',
+                                maxWidth: { xs: '100%', sm: '550px' }, marginLeft: 'auto'
+                            }} >
                                 <Typography variant="h6">Cart Total</Typography>
 
                                 <Box className='cart-total'>
