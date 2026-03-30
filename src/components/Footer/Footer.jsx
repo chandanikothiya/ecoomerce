@@ -40,9 +40,9 @@ function Footer() {
                     >
                         <Grid size={{xs:12,sm: 6, md: 4, lg: 3 }} >
                             <Box className="my-cutome-grid first-box">
-                                <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '24px' }}>Exclusive</Typography>
-                                <Typography variant="subtitle1" sx={{ mt: 1, mb: 1, fontWeight: 500, fontSize: '20px' }}>Subscribe</Typography>
-                                <Typography variant="subtitle1" sx={{ fontSize: '16px' }}>Get 10% off your first order</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 600, fontSize:{xs:'20px', sm:'24px'} }}>Exclusive</Typography>
+                                <Typography variant="subtitle1" sx={{ mt: 1, mb: 1, fontWeight: 500, fontSize:{xs:'16px', sm:'20px'} }}>Subscribe</Typography>
+                                <Typography variant="subtitle1" sx={{ fontSize: {xs:'13px', sm:'16px'} }}>Get 10% off your first order</Typography>
 
                                 <form className="footerform" style={{ marginTop: '16px' }}>
                                     <input type="email" name="subemali" id="subemail" placeholder="Enter Email" />
@@ -107,11 +107,11 @@ function Footer() {
                             <Box className="my-cutome-grid last-box">
                                 <Typography variant="h6" className="my-custome-title">Download App</Typography>
                                 <Typography variant="subtitle2" className="my-custome-text">Save $3 with App New User Only</Typography>
-                                <Grid container columnSpacing={{ xs:2,sm: 4, xl: 0 }} sx={{ mt: 1 }}>
-                                    <Grid size={{xs:6,sm:4}} className="qrcode">
+                                <Grid container columnSpacing={{ xs:2,sm: 3, xl: 0 }} sx={{ mt: 1 }}>
+                                    <Grid size={{xs:3,sm:3,md:4}} className="qrcode">
                                         <img src="../../../public/assets/images/Qr_Code.png" alt="qrcode" />
                                     </Grid>
-                                    <Grid size={{xs:6,sm:8}} >
+                                    <Grid size={{xs:4,sm:4,md:8}} >
                                         <img src="../../../public/assets/images/GooglePlay.png" alt="qrcode" />
                                         <img src="../../../public/assets/images/download-appstore.png" alt="qrcode" />
                                     </Grid>
@@ -130,7 +130,17 @@ function Footer() {
                     </Grid>
 
                     <Box sx={{ display: 'flex', mt: 8, justifyContent: 'center', color: '#a5a1a1', gap: '0 5px', alignItems: 'center' }}>
-                        <CopyrightIcon /><Typography>Copyright Rimel 2022. All right reserved</Typography>
+                        <CopyrightIcon sx={{
+                            fontSize:{
+                                xs:'20px',
+                                sm:'24px'
+                            }
+                        }}/><Typography sx={{
+                            fontSize:{
+                                xs:'12px',
+                                sm:'16px'
+                            }
+                        }}>Copyright Rimel 2022. All right reserved</Typography>
                     </Box>
                 </div>
             </div>

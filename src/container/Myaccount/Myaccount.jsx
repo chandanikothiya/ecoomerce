@@ -267,7 +267,7 @@ function Myaccount() {
                                         </Grid>
 
                                         <Grid size={{ md: 4, lg: 3 }}>
-                                            <button className="my-custome-button">save Change</button>
+                                            <button className="my-custome-button">Save Change</button>
                                         </Grid>
                                     </Grid>
 

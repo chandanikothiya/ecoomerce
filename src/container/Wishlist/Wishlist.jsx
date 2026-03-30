@@ -67,7 +67,6 @@ function Wishlist() {
                                                             }}>
                                                             <CardMedia
                                                                 component="img"
-
                                                                 className="cardimg"
                                                                 sx={{ objectFit: "contain" }}
                                                                 image={cp.img}

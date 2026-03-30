@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Rating, Stack, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, createTheme, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Rating, Stack, ThemeProvider, Typography } from "@mui/material";
 import { PiLineVerticalThin } from "react-icons/pi";
 import { CiHeart } from "react-icons/ci";
 import { LuTruck } from "react-icons/lu";
@@ -8,6 +8,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Link } from "react-router-dom";
+import Divider from '@mui/material/Divider';
 
 function Productdetail() {
 
@@ -49,6 +50,17 @@ function Productdetail() {
 
 
     const Size = ['XS', 'S', 'M', 'L', 'XL']
+    const theme = createTheme({
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 576,
+                md: 900,
+                lg: 1200,
+                xl: 1536,
+            },
+        },
+    });
 
     return (
         <main>
@@ -70,60 +82,60 @@ function Productdetail() {
                         <Typography sx={{ color: 'text.primary' }}>Havic HV G-92 Gamepad</Typography>
                     </Breadcrumbs>
 
-                    <Grid container sx={{ mt: 10 }} spacing={{ xs: 12, md: 5, lg: 6 }}>
-                        <Grid size={{ xs: 12, md: 10, lg: 7 }} container spacing={{ lg: 10, xl: 3 }} alignItems="stretch">
-                            <Grid size={{ xs: 12, sm: 3 }} sx={{
-                                flexDirection: {
-                                    xs: 'row',     // mobile → row
-                                    md: 'column'   // desktop → column
-                                }
-                            }} container spacing={4} display="flex">
+                    <Grid container sx={{ mt:{ xs:3,sm:5,lg:10} }} spacing={{ xs: 3, sm: 5, lg: 6 }}>
+                        <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs:2,sm: 3, xl: 3 }} alignItems="stretch">
+                            <Grid size={{ xs: 3, sm: 4, md: 3 }} sx={{
+                                // flexDirection: {
+                                //     xs: 'row',     // mobile → row
+                                //     md: 'column'   // desktop → column
+                                // }
+                            }} container spacing={{ sm: 2, md: 4 }} alignSelf="flex-start">
                                 <Grid >
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 57.png" alt="" />
                                     </Box>
                                 </Grid>
-                                <Grid>
+                                <Grid >
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 58.png" alt="" />
                                     </Box>
                                 </Grid>
-                                <Grid>
+                                <Grid >
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 59.png" alt="" />
                                     </Box>
                                 </Grid>
-                                <Grid>
+                                <Grid >
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 61.png" alt="" />
                                     </Box>
                                 </Grid>
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 9 }} display="flex">
+                            <Grid size={{ xs: 9, sm: 8, md: 9 }} display="flex">
                                 <Box className="detailimg-box deatail-main-img">
                                     <img src="../../../public/assets/images/productdetail/image 63.png" alt="" width='100%' />
                                 </Box>
                             </Grid>
                         </Grid>
-                        <Grid size={{ xs: 12, md: 10, lg: 5 }}>
-                            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Havic HV G-92 Gamepad</Typography>
+                        <Grid size={{ xs: 12, sm: 6, lg: 5 }}>
+                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '20px', md: '24px' } }}>Havic HV G-92 Gamepad</Typography>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-                                <Rating name="read-only" value={3} readOnly />
+                                <Rating name="read-only" value={3} readOnly sx={{ fontSize: { xs: '20px', md: '24px' } }} />
                                 <Typography>(150 Reviews) </Typography>
                                 <Typography> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
                             </Box>
 
-                            <Typography variant="h5" sx={{ mt: 2, mb: 3 }}>$192.00</Typography>
+                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 } }}>$192.00</Typography>
 
-                            <Typography sx={{ fontSize: '14px', maxWidth: '373px', mb: 3 }}>
+                            <Typography sx={{ fontSize: '14px', maxWidth: '373px', mb: { xs: 3, sm: 2, md: 3 } }}>
                                 PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.
                             </Typography>
 
                             <hr />
 
-                            <Box sx={{ mt: 3, display: "flex", alignItems: 'center', columnGap: 2 }}>
-                                <Typography sx={{ fontSize: '20px' }}>Colours :</Typography>
+                            <Box sx={{ mt: { xs: 3, sm: 1, md: 3 }, display: "flex", alignItems: 'center', columnGap: 2 }}>
+                                <Typography sx={{ fontSize: { sm: '18px', md: '20px' } }}>Colours :</Typography>
                                 <RadioGroup
                                     name="dynamic-radio-buttons-group"
                                     value={selectedValue}
@@ -148,9 +160,7 @@ function Productdetail() {
                                                             }}
                                                         />
                                                     }
-                                                // sx={{
-                                                //     '& .css-9oxshb-MuiRadioButtonIcon-root': { color: v.value }
-                                                // }}
+
                                                 />
 
                                             ))
@@ -160,8 +170,8 @@ function Productdetail() {
                                 </RadioGroup>
                             </Box>
                             {/* size */}
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 3 }}>
-                                <Typography sx={{ fontSize: '20px' }}>Size :</Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: { xs: 3, sm: 1, md: 3 } }}>
+                                <Typography sx={{ fontSize: { sm: '18px', md: '20px' } }}>Size :</Typography>
 
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     {
@@ -175,10 +185,10 @@ function Productdetail() {
                             </Box>
 
                             {/* counter */}
-                            <Box sx={{ display: 'flex', mt: 3, gap: 4 }}>
+                            <Box sx={{ display: 'flex', mt: { xs: 3, sm: 2, md: 3 }, gap: { xs: 3, sm: 2, lg: 4 } }} className="counter-box">
                                 <Box className='countbox'>
                                     <button className="count-btn" style={{ borderRight: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'decrese' ? '#DB4444' : 'white', color: active === 'decrese' ? 'white' : 'black' }} onClick={handleDecrese}>-</button>
-                                    <Typography sx={{ padding: '0 35px' }}>{counter}</Typography>
+                                    <Typography sx={{ padding: { xs: '0 35px', sm: '0 15px', lg: '0 35px' } }} className="counter-no">{counter}</Typography>
                                     <button className="count-btn" style={{ borderLeft: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'increse' ? '#DB4444' : 'white', color: active === 'increse' ? 'white' : 'black' }} onClick={handleIncrese}>+</button>
                                 </Box>
 
@@ -190,10 +200,12 @@ function Productdetail() {
                             </Box>
 
                             <Box sx={{
-                                border: 1, borderColor: 'rgb(172, 167, 167)', borderRadius: 1, padding: '24px 0', mt: 5, width: {
-                                    md: '470px',
+                                border: 1, borderColor: 'rgb(172, 167, 167)', borderRadius: 1, padding: { xs: '20px 0', sm: '12px 0', md: '20px 0' }, mt: { xs: 4, sm: 3, md: 5 },
+                                width: {
+                                    md: '100%',
                                     lg: '100%'
                                 }
+
                             }}>
                                 <Box className="delivery-box">
                                     <LuTruck className="delivery-icone" />
@@ -203,7 +215,8 @@ function Productdetail() {
                                     </Box>
                                 </Box>
 
-                                <hr style={{ margin: '20px 0' }} />
+                                {/* <hr style={{ margin: '20px 0' }} /> */}
+                                <Divider sx={{ margin: { xs: '20px 0', sm: '10px 0', md: '20px 0' } }} />
 
                                 <Box className="delivery-box">
                                     <MdAutorenew className="delivery-icone" />
@@ -220,120 +233,165 @@ function Productdetail() {
                 </div>
             </section>
 
-            {/* <section id="related-item">
-                <div className="container">
-                    <Box className="related-title">
-                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
-                            <i className="fa-solid fa-square" style={{ fontSize: '30px' }}></i>
-                            <Typography variant="h6" sx={{ fontWeight: '400' }}>Related Item</Typography>
+            <ThemeProvider theme={theme}>
+                <section id="related-item">
+                    <div className="container">
+                        <Box className="related-title">
+                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
+                                <i className="fa-solid fa-square" style={{ fontSize: '30px' }}></i>
+                                <Typography variant="h6" sx={{ fontWeight: '400' }}>Related Item</Typography>
+                            </Box>
                         </Box>
-                    </Box>
 
-                    <Grid container sx={{ mt: 7 }} spacing={4}>
-                        {
-                            allproducts.slice(0, 4).map((v) => {
-                                const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                // console.log(r)
-                                const rate = r / v.rating.length;
-                                // console.log(rate)
-                                return (
-                                    <Grid size={3}>
-                                        <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                            <Box
-                                                className="carttop"
-                                                sx={{
-                                                    bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                    alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: '250px', position: 'relative'
-                                                }}>
-                                                <CardMedia
-                                                    component="img"
-                                                    height="140"
-                                                    className="cardimg"
-                                                    sx={{ objectFit: "contain" }}
-                                                    image={v.img}
-                                                    title="green iguana"
-
-                                                />
-
-
-                                                <Typography
-                                                    className="addcart"
+                        <Grid container sx={{ mt: {xs:3,sm:4,md:5} }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
+                            {
+                                allproducts.slice(0, 4).map((v) => {
+                                    const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                    // console.log(r)
+                                    const rate = r / v.rating.length;
+                                    // console.log(rate)
+                                    return (
+                                        <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
+                                            <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                                <Box
+                                                    className="carttop"
                                                     sx={{
-                                                        bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                        textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                        bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: {
+                                                            xs: '150px',
+                                                            sm: '200px',
+                                                            lg: '250px'
+                                                        }, position: 'relative'
+                                                    }}>
+                                                    <CardMedia
+                                                        component="img"
+                                                        className="cardimg"
+                                                        sx={{ objectFit: "contain" }}
+                                                        image={v.img}
+                                                        title="green iguana"
+
+                                                    />
+
+
+                                                    <Typography
+                                                        className="addcart"
+                                                        sx={{
+                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                            bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                        }}
+                                                    >
+                                                        <ShoppingCartOutlinedIcon /> Add To Cart
+                                                    </Typography>
+                                                </Box>
+
+
+                                                <CardContent sx={{ outline: 0 }}>
+                                                    <Typography gutterBottom variant="h6" component="div" className="cart-name">
+                                                        {v.name}
+                                                    </Typography>
+                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                            {v.discoutprice}
+                                                        </Typography>
+                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                            {v.price}
+                                                        </Typography>
+                                                    </Box>
+
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                        <Typography sx={{ color: '#FFAD33' }}>
+                                                            <Stack spacing={1}>
+                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                    fontSize: {
+                                                                        xs: '15px',
+                                                                        sm: '18px',
+                                                                        md: '20px'
+                                                                    }
+                                                                }} />
+                                                            </Stack>
+                                                        </Typography>
+                                                        <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                            {`(${r})`}
+                                                        </Typography>
+                                                    </Box>
+
+                                                    {
+                                                        v.discount ?
+                                                            <Box sx={{
+                                                                bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: {
+                                                                    xs: '2px 8px',
+                                                                    sm: '2px 12px'
+                                                                }, borderRadius: 1, position: 'absolute', top: '3%'
+                                                            }}>
+                                                                <Typography variant="body2" sx={{
+                                                                    fontSize: {
+                                                                        xs: '10px',
+                                                                        sm: '14px'
+                                                                    }
+                                                                }}>{v.discount}</Typography>
+                                                            </Box>
+                                                            : ""
+                                                    }
+
+                                                    {
+                                                        v.new ?
+                                                            <Box sx={{
+                                                                bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
+                                                                    xs: '2px 8px',
+                                                                    sm: '2px 12px'
+                                                                }, borderRadius: 1, position: 'absolute', top: '3%'
+                                                            }}>
+                                                                <Typography variant="body2" sx={{
+                                                                    fontSize: {
+                                                                        xs: '10px',
+                                                                        sm: '14px'
+                                                                    }
+                                                                }}>NEW</Typography>
+                                                            </Box> :
+                                                            ""
+                                                    }
+
+                                                </CardContent>
+
+                                                <CardActions
+                                                    sx={{
+                                                        flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                        '& .MuiIconButton-root': {
+                                                            marginLeft: 0
+                                                        }
                                                     }}
                                                 >
-                                                    <ShoppingCartOutlinedIcon /> Add To Cart
-                                                </Typography>
-                                            </Box>
-
-
-                                            <CardContent sx={{ outline: 0 }}>
-                                                <Typography gutterBottom variant="h6" component="div">
-                                                    {v.name}
-                                                </Typography>
-                                                <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                        {v.discoutprice}
-                                                    </Typography>
-                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                        {v.price}
-                                                    </Typography>
-                                                </Box>
-
-                                                <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                    <Typography sx={{ color: '#FFAD33' }}>
-                                                        <Stack spacing={1}>
-                                                            <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{ fontSize: '20px' }} />
-                                                        </Stack>
-                                                    </Typography>
-                                                    <Typography sx={{ color: 'grey', fontWeight: '600' }}>
-                                                        {`(${r})`}
-                                                    </Typography>
-                                                </Box>
-
-                                                {
-                                                    v.discount ?
-                                                        <Box sx={{ bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
-                                                            <Typography variant="body2">{v.discount}</Typography>
-                                                        </Box>
-                                                        : ""
-                                                }
-
-                                                {
-                                                    v.new ?
-                                                        <Box sx={{ bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: '2px 12px', borderRadius: 1, position: 'absolute', top: '3%' }}>
-                                                            <Typography variant="body2">NEW</Typography>
-                                                        </Box> :
-                                                        ""
-                                                }
-
-                                            </CardContent>
-
-                                            <CardActions
-                                                sx={{
-                                                    flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                    '& .MuiIconButton-root': {
-                                                        marginLeft: 0
-                                                    }
-                                                }}
-                                            >
-                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                    <FavoriteBorderIcon />
-                                                </IconButton>
-                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                    <RemoveRedEyeOutlinedIcon />
-                                                </IconButton>
-                                            </CardActions>
-                                        </Card>
-                                    </Grid>
-                                )
-                            })
-                        }
-                    </Grid>
-                </div>
-            </section> */}
+                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                        <FavoriteBorderIcon sx={{
+                                                            fontSize: {
+                                                                xs: '18px',
+                                                                sx: '18px',
+                                                                md: '20px',
+                                                                lg: '25px'
+                                                            }, color: 'black'
+                                                        }} />
+                                                    </IconButton>
+                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                        <RemoveRedEyeOutlinedIcon sx={{
+                                                            fontSize: {
+                                                                xs: '18px',
+                                                                sx: '18px',
+                                                                md: '20px',
+                                                                lg: '25px'
+                                                            }, color: 'black'
+                                                        }} />
+                                                    </IconButton>
+                                                </CardActions>
+                                            </Card>
+                                        </Grid>
+                                    )
+                                })
+                            }
+                        </Grid>
+                    </div>
+                </section>
+            </ThemeProvider>
         </main>
     )
 }

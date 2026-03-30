@@ -112,7 +112,7 @@ function Header() {
                                 <form>
                                     <div className="seachbox">
                                         <input type="text" name="seacrh" id="seacrh" placeholder="What are you looking for?" />
-                                        <SearchOutlinedIcon />
+                                        <SearchOutlinedIcon className="header-icone" />
                                     </div>
                                 </form>
 

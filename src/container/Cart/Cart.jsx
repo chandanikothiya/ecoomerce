@@ -157,7 +157,6 @@ function Cart() {
                                     <TextField id="outlined-basic" className="coupon-text" label="Outlined" variant="outlined" sx={{ width: {xs:'56%',lg:'280px',xl:'350px'}}} />
                                     <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                 </Box>
-
                             </form>
                         </Grid>
 

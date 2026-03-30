@@ -106,7 +106,6 @@ a:hover {
 .search_cart_wishlist {
     display: flex;
     align-items: center;
-    column-gap: 16px;
 }
 
 .search_cart_wishlist .MuiMenu-list .MuiList-root {
@@ -124,7 +123,7 @@ a:hover {
     margin-top: 70px;
     background-color: rgb(15, 15, 15);
     color: white;
-    padding: 60px;
+    padding-top: 60px;
     padding-bottom: 30px;
 }
 
@@ -153,19 +152,16 @@ a:hover {
     border: none;
 }
 
-.my-custome-title {
-    font-size: 20px !important;
-}
+
 
 .my-custome-text {
-    font-size: 16px !important;
     font-weight: 400 !important;
     margin-top: 16px !important;
 }
 
-.my-custome-list {
+/* .my-custome-list {
     padding: 6px 0 !important;
-}
+} */
 
 .my-cutome-grid {
     margin: 0 18px;
@@ -187,9 +183,7 @@ a:hover {
     margin-left: 20px;
 } */
 
-.footer-social {
-    font-size: 25px;
-}
+
 
 /* homepage */
 
@@ -308,13 +302,12 @@ a:hover {
 
 .todays .swiper-button-prev {
     top: 7%;
-    right: 15%;
     transform: rotate(180deg);
 }
 
 .todays .swiper-button-next {
     top: 7%;
-    right: 11%;
+    
 }
 
 .swiper,
@@ -376,14 +369,11 @@ hr {
 
 #category .swiper-button-prev,
 #allproducts .swiper-button-prev {
-    top: 0;
-    right: 5%;
     transform: rotate(180deg);
 }
 
 #category .swiper-button-next,
 #allproducts .swiper-button-next {
-    top: 0;
     right: 0;
 }
 
@@ -616,10 +606,10 @@ hr {
     border: solid 1px rgb(173, 170, 170);
 }
 
-#aboutus-whychoosus {
+/* #aboutus-whychoosus {
     margin: 90px 0;
     margin-bottom: 100px;
-}
+} */
 
 .about-socialicone {
     color: black !important;
@@ -663,7 +653,7 @@ hr {
     border-radius: 5px !important;
     border: solid 1.8px;
     border-color: rgb(172, 167, 167);
-    font-size: 14px !important;
+    /* font-size: 14px !important; */
 }
 
 .countbox {
@@ -686,9 +676,7 @@ hr {
     color: white;
 }
 
-#product-detail .my-custome-button {
-    padding: 10px 49px;
-}
+
 
 .wishlist-deatil {
     background-color: white;
@@ -718,9 +706,9 @@ hr {
     text-decoration: underline;
 }
 
-#related-item {
+/* #related-item {
     margin-top: 100px;
-}
+} */
 
 /* cart */
 

@@ -189,7 +189,7 @@ function Checkout() {
                                     </Box>
                                 </Box>
 
-                                <FormControl sx={{ width: '425px' }}>
+                                <FormControl sx={{ width: '425px' }} className="checkout-box">
                                     <RadioGroup
                                         aria-labelledby="demo-radio-buttons-group-label"
                                         defaultValue="cashondelivery"
@@ -198,9 +198,9 @@ function Checkout() {
                                         onChange={handleChange}
                                     >
 
-                                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", width: '100%' }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", width: '100%'}} >
                                             <FormControlLabel value="bank" control={<Radio />} label="Bank" />
-                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} className="bank-card">
                                                 <img src="../../../public/assets/images/payment_cards/image32.png" alt="" />
                                                 <img src="../../../public/assets/images/payment_cards/Visa.png" alt="" />
                                                 <img src="../../../public/assets/images/payment_cards/Mastercard.png" alt="" />
@@ -213,9 +213,9 @@ function Checkout() {
                                     </RadioGroup>
                                 </FormControl>
 
-                                <form style={{ margin: '32px 0' }}>
-                                    <Box sx={{ display: 'flex', gap: 3 }} className="cart-coupon-box">
-                                        <TextField id="outlined-basic" className="coupon-textw" label="Outlined" variant="outlined" sx={{ width: { xs: '50%', lg: '280px', xl: '350px' } }} />
+                                <form style={{ margin: '32px 0' }} className="checkout-box">
+                                    <Box sx={{ display: 'flex', gap: 3}} className="cart-coupon-box">
+                                        <TextField id="outlined-basic" className="coupon-textc" label="Outlined" variant="outlined" sx={{ width: { xs: '56%', lg: '280px', xl: '350px' } }} />
                                         <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                     </Box>
                                 </form>
