@@ -96,8 +96,8 @@ function Myaccount() {
                             </Breadcrumbs>
 
                             <Breadcrumbs sx={{ '& .MuiBreadcrumbs-separator': { display: 'none' } }} aria-label="breadcrumb" className="breadcrumbs">
-                                <Typography sx={{ color: 'text.primary' }}>Welcome</Typography>
-                                <Typography sx={{ color: '#DB4444', ml: 1 }}>Md Rimel</Typography>
+                                <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Welcome</Typography>
+                                <Typography sx={{ color: '#DB4444', ml: 1 }} className="breadcrumbs-typo">Md Rimel</Typography>
                             </Breadcrumbs>
                         </Box>
                     </Box>

@@ -20,7 +20,7 @@ function Contact() {
                         >
                             Home
                         </Link>
-                        <Typography sx={{ color: 'text.primary' }}>Contact</Typography>
+                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Contact</Typography>
                     </Breadcrumbs>
 
 

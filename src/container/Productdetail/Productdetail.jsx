@@ -79,7 +79,7 @@ function Productdetail() {
                         >
                             Gaming
                         </Link>
-                        <Typography sx={{ color: 'text.primary' }}>Havic HV G-92 Gamepad</Typography>
+                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Havic HV G-92 Gamepad</Typography>
                     </Breadcrumbs>
 
                     <Grid container sx={{ mt:{ xs:3,sm:5,lg:10} }} spacing={{ xs: 3, sm: 5, lg: 6 }}>
@@ -122,8 +122,8 @@ function Productdetail() {
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
                                 <Rating name="read-only" value={3} readOnly sx={{ fontSize: { xs: '20px', md: '24px' } }} />
-                                <Typography>(150 Reviews) </Typography>
-                                <Typography> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
+                                <Typography  className="rate-detail">(150 Reviews) </Typography>
+                                <Typography className="rate-detail"> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
                             </Box>
 
                             <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 } }}>$192.00</Typography>

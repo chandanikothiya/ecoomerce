@@ -59,7 +59,7 @@ function Header() {
                                 aria-haspopup="true"
                                 aria-expanded={openl ? 'true' : undefined}
                                 onClick={handleClickl}
-                                sx={{ color: 'white'}}
+                                sx={{ color: 'white' }}
                                 className="topheader-lang"
                                 endIcon={<KeyboardArrowDownIcon />}
                             >
@@ -92,7 +92,7 @@ function Header() {
                     <div className="container">
                         <div className="menus-header">
 
-                            <Box sx={{display:'flex',alignItems:'center'}}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
                                     <MenuIcon />
                                 </IconButton>
@@ -116,9 +116,9 @@ function Header() {
                                     </div>
                                 </form>
 
-                                <FavoriteBorderIcon className="header-icone"/>
+                                <FavoriteBorderIcon className="header-icone" />
 
-                                <ShoppingCartOutlinedIcon className="header-icone"/>
+                                <ShoppingCartOutlinedIcon className="header-icone" />
 
                                 <Tooltip title="Account settings" className="account-menu1">
                                     <IconButton
@@ -157,7 +157,7 @@ function Header() {
                                     <MenuItem onClick={handleClose}>
                                         <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
                                             <FiUser />
-                                        </ListItemIcon> Manage My Acoount
+                                        </ListItemIcon><NavLink to="/myaccount" style={{color:"white"}}>Manage My Account</NavLink>
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
                                         <ListItemIcon sx={{ color: 'white' }}>
@@ -195,10 +195,10 @@ function Header() {
                             <CloseIcon />
                         </IconButton>
                         <ul>
-                            <li>Home</li>
-                            <li>Contact</li>
-                            <li>About</li>
-                            <li>Sign Up</li>
+                            <li><NavLink to="/">Home</NavLink></li>
+                            <li><NavLink to="/contact">Contact</NavLink></li>
+                            <li><NavLink to="/about">About</NavLink></li>
+                            <li><NavLink to="/signup">Sign Up</NavLink></li>
                         </ul>
                         <IconButton onClick={() => setShowAccount(!showAccount)} className="account-menu2">
                             <Avatar>
@@ -208,7 +208,7 @@ function Header() {
                         <ul>
                             {showAccount && (
                                 <div className="mobile-dropdown">
-                                    <li>Manage My Account</li>
+                                    <li><NavLink to="/myaccount">Manage My Account</NavLink></li>
                                     <li>My Order</li>
                                     <li>My Cancellation</li>
                                     <li>My Review</li>

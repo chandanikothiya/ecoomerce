@@ -309,12 +309,16 @@
         }
 
         .newarrival-grid-box img {
-            width: 100%;
+            width:80%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-
+/* .firstimg-new{
+    width: 50% !important;
+    height: 100%;
+    margin-left: auto;
+} */
         /* .lastbox {
             width:400px;
         } */
@@ -416,6 +420,76 @@
         /* .counter-box{
             column-gap: ;
         } */
+
+        .carts-btn {
+            padding: 10px 15px !important;
+            font-size: 14px;
+        }
+
+        .cart-coupon-box {
+            flex-wrap: wrap;
+        }
+
+        .coupon-text {
+            width: 360px !important;
+        }
+
+        .breadcrumbs,
+        .breadcrumbs-typo {
+            font-size: 14px !important;
+        }
+
+        .rate-detail {
+            font-size: 14px !important;
+        }
+
+        .our-cardimg {
+            height: 200px;
+        }
+
+        .teamname {
+            font-size: 16px !important;
+        }
+
+        .teamrole {
+            font-size: 12px !important;
+        }
+
+        .about-socialicone {
+            font-size: 18px !important;
+
+        }
+
+        .our-team .css-155wbr6-MuiButtonBase-root-MuiIconButton-root {
+            margin-left: 0 !important;
+        }
+
+        #about-whychoosus {
+            margin-top: 80px !important;
+        }
+
+        .teamcards .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+        }
+
+        .ourstory-container {
+            max-width: 100%;
+            padding: 0 12px;
+        }
+
+        .image-aboutfirst {
+            display: none;
+        }
+
+        .ourstory-title {
+            font-size: 28px !important;
+        }
+
+        .ourstory-summary {
+            font-size: 14px !important;
+        }
+
     }
 
     /* sm */
@@ -467,7 +541,7 @@
         }
 
         .header-icone {
-            font-size: 24px !important;
+            font-size: 24px !important;    
         }
 
         .search_cart_wishlist {
@@ -619,7 +693,7 @@
         }
 
         .teamname {
-            font-size: 25px !important;
+            font-size: 22px !important;
         }
 
         .teamrole {
@@ -728,7 +802,7 @@
         }
 
         .lastbox img {
-            width: 50% !important;
+            width:60% !important;
             margin-left: auto;
         }
 
@@ -807,7 +881,63 @@
             font-size: 14px !important;
         }
 
+        .carts-btn {
+            padding: 10px 25px !important;
+            font-size: 16px;
+        }
 
+        /* .coupon-text {
+            width: 200px;
+        } */
+
+        .cart-coupon-box {
+            flex-wrap: nowrap;
+        }
+
+        .coupon-text {
+            width: 320px !important;
+        }
+
+        .breadcrumbs,
+        .breadcrumbs-typo {
+            font-size: 14px !important;
+        }
+
+        .rate-detail {
+            font-size: 16px !important;
+        }
+
+        .our-cardimg {
+            height: 250px;
+        }
+
+        #about-whychoosus {
+            margin-top: 80px !important;
+        }
+
+        .teamcards .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+        }
+
+        .ourstory-container {
+            max-width: 540px;
+            margin: 0 18px;
+            padding: 0 18px;
+
+        }
+
+        .image-aboutfirst {
+            display: none;
+        }
+
+        .ourstory-title {
+            font-size: 28px !important;
+        }
+
+        .ourstory-summary {
+            font-size: 16px !important;
+        }
     }
 
     /* md */
@@ -840,7 +970,7 @@
         }
 
         .heroleft-menu {
-            display: block;
+            display: flex;
 
         }
 
@@ -866,10 +996,20 @@
             margin-bottom: 24px;
         }
 
+        .siteinfo-box {
+            padding: 8px !important;
+            margin-bottom: 15px;
+        }
+
         .whychoos-iconebtn,
         .siteinfo-iconebtn {
             background-color: rgb(0, 0, 0) !important;
             padding: 12px !important;
+        }
+
+        .siteinfo-iconebtn {
+            background-color: rgb(0, 0, 0) !important;
+            padding: 8px !important;
         }
 
         .whychoos-icone,
@@ -883,11 +1023,15 @@
         }
 
         .siteinfo-typography1 {
-            font-size: 25px !important;
+            font-size: 22px !important;
         }
 
         .siteinfo-typography2 {
-            font-size: 15px !important;
+            font-size: 13px !important;
+        }
+
+        .siteinfo-card {
+            padding: 10px 16px !important;
         }
 
         .whychoose-typography1 {
@@ -896,6 +1040,7 @@
 
         .whychoose-typography {
             font-size: 12px !important;
+
         }
 
         .contact-custome-text {
@@ -999,8 +1144,9 @@
         } */
         .cart-coupon-box {
             flex-wrap: wrap;
-
         }
+
+
 
         .cart-coupon-box-btn,
         .cardototal-btn {
@@ -1059,6 +1205,57 @@
             height: 28px !important;
             font-size: 12px !important;
         }
+
+        .carts-btn {
+            padding: 11px 32px !important;
+            font-size: 17px;
+        }
+
+        .coupon-text {
+            width: 100% !important;
+        }
+
+        .breadcrumbs,
+        .breadcrumbs-typo {
+            font-size: 16px !important;
+        }
+
+        .our-cardimg {
+            height: 262px;
+        }
+
+        .about-socialicone {
+            font-size: 24px !important;
+        }
+
+        #about-whychoosus {
+            margin-top: 100px !important;
+        }
+
+        .teamcards .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+        }
+
+        .ourstory-container {
+            max-width: 745px;
+            margin-left: 24px;
+            padding-left: 12px;
+            padding-right: 0;
+           margin-right: 0;
+        }
+
+        .image-aboutfirst {
+            display: block;
+        }
+
+        .ourstory-title {
+            font-size: 25px  !important;
+        }
+
+        .ourstory-summary {
+            font-size: 14px !important;
+        }
     }
 
     /* lg */
@@ -1079,6 +1276,10 @@
 
         .menuicone {
             display: none !important;
+        }
+
+        .heroleft-menu{
+            display: block;
         }
 
         .title {
@@ -1107,11 +1308,11 @@
         }
 
         .teamname {
-            font-size: 28px !important;
+            font-size: 25px !important;
         }
 
         .teamrole {
-            font-size: 18px !important;
+            font-size: 16px !important;
         }
 
         .musicexp-imgbox {
@@ -1233,6 +1434,80 @@
             font-size: 14px !important;
         }
 
+        .carts-btn {
+            padding: 11px 40px !important;
+            font-size: 18px;
+        }
+
+        .coupon-text,
+        .breadcrumbs-typo {
+            width: 270px !important;
+        }
+
+        .our-cardimg {
+            height: 296px;
+        }
+
+        .siteinfo-card {
+            padding: 30px 0 !important;
+        }
+
+        .whychoose-box,
+        .siteinfo-box {
+            background-color: #c9cdcf !important;
+            display: inline-block;
+            padding: 8px !important;
+            border-radius: 50%;
+            margin-bottom: 24px;
+        }
+
+        .siteinfo-box {
+            padding: 8px !important;
+            margin-bottom: 24px;
+        }
+
+
+        .siteinfo-iconebtn {
+            background-color: rgb(0, 0, 0) !important;
+            padding: 12px !important;
+        }
+
+
+        .siteinfo-icone {
+            font-size: 30px !important;
+        }
+
+        .siteinfo-typography1 {
+            font-size: 24px !important;
+        }
+
+        .siteinfo-typography2 {
+            font-size: 15px !important;
+        }
+
+        .siteinfo-card {
+            padding: 11px !important;
+        }
+
+        .teamcards .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            color: var(--secondary-color);
+        }
+
+        .ourstory-container {
+            max-width: 980px;
+            margin-left: 18px;
+            padding-left: 12px;
+        }
+
+        .ourstory-title {
+            font-size: 30px !important;
+        }
+
+        .ourstory-summary {
+            font-size: 17px !important;
+        }
     }
 
     /* xl */
@@ -1289,7 +1564,7 @@
         }
 
         .teamname {
-            font-size: 34px !important;
+            font-size: 28px !important;
         }
 
         .teamrole {
@@ -1409,6 +1684,40 @@
         #product-detail .my-custome-button {
             padding: 10px 49px;
         }
+
+        .carts-btn {
+            padding: 11px 48px !important;
+        }
+
+        .coupon-text {
+            width: 280px !important;
+        }
+
+        .our-cardimg {
+            height: 356px;
+        }
+
+        #about-whychoosus {
+            margin-top: 120px !important;
+        }
+
+        .ourstory-container {
+            max-width: 1170px;
+            margin-left: 30px;
+            padding-left: 12px;
+        }
+
+        .ourstory-title {
+            font-size: 40px !important;
+        }
+
+        .ourstory-summary {
+            font-size: 18px !important;
+        }
+
+        .siteinfo-card {
+        padding: 30px 0  !important;
+    }
     }
 
     /* xxl */
@@ -1437,4 +1746,15 @@
             right: 15%;
         }
 
+        .coupon-text {
+            width: 380px !important;
+        }
+
+        .ourstory-container {
+            /* max-width: 1360px; */
+            margin: 0 40px;
+            margin-right: 0;
+            padding: 0 12px;
+            padding-right: 0;
+        }
     }

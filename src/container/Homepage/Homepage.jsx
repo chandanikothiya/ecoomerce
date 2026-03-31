@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid as SwiperGrid } from 'swiper/modules';
 import 'swiper/css';
 import { Autoplay, Navigation } from "swiper/modules";
+import { Pagination as Swiperpagination } from 'swiper/modules';
+import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
 import Rating from '@mui/material/Rating';
@@ -34,6 +36,8 @@ function Homepage() {
     const [bestsellp, setBestsellp] = useState([])
     const [elecategory, setElecategory] = useState([])
     const [products, setProducts] = useState([]);
+    const [isMobile, setIsMobile] = useState(false);
+    console.log("mobile", isMobile)
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -56,7 +60,13 @@ function Homepage() {
             image: '../../../public/assets/images/hero/hero2.png',
             subtitle1: 'Samsung Q90R 4K QLED',
             title3: 'Up to 10% off Voucher',
-        }
+        },
+        {
+            image: '../../../public/assets/images/hero/hero1.png',
+            subtitle1: 'iPhone 14 Series',
+            title3: 'Up to 10% off Voucher',
+        },
+
     ]
 
 
@@ -77,6 +87,15 @@ function Homepage() {
         fetch('http://localhost:3000/products')
             .then(response => response.json())
             .then(data => setProducts(data))
+
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768); // now will correctly count 768
+        };
+
+        checkMobile(); // run once after mount to get correct value
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+
     }, [])
 
 
@@ -104,14 +123,40 @@ function Homepage() {
         },
     });
 
+    // const menuItems = [
+    //     "Woman’s Fashion",
+    //     "Men’s Fashion",
+    //     "Electronics",
+    //     "Home & Lifestyle",
+    //     "Medicine",
+    //     "Sports & Outdoor",
+    //     "Baby’s & Toys",
+    //     "Groceries & Pets",
+    //     "Health & Beauty",
+    // ];
+
+    const menuItems = [
+        { name: "Woman’s Fashion", subcategories: ["Dresses", "Tops", "Shoes"] },
+        { name: "Men’s Fashion", subcategories: ["Shirts", "Pants", "Shoes"] },
+        { name: "Electronics", subcategories: [] },
+        { name: "Home & Lifestyle", subcategories: [] },
+        { name: "Medicine", subcategories: [] },
+        { name: "Sports & Outdoor", subcategories: ["Fitness", "Camping"] },
+        { name: "Baby’s & Toys", subcategories: [] },
+        { name: "Groceries & Pets", subcategories: [] },
+        { name: "Health & Beauty", subcategories: [] },
+    ];
+
+    //console.log(menuItems.name)
+
     return (
         <>
             <main>
                 <section className="hero">
                     <div className="container">
                         <Grid container alignItems="stretch">
-                            <Grid size={{ xs: 12, sm: 4, md: 3, lg: 2 }}>
-                                <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
+                            <Grid size={{ xs: 12, sm: 12, md: 3, lg: 2 }}>
+                                {/* <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
                                     <MenuList className="heroleft-menu">
                                         <MenuItem className="my-custome-list">
                                             <ListItemText
@@ -205,122 +250,54 @@ function Homepage() {
                                         </MenuItem>
                                     </MenuList>
 
-                                    {/* <Box>
-                                        <AppBar position="static">
-                                            <Toolbar>
-                                                <IconButton
-                                                    size="large"
-                                                    edge="start"
-                                                    aria-label="menu"
-                                                    onClick={() => setShowNavigation((prev) => !prev)}
-                                                >
-                                                    <Typography>View all Category</Typography>
-                                                </IconButton>
-                                            </Toolbar>
-                                        </AppBar>
-                                        <Drawer
-                                            anchor="top"
-                                            open={showNavigation}
-                                            onClose={() => setShowNavigation(false)}
-                                            disablePortal
+                                 
+                                </Box> */}
+
+                                <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
+                                    {isMobile ? (
+                                        <Swiper
+                                            slidesPerView="auto"
+                                            spaceBetween={10}
+                                            freeMode={true}
                                         >
-                                            <MenuList className="heroleft-menu">
-                                                <MenuItem className="my-custome-list">
+                                            {menuItems.map((item, index) => (
+                                                <SwiperSlide key={index} style={{ width: 'auto' }}>
+                                                    <Box sx={{
+                                                        p: 1,
+                                                        border: '1px solid #ddd',
+                                                        borderRadius: 1,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        minWidth: '120px'
+                                                    }}>
+                                                        <Typography variant="body2">{item.name}</Typography>
+                                                        {item.subcategories.length > 0 ? <IconButton sx={{ p: 0, ml:1 }}>
+                                                            <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
+                                                        </IconButton> : ""}
+                                                    </Box>
+                                                </SwiperSlide>
+                                            ))}
+                                        </Swiper>
+                                    ) : (
+                                        <MenuList className="heroleft-menu">
+                                            {menuItems.map((item, index) => (
+                                                <MenuItem key={index} className="my-custome-list">
                                                     <ListItemText
-                                                        id="basic-button"
-                                                        aria-controls={open ? 'basic-menu' : undefined}
-                                                        aria-haspopup="true"
-                                                        aria-expanded={open ? 'true' : undefined}
-                                                        onClick={handleClick}
                                                         sx={{ width: "100%", display: 'flex', justifyContent: 'space-between' }}
                                                     >
-                                                        Woman’s Fashion
-                                                        <IconButton sx={{ p: 0, ml: 2 }} >
-                                                            <ArrowForwardIosIcon sx={{ fontSize: '16px' }} />
-                                                        </IconButton>
+                                                        {item.name}
+                                                        {item.subcategories.length > 0 ? <IconButton sx={{ p: 0, ml: 2 }}>
+                                                            <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
+                                                        </IconButton> : ""}
                                                     </ListItemText>
-                                                    <Menu
-                                                        id="basic-menu"
-                                                        anchorEl={anchorEl}
-                                                        open={open}
-                                                        onClose={handleClose}
-                                                        slotProps={{
-                                                            list: {
-                                                                'aria-labelledby': 'basic-button',
-                                                            },
-                                                        }}
-                                                        anchorOrigin={{
-                                                            vertical: 'top',
-                                                            horizontal: 'right',
-                                                        }}
-
-                                                    >
-                                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                                    </Menu>
                                                 </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText
-                                                        id="basic-button"
-                                                        aria-controls={open ? 'basic-menu' : undefined}
-                                                        aria-haspopup="true"
-                                                        aria-expanded={open ? 'true' : undefined}
-                                                        onClick={handleClick}
-                                                    >
-                                                        <Typography>Men’s Fashion</Typography>
-                                                        <IconButton sx={{ p: 0 }} >
-                                                            <ArrowForwardIosIcon sx={{ fontSize: '16px' }} />
-                                                        </IconButton>
-                                                    </ListItemText>
-                                                    <Menu
-                                                        id="basic-menu"
-                                                        anchorEl={anchorEl}
-                                                        open={open}
-                                                        onClose={handleClose}
-                                                        slotProps={{
-                                                            list: {
-                                                                'aria-labelledby': 'basic-button',
-                                                            },
-                                                        }}
-                                                        anchorOrigin={{
-                                                            vertical: 'top',
-                                                            horizontal: 'right',
-                                                        }}
-
-                                                    >
-                                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                                    </Menu>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Electronics</ListItemText>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Home & Lifestyle</ListItemText>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Medicine</ListItemText>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Sports & Outdoor</ListItemText>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Baby’s & Toys</ListItemText>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Groceries & Pets</ListItemText>
-                                                </MenuItem>
-                                                <MenuItem className="my-custome-list">
-                                                    <ListItemText>Health & Beauty</ListItemText>
-                                                </MenuItem>
-                                            </MenuList>
-                                        </Drawer>
-                                    </Box> */}
+                                            ))}
+                                        </MenuList>
+                                    )}
                                 </Box>
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 8, md: 9, lg: 10 }} className="gridhero-rigth">
+                            <Grid size={{ xs: 12, sm: 12, md: 9, lg: 10 }} className="gridhero-rigth">
                                 <Box className="hero-rigth" sx={{ height: '100%' }}>
                                     <Swiper
                                         onSlideChange={() => console.log('slide change')}
@@ -332,18 +309,25 @@ function Homepage() {
                                         pagination={{
                                             clickable: true,
                                         }}
-                                        modules={[Autoplay, Pagination, Navigation]}
+                                        modules={[Autoplay, Swiperpagination]}
+                                        style={{
+                                            "--swiper-pagination-color": "#DB4444",
+                                            "--swiper-pagination-bullet-inactive-color": "#999999",
+                                            "--swiper-pagination-bullet-inactive-opacity": "1",
+                                            "--swiper-pagination-bullet-size": "10px",
+                                            "--swiper-pagination-bullet-horizontal-gap": "10px"
+                                        }}
                                     >
                                         {
                                             obj.map((v, i) => (
                                                 <SwiperSlide key={i} sx={{ height: '100%' }}>
                                                     <Box sx={{
                                                         bgcolor: 'black', color: 'white', display: 'flex', alignItems: 'center', padding: '16px 50px', flexWrap: {
-                                                            sm: 'wrap',
+                                                            sm: 'nowrape',
                                                             md: 'nowrap'
                                                         }, justifyContent: 'center', rowGap: '10px'
                                                     }}>
-                                                        <img src={v.image} alt="" className="heroimage img2hero" />
+                                                        {/* <img src={v.image} alt="" className="heroimage img2hero" /> */}
 
                                                         <Box className="hero-text" >
                                                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -367,7 +351,9 @@ function Homepage() {
 
                                                             <a href="#" >Shop Now</a><ArrowForwardIcon sx={{ fontSize: '20px', ml: { sm: 0, md: 0.5 } }} />
                                                         </Box>
-                                                        <img src={v.image} alt="" className="heroimage img1hero" />
+                                                        <Box>
+                                                            <img src={v.image} alt="" />
+                                                        </Box>
                                                     </Box>
                                                 </SwiperSlide>
                                             ))
@@ -390,7 +376,7 @@ function Homepage() {
                         </Box>
 
                         <Box sx={{
-                            display: 'flex', alignItems: 'end', mt: 2, columnGap:{xs:5,md:5,lg:10}, position: 'relative',
+                            display: 'flex', alignItems: 'end', mt: 2, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
                             flexWrap: {
                                 xs: 'wrap',
                                 sm: 'nowrap'
@@ -487,10 +473,10 @@ function Homepage() {
                                                             bgcolor: 'black', width: "100%", color: 'white', display: 'none',
                                                             textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
                                                             bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px',
-                                                            fontSize:{
-                                                                xs:'12px',
-                                                                sm:'16px',
-                                                                md:'16px'
+                                                            fontSize: {
+                                                                xs: '12px',
+                                                                sm: '16px',
+                                                                md: '16px'
                                                             }
                                                         }}
                                                     >
@@ -499,7 +485,7 @@ function Homepage() {
                                                 </Box>
 
 
-                                                <CardContent sx={{ outline: 0 ,padding:0,pt:{xs:3.5,md:3}}}>
+                                                <CardContent sx={{ outline: 0, padding: 0, pt: { xs: 3.5, md: 3 } }}>
                                                     <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                         {v.name}
                                                     </Typography>
@@ -593,7 +579,6 @@ function Homepage() {
                 </section>
 
                 <hr />
-
 
                 {/* category section */}
 
@@ -842,7 +827,7 @@ function Homepage() {
                         <Box sx={{ position: 'relative', mt: 2 }}>
                             <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
 
-                            <Box sx={{ width: '100%', marginTop: {xs:'20px',sm:'45px'} }}>
+                            <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '45px' } }}>
                                 <Swiper
                                     // slidesPerView={4}
                                     // grid={{ rows: 2, fill: "row" }}
@@ -872,7 +857,7 @@ function Homepage() {
                                         },
                                         768: {
                                             slidesPerView: 3,
-                                           grid: {
+                                            grid: {
                                                 rows: 2,
                                                 fill: "row"
                                             },
@@ -924,7 +909,6 @@ function Homepage() {
                                                             title="productimg"
 
                                                         />
-
 
                                                         <Typography
                                                             className="addcart"
@@ -1052,118 +1036,123 @@ function Homepage() {
 
 
                 {/* new arraival fecutre section */}
-                <section id="newarrival">
-                    <div className="container" >
-                        <Box className="todays-title">
-                            <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }}>Featured</Typography>
-                        </Box>
+                <ThemeProvider theme={theme}>
+                    <section id="newarrival">
+                        <div className="container" >
+                            <Box className="todays-title">
+                                <i className="fa-solid fa-square"></i>
+                                <Typography sx={{ fontWeight: 600 }}>Featured</Typography>
+                            </Box>
 
-                        <Box sx={{ position: 'relative', mt: 2, mb: 5 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">New Arrival</Typography>
-                        </Box>
+                            <Box sx={{ position: 'relative', mt: 2, mb: 5 }}>
+                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">New Arrival</Typography>
+                            </Box>
 
-                        <Box >
-                            <Grid container columnSpacing={{ xs: 10, sm: 0, md: 4, lg: 8, xl: 4 }} rowSpacing={4} alignItems="stretch" sx={{ height: "100%" }} >
+                            <Box >
+                                <Grid container columnSpacing={{ xs: 10, sm: 0, md: 4, lg: 8, xl: 4 }} rowSpacing={4} alignItems="stretch" sx={{ height: "100%" }} >
 
-                                <Grid size={{ xs: 12, md: 6, lg: 6 }} sx={{ overflow: 'hidden' }}>
-                                    <Box className='newarrival-grid-box' >
-                                        <img src="../../../public/assets/images/newarrival/playstation.png" alt="" />
-
-                                        <div className="newarrival-grid-box-text">
-                                            <Typography variant="h5" sx={{
-                                                fontWeight: 600, fontSize: {
-                                                    xs: '16px', sm: '24px'
-                                                }
-                                            }}>PlayStation 5</Typography>
-                                            <Typography variant="body2" sx={{
-                                                fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "16px 0" },
-                                                fontSize: {
-                                                    xs: '12px',
-                                                    sm: "16px"
-                                                }
-                                            }}>Black and White version of the PS5 coming out on sale.</Typography>
-                                            <a href="#">Shop Now</a>
-                                        </div>
-                                    </Box>
-                                </Grid>
-
-
-                                <Grid size={{ sx: 12, md: 6 }} container display="flex" >
-                                    <Grid size={12} >
-                                        <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
-                                            <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
+                                    <Grid size={{ xs: 12, md: 6, lg: 6 }} sx={{ overflow: 'hidden' }}>
+                                        <Box className='newarrival-grid-box' >
+                                            <img src="../../../public/assets/images/newarrival/playstation.png" alt="" className="firstimg-new" />
 
                                             <div className="newarrival-grid-box-text">
                                                 <Typography variant="h5" sx={{
                                                     fontWeight: 600, fontSize: {
-                                                        xs: '16px', sm: '24px'
+                                                        xs: '16px', sm: '20px', md: '24px'
                                                     }
-                                                }}>Women’s Collections</Typography>
+                                                }}>PlayStation 5</Typography>
                                                 <Typography variant="body2" sx={{
-                                                    fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "16px 0" },
+                                                    fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "6px 0", md: '16px 0' },
                                                     fontSize: {
                                                         xs: '12px',
-                                                        sm: "16px"
+                                                        sm: "12px",
+                                                        md: '16px'
                                                     }
-                                                }}>Featured woman collections that give you another vibe.</Typography>
+                                                }}>Black and White version of the PS5 coming out on sale.</Typography>
                                                 <a href="#">Shop Now</a>
                                             </div>
                                         </Box>
                                     </Grid>
 
 
-                                    <Grid container columnSpacing={{ xs: 0, sm: 2, lg: 4, xl: 4 }} display="flex" size={12}>
-                                        <Grid size={{ xs: 12, sm: 6 }} >
-                                            <Box className='newarrival-grid-box lastbox'>
-                                                <img src="../../../public/assets/images/newarrival/speaker.png" alt="" />
+                                    <Grid size={{ sx: 12, md: 6 }} container display="flex" >
+                                        <Grid size={12} >
+                                            <Box className='newarrival-grid-box' sx={{ display: 'flex', paddingRight: '0' }}>
+                                                <img src="../../../public/assets/images/newarrival/womens-collection.png" alt="" style={{ marginLeft: "auto" }} />
 
                                                 <div className="newarrival-grid-box-text">
                                                     <Typography variant="h5" sx={{
                                                         fontWeight: 600, fontSize: {
-                                                            xs: '16px', sm: '24px'
+                                                            xs: '16px', sm: '20px', md: '24px'
                                                         }
-                                                    }}>Speakers</Typography>
+                                                    }}>Women’s Collections</Typography>
                                                     <Typography variant="body2" sx={{
-                                                        fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "16px 0" },
+                                                        fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "6px 0", md: '16px 0' },
                                                         fontSize: {
                                                             xs: '12px',
-                                                            sm: "16px"
+                                                            sm: "12px",
+                                                            md: '16px'
                                                         }
-                                                    }}>Amazon wireless speakers</Typography>
+                                                    }}>Featured woman collections that give you another vibe.</Typography>
                                                     <a href="#">Shop Now</a>
                                                 </div>
                                             </Box>
                                         </Grid>
 
-                                        <Grid size={{ xs: 12, sm: 6 }} >
-                                            <Box className='newarrival-grid-box lastbox'>
-                                                <img src="../../../public/assets/images/newarrival/perfume.png" alt="" />
 
-                                                <div className="newarrival-grid-box-text">
-                                                    <Typography variant="h5" sx={{
-                                                        fontWeight: 600, fontSize: {
-                                                            xs: '16px', sm: '24px'
-                                                        }
-                                                    }}>Perfume</Typography>
-                                                    <Typography variant="body2" sx={{
-                                                        fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "16px 0" },
-                                                        fontSize: {
-                                                            xs: '12px',
-                                                            sm: "16px"
-                                                        }
-                                                    }}>GUCCI INTENSE OUD EDP</Typography>
-                                                    <a href="#">Shop Now</a>
-                                                </div>
-                                            </Box>
+                                        <Grid container columnSpacing={{ xs: 0, sm: 2, lg: 4, xl: 4 }} display="flex" size={12}>
+                                            <Grid size={{ xs: 12, sm: 6 }} >
+                                                <Box className='newarrival-grid-box lastbox'>
+                                                    <img src="../../../public/assets/images/newarrival/speaker.png" alt="" />
+
+                                                    <div className="newarrival-grid-box-text">
+                                                        <Typography variant="h5" sx={{
+                                                            fontWeight: 600, fontSize: {
+                                                                xs: '16px', sm: '20px', md: '24px'
+                                                            }
+                                                        }}>Speakers</Typography>
+                                                        <Typography variant="body2" sx={{
+                                                            fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "6px 0", md: '16px 0' },
+                                                            fontSize: {
+                                                                xs: '12px',
+                                                                sm: "12px",
+                                                                md: '16px'
+                                                            }
+                                                        }}>Amazon wireless speakers</Typography>
+                                                        <a href="#">Shop Now</a>
+                                                    </div>
+                                                </Box>
+                                            </Grid>
+
+                                            <Grid size={{ xs: 12, sm: 6 }} >
+                                                <Box className='newarrival-grid-box lastbox'>
+                                                    <img src="../../../public/assets/images/newarrival/perfume.png" alt="" />
+
+                                                    <div className="newarrival-grid-box-text">
+                                                        <Typography variant="h5" sx={{
+                                                            fontWeight: 600, fontSize: {
+                                                                xs: '16px', sm: '20px', md: '24px'
+                                                            }
+                                                        }}>Perfume</Typography>
+                                                        <Typography variant="body2" sx={{
+                                                            fontWeight: '400', maxWidth: '242px', margin: { xs: "5px 0", sm: "6px 0", md: '16px 0' },
+                                                            fontSize: {
+                                                                xs: '12px',
+                                                                sm: "12px",
+                                                                md: '16px'
+                                                            }
+                                                        }}>GUCCI INTENSE OUD EDP</Typography>
+                                                        <a href="#">Shop Now</a>
+                                                    </div>
+                                                </Box>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                        </Box>
-                    </div>
-                </section>
-
+                            </Box>
+                        </div>
+                    </section>
+                </ThemeProvider>
 
                 {/* why choose us */}
                 <ThemeProvider theme={theme}>

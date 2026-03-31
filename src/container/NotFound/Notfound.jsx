@@ -18,7 +18,7 @@ function Notfound() {
                         >
                             Home
                         </Link>
-                        <Typography sx={{ color: 'text.primary' }}>404 Error</Typography>
+                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">404 Error</Typography>
                     </Breadcrumbs>
 
                     <Typography variant="h1" sx={{ fontWeight: 600, textAlign: 'center', mt: 10 }}>404 Not Found</Typography>

@@ -44,7 +44,7 @@ function Footer() {
                                 <Typography variant="subtitle1" sx={{ mt: 1, mb: 1, fontWeight: 500, fontSize:{xs:'16px', sm:'20px'} }}>Subscribe</Typography>
                                 <Typography variant="subtitle1" sx={{ fontSize: {xs:'13px', sm:'16px'} }}>Get 10% off your first order</Typography>
 
-                                <form className="footerform" style={{ marginTop: '16px' }}>
+                                <form className="footerform" style={{ marginTop: '16px',maxWidth:'250px' }}>
                                     <input type="email" name="subemali" id="subemail" placeholder="Enter Email" />
                                     <SendOutlinedIcon sx={{ mr: 1, my: 0.5 }} />
                                 </form>

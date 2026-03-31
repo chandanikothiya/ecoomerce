@@ -152,8 +152,6 @@ a:hover {
     border: none;
 }
 
-
-
 .my-custome-text {
     font-weight: 400 !important;
     margin-top: 16px !important;
@@ -188,21 +186,15 @@ a:hover {
 /* homepage */
 
 
-
-
 .hero-left {
     border-right: solid 1px rgb(224, 222, 224);
 }
-
-
-
 
 
 .hero {
     /* height: 70vh; */
     margin-top: 0;
 }
-
 
 
 .hero .my-custome-list {
@@ -219,8 +211,19 @@ a:hover {
 .swiper,
 .swiper-slide {
     height: 100%;
-
 }
+
+/* .gridhero-rigth  .swiper-pagination-bullet{
+    background-color: rgb(143, 139, 139) !important;
+    opacity:unset !important;
+    height: 10px;
+    width: 10px;
+}
+ 
+.gridhero-rigth .swiper-pagination-bullet-active {
+    background-color: var(--secondary-color) !important;
+    border:1px solid white;
+} */
 
 .todays .swiper-slide,
 #bestsellingproduct .swiper-slide {
@@ -595,10 +598,7 @@ hr {
 
 
 .teamcards .swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
     color: var(--secondary-color);
-
 }
 
 .teamcards .swiper-pagination-bullet-active {
@@ -854,4 +854,9 @@ hr {
     inset: 0;
     background: rgba(0,0,0,0.35);
     z-index: 1;
+} */
+
+/* .ourstory-container{
+    margin-right: 0 !important;
+    padding-right: 0 !important;
 } */

@@ -120,7 +120,7 @@ function Cart() {
                         >
                             Home
                         </Link>
-                        <Typography sx={{ color: 'text.primary' }}>Cart</Typography>
+                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Cart</Typography>
                     </Breadcrumbs>
 
 
@@ -140,7 +140,7 @@ function Cart() {
                         disableRowSelectionOnClick
                         checkboxSelection={false}
                         sx={{
-                            '&, [class^=MuiDataGrid]': { border: 'none' }, mt: 5,
+                            '&, [class^=MuiDataGrid]': { border: 'none' }, mt: 3,
                             '  & .MuiDataGrid-columnHeaders': {
                                 borderBottom: 'none',
                                 '& .MuiDataGrid-columnSeparator': {
@@ -152,17 +152,17 @@ function Cart() {
                         }} //target every grid's child element with a class attribute that starts with MuiDataGrid
                     />
 
-                    <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
-                        <button className="my-custome-button">Return To Shope</button>
-                        <button className="my-custome-button">Update Cart</button>
+                    <Box sx={{ display: 'flex', justifyContent: "space-between"}}>
+                        <button className="my-custome-button carts-btn">Return To Shope</button>
+                        <button className="my-custome-button carts-btn">Update Cart</button>
                     </Box>
 
 
 
-                    <Grid container id="coupon" sx={{ mt: 10 }} spacing={{ xs: 0, sm: 10, md: 4, lg: 10, xl: 6 }} rowSpacing={5}>
+                    <Grid container id="coupon" sx={{ mt: 10 }} spacing={{ xs: 0, sm:5, md: 4, lg: 10, xl: 6 }} rowSpacing={5}>
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <form>
-                                <Box sx={{ display: 'flex', gap: 3 }} className="cart-coupon-box">
+                                <Box sx={{ display: 'flex', gap:{xs:3,md:0,lg:3} }} className="cart-coupon-box">
                                     <TextField id="outlined-basic" className="coupon-text" label="Outlined" variant="outlined" sx={{ width: { xs: '56%', lg: '280px', xl: '350px' } }} />
                                     <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                 </Box>
@@ -195,7 +195,7 @@ function Cart() {
                                     <Typography>$1750</Typography>
                                 </Box>
 
-                                <button className="my-custome-button cardototal-btn" style={{ margin: '32px auto 0 auto ' }}>Procees to checkout</button>
+                                <button className="my-custome-button cardototal-btn" >Procees to checkout</button>
                             </Box>
                         </Grid>
                     </Grid>
