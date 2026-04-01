@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { AppBar, Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, createTheme, Drawer, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, ThemeProvider, Toolbar, Typography } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { AppBar, Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, createTheme, Drawer, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, ThemeProvider, Toolbar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import '../../../public/assets/style/headerfooter.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AppleIcon from '@mui/icons-material/Apple';
@@ -28,6 +28,8 @@ import VideogameAssetOutlinedIcon from '@mui/icons-material/VideogameAssetOutlin
 import LaptopMacOutlinedIcon from '@mui/icons-material/LaptopMacOutlined';
 import { green } from "@mui/material/colors";
 import MenuIcon from "@mui/icons-material/Menu";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { FaArrowLeftLong } from "react-icons/fa6";
 
 
 function Homepage() {
@@ -36,16 +38,28 @@ function Homepage() {
     const [bestsellp, setBestsellp] = useState([])
     const [elecategory, setElecategory] = useState([])
     const [products, setProducts] = useState([]);
-    const [isMobile, setIsMobile] = useState(false);
-    console.log("mobile", isMobile)
+    // const [isMobile, setIsMobile] = useState(false);
+    //console.log("mobile", isMobile)
+    const theme1 = useTheme();
 
-    const [anchorEl, setAnchorEl] = useState(null);
+    // ✅ Use MUI breakpoint (BEST PRACTICE)
+    const isMobile = useMediaQuery(theme1.breakpoints.down("md"));
+    const [selectedColors, setSelectedColors] = useState({});
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [activeIndex, setActiveIndex] = React.useState(null);
+
     const open = Boolean(anchorEl);
-    const handleClick = (event) => {
+
+    const handleClick = (event, index) => {
         setAnchorEl(event.currentTarget);
+        setActiveIndex(index);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+        setActiveIndex(null);
     };
 
     const [showNavigation, setShowNavigation] = useState(false);
@@ -69,6 +83,17 @@ function Homepage() {
 
     ]
 
+    const prevRef1 = useRef(null);
+    const nextRef1 = useRef(null);
+
+    const prevRef2 = useRef(null);
+    const nextRef2 = useRef(null);
+
+    const prevRef3 = useRef(null);
+    const nextRef3 = useRef(null);
+
+    const [swiperInstance, setSwiperInstance] = useState(null);
+
 
     useEffect(() => {
         fetch('http://localhost:3000/flashsale')
@@ -88,15 +113,27 @@ function Homepage() {
             .then(response => response.json())
             .then(data => setProducts(data))
 
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 768); // now will correctly count 768
-        };
+        // const defaultColors = {};
 
-        checkMobile(); // run once after mount to get correct value
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        // products.forEach((v) => {
+        //     if (v.colors?.length) {
+        //         defaultColors[v.id] = products.colors[0];
+        //     }
+        // });
+
+        // setSelectedColors(defaultColors);
 
     }, [])
+
+    useEffect(() => {
+        if (swiperInstance && prevRef3.current && nextRef3.current) {
+            swiperInstance.params.navigation.prevEl = prevRef3.current;
+            swiperInstance.params.navigation.nextEl = nextRef3.current;
+
+            swiperInstance.navigation.init();
+            swiperInstance.navigation.update();
+        }
+    }, [swiperInstance]);
 
 
     const caticone = {
@@ -147,6 +184,13 @@ function Homepage() {
         { name: "Health & Beauty", subcategories: [] },
     ];
 
+    const colors = [
+        { name: "Red", value: "#ff0000" },
+        { name: "Blue", value: "#0000ff" },
+        { name: "Black", value: "#000000" },
+        { name: "White", value: "#ffffff" },
+    ];
+
     //console.log(menuItems.name)
 
     return (
@@ -154,9 +198,10 @@ function Homepage() {
             <main>
                 <section className="hero">
                     <div className="container">
-                        <Grid container alignItems="stretch">
-                            <Grid size={{ xs: 12, sm: 12, md: 3, lg: 2 }}>
-                                {/* <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
+                        <ThemeProvider theme={theme}>
+                            <Grid container alignItems="stretch" rowSpacing={3}>
+                                <Grid size={{ xs: 12, sm: 12, md: 3, lg: 2 }}>
+                                    {/* <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
                                     <MenuList className="heroleft-menu">
                                         <MenuItem className="my-custome-list">
                                             <ListItemText
@@ -253,7 +298,7 @@ function Homepage() {
                                  
                                 </Box> */}
 
-                                <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
+                                    {/* <Box className="hero-left" sx={{ p: '25px 20px 0 0' }}>
                                     {isMobile ? (
                                         <Swiper
                                             slidesPerView="auto"
@@ -271,10 +316,50 @@ function Homepage() {
                                                         justifyContent: 'space-between',
                                                         minWidth: '120px'
                                                     }}>
-                                                        <Typography variant="body2">{item.name}</Typography>
-                                                        {item.subcategories.length > 0 ? <IconButton sx={{ p: 0, ml:1 }}>
+
+                                                        {item.subcategories.length > 0 ?
+                                                            <>
+                                                                <Typography
+                                                                    id="demo-positioned-button"
+                                                                    aria-controls={open ? 'demo-positioned-menu' : undefined}
+                                                                    aria-haspopup="true"
+                                                                    aria-expanded={open ? 'true' : undefined}
+                                                                    onClick={handleClick}
+                                                                    sx={{ fontSize: '14px' }}
+                                                                >
+                                                                    {item.name}
+                                                                </Typography>
+                                                                <Menu
+                                                                    id="demo-positioned-menu"
+                                                                    aria-labelledby="demo-positioned-button"
+                                                                    anchorEl={anchorEl}
+                                                                    open={open}
+                                                                    onClose={handleClose}
+                                                                    anchorOrigin={{
+                                                                        vertical: 'top',
+                                                                        horizontal: 'left',
+                                                                    }}
+                                                                    transformOrigin={{
+                                                                        vertical: 'top',
+                                                                        horizontal: 'left',
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        item.subcategories.map((v, i) => (
+                                                                            <MenuItem onClick={handleClose}>{v}</MenuItem>
+                                                                        ))
+                                                                    }
+
+                                                                    
+                                                                </Menu>
+                                                            </>
+                                                            : <Typography variant="body2">{item.name}</Typography>}
+
+                                                        {item.subcategories.length > 0 ? <IconButton sx={{ p: 0, ml: 1 }}>
                                                             <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
                                                         </IconButton> : ""}
+
+                                                       
                                                     </Box>
                                                 </SwiperSlide>
                                             ))}
@@ -295,74 +380,244 @@ function Homepage() {
                                             ))}
                                         </MenuList>
                                     )}
-                                </Box>
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 12, md: 9, lg: 10 }} className="gridhero-rigth">
-                                <Box className="hero-rigth" sx={{ height: '100%' }}>
-                                    <Swiper
-                                        onSlideChange={() => console.log('slide change')}
-                                        onSwiper={(swiper) => console.log(swiper)}
-                                        autoplay={{
-                                            delay: 2500,
-                                            disableOnInteraction: false,
-                                        }}
-                                        pagination={{
-                                            clickable: true,
-                                        }}
-                                        modules={[Autoplay, Swiperpagination]}
-                                        style={{
-                                            "--swiper-pagination-color": "#DB4444",
-                                            "--swiper-pagination-bullet-inactive-color": "#999999",
-                                            "--swiper-pagination-bullet-inactive-opacity": "1",
-                                            "--swiper-pagination-bullet-size": "10px",
-                                            "--swiper-pagination-bullet-horizontal-gap": "10px"
-                                        }}
-                                    >
-                                        {
-                                            obj.map((v, i) => (
-                                                <SwiperSlide key={i} sx={{ height: '100%' }}>
-                                                    <Box sx={{
-                                                        bgcolor: 'black', color: 'white', display: 'flex', alignItems: 'center', padding: '16px 50px', flexWrap: {
-                                                            sm: 'nowrape',
-                                                            md: 'nowrap'
-                                                        }, justifyContent: 'center', rowGap: '10px'
-                                                    }}>
-                                                        {/* <img src={v.image} alt="" className="heroimage img2hero" /> */}
+                                </Box> */}
 
-                                                        <Box className="hero-text" >
-                                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                                {v.subtitle1.includes('iPhone') ? <AppleIcon sx={{ fontSize: '35px' }} /> : ''}
-                                                                <Typography variant="subtitle1">{v.subtitle1}</Typography>
+                                    <Box className="hero-left" sx={{ p: { xs: '25px 0 0 0', md: "25px 20px 0 0" }, borderRight: { xs: 'none', md: 'solid 1px rgb(224, 222, 224)' } }}>
+                                        {/* ================= MOBILE (SWIPER) ================= */}
+                                        {isMobile ? (
+                                            <>
+                                                <Swiper key="mobile-swiper" slidesPerView="auto" spaceBetween={10} freeMode={true}>
+                                                    {menuItems.map((item, index) => (
+                                                        <SwiperSlide key={index} style={{ width: "auto" }}>
+                                                            <Box
+                                                                sx={{
+                                                                    p: { xs: '5px', sm: 1 },
+                                                                    border: "1px solid #ddd",
+                                                                    borderRadius: 1,
+                                                                    display: "flex",
+                                                                    alignItems: "center",
+                                                                    justifyContent: "space-between",
+                                                                    minWidth: "120px"
+                                                                }}
+                                                            >
+                                                                {item.subcategories.length > 0 ? (
+                                                                    <Typography
+                                                                        onClick={(e) => handleClick(e, index)}
+                                                                        sx={{ fontSize: { xs: "13px", sm: '16px' }, cursor: "pointer" }}
+                                                                    >
+                                                                        {item.name}
+                                                                    </Typography>
+                                                                ) : (
+                                                                    <Typography variant="body2" sx={{ fontSize: { xs: "13px", sm: '16px' } }}>
+                                                                        {item.name}
+                                                                    </Typography>
+                                                                )}
+
+                                                                {item.subcategories.length > 0 && (
+                                                                    <IconButton
+                                                                        sx={{ p: 0, ml: 1 }}
+                                                                        onClick={(e) => handleClick(e, index)}
+                                                                    >
+                                                                        <ArrowForwardIosIcon sx={{ fontSize: { xs: 12, sm: 16 } }} />
+                                                                    </IconButton>
+                                                                )}
                                                             </Box>
+                                                        </SwiperSlide>
+                                                    ))}
+                                                </Swiper>
 
-                                                            <Typography variant="h3" sx={{
-                                                                margin: {
-                                                                    md: '20px 0 20px 0',
-                                                                    sm: '10px 0 10px 0'
-                                                                }, letterSpacing: 2,
-                                                                fontSize: {
-                                                                    lg: '48px',
-                                                                    md: '30px',
-                                                                    sm: '25px'
+                                                {/* ✅ Mobile Submenu */}
+                                                <Menu
+                                                    anchorEl={anchorEl}
+                                                    open={open}
+                                                    onClose={handleClose}
+                                                    anchorOrigin={{
+                                                        vertical: "bottom",
+                                                        horizontal: "left"
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: "top",
+                                                        horizontal: "left"
+                                                    }}
+                                                >
+                                                    {activeIndex !== null &&
+                                                        menuItems[activeIndex]?.subcategories.map((sub, i) => (
+                                                            <MenuItem key={i} onClick={handleClose}>
+                                                                {typeof sub === "string" ? sub : sub.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Menu>
+                                            </>
+                                        ) : (
+                                            /* ================= DESKTOP ================= */
+                                            <>
+                                                <MenuList className="heroleft-menu">
+                                                    {menuItems.map((item, index) => (
+                                                        <MenuItem
+                                                            key={index}
+                                                            className="my-custome-list"
+                                                            onMouseEnter={(e) =>
+                                                                item.subcategories.length > 0 &&
+                                                                handleClick(e, index)
+                                                            }
+                                                            onMouseLeave={handleClose}
+                                                        >
+                                                            <Box
+                                                                sx={{
+                                                                    width: "100%",
+                                                                    display: "flex",
+                                                                    justifyContent: "space-between",
+                                                                    alignItems: "center"
+                                                                }}
+                                                            >
+                                                                <Typography variant="body2" sx={{ fontSize: { sm: "14px", md: '16px' }, cursor: "pointer" }}  >
+                                                                    {item.name}
+                                                                </Typography>
+
+                                                                {item.subcategories.length > 0 && (
+                                                                    <IconButton sx={{ p: 0, ml: 2 }}>
+                                                                        <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
+                                                                    </IconButton>
+                                                                )}
+                                                            </Box>
+                                                        </MenuItem>
+                                                    ))}
+                                                </MenuList>
+
+                                                {/* ✅ Desktop Submenu */}
+                                                <Menu
+                                                    anchorEl={anchorEl}
+                                                    open={open}
+                                                    onClose={handleClose}
+                                                    anchorOrigin={{
+                                                        vertical: "top",
+                                                        horizontal: "right"
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: "top",
+                                                        horizontal: "left"
+                                                    }}
+                                                    PaperProps={{
+                                                        sx: {
+                                                            minWidth: 180
+                                                        }
+                                                    }}
+                                                >
+                                                    {activeIndex !== null &&
+                                                        menuItems[activeIndex]?.subcategories.map((sub, i) => (
+                                                            <MenuItem key={i} onClick={handleClose} sx={{
+                                                                fontSize: '14px',
+                                                                '&:hover': {
+                                                                    fontSize: '14px' // keeps same on hover
                                                                 }
                                                             }}>
-                                                                {v.title3}
-                                                            </Typography>
+                                                                {typeof sub === "string" ? sub : sub.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Menu>
+                                            </>
+                                        )}
+                                    </Box>
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 12, md: 9, lg: 10 }} className="gridhero-rigth">
+                                    <Box className="hero-rigth" sx={{
+                                        height: '100%',
+                                        "& .swiper-pagination-bullet": {
+                                            width: { xs: "6px", sm: "8px", md: "10px" },
+                                            height: { xs: "6px", sm: "8px", md: "10px" },
+                                            gap: { xs: '8px', md: '10px' }
+                                        },
+                                        // "& .swiper-pagination": {
+                                        //     position: "absolute",
+                                        //     bottom: "10px",
+                                        //     left: "50%",
+                                        //     transform: "translateX(-50%)", // ✅ center
+                                        //     width: "auto",
+                                        // },
+                                    }}>
+                                        <Swiper
+                                            onSlideChange={() => console.log('slide change')}
+                                            onSwiper={(swiper) => console.log(swiper)}
+                                            autoplay={{
+                                                delay: 2500,
+                                                disableOnInteraction: false,
+                                            }}
+                                            pagination={{
+                                                clickable: true,
+                                            }}
+                                            modules={[Autoplay, Swiperpagination]}
+                                            style={{
+                                                "--swiper-pagination-color": "#DB4444",
+                                                "--swiper-pagination-bullet-inactive-color": "#999999",
+                                                "--swiper-pagination-bullet-inactive-opacity": "1",
+                                                // "--swiper-pagination-bullet-size": "10px",
+                                                // "--swiper-pagination-bullet-horizontal-gap": "10px"
+                                            }}
+                                        >
+                                            {
+                                                obj.map((v, i) => (
+                                                    <SwiperSlide key={i} sx={{ height: '100%' }}>
+                                                        <Box
+                                                            sx={{
+                                                                minHeight: {
+                                                                    lg: '380px',
+                                                                    md: '380px',
+                                                                    sm: '250px',
+                                                                    xs: '150px'
+                                                                },
+                                                                bgcolor: 'black',
+                                                                color: 'white',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                padding: { xs: '10px 15px', sm: '20px 50px', md: '16px 20px', lg: '16px 50px' },
+                                                                gap: { xs: 2, sm: 3 }
+                                                            }}
+                                                        >
+                                                            {/* <img src={v.image} alt="" className="heroimage img2hero" /> */}
 
-                                                            <a href="#" >Shop Now</a><ArrowForwardIcon sx={{ fontSize: '20px', ml: { sm: 0, md: 0.5 } }} />
+                                                            <Box className="hero-text" sx={{ flex: 1 }}>
+                                                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                                    {v.subtitle1.includes('iPhone') ? <AppleIcon sx={{ fontSize: { xs: '20px', sm: '30px', md: '35px' } }} /> : ''}
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '10px', sm: '14px', md: '16px' } }}>{v.subtitle1}</Typography>
+                                                                </Box>
+
+                                                                <Typography variant="h3" sx={{
+                                                                    margin: {
+                                                                        sm: '20px 0 20px 0',
+                                                                        xs: '10px 0 10px 0'
+                                                                    }, letterSpacing: 2,
+                                                                    fontSize: {
+                                                                        xl: '42px',
+                                                                        lg: '38px',
+                                                                        md: '28px',
+                                                                        sm: '25px',
+                                                                        xs: '13px'
+                                                                    }
+                                                                }}>
+                                                                    {v.title3}
+                                                                </Typography>
+
+                                                                <a href="#" className="hero-shop">Shop Now </a><ArrowForwardIcon sx={{ fontSize: { xs: '15px', sm: '20px' }, ml: { sm: 0, md: 0.5 } }} />
+                                                            </Box>
+                                                            <Box sx={{ maxWidth: { xs: '50%', sm: '50%', md: '55%', lg: '55%', xl: '90%' }, height: '100%' }}>
+                                                                <img src={v.image} alt="" className="hero-main-img" style={{
+                                                                    width: '100%',
+                                                                    height: 'auto',
+                                                                    objectFit: 'contain'
+                                                                }} />
+                                                            </Box>
+
                                                         </Box>
-                                                        <Box>
-                                                            <img src={v.image} alt="" />
-                                                        </Box>
-                                                    </Box>
-                                                </SwiperSlide>
-                                            ))
-                                        }
-                                    </Swiper>
-                                </Box>
+                                                    </SwiperSlide>
+                                                ))
+                                            }
+                                        </Swiper>
+                                    </Box>
+                                </Grid>
+
                             </Grid>
-
-                        </Grid>
+                        </ThemeProvider>
                     </div>
 
                 </section>
@@ -411,10 +666,19 @@ function Homepage() {
                     </div>
 
                     {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
-                    <div className="container" style={{ marginTop: '40px' }}>
+                    <Box className="container" sx={{ marginTop: { xs: '20px', sm: '40px' }, }}>
                         <Swiper
                             modules={[Navigation]}
-                            navigation={true}
+                            // navigation={true}
+                            navigation={{
+                                prevEl: prevRef1.current,
+                                nextEl: nextRef1.current,
+                            }}
+                            onBeforeInit={(swiper) => {
+                                swiper.params.navigation.prevEl = prevRef1.current;
+                                swiper.params.navigation.nextEl = nextRef1.current;
+                            }}
+
                             className="mySwiper"
                             loop={true}
                             breakpoints={{
@@ -435,6 +699,7 @@ function Homepage() {
                                     spaceBetween: 30,
                                 },
                             }}
+
 
                         >
                             {
@@ -522,10 +787,11 @@ function Homepage() {
                                                     </Box>
 
                                                     <Box sx={{
-                                                        bgcolor: '#DB4444', color: 'white', width: 'fit-content', padding: {
+                                                        bgcolor: '#DB4444', color: 'white', width: 'fit-content',
+                                                        padding: {
                                                             xs: '2px 8px',
                                                             sm: '2px 12px'
-                                                        }, borderRadius: 1, position: 'absolute', top: '3%'
+                                                        }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
                                                     }}>
                                                         <Typography variant="body2" sx={{
                                                             fontSize: {
@@ -548,8 +814,8 @@ function Homepage() {
                                                     <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
                                                         <FavoriteBorderIcon sx={{
                                                             fontSize: {
-                                                                xs: '15px',
-                                                                sx: '18px',
+                                                                xs: '12px',
+                                                                sm: '18px',
                                                                 md: '20px',
                                                                 lg: '24px'
                                                             },
@@ -558,8 +824,8 @@ function Homepage() {
                                                     <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
                                                         <RemoveRedEyeOutlinedIcon sx={{
                                                             fontSize: {
-                                                                xs: '15px',
-                                                                sx: '18px',
+                                                                xs: '12px',
+                                                                sm: '18px',
                                                                 md: '20px',
                                                                 lg: '24px'
                                                             },
@@ -573,7 +839,14 @@ function Homepage() {
                             }
 
                         </Swiper>
-                    </div>
+                        <button ref={prevRef1} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                            <FaArrowLeftLong />
+                        </button>
+
+                        <button ref={nextRef1} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                            <FaArrowRightLong />
+                        </button>
+                    </Box>
 
                     <a href="#" className="my-custome-button" >View More Product</a>
                 </section>
@@ -593,11 +866,18 @@ function Homepage() {
                             <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Browse By Category</Typography>
 
 
-                            <Box sx={{ marginTop: 5 }}>
+                            <Box sx={{ marginTop: { xs: '20px', sm: '40px' } }}>
                                 <Swiper
 
                                     modules={[Navigation]}
-                                    navigation={true}
+                                    navigation={{
+                                        prevEl: prevRef2.current,
+                                        nextEl: nextRef2.current,
+                                    }}
+                                    onBeforeInit={(swiper) => {
+                                        swiper.params.navigation.prevEl = prevRef2.current;
+                                        swiper.params.navigation.nextEl = nextRef2.current;
+                                    }}
                                     className="mySwiper"
                                     loop={true}
                                     breakpoints={{
@@ -640,6 +920,14 @@ function Homepage() {
                                         ))
                                     }
                                 </Swiper>
+
+                                <button ref={prevRef2} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                                    <FaArrowLeftLong />
+                                </button>
+
+                                <button ref={nextRef2} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                                    <FaArrowRightLong />
+                                </button>
                             </Box>
                         </Box>
 
@@ -664,10 +952,7 @@ function Homepage() {
 
                             <Grid container spacing={{ xs: 1, sm: 3, lg: 4 }}
                                 sx={{
-                                    mt: {
-                                        xs: 3,
-                                        sm: 5
-                                    }
+                                    marginTop: { xs: '20px', sm: '45px' }
                                 }}>
                                 {
                                     bestsellp.map((v) => {
@@ -744,7 +1029,7 @@ function Homepage() {
                                                             <FavoriteBorderIcon sx={{
                                                                 fontSize: {
                                                                     xs: '12px',
-                                                                    sx: '18px',
+                                                                    sm: '18px',
                                                                     md: '20px',
                                                                     lg: '25px'
                                                                 }, color: 'black'
@@ -754,7 +1039,7 @@ function Homepage() {
                                                             <RemoveRedEyeOutlinedIcon sx={{
                                                                 fontSize: {
                                                                     xs: '12px',
-                                                                    sx: '18px',
+                                                                    sm: '18px',
                                                                     md: '20px',
                                                                     lg: '25px'
                                                                 }, color: 'black'
@@ -827,7 +1112,7 @@ function Homepage() {
                         <Box sx={{ position: 'relative', mt: 2 }}>
                             <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
 
-                            <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '45px' } }}>
+                            <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '40px' } }}>
                                 <Swiper
                                     // slidesPerView={4}
                                     // grid={{ rows: 2, fill: "row" }}
@@ -836,7 +1121,15 @@ function Homepage() {
                                         clickable: true,
                                     }}
                                     modules={[Navigation, SwiperGrid, Pagination]}
-                                    navigation={true}
+                                    onSwiper={setSwiperInstance}
+                                    navigation={{
+                                        prevEl: prevRef3.current,
+                                        nextEl: nextRef3.current,
+                                    }}
+                                    onBeforeInit={(swiper) => {
+                                        swiper.params.navigation.prevEl = prevRef3.current;
+                                        swiper.params.navigation.nextEl = nextRef3.current;
+                                    }}
                                     className="mySwiper"
                                     breakpoints={{
                                         0: {
@@ -978,15 +1271,42 @@ function Homepage() {
                                                                 ""
                                                         }
 
-                                                        <Box sx={{ display: 'flex', columnGap: 1, mt: 1 }}>
+                                                        <Box sx={{ display: "flex", gap: "10px", mt: 1 }}>
                                                             {
 
                                                                 v?.colors?.map((v1) => (
 
-                                                                    <Button variant="outlined" className="product-color-btn">
-                                                                        <Avatar sx={{ bgcolor: v1, width: 12, height: 12 }}> </Avatar>
-                                                                    </Button>
+                                                                    <label key={v1} style={{ cursor: "pointer" }}>
+                                                                        <input
+                                                                            type="radio"
+                                                                            name={`color-${v.id}`} // 👈 unique per product
+                                                                            value={v1}
+                                                                            checked={(selectedColors[v.id] || v.colors[0]) === v1}
+                                                                            onChange={() =>
+                                                                                setSelectedColors((prev) => ({
+                                                                                    ...prev,
+                                                                                    [v.id]: v1, // 👈 store per product
+                                                                                }))
+                                                                            }
+                                                                            style={{ display: "none" }}
+                                                                        />
 
+                                                                        <span
+                                                                            style={{
+                                                                                width: "15px",
+                                                                                height: "15px",
+                                                                                borderRadius: "50%",
+                                                                                backgroundColor: v1,
+                                                                                display: "inline-block",
+                                                                                border: "1px solid #ccc",
+                                                                                outline:
+                                                                                    (selectedColors[v.id] || v.colors[0]) === v1
+                                                                                        ? "1px solid black"
+                                                                                        : "none",
+                                                                                outlineOffset: "3px",
+                                                                            }}
+                                                                        />
+                                                                    </label>
                                                                 ))
                                                             }
                                                         </Box>
@@ -1004,8 +1324,8 @@ function Homepage() {
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
                                                             <FavoriteBorderIcon sx={{
                                                                 fontSize: {
-                                                                    xs: '18px',
-                                                                    sx: '18px',
+                                                                    xs: '12px',
+                                                                    sm: '18px',
                                                                     md: '20px',
                                                                     lg: '25px'
                                                                 }
@@ -1014,8 +1334,8 @@ function Homepage() {
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
                                                             <RemoveRedEyeOutlinedIcon sx={{
                                                                 fontSize: {
-                                                                    xs: '18px',
-                                                                    sx: '18px',
+                                                                    xs: '12px',
+                                                                    sm: '18px',
                                                                     md: '20px',
                                                                     lg: '25px'
                                                                 }
@@ -1027,6 +1347,13 @@ function Homepage() {
                                         )
                                     })}
                                 </Swiper>
+                                <button ref={prevRef3} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                                    <FaArrowLeftLong />
+                                </button>
+
+                                <button ref={nextRef3} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                                    <FaArrowRightLong />
+                                </button>
                             </Box>
                         </Box>
 
@@ -1044,11 +1371,11 @@ function Homepage() {
                                 <Typography sx={{ fontWeight: 600 }}>Featured</Typography>
                             </Box>
 
-                            <Box sx={{ position: 'relative', mt: 2, mb: 5 }}>
+                            <Box sx={{ position: 'relative', mt: 2 }}>
                                 <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">New Arrival</Typography>
                             </Box>
 
-                            <Box >
+                            <Box sx={{ marginTop: { xs: '20px', sm: '45px' } }} >
                                 <Grid container columnSpacing={{ xs: 10, sm: 0, md: 4, lg: 8, xl: 4 }} rowSpacing={4} alignItems="stretch" sx={{ height: "100%" }} >
 
                                     <Grid size={{ xs: 12, md: 6, lg: 6 }} sx={{ overflow: 'hidden' }}>
@@ -1196,6 +1523,9 @@ function Homepage() {
                         </div>
                     </section>
                 </ThemeProvider>
+
+
+
             </main >
 
         </>

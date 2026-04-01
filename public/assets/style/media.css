@@ -65,6 +65,10 @@
             font-size: 20px !important;
         }
 
+        .hero-shop {
+            font-size: 12px;
+        }
+
         .search_cart_wishlist {
             column-gap: 12px;
         }
@@ -291,8 +295,16 @@
             display: none !important;
         }
 
-        .gridhero-rigth {
+        /* .gridhero-rigth {
             display: none;
+        } */
+
+        .hero-main-img {
+            width: 60%;
+        }
+
+        .hero-text {
+            max-width: 400px;
         }
 
         .swiper-button-prev,
@@ -309,12 +321,13 @@
         }
 
         .newarrival-grid-box img {
-            width:80%;
+            width: 80%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-/* .firstimg-new{
+
+        /* .firstimg-new{
     width: 50% !important;
     height: 100%;
     margin-left: auto;
@@ -541,7 +554,11 @@
         }
 
         .header-icone {
-            font-size: 24px !important;    
+            font-size: 24px !important;
+        }
+
+        .hero-shop {
+            font-size: 14px;
         }
 
         .search_cart_wishlist {
@@ -583,7 +600,7 @@
         }
 
         .my-custome-button {
-            padding: 12px 32px;
+            padding:8px 32px;
             font-size: 16px;
         }
 
@@ -765,9 +782,9 @@
             display: block !important;
         }
 
-        .gridhero-rigth {
+        /* .gridhero-rigth {
             display: none;
-        }
+        } */
 
         /* .heroleft-menu {
             display: flex;
@@ -776,7 +793,7 @@
             gap: 10px;
         } */
         .my-time-typo2 {
-            font-size: 20px !important;
+            font-size: 19px !important;
         }
 
         .my-time-typo1 {
@@ -802,7 +819,7 @@
         }
 
         .lastbox img {
-            width:60% !important;
+            width: 60% !important;
             margin-left: auto;
         }
 
@@ -839,7 +856,7 @@
 
         #category .swiper-button-prev,
         #allproducts .swiper-button-prev {
-            right: 11%;
+            right: 9%;
             top: -2%;
         }
 
@@ -849,11 +866,13 @@
         }
 
         .todays .swiper-button-prev {
-            right: 10%;
+            right:13%;
+            top: 10%;
         }
 
         .todays .swiper-button-next {
-            right: 3%;
+            right:5.5%;
+            top: 10%;
         }
 
         .bank-card {
@@ -938,6 +957,18 @@
         .ourstory-summary {
             font-size: 16px !important;
         }
+
+        .swiper-button-next svg,
+        .swiper-button-prev svg {
+            width: 14px;
+            height: 14px;
+
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            padding: 7px 12px;
+        }
     }
 
     /* md */
@@ -974,8 +1005,12 @@
 
         }
 
+        .hero-shop {
+            font-size: 16px;
+        }
+
         .title {
-            font-size: 28px !important;
+            font-size: 24px !important;
         }
 
         .footer-social {
@@ -983,7 +1018,7 @@
         }
 
         .my-custome-button {
-            padding: 12px 40px;
+            padding: 9px 40px;
             font-size: 18px;
         }
 
@@ -1083,13 +1118,14 @@
 
         .hero-rigth {
             padding: 0 !important;
-            padding-left: 10px !important;
-            padding-top: 20px !important;
+            padding-left: 0px !important;
+
         }
 
         .hero-text {
             padding-left: 0;
             padding-right: 0;
+            max-width: 220px;
         }
 
         .img2hero {
@@ -1165,7 +1201,7 @@
 
         #category .swiper-button-prev,
         #allproducts .swiper-button-prev {
-            right: 9%;
+            right: 8%;
             top: 0;
         }
 
@@ -1176,10 +1212,12 @@
 
         .todays .swiper-button-prev {
             right: 10%;
+            top: 8%;
         }
 
         .todays .swiper-button-next {
             right: 3%;
+            top: 8%;
         }
 
         /* detail */
@@ -1242,7 +1280,7 @@
             margin-left: 24px;
             padding-left: 12px;
             padding-right: 0;
-           margin-right: 0;
+            margin-right: 0;
         }
 
         .image-aboutfirst {
@@ -1250,11 +1288,23 @@
         }
 
         .ourstory-title {
-            font-size: 25px  !important;
+            font-size: 25px !important;
         }
 
         .ourstory-summary {
             font-size: 14px !important;
+        }
+
+        .swiper-button-next svg,
+        .swiper-button-prev svg {
+            width: 15px;
+            height: 15px;
+
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            padding: 9px 14px;
         }
     }
 
@@ -1278,12 +1328,16 @@
             display: none !important;
         }
 
-        .heroleft-menu{
+        .heroleft-menu {
             display: block;
         }
 
+        .hero-shop {
+            font-size: 16px;
+        }
+
         .title {
-            font-size: 30px !important;
+            font-size: 25px !important;
         }
 
         /* .my-custome-button {
@@ -1336,6 +1390,7 @@
         .hero-text {
             padding-left: 20px;
             padding-right: 20px;
+            max-width: 420px;
         }
 
         .img2hero {
@@ -1508,6 +1563,18 @@
         .ourstory-summary {
             font-size: 17px !important;
         }
+
+        .swiper-button-next svg,
+        .swiper-button-prev svg {
+            width: 18px;
+            height: 18px;
+
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            padding: 11px 16px;
+        }
     }
 
     /* xl */
@@ -1626,6 +1693,7 @@
         .hero-text {
             padding-left: 50px;
             padding-right: 70px;
+            max-width: 420px;
         }
 
         .my-time-typo2 {
@@ -1649,8 +1717,6 @@
             padding: 20px 36px;
         }
 
-
-
         .cart-coupon-box-btn {
             padding: 12px 49px !important;
         }
@@ -1663,7 +1729,7 @@
         }
 
         .todays .swiper-button-prev {
-            right: 8%;
+            right: 9%;
         }
 
         .todays .swiper-button-next {
@@ -1672,7 +1738,7 @@
 
         #category .swiper-button-prev,
         #allproducts .swiper-button-prev {
-            right: 5%;
+            right: 6%;
         }
 
         /* deatilcard */
@@ -1716,8 +1782,30 @@
         }
 
         .siteinfo-card {
-        padding: 30px 0  !important;
-    }
+            padding: 30px 0 !important;
+        }
+
+        .swiper-button-next svg,
+        .swiper-button-prev svg {
+            width: 20px;
+            height: 20px;
+
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            padding: 12px 18px;
+        }
+
+        /* #category .swiper-button-prev,
+        #category .swiper-button-next {
+            top: -4%;
+        }
+
+        #allproducts .swiper-button-prev,
+        #allproducts .swiper-button-next {
+            top: -1%;
+        } */
     }
 
     /* xxl */
@@ -1756,5 +1844,10 @@
             margin-right: 0;
             padding: 0 12px;
             padding-right: 0;
+        }
+
+        #category .swiper-button-prev,
+        #allproducts .swiper-button-prev {
+            right: 5%;
         }
     }
