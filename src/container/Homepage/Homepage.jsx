@@ -30,7 +30,7 @@ import { green } from "@mui/material/colors";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaArrowLeftLong } from "react-icons/fa6";
-
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 function Homepage() {
 
@@ -190,6 +190,13 @@ function Homepage() {
         { name: "Black", value: "#000000" },
         { name: "White", value: "#ffffff" },
     ];
+
+    const handleScrollTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // smooth scrolling
+        });
+    };
 
     //console.log(menuItems.name)
 
@@ -623,317 +630,320 @@ function Homepage() {
                 </section>
 
                 {/* flash selling */}
-                <section className="todays" style={{ position: 'relative' }}>
-                    <div className="container">
-                        <Box className="todays-title">
-                            <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }}>Todays's</Typography>
-                        </Box>
-
-                        <Box sx={{
-                            display: 'flex', alignItems: 'end', mt: 2, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
-                            flexWrap: {
-                                xs: 'wrap',
-                                sm: 'nowrap'
-                            },
-                            rowGap: 2
-                        }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Flash Sales</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                <Box>
-                                    <Typography variant="subtitle2" className="my-time-typo1">Days</Typography>
-                                    <Typography variant="h5" className="my-time-typo2">03</Typography>
-                                </Box>
-                                <Typography variant="h5" className="time-colun">:</Typography>
-                                <Box>
-                                    <Typography variant="subtitle2" className="my-time-typo1">Hours</Typography>
-                                    <Typography variant="h5" className="my-time-typo2">23</Typography>
-                                </Box>
-                                <Typography variant="h5" className="time-colun">:</Typography>
-                                <Box>
-                                    <Typography variant="subtitle2" className="my-time-typo1">Minutes</Typography>
-                                    <Typography variant="h5" className="my-time-typo2">19</Typography>
-                                </Box>
-                                <Typography variant="h5" className="time-colun">:</Typography>
-                                <Box>
-                                    <Typography variant="subtitle2" className="my-time-typo1">Seconds</Typography>
-                                    <Typography variant="h5" className="my-time-typo2" >56</Typography>
-                                </Box>
-
+                <ThemeProvider theme={theme}>
+                    <section className="todays" style={{ position: 'relative' }}>
+                        <div className="container">
+                            <Box className="todays-title">
+                                <i className="fa-solid fa-square"></i>
+                                <Typography sx={{ fontWeight: 600 }} className="subtitle">Todays's</Typography>
                             </Box>
-                        </Box>
 
-                    </div>
-
-                    {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
-                    <Box className="container" sx={{ marginTop: { xs: '20px', sm: '40px' }, }}>
-                        <Swiper
-                            modules={[Navigation]}
-                            // navigation={true}
-                            navigation={{
-                                prevEl: prevRef1.current,
-                                nextEl: nextRef1.current,
-                            }}
-                            onBeforeInit={(swiper) => {
-                                swiper.params.navigation.prevEl = prevRef1.current;
-                                swiper.params.navigation.nextEl = nextRef1.current;
-                            }}
-
-                            className="mySwiper"
-                            loop={true}
-                            breakpoints={{
-                                0: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 20,
+                            <Box sx={{
+                                display: 'flex', alignItems: 'end', mt: { xs: 2, md: 2 }, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
+                                flexWrap: {
+                                    xs: 'wrap',
+                                    sm: 'nowrap'
                                 },
-                                576: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 30,
-                                },
-                                768: {
-                                    slidesPerView: 3,
-                                    spaceBetween: 30,
-                                },
-                                992: {
-                                    slidesPerView: 3.5,
-                                    spaceBetween: 30,
-                                },
-                            }}
+                                rowGap: 1
+                            }}>
+                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Flash Sales</Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                    <Box>
+                                        <Typography variant="subtitle2" className="my-time-typo1">Days</Typography>
+                                        <Typography variant="h5" className="my-time-typo2">03</Typography>
+                                    </Box>
+                                    <Typography variant="h5" className="time-colun">:</Typography>
+                                    <Box>
+                                        <Typography variant="subtitle2" className="my-time-typo1">Hours</Typography>
+                                        <Typography variant="h5" className="my-time-typo2">23</Typography>
+                                    </Box>
+                                    <Typography variant="h5" className="time-colun">:</Typography>
+                                    <Box>
+                                        <Typography variant="subtitle2" className="my-time-typo1">Minutes</Typography>
+                                        <Typography variant="h5" className="my-time-typo2">19</Typography>
+                                    </Box>
+                                    <Typography variant="h5" className="time-colun">:</Typography>
+                                    <Box>
+                                        <Typography variant="subtitle2" className="my-time-typo1">Seconds</Typography>
+                                        <Typography variant="h5" className="my-time-typo2" >56</Typography>
+                                    </Box>
+
+                                </Box>
+                            </Box>
+
+                        </div>
+
+                        {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
+                        <Box className="container" sx={{ marginTop: { xs: '20px', sm: '40px' }, }}>
+                            <Swiper
+                                modules={[Navigation]}
+                                // navigation={true}
+                                navigation={{
+                                    prevEl: prevRef1.current,
+                                    nextEl: nextRef1.current,
+                                }}
+                                onBeforeInit={(swiper) => {
+                                    swiper.params.navigation.prevEl = prevRef1.current;
+                                    swiper.params.navigation.nextEl = nextRef1.current;
+                                }}
+
+                                className="mySwiper"
+                                loop={true}
+                                breakpoints={{
+                                    0: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20,
+                                    },
+                                    576: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 30,
+                                    },
+                                    768: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 30,
+                                    },
+                                    992: {
+                                        slidesPerView: 3.5,
+                                        spaceBetween: 30,
+                                    },
+                                }}
 
 
-                        >
-                            {
-                                fsale.map((v, i) => {
-                                    const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                    // console.log(r)
-                                    const rate = r / v.rating.length;
-                                    // console.log(rate)
-                                    return (
-                                        <SwiperSlide>
-                                            <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                                <Box
-                                                    className="carttop"
-                                                    sx={{
-                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: {
-                                                            xs: '150px',
-                                                            sm: '200px',
-                                                            lg: '250px'
-                                                        }, position: 'relative'
-                                                    }}>
-                                                    <CardMedia
-                                                        component="img"
-
-                                                        className="cardimg"
-                                                        sx={{ objectFit: "contain" }}
-                                                        image={v.img}
-                                                        title="green iguana"
-
-                                                    />
-
-
-                                                    <Typography
-                                                        className="addcart"
+                            >
+                                {
+                                    fsale.map((v, i) => {
+                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                        // console.log(r)
+                                        const rate = r / v.rating.length;
+                                        // console.log(rate)
+                                        return (
+                                            <SwiperSlide>
+                                                <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                                    <Box
+                                                        className="carttop"
                                                         sx={{
-                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                            bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px',
-                                                            fontSize: {
-                                                                xs: '12px',
-                                                                sm: '16px',
-                                                                md: '16px'
+                                                            bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1, height: {
+                                                                xs: '120px',
+                                                                sm: '160px',
+                                                                lg: '250px'
+                                                            }, position: 'relative'
+                                                        }}>
+                                                        <CardMedia
+                                                            component="img"
+
+                                                            className="flashsale-cardmedia cardimg"
+                                                            sx={{ objectFit: "contain" }}
+                                                            image={v.img}
+                                                            title="green iguana"
+
+                                                        />
+
+
+                                                        <Typography
+                                                            className="addcart"
+                                                            sx={{
+                                                                bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '14px',
+                                                                    md: '16px'
+                                                                }
+                                                            }}
+                                                        >
+                                                            Add To Cart
+                                                        </Typography>
+                                                    </Box>
+
+
+                                                    <CardContent sx={{ outline: 0, padding: 0, pt: { xs: 3.5, md: 3 } }}>
+                                                        <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
+                                                            {v.name}
+                                                        </Typography>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                {v.discoutprice}
+                                                            </Typography>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                {v.price}
+                                                            </Typography>
+                                                        </Box>
+
+                                                        <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                            <Typography sx={{ color: '#FFAD33' }}>
+                                                                <Stack spacing={1}>
+                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                        fontSize: {
+                                                                            xs: '15px',
+                                                                            sm: '18px',
+                                                                            md: '20px'
+                                                                        }
+                                                                    }} />
+                                                                </Stack>
+                                                            </Typography>
+                                                            <Typography sx={{
+                                                                color: 'grey', fontWeight: '600',
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '16px'
+                                                                }
+                                                            }}>
+                                                                {`(${r})`}
+                                                            </Typography>
+                                                        </Box>
+
+                                                        <Box sx={{
+                                                            bgcolor: '#DB4444', color: 'white', width: 'fit-content',
+                                                            padding: {
+                                                                xs: '2px 8px',
+                                                                sm: '2px 8px',
+                                                                md: '2px 12px'
+                                                            }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
+                                                        }}>
+                                                            <Typography variant="body2" sx={{
+                                                                fontSize: {
+                                                                    xs: '10px',
+                                                                    sm: '12',
+                                                                    md: '14px'
+                                                                }
+                                                            }}>{v.discount}</Typography>
+                                                        </Box>
+
+                                                    </CardContent>
+
+                                                    <CardActions
+                                                        sx={{
+                                                            flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                            '& .MuiIconButton-root': {
+                                                                marginLeft: 0
                                                             }
                                                         }}
                                                     >
-                                                        Add To Cart
-                                                    </Typography>
-                                                </Box>
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                            <FavoriteBorderIcon sx={{
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '18px',
+                                                                    md: '20px',
+                                                                    lg: '24px'
+                                                                },
+                                                            }} />
+                                                        </IconButton>
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                            <RemoveRedEyeOutlinedIcon sx={{
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '18px',
+                                                                    md: '20px',
+                                                                    lg: '24px'
+                                                                },
+                                                            }} />
+                                                        </IconButton>
+                                                    </CardActions>
+                                                </Card>
+                                            </SwiperSlide>
+                                        )
+                                    })
+                                }
 
+                            </Swiper>
+                            <button ref={prevRef1} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                                <FaArrowLeftLong />
+                            </button>
 
-                                                <CardContent sx={{ outline: 0, padding: 0, pt: { xs: 3.5, md: 3 } }}>
-                                                    <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
-                                                        {v.name}
-                                                    </Typography>
-                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                            {v.discoutprice}
-                                                        </Typography>
-                                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                            {v.price}
-                                                        </Typography>
-                                                    </Box>
+                            <button ref={nextRef1} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                                <FaArrowRightLong />
+                            </button>
+                        </Box>
 
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                        <Typography sx={{ color: '#FFAD33' }}>
-                                                            <Stack spacing={1}>
-                                                                <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
-                                                                    fontSize: {
-                                                                        xs: '15px',
-                                                                        sm: '18px',
-                                                                        md: '20px'
-                                                                    }
-                                                                }} />
-                                                            </Stack>
-                                                        </Typography>
-                                                        <Typography sx={{
-                                                            color: 'grey', fontWeight: '600',
-                                                            fontSize: {
-                                                                xs: '12px',
-                                                                sm: '16px'
-                                                            }
-                                                        }}>
-                                                            {`(${r})`}
-                                                        </Typography>
-                                                    </Box>
-
-                                                    <Box sx={{
-                                                        bgcolor: '#DB4444', color: 'white', width: 'fit-content',
-                                                        padding: {
-                                                            xs: '2px 8px',
-                                                            sm: '2px 12px'
-                                                        }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
-                                                    }}>
-                                                        <Typography variant="body2" sx={{
-                                                            fontSize: {
-                                                                xs: '10px',
-                                                                sm: '14px'
-                                                            }
-                                                        }}>{v.discount}</Typography>
-                                                    </Box>
-
-                                                </CardContent>
-
-                                                <CardActions
-                                                    sx={{
-                                                        flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                        '& .MuiIconButton-root': {
-                                                            marginLeft: 0
-                                                        }
-                                                    }}
-                                                >
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                        <FavoriteBorderIcon sx={{
-                                                            fontSize: {
-                                                                xs: '12px',
-                                                                sm: '18px',
-                                                                md: '20px',
-                                                                lg: '24px'
-                                                            },
-                                                        }} />
-                                                    </IconButton>
-                                                    <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                        <RemoveRedEyeOutlinedIcon sx={{
-                                                            fontSize: {
-                                                                xs: '12px',
-                                                                sm: '18px',
-                                                                md: '20px',
-                                                                lg: '24px'
-                                                            },
-                                                        }} />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </Card>
-                                        </SwiperSlide>
-                                    )
-                                })
-                            }
-
-                        </Swiper>
-                        <button ref={prevRef1} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
-                            <FaArrowLeftLong />
-                        </button>
-
-                        <button ref={nextRef1} className="custom-next swiper-button-next" style={{ border: 'none' }}>
-                            <FaArrowRightLong />
-                        </button>
-                    </Box>
-
-                    <a href="#" className="my-custome-button" >View More Product</a>
-                </section>
-
+                        <a href="#" className="my-custome-button" >View More Product</a>
+                    </section>
+                </ThemeProvider>
                 <hr />
 
                 {/* category section */}
-
-                <section id="category">
-                    <div className="container" >
-                        <Box className="todays-title">
-                            <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }}>Categories</Typography>
-                        </Box>
-
-                        <Box sx={{ position: 'relative', mt: 2 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Browse By Category</Typography>
-
-
-                            <Box sx={{ marginTop: { xs: '20px', sm: '40px' } }}>
-                                <Swiper
-
-                                    modules={[Navigation]}
-                                    navigation={{
-                                        prevEl: prevRef2.current,
-                                        nextEl: nextRef2.current,
-                                    }}
-                                    onBeforeInit={(swiper) => {
-                                        swiper.params.navigation.prevEl = prevRef2.current;
-                                        swiper.params.navigation.nextEl = nextRef2.current;
-                                    }}
-                                    className="mySwiper"
-                                    loop={true}
-                                    breakpoints={{
-                                        320: {
-                                            slidesPerView: 2,
-                                            spaceBetween: 30,
-                                        },
-                                        576: {
-                                            slidesPerView: 3,
-                                            spaceBetween: 30,
-                                        },
-                                        768: {
-                                            slidesPerView: 4,
-                                            spaceBetween: 30,
-                                        },
-                                        992: {
-                                            slidesPerView: 5,
-                                            spaceBetween: 45,
-                                        },
-                                        1200: {
-                                            slidesPerView: 6,
-                                            spaceBetween: 45,
-                                        }
-                                    }}
-                                >
-                                    {
-                                        elecategory.map((v, i) => (
-                                            <SwiperSlide>
-                                                <Box sx={{ border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }} className="category-title">
-                                                    {caticone[v.name]}
-                                                    {/* <Box className="caticone">{caticone[v.name]}</Box> */}
-                                                    <Typography variant="h6" sx={{
-                                                        fontWeight: '500', marginTop: 1, fontSize: {
-                                                            xs: '18px',
-                                                            md: '20px'
-                                                        }
-                                                    }}>{v.name}</Typography>
-                                                </Box>
-                                            </SwiperSlide>
-                                        ))
-                                    }
-                                </Swiper>
-
-                                <button ref={prevRef2} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
-                                    <FaArrowLeftLong />
-                                </button>
-
-                                <button ref={nextRef2} className="custom-next swiper-button-next" style={{ border: 'none' }}>
-                                    <FaArrowRightLong />
-                                </button>
+                <ThemeProvider theme={theme}>
+                    <section id="category">
+                        <div className="container" >
+                            <Box className="todays-title">
+                                <i className="fa-solid fa-square"></i>
+                                <Typography sx={{ fontWeight: 600 }} className="subtitle">Categories</Typography>
                             </Box>
-                        </Box>
 
-                    </div>
-                </section>
+                            <Box sx={{ position: 'relative', mt: { xs: 1, sm: 2 } }}>
+                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Browse By Category</Typography>
 
+
+                                <Box sx={{ marginTop: { xs: '20px', sm: '20px', md: '40px' } }}>
+                                    <Swiper
+
+                                        modules={[Navigation]}
+                                        navigation={{
+                                            prevEl: prevRef2.current,
+                                            nextEl: nextRef2.current,
+                                        }}
+                                        onBeforeInit={(swiper) => {
+                                            swiper.params.navigation.prevEl = prevRef2.current;
+                                            swiper.params.navigation.nextEl = nextRef2.current;
+                                        }}
+                                        className="mySwiper"
+                                        loop={true}
+                                        breakpoints={{
+                                            320: {
+                                                slidesPerView: 2,
+                                                spaceBetween: 30,
+                                            },
+                                            576: {
+                                                slidesPerView: 3,
+                                                spaceBetween: 30,
+                                            },
+                                            768: {
+                                                slidesPerView: 4,
+                                                spaceBetween: 30,
+                                            },
+                                            992: {
+                                                slidesPerView: 5,
+                                                spaceBetween: 45,
+                                            },
+                                            1200: {
+                                                slidesPerView: 6,
+                                                spaceBetween: 45,
+                                            }
+                                        }}
+                                    >
+                                        {
+                                            elecategory.map((v, i) => (
+                                                <SwiperSlide>
+                                                    <Box sx={{ border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }} className="category-title">
+                                                        {caticone[v.name]}
+                                                        {/* <Box className="caticone">{caticone[v.name]}</Box> */}
+                                                        <Typography variant="h6" sx={{
+                                                            fontWeight: '500', marginTop: 1, fontSize: {
+                                                                xs: '18px',
+                                                                md: '20px'
+                                                            }
+                                                        }}>{v.name}</Typography>
+                                                    </Box>
+                                                </SwiperSlide>
+                                            ))
+                                        }
+                                    </Swiper>
+
+                                    <button ref={prevRef2} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                                        <FaArrowLeftLong />
+                                    </button>
+
+                                    <button ref={nextRef2} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                                        <FaArrowRightLong />
+                                    </button>
+                                </Box>
+                            </Box>
+
+                        </div>
+                    </section>
+                </ThemeProvider>
                 <hr />
 
                 <ThemeProvider theme={theme}>
@@ -942,7 +952,7 @@ function Homepage() {
                         <div className="container">
                             <Box className="todays-title">
                                 <i className="fa-solid fa-square"></i>
-                                <Typography sx={{ fontWeight: 600 }}>This Month</Typography>
+                                <Typography sx={{ fontWeight: 600 }} className="subtitle">This Month</Typography>
                             </Box>
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', mt: 1, columnGap: 10, position: 'relative' }}>
@@ -970,8 +980,8 @@ function Homepage() {
                                                             bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
                                                             alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
                                                             height: {
-                                                                xs: '150px',
-                                                                sm: '200px',
+                                                                xs: '120px',
+                                                                sm: '150px',
                                                                 lg: '250px'
                                                             }, position: 'relative'
                                                         }}>
@@ -1001,20 +1011,26 @@ function Homepage() {
                                                         <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                             <Typography sx={{ color: '#FFAD33' }}>
                                                                 <Stack spacing={1}>
-                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5}
-                                                                        sx={{
-                                                                            fontSize: {
-                                                                                xs: '18px',
-                                                                                sm: '18px',
-                                                                                md: '20px'
-                                                                            }
-                                                                        }} readOnly />
+                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                        fontSize: {
+                                                                            xs: '15px',
+                                                                            sm: '18px',
+                                                                            md: '20px'
+                                                                        }
+                                                                    }} />
                                                                 </Stack>
                                                             </Typography>
-                                                            <Typography sx={{ color: 'grey', fontWeight: '600' }}>
+                                                            <Typography sx={{
+                                                                color: 'grey', fontWeight: '600',
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '16px'
+                                                                }
+                                                            }}>
                                                                 {`(${r})`}
                                                             </Typography>
                                                         </Box>
+
                                                     </CardContent>
 
                                                     <CardActions
@@ -1102,265 +1118,272 @@ function Homepage() {
 
 
                 {/* explore our product */}
-                <section id="allproducts">
-                    <div className="container" >
-                        <Box className="todays-title">
-                            <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }}>Our Products</Typography>
-                        </Box>
+                <ThemeProvider theme={theme}>
+                    <section id="allproducts">
+                        <div className="container" >
+                            <Box className="todays-title">
+                                <i className="fa-solid fa-square"></i>
+                                <Typography sx={{ fontWeight: 600 }} className="subtitle">Our Products</Typography>
+                            </Box>
 
-                        <Box sx={{ position: 'relative', mt: 2 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
+                            <Box sx={{ position: 'relative', mt: 2 }}>
+                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
 
-                            <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '40px' } }}>
-                                <Swiper
-                                    // slidesPerView={4}
-                                    // grid={{ rows: 2, fill: "row" }}
+                                <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '40px' } }}>
+                                    <Swiper
+                                        // slidesPerView={4}
+                                        // grid={{ rows: 2, fill: "row" }}
 
-                                    pagination={{
-                                        clickable: true,
-                                    }}
-                                    modules={[Navigation, SwiperGrid, Pagination]}
-                                    onSwiper={setSwiperInstance}
-                                    navigation={{
-                                        prevEl: prevRef3.current,
-                                        nextEl: nextRef3.current,
-                                    }}
-                                    onBeforeInit={(swiper) => {
-                                        swiper.params.navigation.prevEl = prevRef3.current;
-                                        swiper.params.navigation.nextEl = nextRef3.current;
-                                    }}
-                                    className="mySwiper"
-                                    breakpoints={{
-                                        0: {
-                                            slidesPerView: 2,
-                                            grid: {
-                                                rows: 1,
-                                                fill: "row"
+                                        pagination={{
+                                            clickable: true,
+                                        }}
+                                        modules={[Navigation, SwiperGrid, Pagination]}
+                                        onSwiper={setSwiperInstance}
+                                        navigation={{
+                                            prevEl: prevRef3.current,
+                                            nextEl: nextRef3.current,
+                                        }}
+                                        onBeforeInit={(swiper) => {
+                                            swiper.params.navigation.prevEl = prevRef3.current;
+                                            swiper.params.navigation.nextEl = nextRef3.current;
+                                        }}
+                                        className="mySwiper"
+                                        breakpoints={{
+                                            0: {
+                                                slidesPerView: 2,
+                                                grid: {
+                                                    rows: 1,
+                                                    fill: "row"
+                                                },
+                                                spaceBetween: 20
                                             },
-                                            spaceBetween: 20
-                                        },
-                                        576: {
-                                            slidesPerView: 2,
-                                            grid: {
-                                                rows: 2,
-                                                fill: "row"
+                                            576: {
+                                                slidesPerView: 3,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
+                                                },
+                                                spaceBetween: 20
                                             },
-                                            spaceBetween: 20
-                                        },
-                                        768: {
-                                            slidesPerView: 3,
-                                            grid: {
-                                                rows: 2,
-                                                fill: "row"
+                                            768: {
+                                                slidesPerView: 3,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
+                                                },
+                                                spaceBetween: 20
                                             },
-                                            spaceBetween: 20
-                                        },
-                                        992: {
-                                            slidesPerView: 4,
-                                            grid: {
-                                                rows: 2,
-                                                fill: "row"
+                                            992: {
+                                                slidesPerView: 4,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
+                                                },
+                                                spaceBetween: 20
                                             },
-                                            spaceBetween: 20
-                                        },
-                                        1200: {
-                                            slidesPerView: 4,
-                                            grid: {
-                                                rows: 2,
-                                                fill: "row"
-                                            },
-                                            spaceBetween: 30
-                                        }
-                                    }}
+                                            1200: {
+                                                slidesPerView: 4,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
+                                                },
+                                                spaceBetween: 30
+                                            }
+                                        }}
 
-                                >
-                                    {products.map((v, i) => {
-                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                        // console.log(r)
-                                        const rate = r / v.rating.length;
-                                        console.log(rate)
-                                        return (
-                                            <SwiperSlide key={v.id}>
-                                                <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
-                                                    <Box
-                                                        className="carttop"
-                                                        sx={{
-                                                            bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                            alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
-                                                            height: {
-                                                                xs: '150px',
-                                                                sm: '200px',
-                                                                lg: '250px'
-                                                            }, position: 'relative'
-                                                        }}>
-                                                        <CardMedia
-                                                            component="img"
-                                                            className="cardimg"
-                                                            sx={{ objectFit: "contain" }}
-                                                            image={v.img}
-                                                            title="productimg"
-
-                                                        />
-
-                                                        <Typography
-                                                            className="addcart"
+                                    >
+                                        {products.map((v, i) => {
+                                            const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                            // console.log(r)
+                                            const rate = r / v.rating.length;
+                                            console.log(rate)
+                                            return (
+                                                <SwiperSlide key={v.id}>
+                                                    <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
+                                                        <Box
+                                                            className="carttop"
                                                             sx={{
-                                                                bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                                textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                                bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
-                                                            }}
-                                                        >
-                                                            Add To Cart
-                                                        </Typography>
-                                                    </Box>
+                                                                bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                                alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                                height: {
+                                                                    xs: '120px',
+                                                                    sm: '160px',
+                                                                    lg: '250px'
+                                                                }, position: 'relative'
+                                                            }}>
+                                                            <CardMedia
+                                                                component="img"
+                                                                className="cardimg"
+                                                                sx={{ objectFit: "contain" }}
+                                                                image={v.img}
+                                                                title="productimg"
 
+                                                            />
 
-                                                    <CardContent sx={{ outline: 0 }}>
-                                                        <Typography gutterBottom variant="h6" component="div" className="product-name">
-                                                            {v.name}
-                                                        </Typography>
-                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center' }}>
-
-                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                {v.price}
-                                                            </Typography>
-
-
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                                <Typography sx={{ color: '#FFAD33' }}>
-                                                                    <Stack spacing={1}>
-                                                                        <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
-                                                                            fontSize: {
-                                                                                xs: '15px',
-                                                                                sm: '18px',
-                                                                                md: '20px'
-                                                                            }
-                                                                        }} />
-                                                                    </Stack>
-                                                                </Typography>
-                                                                <Typography sx={{
-                                                                    color: 'grey', fontWeight: '600',
+                                                            <Typography
+                                                                className="addcart"
+                                                                sx={{
+                                                                    bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                    textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                    bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
                                                                     fontSize: {
                                                                         xs: '12px',
-                                                                        sm: '16px'
+                                                                        sm: '14px',
+                                                                        md: '16px'
                                                                     }
-                                                                }}>
-                                                                    {`(${r})`}
+                                                                }}
+                                                            >
+                                                                Add To Cart
+                                                            </Typography>
+                                                        </Box>
+
+
+                                                        <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important' }}>
+                                                            <Typography gutterBottom variant="h6" component="div" className="product-name">
+                                                                {v.name}
+                                                            </Typography>
+                                                            <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+
+                                                                <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                    {v.price}
                                                                 </Typography>
-                                                            </Box>
-                                                        </Box>
 
 
-
-                                                        {
-                                                            v.new ?
-                                                                <Box sx={{
-                                                                    bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
-                                                                        xs: '2px 8px',
-                                                                        sm: '2px 12px'
-                                                                    }, borderRadius: 1, position: 'absolute', top: '3%'
-                                                                }}>
-                                                                    <Typography variant="body2" sx={{
+                                                                <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                                    <Typography sx={{ color: '#FFAD33' }}>
+                                                                        <Stack spacing={1}>
+                                                                            <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                                fontSize: {
+                                                                                    xs: '15px',
+                                                                                    sm: '18px',
+                                                                                    md: '20px'
+                                                                                }
+                                                                            }} />
+                                                                        </Stack>
+                                                                    </Typography>
+                                                                    <Typography sx={{
+                                                                        color: 'grey', fontWeight: '600',
                                                                         fontSize: {
-                                                                            xs: '10px',
-                                                                            sm: '14px'
+                                                                            xs: '12px',
+                                                                            sm: '16px'
                                                                         }
-                                                                    }}>NEW</Typography>
-                                                                </Box> :
-                                                                ""
-                                                        }
+                                                                    }}>
+                                                                        {`(${r})`}
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
 
-                                                        <Box sx={{ display: "flex", gap: "10px", mt: 1 }}>
+
+
                                                             {
-
-                                                                v?.colors?.map((v1) => (
-
-                                                                    <label key={v1} style={{ cursor: "pointer" }}>
-                                                                        <input
-                                                                            type="radio"
-                                                                            name={`color-${v.id}`} // 👈 unique per product
-                                                                            value={v1}
-                                                                            checked={(selectedColors[v.id] || v.colors[0]) === v1}
-                                                                            onChange={() =>
-                                                                                setSelectedColors((prev) => ({
-                                                                                    ...prev,
-                                                                                    [v.id]: v1, // 👈 store per product
-                                                                                }))
+                                                                v.new ?
+                                                                    <Box sx={{
+                                                                        bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
+                                                                            xs: '2px 8px',
+                                                                            sm: '2px 12px'
+                                                                        }, borderRadius: 1, position: 'absolute', top: '3%', left: '4%'
+                                                                    }}>
+                                                                        <Typography variant="body2" sx={{
+                                                                            fontSize: {
+                                                                                xs: '10px',
+                                                                                sm: '12px',
+                                                                                md: '14px'
                                                                             }
-                                                                            style={{ display: "none" }}
-                                                                        />
-
-                                                                        <span
-                                                                            style={{
-                                                                                width: "15px",
-                                                                                height: "15px",
-                                                                                borderRadius: "50%",
-                                                                                backgroundColor: v1,
-                                                                                display: "inline-block",
-                                                                                border: "1px solid #ccc",
-                                                                                outline:
-                                                                                    (selectedColors[v.id] || v.colors[0]) === v1
-                                                                                        ? "1px solid black"
-                                                                                        : "none",
-                                                                                outlineOffset: "3px",
-                                                                            }}
-                                                                        />
-                                                                    </label>
-                                                                ))
+                                                                        }}>NEW</Typography>
+                                                                    </Box> :
+                                                                    ""
                                                             }
-                                                        </Box>
 
-                                                    </CardContent>
+                                                            <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                {
 
-                                                    <CardActions
-                                                        sx={{
-                                                            flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                            '& .MuiIconButton-root': {
-                                                                marginLeft: 0
-                                                            }
-                                                        }}
-                                                    >
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                            <FavoriteBorderIcon sx={{
-                                                                fontSize: {
-                                                                    xs: '12px',
-                                                                    sm: '18px',
-                                                                    md: '20px',
-                                                                    lg: '25px'
+                                                                    v?.colors?.map((v1) => (
+
+                                                                        <label key={v1} style={{ cursor: "pointer" }}>
+                                                                            <input
+                                                                                type="radio"
+                                                                                name={`color-${v.id}`} // 👈 unique per product
+                                                                                value={v1}
+                                                                                checked={(selectedColors[v.id] || v.colors[0]) === v1}
+                                                                                onChange={() =>
+                                                                                    setSelectedColors((prev) => ({
+                                                                                        ...prev,
+                                                                                        [v.id]: v1, // 👈 store per product
+                                                                                    }))
+                                                                                }
+                                                                                style={{ display: "none" }}
+                                                                            />
+
+                                                                            <span
+                                                                                style={{
+                                                                                    width: "15px",
+                                                                                    height: "15px",
+                                                                                    borderRadius: "50%",
+                                                                                    backgroundColor: v1,
+                                                                                    display: "inline-block",
+                                                                                    border: "1px solid #ccc",
+                                                                                    outline:
+                                                                                        (selectedColors[v.id] || v.colors[0]) === v1
+                                                                                            ? "1px solid black"
+                                                                                            : "none",
+                                                                                    outlineOffset: "3px",
+                                                                                }}
+                                                                            />
+                                                                        </label>
+                                                                    ))
                                                                 }
-                                                            }} />
-                                                        </IconButton>
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                            <RemoveRedEyeOutlinedIcon sx={{
-                                                                fontSize: {
-                                                                    xs: '12px',
-                                                                    sm: '18px',
-                                                                    md: '20px',
-                                                                    lg: '25px'
-                                                                }
-                                                            }} />
-                                                        </IconButton>
-                                                    </CardActions>
-                                                </Card>
-                                            </SwiperSlide>
-                                        )
-                                    })}
-                                </Swiper>
-                                <button ref={prevRef3} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
-                                    <FaArrowLeftLong />
-                                </button>
+                                                            </Box>
 
-                                <button ref={nextRef3} className="custom-next swiper-button-next" style={{ border: 'none' }}>
-                                    <FaArrowRightLong />
-                                </button>
+                                                        </CardContent>
+
+                                                        <CardActions
+                                                            sx={{
+                                                                flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                                '& .MuiIconButton-root': {
+                                                                    marginLeft: 0
+                                                                }
+                                                            }}
+                                                        >
+                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                                <FavoriteBorderIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '25px'
+                                                                    }
+                                                                }} />
+                                                            </IconButton>
+                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                                <RemoveRedEyeOutlinedIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '25px'
+                                                                    }
+                                                                }} />
+                                                            </IconButton>
+                                                        </CardActions>
+                                                    </Card>
+                                                </SwiperSlide>
+                                            )
+                                        })}
+                                    </Swiper>
+                                    <button ref={prevRef3} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                                        <FaArrowLeftLong />
+                                    </button>
+
+                                    <button ref={nextRef3} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                                        <FaArrowRightLong />
+                                    </button>
+                                </Box>
                             </Box>
-                        </Box>
 
-                        <a href="#" className="my-custome-button" style={{ margin: '0px auto 0 auto' }}>View More Product</a>
-                    </div>
-                </section>
-
+                            <a href="#" className="my-custome-button" style={{ margin: '0px auto 0 auto' }}>View More Product</a>
+                        </div>
+                    </section>
+                </ThemeProvider>
 
                 {/* new arraival fecutre section */}
                 <ThemeProvider theme={theme}>
@@ -1368,7 +1391,7 @@ function Homepage() {
                         <div className="container" >
                             <Box className="todays-title">
                                 <i className="fa-solid fa-square"></i>
-                                <Typography sx={{ fontWeight: 600 }}>Featured</Typography>
+                                <Typography sx={{ fontWeight: 600 }} className="subtitle">Featured</Typography>
                             </Box>
 
                             <Box sx={{ position: 'relative', mt: 2 }}>
@@ -1523,8 +1546,36 @@ function Homepage() {
                         </div>
                     </section>
                 </ThemeProvider>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end', // 👉 move to right
+                        // mt: 3,
+                        mb:-5,
+                        px: { xs: 2, sm: 4, md: 6 } // responsive spacing
+                    }}
+                >
+                    <IconButton
+                        onClick={handleScrollTop}
+                        sx={{
+                            bgcolor: '#eee',
+                            boxShadow: 1,
+                            width: { xs: 35, sm: 40 },
+                            height: { xs: 35, sm: 40 },
+                            '&:hover': { bgcolor: '#ddd' }
+                        }}
+                    >
+                        <ArrowUpwardIcon style={{
+                            fontSize: {
+                                xs: '12px',
+                                sm: '18px',
+                                md: '18px',
+                                lg: '25px'
+                            }, color: 'black'
 
-
+                        }} />
+                    </IconButton>
+                </Box>
 
             </main >
 

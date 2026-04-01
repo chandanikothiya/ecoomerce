@@ -868,9 +868,7 @@ hr {
     margin-right: 0 !important;
     padding-right: 0 !important;
 } */
-.swiper-button-next svg,
-.swiper-button-prev svg {
-
-    fill: #0f172a;
-    font-weight: 600;
+.mySwiper .swiper-wrapper {
+  row-gap:0 !important; /* reduce this more if needed */
 }
+

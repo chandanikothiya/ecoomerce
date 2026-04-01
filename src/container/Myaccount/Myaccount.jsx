@@ -31,7 +31,7 @@ function Myaccount() {
                     {/* <Typography><span style={{ color: 'grey' }}>Home / </span> My Account</Typography> */}
                     <Box sx={{ display: 'flex', gap: '0px', alignItems: 'center' }}>
                         <Box className="myaccount-drawer">
-                            <Button onClick={toggleDrawer(true)} sx={{ pl: 0 }}><MenuIcon /></Button>
+                            <Button onClick={toggleDrawer(true)} sx={{ pl: 0 ,minWidth:'fit-content'}}><MenuIcon /></Button>
                             <Drawer open={open} onClose={toggleDrawer(false)}>
                                 <List component="nav" sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                                     {/* Main Item */}

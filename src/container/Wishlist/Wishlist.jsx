@@ -59,8 +59,8 @@ function Wishlist() {
                                                                 bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
                                                                 alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
                                                                 height: {
-                                                                    xs: '150px',
-                                                                    sm: '200px',
+                                                                    xs: '120px',
+                                                                    sm: '160px',
                                                                     lg: '250px'
                                                                 },
                                                                 position: 'relative'

@@ -13,7 +13,9 @@
         /* .header-icone {
             font-size: 15px !important;
         } */
-
+.subtitle {
+            font-size: 14px !important;
+        }
         .second-header {
             padding: 18px 0 17px 0;
         }
@@ -133,8 +135,8 @@
         }
 
         .my-custome-button {
-            padding: 12px 25px;
-            font-size: 15px;
+            padding: 9px 25px;
+            font-size: 12px;
         }
 
         .top-header p {
@@ -287,7 +289,7 @@
 
         .best-seal-btn {
             display: block;
-            padding: 15px 60px !important;
+            padding: 9px 41px !important;
             margin: 10px auto 0 auto;
         }
 
@@ -312,7 +314,7 @@
             display: none !important;
         }
 
-        .cardimg {
+        .cardimg,.flashsale-cardmedia {
             height: 70px !important;
         }
 
@@ -375,7 +377,7 @@
         }
 
         .my-time-typo2 {
-            font-size: 18px !important;
+            font-size: 16px !important;
         }
 
         .my-time-typo1 {
@@ -517,6 +519,10 @@
             margin-bottom: 60px;
         }
 
+        .subtitle {
+            font-size: 16px !important;
+        }
+
         .search_cart_wishlist form .seachbox {
             max-width: fit-content !important;
             justify-content: flex-start;
@@ -527,7 +533,7 @@
         }
 
         .second-header {
-            padding: 32px 24px 17px 24px;
+            padding: 32px 24px 17px 20px;
         }
 
         .first-header {
@@ -592,7 +598,7 @@
         }
 
         .title {
-            font-size: 23px !important;
+            font-size:21px !important;
         }
 
         .my-custome-text {
@@ -600,7 +606,7 @@
         }
 
         .my-custome-button {
-            padding:8px 32px;
+            padding: 8px 32px;
             font-size: 16px;
         }
 
@@ -727,11 +733,11 @@
         }
 
         .social-auth {
-            padding: 20px 30px !important;
+            padding: 8px 30px !important;
         }
 
         .auth-title {
-            font-size: 30px !important;
+            font-size: 27px !important;
         }
 
         .authsub-title {
@@ -771,7 +777,7 @@
         .bestseal-name,
         .product-name,
         .cart-name {
-            font-size: 20px !important;
+            font-size: 16px !important;
         }
 
         .best-seal-btn {
@@ -807,6 +813,9 @@
 
         .cardimg {
             height: 100px !important;
+        }
+        .flashsale-cardmedia{
+            height: 70px !important;    
         }
 
         .newarrival-grid-box {
@@ -866,12 +875,12 @@
         }
 
         .todays .swiper-button-prev {
-            right:13%;
+            right: 13%;
             top: 10%;
         }
 
         .todays .swiper-button-next {
-            right:5.5%;
+            right: 5.5%;
             top: 10%;
         }
 
@@ -1152,6 +1161,10 @@
             height: 120px !important;
         }
 
+         .flashsale-cardmedia{
+            height: 100px !important;    
+        }
+
         .newarrival-grid-box {
             padding: 0px 10px;
         }
@@ -1211,12 +1224,12 @@
         }
 
         .todays .swiper-button-prev {
-            right: 10%;
+            right:11%;
             top: 8%;
         }
 
         .todays .swiper-button-next {
-            right: 3%;
+            right:5%;
             top: 8%;
         }
 
@@ -1407,6 +1420,10 @@
 
         .cardimg {
             height: 120px !important;
+        }
+
+        .flashsale-cardmedia{
+            height: 100px !important;    
         }
 
         .newarrival-grid-box img {
@@ -1658,6 +1675,8 @@
             font-size: 28px !important;
         }
 
+        
+
         .musicexp-imgbox {
             width: 100%;
 
@@ -1703,7 +1722,9 @@
         .cardimg {
             height: 140px !important;
         }
-
+.flashsale-cardmedia{
+            height: 120px !important;    
+        }
         .my-custome-button {
             padding: 12px 48px;
         }
@@ -1729,11 +1750,11 @@
         }
 
         .todays .swiper-button-prev {
-            right: 9%;
+            right:10%;
         }
 
         .todays .swiper-button-next {
-            right: 3%;
+            right:5%;
         }
 
         #category .swiper-button-prev,
@@ -1794,7 +1815,7 @@
 
         .swiper-button-prev,
         .swiper-button-next {
-            padding: 12px 18px;
+            padding: 12px 15px;
         }
 
         /* #category .swiper-button-prev,

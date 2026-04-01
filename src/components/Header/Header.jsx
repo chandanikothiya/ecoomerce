@@ -94,7 +94,7 @@ function Header() {
 
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
-                                    <MenuIcon />
+                                    <MenuIcon sx={{p:0,mr:1}}/>
                                 </IconButton>
                                 <h4><NavLink to="/">Exclusive</NavLink></h4>
                             </Box>
