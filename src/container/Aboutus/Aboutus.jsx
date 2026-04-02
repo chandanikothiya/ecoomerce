@@ -67,7 +67,7 @@ function Aboutus() {
                         container
                         alignItems="center"
                         sx={{
-                            mt: 5,
+                            mt:{xs:3,sm:5},
                             pl: {
                                 xs: 2,
                                 sm: 3,
@@ -88,7 +88,7 @@ function Aboutus() {
 
                             <Typography variant="h3" className="ourstory-title" sx={{ fontWeight: "bold" }}>Our Story</Typography>
 
-                            <Typography variant="subtitle1" className="ourstory-summary" sx={{ mt: { xs: 3, md: 3, lg: 5, xl: 1 }, textAlign: "justify" }}>
+                            <Typography variant="subtitle1" className="ourstory-summary" sx={{ mt: { xs:2, md: 3, lg: 5, xl: 1 }, textAlign: "justify" }}>
                                 Launced in 2015, Exclusive is South Asia’s premier online shopping makterplace with an active presense in Bangladesh. Supported by wide range of tailored marketing, data and service solutions, Exclusive has 10,500 sallers and 300 brands and serves 3 millioons customers across the region.
                             </Typography>
 

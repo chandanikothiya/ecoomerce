@@ -1,5 +1,17 @@
     /* xs */
     @media screen and (max-width:576px) {
+         #aboutus-whychoosus {
+            margin-bottom: 30px;
+        }
+
+        /* #contactus .MuiGrid-container{
+            padding: 0 !important;
+        } */
+
+        .footer {
+            margin-top: 40px !important;
+        }
+
 
         body {
             padding-top: 204px;
@@ -234,7 +246,7 @@
         }
 
         .social-auth {
-            padding: 9px 30px !important;
+            padding: 5px 30px !important;
         }
 
         .auth-title {
@@ -521,10 +533,25 @@
             width: 52% !important;
         }
 
+        .authlink,
+        .authlink a {
+            font-size: 14px !important;
+            margin-top: 20px !important;
+        }
+
     }
 
     /* sm */
     @media screen and (min-width:576px) {
+ #aboutus-whychoosus {
+            margin-bottom: 20px;
+        }
+         /* #contactus>.MuiGrid-container{
+            padding: 40px !important;
+        } */
+        .footer {
+            margin-top: 40px !important;
+        }
 
         body {
             padding-top: 160.5px;
@@ -1007,10 +1034,23 @@
         .womenimg {
             width: 52% !important;
         }
+
+        .authlink,
+        .authlink a {
+            font-size: 16px !important;
+            margin-top: 32px !important;
+        }
     }
 
     /* md */
     @media screen and (min-width:768px) {
+        #aboutus-whychoosus {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            margin-top: 50px;
+        }
 
         section {
             margin-top: 40px;
@@ -1367,10 +1407,18 @@
         /* .womenimg {
             width: 52% !important;
         } */
+        .authlink {
+            font-size: 18px !important;
+        }
     }
 
     /* lg */
     @media screen and (min-width:992px) {
+
+
+        .footer {
+            margin-top: 70px;
+        }
 
         section {
             margin-top: 80px;
@@ -1649,14 +1697,18 @@
             width: 59% !important;
         }
 
-        .swiper-pagination{
-              width: fit-content !important;
+        .swiper-pagination {
+            width: fit-content !important;
             left: 58% !important;
         }
     }
 
     /* xl */
     @media screen and (min-width:1200px) {
+        #aboutus-whychoosus {
+            margin-bottom: 60px;
+        }
+
         .siteinfo-typography1 {
             font-size: 30px !important;
         }
@@ -1884,7 +1936,7 @@
             font-size: 16px;
         }
 
-        .swiper-pagination{
+        .swiper-pagination {
             width: fit-content !important;
             left: 55% !important;
         }
@@ -1934,7 +1986,7 @@
             right: 5%;
         }
 
-        .swiper-pagination{
+        .swiper-pagination {
             width: fit-content !important;
             left: 55% !important;
         }

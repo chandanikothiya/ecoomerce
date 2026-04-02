@@ -164,17 +164,7 @@ function Homepage() {
         },
     });
 
-    const theme2 = createTheme({
-        breakpoints: {
-            values: {
-                xs: 0,
-                sm: 576,
-                md: 768,
-                lg: 1200,
-                xl: 1536,
-            },
-        },
-    });
+   
 
     const menuItems = [
         { name: "Woman’s Fashion", subcategories: ["Dresses", "Tops", "Shoes"] },
@@ -1384,7 +1374,7 @@ function Homepage() {
                         display: 'flex',
                         justifyContent: 'flex-end', // 👉 move to right
                         // mt: 3,
-                        mb: -5,
+                        mb:{xs:-2},
                         px: { xs: 2, sm: 4, md: 6 } // responsive spacing
                     }}
                 >

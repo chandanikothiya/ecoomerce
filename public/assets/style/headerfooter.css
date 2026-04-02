@@ -477,13 +477,11 @@ hr {
 }
 
 .authlink {
-    margin-top: 32px !important;
+    
     text-align: center !important;
-    font-size: 18px !important;
 }
 
 .authlink a {
-    font-size: 18px;
     text-decoration: none;
     padding-bottom: 3px;
     border-bottom: solid 2px grey;
@@ -870,7 +868,7 @@ hr {
 }
 
 #allproducts .swiper-slide{
-    margin-top: 0 !important;
+    margin-top:10px !important;
 }
 
 .category-title:hover {
