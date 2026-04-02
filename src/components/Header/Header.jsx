@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../../../public/assets/style/headerfooter.css'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -46,6 +46,18 @@ function Header() {
     };
 
     const [showAccount, setShowAccount] = useState(false);
+
+    useEffect(() => {
+    if (openMenu) {
+        document.body.style.overflow = "hidden";
+    } else {
+        document.body.style.overflow = "auto";
+    }
+
+    return () => {
+        document.body.style.overflow = "auto";
+    };
+}, [openMenu]);
     return (
         <>
             <header id="header">

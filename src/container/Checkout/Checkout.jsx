@@ -63,7 +63,7 @@ function Checkout() {
                         <Typography sx={{ color: 'text.primary' }}>CheckOut</Typography>
                     </Breadcrumbs>
 
-                    <Typography variant="h4" sx={{ fontSize: '36px', mt: 8, mb: 2 }} >Billing Details</Typography>
+                    <Typography variant="h4" sx={{ fontSize:{xs:'25px',sm:"28px",md:'36px'}, mt: 8, mb: 2 }} >Billing Details</Typography>
 
                     <Grid container columnSpacing={{xs:0,sm:5,md:5, lg: 10, xl: 18 }} justifyContent='center'>
                         <Grid size={{xs:12,sm:10,md:6}}>

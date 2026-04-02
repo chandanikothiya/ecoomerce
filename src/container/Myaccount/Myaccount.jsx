@@ -31,7 +31,7 @@ function Myaccount() {
                     {/* <Typography><span style={{ color: 'grey' }}>Home / </span> My Account</Typography> */}
                     <Box sx={{ display: 'flex', gap: '0px', alignItems: 'center' }}>
                         <Box className="myaccount-drawer">
-                            <Button onClick={toggleDrawer(true)} sx={{ pl: 0 ,minWidth:'fit-content'}}><MenuIcon /></Button>
+                            <Button onClick={toggleDrawer(true)} sx={{ pl: 0, minWidth: 'fit-content' }}><MenuIcon /></Button>
                             <Drawer open={open} onClose={toggleDrawer(false)}>
                                 <List component="nav" sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                                     {/* Main Item */}
@@ -88,15 +88,18 @@ function Myaccount() {
                             </Drawer>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: "100%" }}>
-                            <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+                            <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs" sx={{ display: { xs: 'none', sm: "block" } }}>
                                 <Link underlin e="hover" color="inherit" href="/">
                                     Home
                                 </Link>
                                 <Typography sx={{ color: 'text.primary' }}>My account</Typography>
                             </Breadcrumbs>
 
-                            <Breadcrumbs sx={{ '& .MuiBreadcrumbs-separator': { display: 'none' } }} aria-label="breadcrumb" className="breadcrumbs">
-                                <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Welcome</Typography>
+                            <Breadcrumbs sx={{ '& .MuiBreadcrumbs-separator': { display: 'none' },width:'fit-content' }} aria-label="breadcrumb" className="breadcrumbs">
+
+                                <Link underlin e="hover" href="/" sx={{ color: 'black' }}>
+                                    Welcome
+                                </Link>
                                 <Typography sx={{ color: '#DB4444', ml: 1 }} className="breadcrumbs-typo">Md Rimel</Typography>
                             </Breadcrumbs>
                         </Box>
@@ -105,7 +108,7 @@ function Myaccount() {
 
 
 
-                    <Grid container sx={{ mt: { xs: 4, sm: 2, md: 5 } }} spacing={{ sm: 4, md: 7, lg: 0 }} justifyContent='center'>
+                    <Grid container sx={{ mt: { xs: 4, sm: 2, md: 5 } }} spacing={{ sm: 4, md: 7, lg:0 }} justifyContent='center'>
                         <Grid size={{ sm: 4, md: 3, lg: 3 }} className="accpont-menu">
                             <List component="nav" sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                                 {/* Main Item */}
@@ -162,7 +165,7 @@ function Myaccount() {
                         </Grid>
 
 
-                        <Grid size={{ xs: 11, sm: 10, md: 8, lg: 8 }}
+                        <Grid size={{ xs: 11, sm: 10, md: 8, lg:9 }}
                             sx={{
                                 padding: {
                                     sm: '20px 0',
