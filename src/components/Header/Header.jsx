@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import { FiUser } from "react-icons/fi";
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -48,16 +48,25 @@ function Header() {
     const [showAccount, setShowAccount] = useState(false);
 
     useEffect(() => {
-    if (openMenu) {
-        document.body.style.overflow = "hidden";
-    } else {
-        document.body.style.overflow = "auto";
-    }
+        if (openMenu) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
 
-    return () => {
-        document.body.style.overflow = "auto";
-    };
-}, [openMenu]);
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [openMenu]);
+
+
+    const location = useLocation();
+
+    useEffect(() => {
+        setOpenMenu(false);
+        setShowAccount(false);
+    }, [location]);
+
     return (
         <>
             <header id="header">
@@ -106,9 +115,9 @@ function Header() {
 
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <IconButton className="menuicone" onClick={() => setOpenMenu(true)}>
-                                    <MenuIcon sx={{p:0,mr:1}}/>
+                                    <MenuIcon sx={{ p: 0, mr: 1 }} />
                                 </IconButton>
-                                <h4><NavLink to="/">Exclusive</NavLink></h4>
+                                <h4 className="logo"><NavLink to="/">Exclusive</NavLink></h4>
                             </Box>
 
                             <div className="menus">
@@ -169,7 +178,7 @@ function Header() {
                                     <MenuItem onClick={handleClose}>
                                         <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
                                             <FiUser />
-                                        </ListItemIcon><NavLink to="/myaccount" style={{color:"white"}}>Manage My Account</NavLink>
+                                        </ListItemIcon><NavLink to="/myaccount" style={{ color: "white" }}>Manage My Account</NavLink>
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
                                         <ListItemIcon sx={{ color: 'white' }}>

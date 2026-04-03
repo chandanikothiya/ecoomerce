@@ -1,13 +1,14 @@
 import React from "react"
 import '../../../public/assets/style/headerfooter.css'
 import Grid from '@mui/material/Grid';
-import { Box, createTheme, ListItemText, MenuItem, MenuList, TextField, ThemeProvider, Typography } from "@mui/material";
+import { Box, createTheme, Divider, ListItemText, MenuItem, MenuList, TextField, ThemeProvider, Typography } from "@mui/material";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { GrFacebookOption } from "react-icons/gr";
 import { LuTwitter } from "react-icons/lu";
 import { FiInstagram } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 
 function Footer() {
@@ -47,7 +48,7 @@ function Footer() {
                                 // },
 
                             }}
-                            rowSpacing={{ xs:5, sm: 4 }}
+                            rowSpacing={{ xs: 5, sm: 4 }}
                         >
                             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} >
                                 <Box className="my-cutome-grid first-box">
@@ -79,19 +80,19 @@ function Footer() {
                                             minHeight: { xs: 32, sm: 32, md: 36 },
                                             py: 0.5,
                                         }
-                                        
+
                                     }}>
                                         <MenuItem className="my-custome-list">
-                                            <ListItemText>My Account</ListItemText>
+                                            <ListItemText><NavLink to="/myaccount">My Account</NavLink></ListItemText>
                                         </MenuItem>
                                         <MenuItem className="my-custome-list">
-                                            <ListItemText>Login / Register</ListItemText>
+                                            <ListItemText><NavLink to="/signup">Login / Register</NavLink></ListItemText>
                                         </MenuItem>
                                         <MenuItem className="my-custome-list">
-                                            <ListItemText>Cart</ListItemText>
+                                            <ListItemText><NavLink to="/cart">Cart</NavLink></ListItemText>
                                         </MenuItem>
                                         <MenuItem className="my-custome-list">
-                                            <ListItemText>Wishlist</ListItemText>
+                                            <ListItemText><NavLink to="/wishlist">Wishlist</NavLink></ListItemText>
                                         </MenuItem>
                                         <MenuItem className="my-custome-list">
                                             <ListItemText>Shop</ListItemText>
@@ -100,16 +101,16 @@ function Footer() {
                                 </Box>
                             </Grid>
 
-                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }} sx={{marginTop:{xs:'-10px',sm:0}}}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }} sx={{ marginTop: { xs: '-10px', sm: 0 } }}>
                                 <Box className="my-cutome-grid ">
 
                                     <Typography variant="h6" className="my-custome-title">Quick Link</Typography>
                                     <MenuList sx={{
                                         "& .MuiMenuItem-root": {
-                                            minHeight: { xs:32, sm: 32, md: 36 },
+                                            minHeight: { xs: 32, sm: 32, md: 36 },
                                             py: 0.5,
                                         }
-                                        
+
                                     }}>
                                         <MenuItem className="my-custome-list">
                                             <ListItemText>Privacy Policy</ListItemText>
@@ -127,7 +128,7 @@ function Footer() {
                                 </Box>
                             </Grid>
 
-                            <Grid size={{ xs: 12, sm: 9, md: 4, lg: 3 }} sx={{marginTop:{xs:'-10px',sm:0}}}>
+                            <Grid size={{ xs: 12, sm: 9, md: 4, lg: 3 }} sx={{ marginTop: { xs: '-10px', sm: 0 } }}>
                                 <Box className="my-cutome-grid last-box">
                                     <Typography variant="h6" className="my-custome-title">Download App</Typography>
                                     <Typography variant="subtitle2" className="my-custome-text">Save $3 with App New User Only</Typography>
@@ -152,21 +153,25 @@ function Footer() {
 
 
                         </Grid>
-
-                        <Box sx={{ display: 'flex', mt:{xs:6,sm:8}, justifyContent: 'center', color: '#a5a1a1', gap: '0 5px', alignItems: 'center' }}>
-                            <CopyrightIcon sx={{
-                                fontSize: {
-                                    xs: '20px',
-                                    sm: '24px'
-                                }
-                            }} /><Typography sx={{
-                                fontSize: {
-                                    xs: '12px',
-                                    sm: '16px'
-                                }
-                            }}>Copyright Rimel 2022. All right reserved</Typography>
-                        </Box>
                     </div>
+                    <Divider sx={{ mt: 5,maxWidth:'100%',color:'#999696' }} />
+
+
+                    <Box className="container" sx={{ display: 'flex', mt: { xs: 3, sm: 3 }, justifyContent: 'center', color: '#a5a1a1', gap: '0 5px', alignItems: 'center' }}>
+                        <CopyrightIcon sx={{
+                            fontSize: {
+                                xs: '20px',
+                                sm: '24px'
+                            }
+                        }} /><Typography sx={{
+                            fontSize: {
+                                xs: '12px',
+                                sm: '16px',
+                                md:'18px',color:'#999696'
+                            }
+                        }}>Copyright Rimel 2022. All right reserved</Typography>
+                    </Box>
+
                 </div>
             </ThemeProvider>
         </>

@@ -118,7 +118,7 @@ function Productdetail() {
                             </Grid>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, lg: 5 }}>
-                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '20px', md: '24px' } }}>Havic HV G-92 Gamepad</Typography>
+                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '18px',sm:'20px', md: '24px' } }}>Havic HV G-92 Gamepad</Typography>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
                                 <Rating name="read-only" value={3} readOnly sx={{ fontSize: { xs: '20px', md: '24px' } }} />
@@ -126,7 +126,7 @@ function Productdetail() {
                                 <Typography className="rate-detail"> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
                             </Box>
 
-                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 } }}>$192.00</Typography>
+                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 },fontSize: { xs: '20px',sm:'20px', md: '24px' }  }}>$192.00</Typography>
 
                             <Typography sx={{ fontSize: '14px', maxWidth: '373px', mb: { xs: 3, sm: 2, md: 3 } }}>
                                 PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.
@@ -236,14 +236,14 @@ function Productdetail() {
             <ThemeProvider theme={theme}>
                 <section id="related-item">
                     <div className="container">
-                        <Box className="related-title">
+                        <Box className="sub-title">
                             <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
-                                <i className="fa-solid fa-square" style={{ fontSize: '30px' }}></i>
-                                <Typography variant="h6" sx={{ fontWeight: '400' }}>Related Item</Typography>
+                                <i className="fa-solid fa-square"></i>
+                                <Typography  sx={{ fontWeight: '600' }}>Related Item</Typography>
                             </Box>
                         </Box>
 
-                        <Grid container sx={{ mt: {xs:3,sm:4,md:5} }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
+                        <Grid container sx={{ marginTop: { xs: '20px', sm: '23px', md: '35px' }}} spacing={{ xs: 1, sm: 3, lg: 4 }}>
                             {
                                 allproducts.slice(0, 4).map((v) => {
                                     const r = v.rating.reduce((acc, v) => acc + v, 0)
@@ -364,22 +364,22 @@ function Productdetail() {
                                                 >
                                                     <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
                                                         <FavoriteBorderIcon sx={{
-                                                            fontSize: {
-                                                                xs: '18px',
-                                                                sx: '18px',
-                                                                md: '20px',
-                                                                lg: '25px'
-                                                            }, color: 'black'
+                                                             fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '18px',
+                                                                    md: '20px',
+                                                                    lg: '24px'
+                                                                }, color: 'black'
                                                         }} />
                                                     </IconButton>
                                                     <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
                                                         <RemoveRedEyeOutlinedIcon sx={{
-                                                            fontSize: {
-                                                                xs: '18px',
-                                                                sx: '18px',
-                                                                md: '20px',
-                                                                lg: '25px'
-                                                            }, color: 'black'
+                                                             fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '18px',
+                                                                    md: '20px',
+                                                                    lg: '24px'
+                                                                }, color: 'black'
                                                         }} />
                                                     </IconButton>
                                                 </CardActions>

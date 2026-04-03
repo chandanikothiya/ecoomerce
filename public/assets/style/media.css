@@ -1,6 +1,6 @@
     /* xs */
     @media screen and (max-width:576px) {
-         #aboutus-whychoosus {
+        #aboutus-whychoosus {
             margin-bottom: 30px;
         }
 
@@ -20,6 +20,10 @@
         section {
             margin-top: 40px;
             margin-bottom: 40px;
+        }
+
+        #notfound .my-custome-button {
+            margin: 30px auto;
         }
 
         .sub-title i {
@@ -282,7 +286,7 @@
         }
 
         .musix-main-box {
-            padding: 60px 40px !important;
+            padding: 30px 40px !important;
             justify-content: center !important;
         }
 
@@ -543,14 +547,23 @@
 
     /* sm */
     @media screen and (min-width:576px) {
- #aboutus-whychoosus {
+        #aboutus-whychoosus {
             margin-bottom: 20px;
         }
-         /* #contactus>.MuiGrid-container{
+
+        .logo {
+            font-size: 24px !important;
+        }
+
+        /* #contactus>.MuiGrid-container{
             padding: 40px !important;
         } */
         .footer {
             margin-top: 40px !important;
+        }
+
+        #notfound .my-custome-button {
+            margin: 40px auto;
         }
 
         body {
@@ -922,7 +935,7 @@
             top: -2%;
         }
 
-        .todays .swiper-button-prev {
+        /* .todays .swiper-button-prev {
             right: 13%;
             top: 10%;
         }
@@ -930,7 +943,7 @@
         .todays .swiper-button-next {
             right: 5.5%;
             top: 10%;
-        }
+        } */
 
         .bank-card {
             display: block !important;
@@ -1048,6 +1061,10 @@
             margin-bottom: 20px;
         }
 
+        .logo {
+            font-size: 25px !important;
+        }
+
         .footer {
             margin-top: 50px;
         }
@@ -1061,6 +1078,9 @@
             font-size: 18px;
         }
 
+        #notfound .my-custome-button {
+            margin: 60px auto;
+        }
 
         #myaccount .MuiBreadcrumbs-li,
         #myaccount .MuiBreadcrumbs-li .MuiTypography-body1 {
@@ -1303,15 +1323,15 @@
             top: 0;
         }
 
-        .todays .swiper-button-prev {
-            right: 11%;
-            top: 8%;
-        }
+            /* .todays .swiper-button-prev {
+                right: 11%;
+                top: 8%;
+            }
 
-        .todays .swiper-button-next {
-            right: 5%;
-            top: 8%;
-        }
+            .todays .swiper-button-next {
+                right: 5%;
+                top: 8%;
+            } */
 
         /* detail */
         .detailimg-box img {
@@ -1418,6 +1438,10 @@
 
         .footer {
             margin-top: 70px;
+        }
+
+        .logo {
+            font-size: 26px !important;
         }
 
         section {
@@ -1578,13 +1602,13 @@
             right: 7%;
         }
 
-        .todays .swiper-button-prev {
+        /* .todays .swiper-button-prev {
             right: 9%;
         }
 
         .todays .swiper-button-next {
             right: 3%;
-        }
+        } */
 
 
         /* detail */
@@ -1707,6 +1731,10 @@
     @media screen and (min-width:1200px) {
         #aboutus-whychoosus {
             margin-bottom: 60px;
+        }
+
+        .logo {
+            font-size: 28px !important;
         }
 
         .siteinfo-typography1 {
@@ -1863,13 +1891,13 @@
             display: block;
         }
 
-        .todays .swiper-button-prev {
+        /* .todays .swiper-button-prev {
             right: 10%;
         }
 
         .todays .swiper-button-next {
             right: 5%;
-        }
+        } */
 
         #category .swiper-button-prev,
         #allproducts .swiper-button-prev {
@@ -1948,6 +1976,10 @@
             font-size: 32px;
         }
 
+        .logo {
+            font-size: 30px !important;
+        }
+
         .siteinfo-typography2 {
             font-size: 20px;
         }
@@ -1961,13 +1993,13 @@
             padding: 20px 48px !important;
         }
 
-        .todays .swiper-button-next {
+        /* .todays .swiper-button-next {
             right: 11%;
         }
 
         .todays .swiper-button-prev {
             right: 15%;
-        }
+        } */
 
         .coupon-text {
             width: 380px !important;
@@ -1988,6 +2020,6 @@
 
         .swiper-pagination {
             width: fit-content !important;
-            left: 55% !important;
+            left: 50% !important;
         }
     }

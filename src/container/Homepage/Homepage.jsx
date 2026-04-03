@@ -40,6 +40,8 @@ function Homepage() {
     const [bestsellp, setBestsellp] = useState([])
     const [elecategory, setElecategory] = useState([])
     const [products, setProducts] = useState([]);
+    const [showButton, setShowButton] = useState(false);
+
     // const [isMobile, setIsMobile] = useState(false);
     //console.log("mobile", isMobile)
     const theme1 = useTheme();
@@ -117,16 +119,16 @@ function Homepage() {
             .then(response => response.json())
             .then(data => setProducts(data))
 
-        // const defaultColors = {};
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setShowButton(true);
+            } else {
+                setShowButton(false);
+            }
+        };
 
-        // products.forEach((v) => {
-        //     if (v.colors?.length) {
-        //         defaultColors[v.id] = products.colors[0];
-        //     }
-        // });
-
-        // setSelectedColors(defaultColors);
-
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, [])
 
     useEffect(() => {
@@ -145,7 +147,7 @@ function Homepage() {
         "computer": <DesktopMacOutlinedIcon className="caticone" />,
         "smartwatch": <WatchOutlinedIcon className="caticone" />,
         "camera": <CameraAltOutlinedIcon className="caticone" />,
-        "headphone": <MdOutlineHeadphones  className="caticone" />,
+        "headphone": <MdOutlineHeadphones className="caticone" />,
         "gaming": <VideogameAssetOutlinedIcon className="caticone" />,
         "laptop": <LaptopMacOutlinedIcon className="caticone" />
     }
@@ -164,7 +166,7 @@ function Homepage() {
         },
     });
 
-   
+
 
     const menuItems = [
         { name: "Woman’s Fashion", subcategories: ["Dresses", "Tops", "Shoes"] },
@@ -448,42 +450,58 @@ function Homepage() {
                             </Box>
 
                             <Box sx={{
-                                display: 'flex', alignItems: 'end', mt: { xs: 2, md: 2 }, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
-                                flexWrap: {
-                                    xs: 'wrap',
-                                    sm: 'nowrap'
-                                },
-                                rowGap: 1
+                                display: 'flex', alignItems: 'end', justifyContent: 'space-between'
                             }}>
-                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Flash Sales</Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                    <Box>
-                                        <Typography variant="subtitle2" className="my-time-typo1">Days</Typography>
-                                        <Typography variant="h5" className="my-time-typo2">03</Typography>
-                                    </Box>
-                                    <Typography variant="h5" className="time-colun">:</Typography>
-                                    <Box>
-                                        <Typography variant="subtitle2" className="my-time-typo1">Hours</Typography>
-                                        <Typography variant="h5" className="my-time-typo2">23</Typography>
-                                    </Box>
-                                    <Typography variant="h5" className="time-colun">:</Typography>
-                                    <Box>
-                                        <Typography variant="subtitle2" className="my-time-typo1">Minutes</Typography>
-                                        <Typography variant="h5" className="my-time-typo2">19</Typography>
-                                    </Box>
-                                    <Typography variant="h5" className="time-colun">:</Typography>
-                                    <Box>
-                                        <Typography variant="subtitle2" className="my-time-typo1">Seconds</Typography>
-                                        <Typography variant="h5" className="my-time-typo2" >56</Typography>
-                                    </Box>
+                                <Box sx={{
+                                    display: 'flex', alignItems: 'end', mt: { xs: 2, md: 2 }, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
+                                    flexWrap: {
+                                        xs: 'wrap',
+                                        sm: 'nowrap'
+                                    },
+                                    rowGap: 1
+                                }}>
+                                    <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Flash Sales</Typography>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                        <Box>
+                                            <Typography variant="subtitle2" className="my-time-typo1">Days</Typography>
+                                            <Typography variant="h5" className="my-time-typo2">03</Typography>
+                                        </Box>
+                                        <Typography variant="h5" className="time-colun">:</Typography>
+                                        <Box>
+                                            <Typography variant="subtitle2" className="my-time-typo1">Hours</Typography>
+                                            <Typography variant="h5" className="my-time-typo2">23</Typography>
+                                        </Box>
+                                        <Typography variant="h5" className="time-colun">:</Typography>
+                                        <Box>
+                                            <Typography variant="subtitle2" className="my-time-typo1">Minutes</Typography>
+                                            <Typography variant="h5" className="my-time-typo2">19</Typography>
+                                        </Box>
+                                        <Typography variant="h5" className="time-colun">:</Typography>
+                                        <Box>
+                                            <Typography variant="subtitle2" className="my-time-typo1">Seconds</Typography>
+                                            <Typography variant="h5" className="my-time-typo2" >56</Typography>
+                                        </Box>
 
+                                    </Box>
+                                </Box>
+
+                                <Box>
+                                    <button ref={prevRef1} className="custom-prev swiper-button-prev" style={{ border: 'none', position: "relative", marginRight: '15px' }}>
+                                        <FaArrowLeftLong />
+                                    </button>
+
+                                    <button ref={nextRef1} className="custom-next swiper-button-next" style={{ border: 'none', position: "relative" }}>
+                                        <FaArrowRightLong />
+                                    </button>
                                 </Box>
                             </Box>
-
                         </div>
 
                         {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
-                        <Box className="container" sx={{ marginTop: { xs: '20px', sm: '23px', md: '35px' }, }}>
+                        <Box className="container" sx={{
+                            marginTop: { xs: '20px', sm: '23px', md: '35px' },
+                            
+                        }}>
                             <Swiper
                                 modules={[Navigation]}
                                 // navigation={true}
@@ -495,6 +513,8 @@ function Homepage() {
                                     swiper.params.navigation.prevEl = prevRef1.current;
                                     swiper.params.navigation.nextEl = nextRef1.current;
                                 }}
+                                // slidesPerView="auto"   // 🔥 KEY
+                                // spaceBetween={20}
 
                                 className="mySwiper"
                                 loop={true}
@@ -516,7 +536,7 @@ function Homepage() {
                                         spaceBetween: 30,
                                     },
                                 }}
-
+                          
 
                             >
                                 {
@@ -658,13 +678,7 @@ function Homepage() {
                                 }
 
                             </Swiper>
-                            <button ref={prevRef1} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
-                                <FaArrowLeftLong />
-                            </button>
 
-                            <button ref={nextRef1} className="custom-next swiper-button-next" style={{ border: 'none' }}>
-                                <FaArrowRightLong />
-                            </button>
                         </Box>
 
                         <a href="#" className="my-custome-button" >View More Product</a>
@@ -1228,7 +1242,7 @@ function Homepage() {
                                                         sm: "10px",
                                                         md: '14px',
                                                         lg: '18px',
-                                                        xl: "20px"
+                                                        xl: "18px"
                                                     }
                                                 }}>Black and White version of the PS5 coming out on sale.</Typography>
                                                 <a href="#" className="newarrival-shpnow">Shop Now</a>
@@ -1255,7 +1269,7 @@ function Homepage() {
                                                             sm: "10px",
                                                             md: '14px',
                                                             lg: '18px',
-                                                            xl: "20px"
+                                                            xl: "18px"
                                                         }
                                                     }}>Featured woman collections that give you another vibe.</Typography>
                                                     <a href="#" className="newarrival-shpnow">Shop Now</a>
@@ -1283,7 +1297,7 @@ function Homepage() {
                                                                 sm: "10px",
                                                                 md: '14px',
                                                                 lg: '18px',
-                                                                xl: '20px'
+                                                                xl: '18px'
                                                             }
                                                         }}>Amazon wireless speakers</Typography>
                                                         <a href="#" className="newarrival-shpnow">Shop Now</a>
@@ -1308,7 +1322,7 @@ function Homepage() {
                                                                 sm: "10px",
                                                                 md: '14px',
                                                                 lg: '18px',
-                                                                xl: '20px'
+                                                                xl: '18px'
 
                                                             }
                                                         }}>GUCCI INTENSE OUD EDP</Typography>
@@ -1369,7 +1383,8 @@ function Homepage() {
                         </div>
                     </section>
                 </ThemeProvider>
-                <Box
+
+                {/* <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'flex-end', // 👉 move to right
@@ -1398,7 +1413,35 @@ function Homepage() {
 
                         }} />
                     </IconButton>
-                </Box>
+                </Box> */}
+                {showButton && (
+                    <Box
+                        sx={{
+                            position: 'fixed',
+                            bottom: 20,
+                            right: { xs: 15, md: 50, lg: 40, xl: 60 },
+                            zIndex: 1000
+                        }}
+                    >
+                        <IconButton
+                            onClick={handleScrollTop}
+                            sx={{
+                                bgcolor: '#eee',
+                                boxShadow: 1,
+                                width: { xs: 35, sm: 40 },
+                                height: { xs: 35, sm: 40 },
+                                '&:hover': { bgcolor: '#ddd' }
+                            }}
+                        >
+                            <ArrowUpwardIcon
+                                sx={{
+                                    fontSize: { xs: 12, sm: 18, md: 18, lg: 25 },
+                                    color: 'black'
+                                }}
+                            />
+                        </IconButton>
+                    </Box>
+                )}
 
             </main >
 

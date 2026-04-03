@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Button, createTheme, Grid, TextField, ThemeProvider, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Button, createTheme, Grid, TextField, ThemeProvider, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -17,6 +17,10 @@ function Contact() {
             },
         },
     });
+
+    const theme1 = useTheme();
+  const isMobile = useMediaQuery("(max-width:320px)");
+
 
     return (
         <main>
@@ -102,7 +106,7 @@ function Contact() {
                                             name="message"
                                             label="Your Message"
                                             multiline
-                                            rows={8}
+                                            rows={isMobile ? 5 : 8}
                                             variant="filled" InputProps={{ disableUnderline: true }}
                                             className="contactus-textfiled"
                                         />
