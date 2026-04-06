@@ -135,7 +135,7 @@ function Authendication() {
                     dispatch(setalert({ text: response.message, variant: 'error' }))
                 }
             } else if (authtype === 'resetpassword') {
-                const response = await resetpassword({ emailphone: localStorage.getItem('femailphone'),otp:values.fotp,password: fpassword}).unwrap();
+                const response = await resetpassword({ emailphone: localStorage.getItem('femailphone'),otp:values.fotp,password: values.fpassword}).unwrap();
                 console.log("SUCCESS:", response);
 
                 if (response.success) {
@@ -309,7 +309,7 @@ function Authendication() {
                                                             onBlur={handleBlur}
                                                             sx={{ width: '100%' }}
                                                         />
-                                                        {errors.otp && touched.otp ? <span>**{errors.otp}</span> : ""}
+                                                        {errors.fotp && touched.fotp ? <span>**{errors.fotp}</span> : ""}
 
                                                         <TextField
                                                             className="my-cutome-textfiled"
@@ -320,7 +320,7 @@ function Authendication() {
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
                                                         />
-                                                        {errors.password && touched.password ? <span>**{errors.password}</span> : ""}
+                                                        {errors.fpassword && touched.fpassword ? <span>**{errors.fpassword}</span> : ""}
                                                     </>
                                                 }
                                             </>

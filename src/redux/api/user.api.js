@@ -39,8 +39,15 @@ export const userApi = createApi({
                 method:'post',
                 body:data
             })
+        }),
+        checkauth:builder.query({
+            query:() => ({
+                url:'/user/checkauth',
+                method:'get',
+                
+            })
         })
     })
 })
 
-export const {useAddUserMutation,useVerifyUserMutation,useLoginUserMutation,useForgetpasswordMutation,useResetpasswordMutation} = userApi;
+export const {useAddUserMutation,useVerifyUserMutation,useLoginUserMutation,useForgetpasswordMutation,useResetpasswordMutation,useCheckauthQuery} = userApi;
