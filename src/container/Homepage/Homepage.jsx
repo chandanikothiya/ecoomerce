@@ -32,6 +32,9 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { MdOutlineHeadphones } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setalert } from "../../redux/slice/Alert.slice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function Homepage() {
@@ -41,6 +44,10 @@ function Homepage() {
     const [elecategory, setElecategory] = useState([])
     const [products, setProducts] = useState([]);
     const [showButton, setShowButton] = useState(false);
+    const dispatch = useDispatch();
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     // const [isMobile, setIsMobile] = useState(false);
     //console.log("mobile", isMobile)
@@ -139,7 +146,14 @@ function Homepage() {
             swiperInstance.navigation.init();
             swiperInstance.navigation.update();
         }
-    }, [swiperInstance]);
+
+        const params = new URLSearchParams(location.search)
+
+        if (params.get("login") === "success") {
+             dispatch(setalert({ text: 'Login sucessfully', variant: 'success' }))
+             navigate("/", { replace: true });
+        }
+    }, [swiperInstance,location]);
 
 
     const caticone = {
@@ -500,7 +514,7 @@ function Homepage() {
                         {/* style={{ maxWidth: '1480px', marginLeft: "auto", marginTop: '40px', marginRight: 0 }} */}
                         <Box className="container" sx={{
                             marginTop: { xs: '20px', sm: '23px', md: '35px' },
-                            
+
                         }}>
                             <Swiper
                                 modules={[Navigation]}
@@ -536,7 +550,7 @@ function Homepage() {
                                         spaceBetween: 30,
                                     },
                                 }}
-                          
+
 
                             >
                                 {

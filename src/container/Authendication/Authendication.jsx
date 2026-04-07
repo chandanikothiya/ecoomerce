@@ -1,5 +1,5 @@
-import { Padding } from "@mui/icons-material";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Padding, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Box, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { number, object, string } from "yup";
@@ -16,6 +16,19 @@ function Authendication() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const handleMouseUpPassword = (event) => {
+        event.preventDefault();
+    };
+
+
     const [adduser] = useAddUserMutation();
     const [verifyuser] = useVerifyUserMutation();
     const [loginuser] = useLoginUserMutation();
@@ -28,25 +41,54 @@ function Authendication() {
     if (authtype === 'signup') {
         authschema = {
             name: string().required(),
-            emailphone: string().email().required(),
+            // emailphone: string().required(),
+            emailphone: string()
+                .required("Required")
+                .test("email-or-phone", "Enter valid email or phone", (value) => {
+                    if (!value) return false;
+
+                    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    const isPhone = /^[0-9]{10}$/.test(value);
+
+                    return isEmail || isPhone;
+                }),
             password: string().required()
                 .matches(
                     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
                     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
                 ),
         }
+
     } else if (authtype === 'verify OTP') {
         authschema = {
             otp: number().required(),
         }
     } else if (authtype === 'login') {
         authschema = {
-            emailphone: string().email().required(),
+            emailphone: string()
+                .required("Required")
+                .test("email-or-phone", "Enter valid email or phone", (value) => {
+                    if (!value) return false;
+
+                    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    const isPhone = /^[0-9]{10}$/.test(value);
+
+                    return isEmail || isPhone;
+                }),
             password: string().required()
         }
     } else if (authtype === 'forgetpassword') {
         authschema = {
-            email: string().email().required(),
+            email: string()
+                .required("Required")
+                .test("email-or-phone", "Enter valid email or phone", (value) => {
+                    if (!value) return false;
+
+                    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    const isPhone = /^[0-9]{10}$/.test(value);
+
+                    return isEmail || isPhone;
+                }),
         }
     } else if (authtype === 'resetpassword') {
         authschema = {
@@ -135,7 +177,7 @@ function Authendication() {
                     dispatch(setalert({ text: response.message, variant: 'error' }))
                 }
             } else if (authtype === 'resetpassword') {
-                const response = await resetpassword({ emailphone: localStorage.getItem('femailphone'),otp:values.fotp,password: values.fpassword}).unwrap();
+                const response = await resetpassword({ emailphone: localStorage.getItem('femailphone'), otp: values.fotp, password: values.fpassword }).unwrap();
                 console.log("SUCCESS:", response);
 
                 if (response.success) {
@@ -162,9 +204,18 @@ function Authendication() {
         },
     });
 
-    const { handleSubmit, handleChange, handleBlur, errors, touched } = formik;
+    const { handleSubmit, handleChange, handleBlur, errors, touched, values } = formik;
     console.log(errors, touched)
     console.log(authtype)
+
+    const handlegoogle = () => {
+        try {
+            window.location.href = 'http://localhost:8080/api/v1/user/auth/google'
+           
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <>
@@ -257,9 +308,23 @@ function Authendication() {
                                                             id="password"
                                                             name="password"
                                                             label="Password"
+                                                            type={showPassword ? 'text' : 'password'}
                                                             variant="standard"
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
+                                                            InputProps={{
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <IconButton
+                                                                            onClick={handleClickShowPassword}
+                                                                            onMouseDown={handleMouseDownPassword}
+                                                                            onMouseUp={handleMouseUpPassword}
+                                                                        >
+                                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                        </IconButton>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
                                                         />
                                                         {errors.password && touched.password ? <span>**{errors.password}</span> : ""}
                                                     </>
@@ -316,9 +381,23 @@ function Authendication() {
                                                             id="fpassword"
                                                             name="fpassword"
                                                             label="Password"
+                                                            type={showPassword ? 'text' : 'password'}
                                                             variant="standard"
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
+                                                            InputProps={{
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <IconButton
+                                                                            onClick={handleClickShowPassword}
+                                                                            onMouseDown={handleMouseDownPassword}
+                                                                            onMouseUp={handleMouseUpPassword}
+                                                                        >
+                                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                        </IconButton>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
                                                         />
                                                         {errors.fpassword && touched.fpassword ? <span>**{errors.fpassword}</span> : ""}
                                                     </>
@@ -334,7 +413,7 @@ function Authendication() {
                                         authtype === 'signup' &&
                                         <>
                                             <button type="submit" className="submit-btn my-custome-button" >Create Account</button>
-                                            <a href="#" className="social-auth my-custome-button" style={{ marginTop: '40px' }}>
+                                            <a href="#" className="social-auth my-custome-button" style={{ marginTop: '40px' }} onClick={handlegoogle}>
                                                 <FcGoogle className="socialauth-icon" />
                                                 {/* <img src="../../../public/assets/images/google.png" alt="" width='25' style={{ marginRight: '8px' }} className="socialauth-icon"/> */}
                                                 Sign up with Google
