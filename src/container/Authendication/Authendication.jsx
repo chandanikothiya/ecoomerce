@@ -158,6 +158,7 @@ function Authendication() {
             else if (authtype === 'login') {
                 const response = await loginuser({ emailphone: values.emailphone, password: values.password }).unwrap();
                 console.log("SUCCESS:", response);
+                localStorage.setItem("loginid",response.data._id)
 
                 if (response.success) {
                     navigate('/')

@@ -21,11 +21,15 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import { TbLogout2 } from "react-icons/tb";
 import { Box } from "@mui/material";
+import { useLogoutMutation } from "../../redux/api/user.api";
+import { useDispatch } from "react-redux";
+import { setalert } from "../../redux/slice/Alert.slice";
 
 
 function Header() {
 
     const [anchorEll, setAnchorEll] = React.useState(null);
+    const dispatch = useDispatch();
     const openl = Boolean(anchorEll);
     const handleClickl = (event) => {
         setAnchorEll(event.currentTarget);
@@ -33,6 +37,10 @@ function Header() {
     const handleClosel = () => {
         setAnchorEll(null);
     };
+
+
+    const [logout] = useLogoutMutation();
+
 
     const [openMenu, setOpenMenu] = useState(false);
 
@@ -48,6 +56,7 @@ function Header() {
     const [showAccount, setShowAccount] = useState(false);
 
     useEffect(() => {
+
         if (openMenu) {
             document.body.style.overflow = "hidden";
         } else {
@@ -57,8 +66,27 @@ function Header() {
         return () => {
             document.body.style.overflow = "auto";
         };
+
     }, [openMenu]);
 
+
+    const handleLogout = async () => {
+
+        const id = localStorage.getItem('loginid')
+        console.log("id",id)
+
+    
+        if (id) {         
+            const response = await logout({ _id: id});
+            console.log("response", response)
+            if (response?.data?.success) {
+                dispatch(setalert({ text: response.data.message, variant: 'success' }))
+                localStorage.removeItem('loginid')
+            } else {
+                dispatch(setalert({ text: response.data.message, variant: 'error' }))
+            }
+        }
+    }
 
     const location = useLocation();
 
@@ -125,7 +153,12 @@ function Header() {
                                     <li><NavLink to="/">Home</NavLink></li>
                                     <li><NavLink to="/contact">Contact</NavLink></li>
                                     <li><NavLink to="/about">About</NavLink></li>
-                                    <li><NavLink to="/signup">Sign Up</NavLink></li>
+                                    {
+                                         localStorage.getItem('loginid') ? 
+                                         <li ><NavLink onClick={handleLogout}>Sign OUT</NavLink></li> :
+                                         <li><NavLink to="/signup" >Sign Up</NavLink></li>    
+                                    }
+                                    
                                 </ul>
                             </div>
 
@@ -141,71 +174,81 @@ function Header() {
 
                                 <ShoppingCartOutlinedIcon className="header-icone" />
 
-                                <Tooltip title="Account settings" className="account-menu1">
-                                    <IconButton
-                                        onClick={handleClick}
-                                        size="small"
-                                        aria-controls={open ? 'account-menu' : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={open ? 'true' : undefined}
+                                {
+                                    localStorage.getItem('loginid') && 
+                                 
+                                    <>
+                                        <Tooltip title="Account settings" className="account-menu1">
+                                            <IconButton
+                                                onClick={handleClick}
+                                                size="small"
+                                                aria-controls={open ? 'account-menu' : undefined}
+                                                aria-haspopup="true"
+                                                aria-expanded={open ? 'true' : undefined}
 
-                                    >
-                                        <Avatar sx={{ width: 32, height: 32, bgcolor: open ? '#DB4444' : 'white', color: open ? 'white' : 'black' }} className="profile-avtar"><FiUser /></Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    id="account-menu"
-                                    open={open}
-                                    onClose={handleClose}
-                                    onClick={handleClose}
-                                    slotProps={{
-                                        paper: {
-                                            elevation: 0,
-                                            sx: {
-                                                bgcolor: "rgba(0, 0, 0, 0.69)",   // ✅ FIX HERE
-                                                backdropFilter: "blur(10px)", // optional glass effect
-                                                boxShadow: "none",
-                                                color: "white",
-                                                mt: 1,
-                                                zIndex: 9999,   // ✅ higher than navbar
-                                            }
-                                        },
-                                    }}
-                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                >
-                                    <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
-                                            <FiUser />
-                                        </ListItemIcon><NavLink to="/myaccount" style={{ color: "white" }}>Manage My Account</NavLink>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ color: 'white' }}>
-                                            <LocalMallOutlinedIcon />
-                                        </ListItemIcon>
-                                        My Order
-                                    </MenuItem>
-                                    <Divider />
-                                    <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ color: 'white' }}>
-                                            <CancelOutlinedIcon />
-                                        </ListItemIcon>
-                                        My Cancellation
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ color: 'white' }}>
-                                            <StarBorderRoundedIcon />
-                                        </ListItemIcon>
-                                        My Review
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
-                                        <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
-                                            <TbLogout2 />
-                                        </ListItemIcon>
-                                        Logout
-                                    </MenuItem>
-                                </Menu>
+                                            >
+                                                <Avatar sx={{ width: 32, height: 32, bgcolor: open ? '#DB4444' : 'white', color: open ? 'white' : 'black' }} className="profile-avtar"><FiUser /></Avatar>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Menu
+                                            anchorEl={anchorEl}
+                                            id="account-menu"
+                                            open={open}
+                                            onClose={handleClose}
+                                            onClick={handleClose}
+                                            slotProps={{
+                                                paper: {
+                                                    elevation: 0,
+                                                    sx: {
+                                                        bgcolor: "rgba(0, 0, 0, 0.69)",   // ✅ FIX HERE
+                                                        backdropFilter: "blur(10px)", // optional glass effect
+                                                        boxShadow: "none",
+                                                        color: "white",
+                                                        mt: 1,
+                                                        zIndex: 9999,   // ✅ higher than navbar
+                                                    }
+                                                },
+                                            }}
+                                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                        >
+                                            <MenuItem onClick={handleClose}>
+                                                <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
+                                                    <FiUser />
+                                                </ListItemIcon><NavLink to="/myaccount" style={{ color: "white" }}>Manage My Account</NavLink>
+                                            </MenuItem>
+                                            <MenuItem onClick={handleClose}>
+                                                <ListItemIcon sx={{ color: 'white' }}>
+                                                    <LocalMallOutlinedIcon />
+                                                </ListItemIcon>
+                                                My Order
+                                            </MenuItem>
+                                            <Divider />
+                                            <MenuItem onClick={handleClose}>
+                                                <ListItemIcon sx={{ color: 'white' }}>
+                                                    <CancelOutlinedIcon />
+                                                </ListItemIcon>
+                                                My Cancellation
+                                            </MenuItem>
+                                            <MenuItem onClick={handleClose}>
+                                                <ListItemIcon sx={{ color: 'white' }}>
+                                                    <StarBorderRoundedIcon />
+                                                </ListItemIcon>
+                                                My Review
+                                            </MenuItem>
+                                            <MenuItem onClick={() => {
+                                                handleClose();
+                                                handleLogout();
+                                            }}>
+                                                <ListItemIcon sx={{ fontSize: '25px', color: 'white' }}>
+                                                    <TbLogout2 />
+                                                </ListItemIcon>
+                                                Logout
+                                            </MenuItem>
+                                        </Menu>
+                                    </>
+                                }
+
                             </div>
 
 

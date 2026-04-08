@@ -20,7 +20,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => async (args, api, extr
         }
     } catch (error) {
         return {
-            error: {
+            error: { 
                 status: error.response?.status || 500,
                 data: error.response?.data || error.message,
             },

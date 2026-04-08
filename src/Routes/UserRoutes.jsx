@@ -16,11 +16,15 @@ import { useCheckauthQuery } from '../redux/api/user.api';
 
 function UserRoutes(props) {
 
-    const {data, error, isLoading} = useCheckauthQuery();
+    const { data, error, isLoading, refetch } = useCheckauthQuery(undefined, {
+        refetchOnMountOrArgChange: true
+    }
+    );
+
+    //console.log(data)
 
     useEffect(() => {
-       
-        console.log(data)
+        refetch();
     }, [])
 
     return (

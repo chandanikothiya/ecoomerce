@@ -18,8 +18,11 @@ axiosInstance.interceptors.response.use(function (response) {
 }, async function (error) {
     console.log(error)
 
-    // if (error.response && error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
+        const response = await axios.post(BASE_URL+'user/genratenewtoken',{},{withCredentials:true})
+        console.log('response',response)
 
-    // }
+        return axiosInstance(error.config)
+    }
     return Promise.reject(error);
 })
