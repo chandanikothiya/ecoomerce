@@ -1,16 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { userApi } from "./api/user.api"
 import alertReducer from "./slice/Alert.slice"
+import { categoryApi } from "./api/category.api"
 
 export const storeconfig = () => {
     const store = configureStore({
         reducer:{
             alert:alertReducer,
-            [userApi.reducerPath]:userApi.reducer
+            [userApi.reducerPath]:userApi.reducer,
+            [categoryApi.reducerPath]:categoryApi.reducer
         },
          middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
-                userApi .middleware
+                userApi .middleware,
+                categoryApi .middleware
             ),
     })
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Category from '../admin/container/category';
 import Layout from '../admin/components/Layout';
+import Category from '../admin/container/Category/Category'
 
 function AdminRoutes(props) {
     return (

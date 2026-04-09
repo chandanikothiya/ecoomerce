@@ -35,6 +35,7 @@ import { MdOutlineHeadphones } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useGetCategoryQuery } from "../../redux/api/category.api";
 
 
 function Homepage() {
@@ -45,6 +46,7 @@ function Homepage() {
     const [products, setProducts] = useState([]);
     const [showButton, setShowButton] = useState(false);
     const dispatch = useDispatch();
+    const [selectedSubcategories, setSelectedSubcategories] = React.useState([]);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -60,6 +62,14 @@ function Homepage() {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [activeIndex, setActiveIndex] = React.useState(null);
+
+
+    const { data, error, isLoading } = useGetCategoryQuery();
+    console.log("dislaydata", data?.data)
+
+
+    const categorymenu = data?.data.filter((v) => v.parentcategory_id === null)
+    console.log("catemenu", categorymenu)
 
     const open = Boolean(anchorEl);
 
@@ -150,10 +160,10 @@ function Homepage() {
         const params = new URLSearchParams(location.search)
 
         if (params.get("login") === "success") {
-             dispatch(setalert({ text: 'Login sucessfully', variant: 'success' }))
-             navigate("/", { replace: true });
+            dispatch(setalert({ text: 'Login sucessfully', variant: 'success' }))
+            navigate("/", { replace: true });
         }
-    }, [swiperInstance,location]);
+    }, [swiperInstance, location]);
 
 
     const caticone = {
@@ -182,17 +192,17 @@ function Homepage() {
 
 
 
-    const menuItems = [
-        { name: "Woman’s Fashion", subcategories: ["Dresses", "Tops", "Shoes"] },
-        { name: "Men’s Fashion", subcategories: ["Shirts", "Pants", "Shoes"] },
-        { name: "Electronics", subcategories: [] },
-        { name: "Home & Lifestyle", subcategories: [] },
-        { name: "Medicine", subcategories: [] },
-        { name: "Sports & Outdoor", subcategories: ["Fitness", "Camping"] },
-        { name: "Baby’s & Toys", subcategories: [] },
-        { name: "Groceries & Pets", subcategories: [] },
-        { name: "Health & Beauty", subcategories: [] },
-    ];
+    // const menuItems = [
+    //     { name: "Woman’s Fashion", subcategories: ["Dresses", "Tops", "Shoes"] },
+    //     { name: "Men’s Fashion", subcategories: ["Shirts", "Pants", "Shoes"] },
+    //     { name: "Electronics", subcategories: [] },
+    //     { name: "Home & Lifestyle", subcategories: [] },
+    //     { name: "Medicine", subcategories: [] },
+    //     { name: "Sports & Outdoor", subcategories: ["Fitness", "Camping"] },
+    //     { name: "Baby’s & Toys", subcategories: [] },
+    //     { name: "Groceries & Pets", subcategories: [] },
+    //     { name: "Health & Beauty", subcategories: [] },
+    // ];
 
     const colors = [
         { name: "Red", value: "#ff0000" },
@@ -207,6 +217,9 @@ function Homepage() {
             behavior: 'smooth' // smooth scrolling
         });
     };
+
+
+    console.log("selectedSubcategories", selectedSubcategories)
 
     //console.log(menuItems.name)
 
@@ -224,43 +237,56 @@ function Homepage() {
                                         {isMobile ? (
                                             <>
                                                 <Swiper key="mobile-swiper" slidesPerView="auto" spaceBetween={10} freeMode={true}>
-                                                    {menuItems.map((item, index) => (
-                                                        <SwiperSlide key={index} style={{ width: "auto" }}>
-                                                            <Box
-                                                                sx={{
-                                                                    p: { xs: '5px', sm: 1 },
-                                                                    border: "1px solid #ddd",
-                                                                    borderRadius: 1,
-                                                                    display: "flex",
-                                                                    alignItems: "center",
-                                                                    justifyContent: "space-between",
-                                                                    minWidth: "120px"
-                                                                }}
-                                                            >
-                                                                {item.subcategories.length > 0 ? (
-                                                                    <Typography
-                                                                        onClick={(e) => handleClick(e, index)}
-                                                                        sx={{ fontSize: { xs: "13px", sm: '16px' }, cursor: "pointer" }}
-                                                                    >
-                                                                        {item.name}
-                                                                    </Typography>
-                                                                ) : (
-                                                                    <Typography variant="body2" sx={{ fontSize: { xs: "13px", sm: '16px' } }}>
-                                                                        {item.name}
-                                                                    </Typography>
-                                                                )}
+                                                    {categorymenu.map((item, index) => {
+                                                        const subcategories = data?.data.filter((v) => v.parentcategory_id === item._id)
+                                                        return (
+                                                            <SwiperSlide key={index} style={{ width: "auto" }}>
+                                                                <Box
+                                                                    sx={{
+                                                                        p: { xs: '5px', sm: 1 },
+                                                                        border: "1px solid #ddd",
+                                                                        borderRadius: 1,
+                                                                        display: "flex",
+                                                                        alignItems: "center",
+                                                                        justifyContent: "space-between",
+                                                                        minWidth: "120px"
+                                                                    }}
+                                                                >
+                                                                    {subcategories.length > 0 ? (
+                                                                        <Typography
+                                                                            onClick={(e) => {
+                                                                                if (subcategories.length > 0) {
+                                                                                    setSelectedSubcategories(subcategories);
+                                                                                    handleClick(e, index);
+                                                                                }
+                                                                            }}
+                                                                            sx={{ fontSize: { xs: "13px", sm: '16px' }, cursor: "pointer" }}
+                                                                        >
+                                                                            {item.name}
+                                                                        </Typography>
+                                                                    ) : (
+                                                                        <Typography variant="body2" sx={{ fontSize: { xs: "13px", sm: '16px' } }}>
+                                                                            {item.name}
+                                                                        </Typography>
+                                                                    )}
 
-                                                                {item.subcategories.length > 0 && (
-                                                                    <IconButton
-                                                                        sx={{ p: 0, ml: 1 }}
-                                                                        onClick={(e) => handleClick(e, index)}
-                                                                    >
-                                                                        <ArrowForwardIosIcon sx={{ fontSize: { xs: 12, sm: 16 } }} />
-                                                                    </IconButton>
-                                                                )}
-                                                            </Box>
-                                                        </SwiperSlide>
-                                                    ))}
+                                                                    {subcategories.length > 0 && (
+                                                                        <IconButton
+                                                                            sx={{ p: 0, ml: 1 }}
+                                                                            onClick={(e) => {
+                                                                                if (subcategories.length > 0) {
+                                                                                    setSelectedSubcategories(subcategories);
+                                                                                    handleClick(e, index);
+                                                                                }
+                                                                            }}
+                                                                        >
+                                                                            <ArrowForwardIosIcon sx={{ fontSize: { xs: 12, sm: 16 } }} />
+                                                                        </IconButton>
+                                                                    )}
+                                                                </Box>
+                                                            </SwiperSlide>
+                                                        )
+                                                    })}
                                                 </Swiper>
 
                                                 {/* ✅ Mobile Submenu */}
@@ -277,8 +303,8 @@ function Homepage() {
                                                         horizontal: "left"
                                                     }}
                                                 >
-                                                    {activeIndex !== null &&
-                                                        menuItems[activeIndex]?.subcategories.map((sub, i) => (
+                                                    {selectedSubcategories.length > 0 &&
+                                                        selectedSubcategories.map((sub, i) => (
                                                             <MenuItem key={i} onClick={handleClose}>
                                                                 {typeof sub === "string" ? sub : sub.name}
                                                             </MenuItem>
@@ -289,36 +315,46 @@ function Homepage() {
                                             /* ================= DESKTOP ================= */
                                             <>
                                                 <MenuList className="heroleft-menu">
-                                                    {menuItems.map((item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            className="my-custome-list"
-                                                            onClick={(e) =>
-                                                                item.subcategories.length > 0 &&
-                                                                handleClick(e, index)
-                                                            }
+                                                    {categorymenu?.map((item, index) => {
+                                                        const subcategories = data?.data.filter((v) => v.parentcategory_id === item._id)
+                                                        console.log("subcat", subcategories)
+                                                        return (
+                                                            <MenuItem
+                                                                key={index}
+                                                                className="my-custome-list"
+                                                                onClick={(e) => {
+                                                                    if (subcategories.length > 0) {
+                                                                        setSelectedSubcategories(subcategories);
+                                                                        handleClick(e, index);
+                                                                    }
+                                                                }
 
-                                                        >
-                                                            <Box
-                                                                sx={{
-                                                                    width: "100%",
-                                                                    display: "flex",
-                                                                    justifyContent: "space-between",
-                                                                    alignItems: "center"
-                                                                }}
+                                                                    // subcategories.length > 0 &&
+                                                                    // handleClick(e, index)
+                                                                }
+
                                                             >
-                                                                <Typography variant="body2" sx={{ fontSize: { sm: "14px", md: '16px' }, cursor: "pointer" }}  >
-                                                                    {item.name}
-                                                                </Typography>
+                                                                <Box
+                                                                    sx={{
+                                                                        width: "100%",
+                                                                        display: "flex",
+                                                                        justifyContent: "space-between",
+                                                                        alignItems: "center"
+                                                                    }}
+                                                                >
+                                                                    <Typography variant="body2" sx={{ fontSize: { sm: "14px", md: '16px' }, cursor: "pointer" }}  >
+                                                                        {item.name}
+                                                                    </Typography>
 
-                                                                {item.subcategories.length > 0 && (
-                                                                    <IconButton sx={{ p: 0, ml: 2 }}>
-                                                                        <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
-                                                                    </IconButton>
-                                                                )}
-                                                            </Box>
-                                                        </MenuItem>
-                                                    ))}
+                                                                    {subcategories.length > 0 && (
+                                                                        <IconButton sx={{ p: 0, ml: 2 }}>
+                                                                            <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
+                                                                        </IconButton>
+                                                                    )}
+                                                                </Box>
+                                                            </MenuItem>
+                                                        )
+                                                    })}
                                                 </MenuList>
 
                                                 {/* ✅ Desktop Submenu */}
@@ -340,8 +376,8 @@ function Homepage() {
                                                         }
                                                     }}
                                                 >
-                                                    {activeIndex !== null &&
-                                                        menuItems[activeIndex]?.subcategories.map((sub, i) => (
+                                                    {selectedSubcategories.length > 0 &&
+                                                        selectedSubcategories.map((sub, i) => (
                                                             <MenuItem key={i} onClick={handleClose} sx={{
                                                                 fontSize: '14px',
                                                                 '&:hover': {
