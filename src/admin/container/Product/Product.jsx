@@ -18,7 +18,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import Myuploadfile from "../../components/Myuploadfile";
 
 
-function Category() {
+function Product() {
 
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
@@ -47,13 +47,14 @@ function Category() {
     // };
 
     const categorySchema = object({
+        category_id: string().required(),
         name: string().required(),
-        description: string().required(),
+        price: string().required(),
 
     })
 
     let pdata = [
-        { value: '', label: 'Select Parent Category' }
+        { value: '', label: 'Select Category' }
     ]
 
 
@@ -65,7 +66,7 @@ function Category() {
     const handlesubmit = (values) => {
         console.log("values", values)
         if (Object.keys(updatedata).length > 0) {
-            console.log("updateval",values)
+            console.log("updateval", values)
             updateCategory(values)
         } else {
             addcategory(values)
@@ -129,7 +130,7 @@ function Category() {
             <div className="container">
                 <React.Fragment>
                     <Button variant="outlined" onClick={handleClickOpen}>
-                        Add Category
+                        Add Product
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>Add Category</DialogTitle>
@@ -137,8 +138,8 @@ function Category() {
                             <Formik
                                 initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                     name: '',
-                                    description: '',
-                                    parentcategory_id: ""
+                                    price: '',
+                                    category_id: ""
                                 }}
                                 validationSchema={categorySchema}
                                 onSubmit={(values) => {
@@ -150,9 +151,9 @@ function Category() {
                                 <Form id="subscription-form">
 
                                     <MyTextField
-                                        name="parentcategory_id"
-                                        id="parentcategory_id"
-                                        label="parent category"
+                                        name="category_id"
+                                        id="category_id"
+                                        label="category"
                                         select
                                         data={pdata}
                                         slotProps={{
@@ -166,16 +167,23 @@ function Category() {
                                     <MyTextField
                                         name="name"
                                         id="name"
-                                        label="Category Name"
+                                        label="Product Name"
                                     />
 
                                     <MyTextField
-                                        name="description"
-                                        id="description"
-                                        label="Description"
+                                        name="price"
+                                        id="price"
+                                        label="Price"
                                     />
 
-                                   
+                                    <MyTextField
+                                        name="discount"
+                                        id="discount"
+                                        label="Discount"
+                                    />
+                                    <Myuploadfile
+                                        name='product_img'
+                                    />
 
                                 </Form>
                             </Formik>
@@ -197,15 +205,15 @@ function Category() {
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize:10,
+                                pageSize: 10,
                             },
                         },
                     }}
-                    pageSizeOptions={[5,10,15,20]}
+                    pageSizeOptions={[5, 10, 15, 20]}
                     checkboxSelection
                     disableRowSelectionOnClick
                     sx={{
-                        marginTop: 2,marginBottom:1,
+                        marginTop: 2, marginBottom: 1,
                         '& .MuiDataGrid-columnSeparator': {
                             display: 'none',
                         },
@@ -217,4 +225,4 @@ function Category() {
     )
 }
 
-export default Category;
+export default Product;
