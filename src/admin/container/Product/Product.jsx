@@ -50,6 +50,8 @@ function Product() {
         category_id: string().required(),
         name: string().required(),
         price: string().required(),
+        product_img:mixed().required(),
+        discount:string().required()
 
     })
 
@@ -139,7 +141,9 @@ function Product() {
                                 initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                     name: '',
                                     price: '',
-                                    category_id: ""
+                                    category_id: "",
+                                    product_img:"",
+                                    discount:''
                                 }}
                                 validationSchema={categorySchema}
                                 onSubmit={(values) => {
