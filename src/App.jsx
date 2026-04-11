@@ -17,12 +17,11 @@ import { storeconfig } from './redux/store'
 import { SnackbarProvider } from 'notistack'
 import Alert from './components/Alert/Alert'
 
+const store = storeconfig();
 
 function App() {
   const [count, setCount] = useState(0)
-  const store = storeconfig();
 
-  
 
   return (
     <>
@@ -33,7 +32,7 @@ function App() {
       {/* <Footer/> */}
       <SnackbarProvider>
         <Provider store={store}>
-          <Alert/>
+          <Alert />
           <Routes>
             <Route path='/*' element={<UserRoutes />} />
             <Route element={<PrivateRoutes />}>

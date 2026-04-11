@@ -16,6 +16,9 @@ import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import Myuploadfile from "../../components/Myuploadfile";
+import { useAddProductMutation, useDeleteProductMutation, useEditProductMutation, useGetProductQuery } from "../../../redux/api/product.api";
+import { asyncThunkCreator } from "@reduxjs/toolkit";
+import { IMG_URL } from "../../../utility/url";
 
 
 function Product() {
@@ -23,11 +26,15 @@ function Product() {
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
 
-    const { data, error, isLoading } = useGetCategoryQuery();
+    const { data: catdata,
+        error: caterror,
+        isLoading: catisLoading } = useGetCategoryQuery();
+
+    const { data, error, isLoading } = useGetProductQuery();
     console.log(data)
-    const [addcategory] = useAddCategoryMutation();
-    const [updateCategory] = useUpdateCategoryMutation();
-    const [deletecategory] = useDeleteCategoryMutation();
+    const [addProduct] = useAddProductMutation();
+    const [updateProduct] = useEditProductMutation();
+    const [deleteProduct] = useDeleteProductMutation();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,8 +57,8 @@ function Product() {
         category_id: string().required(),
         name: string().required(),
         price: string().required(),
-        product_img:mixed().required(),
-        discount:string().required()
+        product_img: mixed(),
+        discount: string().required()
 
     })
 
@@ -60,20 +67,43 @@ function Product() {
     ]
 
 
-    data?.data?.map((v, i) => {
+    catdata?.data?.map((v, i) => {
         console.log(v?._id)
         pdata.push({ value: v?._id, label: v?.name })
     })
 
-    const handlesubmit = (values) => {
-        console.log("values", values)
-        if (Object.keys(updatedata).length > 0) {
-            console.log("updateval", values)
-            updateCategory(values)
-        } else {
-            addcategory(values)
+    const handlesubmit = async (values) => {
+        console.log("values", values.product_img)
+
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("price", values.price);
+        formData.append("category_id", values.category_id);
+        formData.append("discount", values.discount);
+
+        if (Array.isArray(values.product_img)) {
+            values.product_img.forEach((file) => {
+                formData.append("product_img", file);
+            });
         }
 
+        console.log("values", formData)
+
+
+
+        if (Object.keys(updatedata).length > 0) {
+            formData.append("_id", values._id);
+            console.log("updateval", values)
+            updateProduct(formData)
+        } else {
+            try {
+                console.log("CALLING API...");
+                const res = await addProduct(formData);
+                console.log("API RESPONSE", res);
+            } catch (err) {
+                console.log("API ERROR", err);
+            }
+        }
     }
 
     const handleedit = (values) => {
@@ -83,26 +113,49 @@ function Product() {
     console.log(updatedata)
 
     const handledelete = (_id) => {
-        deletecategory(_id);
+        deleteProduct(_id);
     }
 
     const columns = [
-        { field: 'name', headerName: 'name', width: 350 },
+        { field: 'name', headerName: 'name', width: 250 },
         {
-            field: 'description',
-            headerName: 'description',
-            width: 350,
+            field: 'price',
+            headerName: 'Price',
+            width: 150,
             editable: true,
         },
         {
-            field: 'parentcategory_id',
-            headerName: 'parent Category',
-            width: 350,
+            field: 'discount',
+            headerName: 'Discount',
+            width: 150,
+            editable: true,
+        },
+        {
+            field: 'category_id',
+            headerName: 'Category',
+            width: 250,
             editable: true,
             renderCell: (params) => (
                 <>
                     {
-                        params.row.parentcategory_id !== null ? data?.data?.find((v) => v._id === params.row.parentcategory_id)?.name : '-'
+                        params.row.parentcategory_id !== null ? catdata?.data?.find((v) => v._id === params.row.category_id)?.name : '-'
+                    }
+                </>
+            )
+        },//product_img
+
+        {
+            field: 'product_img',
+            headerName: 'Images',
+            width: 250,
+            editable: true,
+            renderCell: (params) => (
+                <>
+                    {
+                        // console.log("img",params)
+                        params?.row?.product_img?.map((v) => (
+                            <img src={IMG_URL + v} alt="productsimg" style={{ marginRight: '10px', objectFit: 'cover', height: '100%', width: '70px' }} />
+                        ))
                     }
                 </>
             )
@@ -142,12 +195,12 @@ function Product() {
                                     name: '',
                                     price: '',
                                     category_id: "",
-                                    product_img:"",
-                                    discount:''
+                                    product_img: "",
+                                    discount: ''
                                 }}
                                 validationSchema={categorySchema}
                                 onSubmit={(values) => {
-                                    console.log(values)
+                                    console.log("valuesvalues", values)
                                     handlesubmit(values)
                                     handleClose();
                                 }}
@@ -213,6 +266,7 @@ function Product() {
                             },
                         },
                     }}
+                    rowHeight={70}
                     pageSizeOptions={[5, 10, 15, 20]}
                     checkboxSelection
                     disableRowSelectionOnClick

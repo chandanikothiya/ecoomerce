@@ -30,14 +30,36 @@ function Myuploadfile(props) {
 
     let fileurl = ''
 
-    if (typeof field.value === 'string'  && field.value) {
-        fileurl = IMG_URL + field.value
-    } else if (typeof field.value === 'object' && field.value) {
-        fileurl = URL.createObjectURL(field.value)
-    }
     console.log(fileurl)
 
     // setImages((prev) => [...prev,])
+    const handlechange = (e) => {
+        const files = Array.from(e.target.files)
+        console.log(e.target.files[0])
+
+        const updated = [...(field.value || []), ...files];
+        setValue(updated)
+    }
+    console.log(images)
+
+
+    if (Array.isArray(field.value)) {
+        fileurl =  field.value.map((v) => {
+            if (typeof v === 'string') {
+                return IMG_URL + v
+            } else if (typeof v === 'object' && field.value) {
+                return URL.createObjectURL(v)
+            }
+        })
+    } else {
+        if (typeof field.value === 'string' && field.value) {
+            fileurl = IMG_URL + field.value
+        } else if (typeof field.value === 'object' && field.value) {
+            fileurl = URL.createObjectURL(field.value)
+        }
+    }
+
+    console.log(fileurl)
 
     return (
         <>
@@ -53,30 +75,34 @@ function Myuploadfile(props) {
                 <VisuallyHiddenInput
                     {...props}
                     type="file"
-                    onChange={(event) => setValue(event.target.files[0])}
+                    onChange={handlechange}
                     multiple
                 />
             </Button>
 
             {
-                fileurl !== '' &&
-                <Box sx={{ display: 'inline-block', position: 'relative', height: '70px', width: '70px', marginTop: '24px', marginLeft: '10px', }}>
-                    <img src={fileurl} alt="product_image" style={{ height: '100%', width: '100%', objectFit: 'contain' }} />
-                    <IconButton
-                        sx={{
-                            backgroundColor: 'rgb(182, 37, 37)', width: '15px', height: "15px",
-                            borderRadius: '3px', position: 'absolute', top: 0, right: 0, padding: '2px',
-                            "&:hover": {
-                                backgroundColor: 'rgb(182, 37, 37)'
-                            }
-                        }}
-                        onClick={() => setValue(null)}
-                    >
-                        <IoMdClose color="#fff" />
-                    </IconButton>
-                </Box>
+                fileurl.length > 0 &&
+                fileurl?.map((v,index) => (
+                    <Box key={index} sx={{ display: 'inline-block', position: 'relative', height: '70px', width: '70px', marginTop: '24px', marginLeft: '10px', }}>
+                        <img src={v} alt="product_image" style={{ height: '100%', width: '100%', objectFit: 'contain' }} />
+                        <IconButton
+                            sx={{
+                                backgroundColor: 'rgb(182, 37, 37)', width: '15px', height: "15px",
+                                borderRadius: '3px', position: 'absolute', top: 0, right: 0, padding: '2px',
+                                "&:hover": {
+                                    backgroundColor: 'rgb(182, 37, 37)'
+                                }
+                            }}
+                            onClick={() => {
+                                const removeid = field.value.filter((_,i) => i !== index); 
+                                setValue(removeid)
+                            }}
+                        >
+                            <IoMdClose color="#fff" />
+                        </IconButton>
+                    </Box>
+                ))
             }
-
 
 
             {meta.error && meta.touched ?

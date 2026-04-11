@@ -1,8 +1,8 @@
 import { axiosInstance } from "../utility/axiosinstance"
 
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => async (args, api, extraOptions) => {
-      console.log("FULL ARGS:", args);
-      const { url, method = "get", body, params, headers } = args;
+    console.log("FULL ARGS:", args);
+    const { url, method = "get", body, params, headers } = args;
     console.log("METHOD:", method, typeof method);
     try {
 
@@ -11,7 +11,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => async (args, api, extr
             method: method || get,
             data: body,
             params,
-            headers,
+            headers
         });
 
         // return Promise.resolve(result);
@@ -20,7 +20,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => async (args, api, extr
         }
     } catch (error) {
         return {
-            error: { 
+            error: {
                 status: error.response?.status || 500,
                 data: error.response?.data || error.message,
             },
