@@ -5,13 +5,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Form, Formik } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import { object, string, mixed } from 'yup';
 import MyTextField from "../../components/MyTextField";
-import { Margin } from "@mui/icons-material";
+import { BorderBottom, Margin, Padding, WidthNormal } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { IconButton } from "@mui/material";
+import { Avatar, Box, IconButton } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -25,6 +25,9 @@ function Product() {
 
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
+    const [variants, setVariants] = useState([
+        { color: "#000000", images: [] }
+    ]);
 
     const { data: catdata,
         error: caterror,
@@ -35,6 +38,7 @@ function Product() {
     const [addProduct] = useAddProductMutation();
     const [updateProduct] = useEditProductMutation();
     const [deleteProduct] = useDeleteProductMutation();
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -73,25 +77,33 @@ function Product() {
     })
 
     const handlesubmit = async (values) => {
-        console.log("values", values.product_img)
+        console.log("values", values.product_img, values)
 
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("price", values.price);
         formData.append("category_id", values.category_id);
         formData.append("discount", values.discount);
+        // formData.append("color", values.color)
 
-        if (Array.isArray(values.product_img)) {
-            values.product_img.forEach((file) => {
-                formData.append("product_img", file);
+        formData.append("variants", JSON.stringify(values.variants));
+
+        values.variants.forEach((variant, i) => {
+            variant.images.forEach((file) => {
+                formData.append(`variant_images_${i}`, file);
             });
-        }
+        });
 
-        console.log("values", formData)
+        // if (Array.isArray(values.product_img)) {
+        //     values.product_img.forEach((file) => {
+        //         formData.append("product_img", file);
+        //     });
+        // }
+
+        console.log("values", formData.get("name"))
 
 
-
-        if (Object.keys(updatedata).length > 0) {
+        if (values._id) {
             formData.append("_id", values._id);
             console.log("updateval", values)
             updateProduct(formData)
@@ -109,8 +121,9 @@ function Product() {
     const handleedit = (values) => {
         setUpdatedata(values)
         handleClickOpen()
+        console.log("updatedata", updatedata)
     }
-    console.log(updatedata)
+    console.log("updatedata", updatedata)
 
     const handledelete = (_id) => {
         deleteProduct(_id);
@@ -138,6 +151,7 @@ function Product() {
             renderCell: (params) => (
                 <>
                     {
+                        //console.log(params)
                         params.row.parentcategory_id !== null ? catdata?.data?.find((v) => v._id === params.row.category_id)?.name : '-'
                     }
                 </>
@@ -152,11 +166,24 @@ function Product() {
             renderCell: (params) => (
                 <>
                     {
-                        // console.log("img",params)
-                        params?.row?.product_img?.map((v) => (
-                            <img src={IMG_URL + v} alt="productsimg" style={{ marginRight: '10px', objectFit: 'cover', height: '100%', width: '70px' }} />
+                        params?.row?.variants.map((v, i) => (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                {
+                                    v.color ? 
+                                    <Avatar sx={{ bgcolor: v.color, height: '20px', width: '20px' }}> </Avatar>
+                                    : ''
+                                }
+                                {
+                                    // console.log("img",params)
+                                    v.images?.map((v) => (
+                                        <img src={IMG_URL + v} alt="productsimg" style={{ marginRight: '10px', objectFit: 'cover', height: '100%', width: '70px' }} />
+                                    ))
+                                }
+                            </Box>
                         ))
                     }
+
+
                 </>
             )
         },
@@ -191,12 +218,15 @@ function Product() {
                         <DialogTitle>Add Category</DialogTitle>
                         <DialogContent>
                             <Formik
+                                enableReinitialize
                                 initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                     name: '',
                                     price: '',
                                     category_id: "",
-                                    product_img: "",
-                                    discount: ''
+                                    discount: '',
+                                    variants: [
+                                        { color: "", images: [] }
+                                    ]
                                 }}
                                 validationSchema={categorySchema}
                                 onSubmit={(values) => {
@@ -205,44 +235,94 @@ function Product() {
                                     handleClose();
                                 }}
                             >
-                                <Form id="subscription-form">
+                                {({ values }) => (
+                                    <Form id="subscription-form">
 
-                                    <MyTextField
-                                        name="category_id"
-                                        id="category_id"
-                                        label="category"
-                                        select
-                                        data={pdata}
-                                        slotProps={{
-                                            select: {
-                                                native: true,
-                                            },
-                                        }}
-                                        InputLabelProps={{ shrink: true }}
-                                    />
+                                        <MyTextField
+                                            name="category_id"
+                                            id="category_id"
+                                            label="category"
+                                            select
+                                            data={pdata}
+                                            slotProps={{
+                                                select: {
+                                                    native: true,
+                                                },
+                                            }}
+                                            InputLabelProps={{ shrink: true }}
+                                        />
 
-                                    <MyTextField
-                                        name="name"
-                                        id="name"
-                                        label="Product Name"
-                                    />
+                                        <MyTextField
+                                            name="name"
+                                            id="name"
+                                            label="Product Name"
+                                        />
 
-                                    <MyTextField
-                                        name="price"
-                                        id="price"
-                                        label="Price"
-                                    />
+                                        <MyTextField
+                                            name="price"
+                                            id="price"
+                                            label="Price"
+                                        />
 
-                                    <MyTextField
-                                        name="discount"
-                                        id="discount"
-                                        label="Discount"
-                                    />
-                                    <Myuploadfile
-                                        name='product_img'
-                                    />
+                                        <MyTextField
+                                            name="discount"
+                                            id="discount"
+                                            label="Discount"
+                                        />
 
-                                </Form>
+                                        <FieldArray name="variants">
+                                            {({ push, remove }) => (
+                                                <>
+                                                    {
+                                                        values.variants.map((v, index) => (
+                                                            <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
+                                                                <MyTextField
+                                                                    name={`variants[${index}].color`}  // ✅ dynamic name
+                                                                    type="color"
+                                                                    InputProps={{ disableUnderline: true }}
+
+                                                                    label="color"
+
+                                                                    value={v.color}
+                                                                    sx={{
+                                                                        width: "30px", '& .MuiInputBase-input-MuiInput-input': {
+                                                                            Padding: 0
+                                                                        }
+                                                                    }}
+
+                                                                />
+
+                                                                <Myuploadfile
+                                                                    name={`variants[${index}].images`}
+
+                                                                />
+
+                                                                {index !== 0 && (
+                                                                    <Button
+                                                                        color="error"
+                                                                        onClick={() => remove(index)}
+                                                                        sx={{ height: 'fit-content' }}
+                                                                    >
+                                                                        Remove
+                                                                    </Button>
+                                                                )}
+
+                                                            </Box>
+                                                        ))
+                                                    }
+                                                    < Button
+                                                        variant="outlined"
+                                                        onClick={() => push({ color: "#000000", images: [] })}
+                                                        sx={{ marginTop: 2 }}
+                                                    >
+                                                        + Add Color
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </FieldArray>
+
+                                    </Form>
+                                )}
                             </Formik>
                         </DialogContent>
                         <DialogActions>
@@ -266,7 +346,7 @@ function Product() {
                             },
                         },
                     }}
-                    rowHeight={70}
+                    rowHeight={150}
                     pageSizeOptions={[5, 10, 15, 20]}
                     checkboxSelection
                     disableRowSelectionOnClick
@@ -278,7 +358,7 @@ function Product() {
                         '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
                     }}
                 />
-            </div>
+            </div >
         </>
     )
 }
