@@ -36,6 +36,8 @@ import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
+import { useGetProductQuery } from "../../redux/api/product.api";
+import { IMG_URL } from "../../utility/url";
 
 
 function Homepage() {
@@ -66,6 +68,13 @@ function Homepage() {
 
     const { data, error, isLoading } = useGetCategoryQuery();
     console.log("dislaydata", data?.data)
+
+    const { data: pdata,
+        error: perror,
+        isLoading: pisLoading } = useGetProductQuery();
+
+    console.log("productdata", pdata?.data)
+
 
 
     const categorymenu = data?.data.filter((v) => v.parentcategory_id === null)
@@ -163,7 +172,28 @@ function Homepage() {
             dispatch(setalert({ text: 'Login sucessfully', variant: 'success' }))
             navigate("/", { replace: true });
         }
+
+
+
     }, [swiperInstance, location]);
+
+    useEffect(() => {
+        if (pdata?.data?.length) {
+            const initialColors = {};
+
+            pdata?.data?.forEach((v) => {
+                const firstValidColor = v?.variants?.find(
+                    (x) => x?.color && x.color.trim() !== ""
+                )?.color;
+
+                if (firstValidColor) {
+                    initialColors[v.id] = firstValidColor;
+                }
+            });
+
+            setSelectedColors(initialColors);
+        }
+    }, [pdata]); // ✅ ONLY pdata
 
 
     const caticone = {
@@ -222,6 +252,12 @@ function Homepage() {
     console.log("selectedSubcategories", selectedSubcategories)
 
     //console.log(menuItems.name)
+    const handlepProduct = (id) => {
+        navigate(`/productdetail/${id}`)
+    }
+
+
+
 
     return (
         <>
@@ -1066,11 +1102,11 @@ function Homepage() {
                                         }}
 
                                     >
-                                        {products.map((v, i) => {
-                                            const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                        {pdata?.data?.map((v, i) => {
+                                            // const r = v.rating.reduce((acc, v) => acc + v, 0)
                                             // console.log(r)
-                                            const rate = r / v.rating.length;
-                                            console.log(rate)
+                                            // const rate = r / v.rating.length;
+                                            // console.log(rate)
                                             return (
                                                 <SwiperSlide key={v.id}>
                                                     <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
@@ -1085,14 +1121,42 @@ function Homepage() {
                                                                     lg: '250px'
                                                                 }, position: 'relative'
                                                             }}>
-                                                            <CardMedia
+                                                            {
+                                                                (() => {
+                                                                    const validVariants = v?.variants?.filter(
+                                                                        (x) => x?.color && x.color.trim() !== ""
+                                                                    );
+
+                                                                    const selectedColor =
+                                                                        selectedColors[v._id] || validVariants[0]?.color;
+
+                                                                    const selectedVariant = v?.variants?.find(
+                                                                        (x) => x.color === selectedColor
+                                                                    );
+
+                                                                    return (
+                                                                        <CardMedia
+                                                                            component="img"
+                                                                            className="cardimg"
+                                                                            sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                                            image={
+                                                                                selectedVariant?.images?.[0]
+                                                                                    ? IMG_URL + selectedVariant.images[0]
+                                                                                    : IMG_URL + v.variants[0]?.images?.[0]
+                                                                            }
+                                                                            title="productimg"
+                                                                            onClick={() => handlepProduct(v._id)}
+                                                                        />
+                                                                    );
+                                                                })()}
+                                                            {/* <CardMedia
                                                                 component="img"
                                                                 className="cardimg"
-                                                                sx={{ objectFit: "contain" }}
-                                                                image={v.img}
+                                                                sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                                image={IMG_URL + v.variants[0].images[0]}
                                                                 title="productimg"
 
-                                                            />
+                                                            /> */}
 
                                                             <Typography
                                                                 className="addcart"
@@ -1119,14 +1183,14 @@ function Homepage() {
                                                             <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
 
                                                                 <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                    {v.price}
+                                                                    ₹{v.price}
                                                                 </Typography>
 
 
                                                                 <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                                     <Typography sx={{ color: '#FFAD33' }}>
                                                                         <Stack spacing={1}>
-                                                                            <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                            <Rating name="half-rating" defaultValue={4} precision={0.5} sx={{
                                                                                 fontSize: {
                                                                                     xs: '15px',
                                                                                     sm: '18px',
@@ -1142,7 +1206,8 @@ function Homepage() {
                                                                             sm: '16px'
                                                                         }
                                                                     }}>
-                                                                        {`(${r})`}
+                                                                        (4)
+                                                                        {/* {`(${r})`} */}
                                                                     </Typography>
                                                                 </Box>
                                                             </Box>
@@ -1168,46 +1233,71 @@ function Homepage() {
                                                                     ""
                                                             }
 
-                                                            <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
-                                                                {
+                                                            {
+                                                                v?.variants?.length > 0 && (() => {
 
-                                                                    v?.colors?.map((v1) => (
+                                                                    const validVariants = v?.variants?.filter(
+                                                                        (x) => x?.color && x.color.trim() !== ""
+                                                                    )
 
-                                                                        <label key={v1} style={{ cursor: "pointer" }}>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name={`color-${v.id}`} // 👈 unique per product
-                                                                                value={v1}
-                                                                                checked={(selectedColors[v.id] || v.colors[0]) === v1}
-                                                                                onChange={() =>
-                                                                                    setSelectedColors((prev) => ({
-                                                                                        ...prev,
-                                                                                        [v.id]: v1, // 👈 store per product
-                                                                                    }))
+                                                                    const selectedColor =
+                                                                        selectedColors[v._id] || validVariants[0]?.color;
+
+
+                                                                    // const selectedColor =
+                                                                    //     selectedColors[v._id] ??
+                                                                    //     v?.variants?.find((x) => x?.color && x.color.trim() !== "")?.color;
+                                                                    // console.log(selectedColor, selectedColors)
+                                                                    // const [selectedColors, setSelectedColors] = useState({});
+
+                                                                    return (
+                                                                        <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                            {
+                                                                               validVariants?.map((v1) => {
+                                                                                    if (!v1?.color || v1.color.trim() === "") return null;
+
+
+                                                                                    return (
+                                                                                        <label key={v1.color} style={{ cursor: "pointer" }}>
+                                                                                            <input
+                                                                                                type="radio"
+                                                                                                name={`color-${v._id}`} // 👈 unique per product
+                                                                                                value={v1.color}
+                                                                                                checked={selectedColor === v1.color}
+                                                                                                onChange={() =>
+                                                                                                    setSelectedColors((prev) => ({
+                                                                                                        ...prev,
+                                                                                                        [v._id]: v1.color, // 👈 store per product
+                                                                                                    }))
+                                                                                                }
+                                                                                                style={{ display: "none" }}
+                                                                                            />
+
+                                                                                            <span
+                                                                                                style={{
+                                                                                                    width: "15px",
+                                                                                                    height: "15px",
+                                                                                                    borderRadius: "50%",
+                                                                                                    backgroundColor: v1.color,
+                                                                                                    display: "inline-block",
+                                                                                                    border: "1px solid #ccc",
+                                                                                                    outline:
+                                                                                                        selectedColor === v1.color
+                                                                                                            ? "2px solid black"
+                                                                                                            : "none",
+                                                                                                    outlineOffset: "3px",
+                                                                                                }}
+                                                                                            />
+                                                                                        </label>
+                                                                                    )
                                                                                 }
-                                                                                style={{ display: "none" }}
-                                                                            />
 
-                                                                            <span
-                                                                                style={{
-                                                                                    width: "15px",
-                                                                                    height: "15px",
-                                                                                    borderRadius: "50%",
-                                                                                    backgroundColor: v1,
-                                                                                    display: "inline-block",
-                                                                                    border: "1px solid #ccc",
-                                                                                    outline:
-                                                                                        (selectedColors[v.id] || v.colors[0]) === v1
-                                                                                            ? "1px solid black"
-                                                                                            : "none",
-                                                                                    outlineOffset: "3px",
-                                                                                }}
-                                                                            />
-                                                                        </label>
-                                                                    ))
-                                                                }
-                                                            </Box>
-
+                                                                                )
+                                                                            }
+                                                                        </Box>
+                                                                    )
+                                                                })()
+                                                            }
                                                         </CardContent>
 
                                                         <CardActions

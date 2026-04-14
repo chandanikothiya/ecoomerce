@@ -62,7 +62,7 @@ function Product() {
         name: string().required(),
         price: string().required(),
         product_img: mixed(),
-        discount: string().required()
+        //discount: string().required()
 
     })
 
@@ -83,7 +83,7 @@ function Product() {
         formData.append("name", values.name);
         formData.append("price", values.price);
         formData.append("category_id", values.category_id);
-        formData.append("discount", values.discount);
+        //formData.append("discount", values.discount);
         // formData.append("color", values.color)
 
         formData.append("variants", JSON.stringify(values.variants));
@@ -137,12 +137,12 @@ function Product() {
             width: 150,
             editable: true,
         },
-        {
-            field: 'discount',
-            headerName: 'Discount',
-            width: 150,
-            editable: true,
-        },
+        // {
+        //     field: 'discount',
+        //     headerName: 'Discount',
+        //     width: 150,
+        //     editable: true,
+        // },
         {
             field: 'category_id',
             headerName: 'Category',
@@ -161,7 +161,7 @@ function Product() {
         {
             field: 'product_img',
             headerName: 'Images',
-            width: 250,
+            width: 470,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -169,9 +169,9 @@ function Product() {
                         params?.row?.variants.map((v, i) => (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 {
-                                    v.color ? 
-                                    <Avatar sx={{ bgcolor: v.color, height: '20px', width: '20px' }}> </Avatar>
-                                    : ''
+                                    v.color ?
+                                        <Avatar sx={{ bgcolor: v.color, height: '20px', width: '20px' }}> </Avatar>
+                                        : ''
                                 }
                                 {
                                     // console.log("img",params)
@@ -190,7 +190,7 @@ function Product() {
         {
             field: '',
             headerName: 'Action',
-            width: 150,
+            width: 120,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -223,7 +223,7 @@ function Product() {
                                     name: '',
                                     price: '',
                                     category_id: "",
-                                    discount: '',
+
                                     variants: [
                                         { color: "", images: [] }
                                     ]
@@ -264,11 +264,11 @@ function Product() {
                                             label="Price"
                                         />
 
-                                        <MyTextField
+                                        {/* <MyTextField
                                             name="discount"
                                             id="discount"
                                             label="Discount"
-                                        />
+                                        /> */}
 
                                         <FieldArray name="variants">
                                             {({ push, remove }) => (
@@ -328,7 +328,7 @@ function Product() {
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
                             <Button type="submit" form="subscription-form">
-                                Add Category
+                                Add Product
                             </Button>
                         </DialogActions>
                     </Dialog>

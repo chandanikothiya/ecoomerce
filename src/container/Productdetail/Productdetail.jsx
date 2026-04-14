@@ -7,14 +7,27 @@ import { MdAutorenew } from "react-icons/md";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Divider from '@mui/material/Divider';
+import { useGetProductQuery } from "../../redux/api/product.api";
+import { IMG_URL } from "../../utility/url";
 
 function Productdetail() {
 
     const [counter, setCounter] = useState(1)
     const [active, setActive] = useState()
+    const [selectedImage, setSelectedImage] = useState("");
+    const [selectedVariant, setSelectedVariant] = useState("");
     const [allproducts, setAllproducts] = useState([]);
+
+    const { id } = useParams()
+    console.log(id)
+
+    const { data, error, isLoading } = useGetProductQuery();
+    console.log(data?.data)
+
+    const detailproduct = data?.data?.find((v) => v._id === id)
+    console.log(detailproduct)
 
 
     useEffect(() => {
@@ -24,6 +37,19 @@ function Productdetail() {
     }, [])
 
     console.log(allproducts)
+
+    useEffect(() => {
+        if (detailproduct?.variants?.[0]?.images?.length) {
+            setSelectedImage(detailproduct.variants[0].images[0]);
+        }
+
+        if (detailproduct?.variants?.length) {
+            setSelectedVariant(detailproduct.variants[0])
+        }
+
+    }, [detailproduct]);
+
+    console.log(selectedVariant)
 
 
     const handleIncrese = () => {
@@ -82,22 +108,35 @@ function Productdetail() {
                         <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Havic HV G-92 Gamepad</Typography>
                     </Breadcrumbs>
 
-                    <Grid container sx={{ mt:{ xs:3,sm:5,lg:10} }} spacing={{ xs: 3, sm: 5, lg: 6 }}>
-                        <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs:2,sm: 3, xl: 3 }} alignItems="stretch">
+                    <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 5, lg: 6 }}>
+                        <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs: 2, sm: 3, xl: 3 }} alignItems="stretch">
                             <Grid size={{ xs: 3, sm: 4, md: 3 }} sx={{
                                 // flexDirection: {
                                 //     xs: 'row',     // mobile → row
                                 //     md: 'column'   // desktop → column
                                 // }
                             }} container spacing={{ sm: 2, md: 4 }} alignSelf="flex-start">
-                                <Grid >
-                                    <Box className="detailimg-box">
-                                        <img src="../../../public/assets/images/productdetail/image 57.png" alt="" />
+                                {
+                                    selectedVariant?.images?.map((v) => (
+                                        <Grid size={12}>
+                                            <Box
+                                                className="detailimg-box"
+                                                sx={{ width: '100%', height: '97px', border: selectedImage === v ? "2px solid black" : "1px solid #ccc", }}
+                                                onClick={() => setSelectedImage(v)}
+                                            >
+                                                <img src={IMG_URL + v} alt="no" className="demoimg" />
+                                            </Box>
+                                        </Grid>
+                                    ))
+                                }
+                                {/* <Grid size={12}>
+                                    <Box className="detailimg-box" sx={{ width: '100%', height: '97px' }}>
+                                        <img src="../../../public/assets/images/new/ww6.avif" alt="" className="demoimg" />
                                     </Box>
                                 </Grid>
-                                <Grid >
-                                    <Box className="detailimg-box">
-                                        <img src="../../../public/assets/images/productdetail/image 58.png" alt="" />
+                                <Grid size={12}>
+                                    <Box className="detailimg-box" sx={{ width: '100%', height: '97px' }}>
+                                        <img src="../../../public/assets/images/productdetail/image 58.png" alt="" className="demoimg" />
                                     </Box>
                                 </Grid>
                                 <Grid >
@@ -109,24 +148,69 @@ function Productdetail() {
                                     <Box className="detailimg-box">
                                         <img src="../../../public/assets/images/productdetail/image 61.png" alt="" />
                                     </Box>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
-                            <Grid size={{ xs: 9, sm: 8, md: 9 }} display="flex">
-                                <Box className="detailimg-box deatail-main-img">
-                                    <img src="../../../public/assets/images/productdetail/image 63.png" alt="" width='100%' />
+                            <Grid size={{ xs: 9, sm: 8, md: 9 }} display="flex" flexDirection='column'>
+                                <Box className="detailimg-box deatail-main-img" sx={{ height: detailproduct?.variants?.length > 1 ? '600px' : '100%' }}>
+                                    {/* <img src="../../../public/assets/images/productdetail/image 63.png" alt="" width='100%' /> */}
+                                    <img
+                                        src={
+                                            selectedImage
+                                                ? IMG_URL + selectedImage
+                                                : IMG_URL + selectedVariant?.images?.[0]
+                                        }
+                                        alt=""
+                                        width="100%"
+                                        className="demoimg"
+                                    />
                                 </Box>
+
+                                {
+                                    detailproduct?.variants?.length > 1 &&
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            columnGap: 2
+                                        }}
+                                        marginTop={3}
+                                    >
+                                        {
+                                            detailproduct?.variants?.map((v) => (
+                                                <Box
+                                                    sx={{
+                                                        width: '100px', padding: '10px', backgroundColor: '#ffffff', border: 1,
+                                                        border: selectedVariant?._id === v._id
+                                                            ? "2px solid black"
+                                                            : "1px solid #ccc",
+                                                    }}
+                                                    onClick={() => {
+                                                        setSelectedVariant(v);
+                                                        setSelectedImage(v.images[0]);
+                                                    }}
+                                                >
+                                                    <img src={IMG_URL + v?.images[0]} alt="" width='100%' />
+                                                </Box>
+                                            ))
+                                        }
+
+                                    </Box>
+                                }
+
                             </Grid>
+
+
                         </Grid>
+
                         <Grid size={{ xs: 12, sm: 6, lg: 5 }}>
-                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '18px',sm:'20px', md: '24px' } }}>Havic HV G-92 Gamepad</Typography>
+                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '18px', sm: '20px', md: '24px' } }}>{detailproduct.name}</Typography>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
                                 <Rating name="read-only" value={3} readOnly sx={{ fontSize: { xs: '20px', md: '24px' } }} />
-                                <Typography  className="rate-detail">(150 Reviews) </Typography>
+                                <Typography className="rate-detail">(150 Reviews) </Typography>
                                 <Typography className="rate-detail"> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
                             </Box>
 
-                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 },fontSize: { xs: '20px',sm:'20px', md: '24px' }  }}>$192.00</Typography>
+                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 }, fontSize: { xs: '20px', sm: '20px', md: '24px' } }}>₹{detailproduct.price}</Typography>
 
                             <Typography sx={{ fontSize: '14px', maxWidth: '373px', mb: { xs: 3, sm: 2, md: 3 } }}>
                                 PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.
@@ -239,11 +323,11 @@ function Productdetail() {
                         <Box className="sub-title">
                             <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
                                 <i className="fa-solid fa-square"></i>
-                                <Typography  sx={{ fontWeight: '600' }}>Related Item</Typography>
+                                <Typography sx={{ fontWeight: '600' }}>Related Item</Typography>
                             </Box>
                         </Box>
 
-                        <Grid container sx={{ marginTop: { xs: '20px', sm: '23px', md: '35px' }}} spacing={{ xs: 1, sm: 3, lg: 4 }}>
+                        <Grid container sx={{ marginTop: { xs: '20px', sm: '23px', md: '35px' } }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
                             {
                                 allproducts.slice(0, 4).map((v) => {
                                     const r = v.rating.reduce((acc, v) => acc + v, 0)
@@ -364,22 +448,22 @@ function Productdetail() {
                                                 >
                                                     <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
                                                         <FavoriteBorderIcon sx={{
-                                                             fontSize: {
-                                                                    xs: '12px',
-                                                                    sm: '18px',
-                                                                    md: '20px',
-                                                                    lg: '24px'
-                                                                }, color: 'black'
+                                                            fontSize: {
+                                                                xs: '12px',
+                                                                sm: '18px',
+                                                                md: '20px',
+                                                                lg: '24px'
+                                                            }, color: 'black'
                                                         }} />
                                                     </IconButton>
                                                     <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
                                                         <RemoveRedEyeOutlinedIcon sx={{
-                                                             fontSize: {
-                                                                    xs: '12px',
-                                                                    sm: '18px',
-                                                                    md: '20px',
-                                                                    lg: '24px'
-                                                                }, color: 'black'
+                                                            fontSize: {
+                                                                xs: '12px',
+                                                                sm: '18px',
+                                                                md: '20px',
+                                                                lg: '24px'
+                                                            }, color: 'black'
                                                         }} />
                                                     </IconButton>
                                                 </CardActions>

@@ -13,6 +13,7 @@ import Cart from '../container/Cart/Cart';
 import Checkout from '../container/Checkout/Checkout';
 import Myaccount from '../container/Myaccount/Myaccount';
 import { useCheckauthQuery } from '../redux/api/user.api';
+import Demo from '../container/Demo/Demo';
 
 function UserRoutes(props) {
 
@@ -36,11 +37,12 @@ function UserRoutes(props) {
                 <Route path='/signup' element={<Auth />} />
                 <Route path='/about' element={<Aboutus />} />
                 <Route path='/notfound' element={<Notfound />} />
-                <Route path='/productdetail' element={<Productdetail />} />
+                <Route path='/productdetail/:id' element={<Productdetail />} />
                 <Route path='/wishlist' element={<Wishlist />} />
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/checkout' element={<Checkout />} />
                 <Route path='/myaccount' element={<Myaccount />} />
+                <Route path='/demo' element={< Demo/>} />
             </Routes>
             <Footer />
         </>
