@@ -11,6 +11,8 @@ import { IoChevronUp } from "react-icons/io5";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
+import { useGetCartQuery } from "../../redux/api/cart.api";
+import { useGetProductQuery } from "../../redux/api/product.api";
 
 
 
@@ -23,6 +25,25 @@ function Cart() {
 
     const isMobile = useMediaQuery("(max-width:320px)");
 
+    const id = localStorage.getItem('loginid');
+    console.log(id)
+
+    const {data,error,isLoading} = useGetCartQuery(id);
+    console.log({data,error,isLoading})
+
+    const {data:pdata,error:perror,isLoading:ploading} = useGetProductQuery();
+    console.log(pdata?.data)
+
+    const cartp = pdata?.data?.filter((v) => data?.body?.products?.some((v1) => v1.product_id.toString() === v._id.toString()));
+    console.log(cartp)
+
+    let displaycart = ''
+
+    // const getcartdata = async () => {
+    //     const cart = await getcart({ id: localStorage.getItem('loginid') })
+    //     return cart;
+    // }
+
 
     useEffect(() => {
         fetch("http://localhost:3000/cart")
@@ -32,7 +53,11 @@ function Cart() {
         fetch("http://localhost:3000/flashsale")
             .then(reponse => reponse.json())
             .then(data => setAllproduct(data))
+
+        // displaycart = getcart();
     }, [])
+
+    console.log(displaycart)
 
     const cartdata = allproduct.filter((v) => cart.some(v1 => v.id === v1.product_id))
     console.log(cart, allproduct)
@@ -128,84 +153,85 @@ function Cart() {
 
                     {isMobile ? (
                         // ✅ MOBILE VIEW (CARD)
-                       
-                            <Grid container sx={{ mt: 3,mb:3 }} spacing={{ xs: 1, sm: 3, lg: 4 }} rowSpacing={2}>
-                                {
-                                    cartdata.map((v) => (
-                                        <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
-                                            <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                                <Box
-                                                    className="carttop"
-                                                    sx={{
-                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
-                                                        height: {
-                                                            xs: '120px',
-                                                            sm: '160px',
-                                                            lg: '250px'
-                                                        },
-                                                        position: 'relative'
-                                                    }}>
-                                                    <CardMedia
-                                                        component="img"
-                                                        className="cardimg"
-                                                        sx={{ objectFit: "contain" }}
-                                                        image={v.img}
-                                                        title="green iguana"
 
-                                                    />
+                        <Grid container sx={{ mt: 3, mb: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }} rowSpacing={2}>
+                            {
+                                cartp?.map((v) => (
+                                    <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
+                                        <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                            <Box
+                                                className="carttop"
+                                                sx={{
+                                                    bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                    alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                    height: {
+                                                        xs: '120px',
+                                                        sm: '160px',
+                                                        lg: '250px'
+                                                    },
+                                                    position: 'relative'
+                                                }}>
+                                                <CardMedia
+                                                    component="img"
+                                                    className="cardimg"
+                                                    sx={{ objectFit: "contain" }}
+                                                    image={v.img}
+                                                    title="green iguana"
 
-                                                </Box>
+                                                />
+
+                                            </Box>
 
 
-                                                <CardContent sx={{ outline: 0,pl:0,pb:0 }}>
-                                                    <Typography gutterBottom variant="h6" component="div" className="cart-name">
-                                                        {v.name}
+                                            <CardContent sx={{ outline: 0, pl: 0, pb: 0 }}>
+                                                <Typography gutterBottom variant="h6" component="div" className="cart-name">
+                                                    {v.name}
+                                                </Typography>
+                                                <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+
+                                                    <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
+                                                        {v.price}
                                                     </Typography>
-                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                </Box>
+                                            </CardContent>
 
-                                                        <Typography variant="body1" sx={{fontWeight: 500, color: 'black' }}>
-                                                            {v.price}
+                                            <CardActions sx={{ padding: 0, pb: 1 }}>
+                                                <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
+                                                        <Typography>
+                                                            {quantity[v.id] || 1}
                                                         </Typography>
-                                                    </Box>
-                                                    </CardContent>
+                                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                                            <IconButton aria-label="up" className="icone-btn"
+                                                                onClick={() =>
+                                                                    setQuantity(prev => ({ ...prev, [v.id]: (prev[v.id] || 1) + 1 }))}>
+                                                                <IoChevronUp />
+                                                            </IconButton>
 
-                                                <CardActions sx={{padding:0,pb:1}}>
-                                                    <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
-                                                            <Typography>
-                                                                {quantity[v.id] || 1}
-                                                            </Typography>
-                                                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                                                <IconButton aria-label="up" className="icone-btn"
-                                                                    onClick={() =>
-                                                                        setQuantity(prev => ({ ...prev, [v.id]: (prev[v.id] || 1) + 1 }))}>
-                                                                    <IoChevronUp />
-                                                                </IconButton>
+                                                            <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
+                                                                setQuantity(prev => ({
+                                                                    ...prev,
+                                                                    [v.id]: Math.max((prev[v.id] || 1) - 1, 1),
 
-                                                                <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
-                                                                    setQuantity(prev => ({
-                                                                        ...prev,
-                                                                        [v.id]: Math.max((prev[v.id] || 1) - 1, 1),
-
-                                                                    }))
-                                                                }>
-                                                                    <IoChevronDownSharp />
-                                                                </IconButton>
-                                                            </Box>
+                                                                }))
+                                                            }>
+                                                                <IoChevronDownSharp />
+                                                            </IconButton>
                                                         </Box>
                                                     </Box>
-                                                </CardActions>
-                                            </Card>
-                                        </Grid>
-                                    ))
-                                }
+                                                </Box>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))
+                            }
 
-                            </Grid>
-                         
+                        </Grid>
+
                     ) : (
                         <DataGrid
-                            rows={cartdata}
+                            rows={cartp}
+                            getRowId={rows?._id}
                             columns={columns}
                             initialState={{
                                 pagination: {
@@ -242,7 +268,7 @@ function Cart() {
 
 
 
-                    <Grid container id="coupon" sx={{ mt:{xs:5,sm:7,lg:10} }} spacing={{ xs: 0, sm: 5, md: 4, lg: 10, xl: 6 }} rowSpacing={4}>
+                    <Grid container id="coupon" sx={{ mt: { xs: 5, sm: 7, lg: 10 } }} spacing={{ xs: 0, sm: 5, md: 4, lg: 10, xl: 6 }} rowSpacing={4}>
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <form>
                                 <Box sx={{ display: 'flex', gap: { xs: 3, md: 0, lg: 3 } }} className="cart-coupon-box">

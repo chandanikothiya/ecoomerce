@@ -3,6 +3,7 @@ import { userApi } from "./api/user.api"
 import alertReducer from "./slice/Alert.slice"
 import { categoryApi } from "./api/category.api"
 import { productApi } from "./api/product.api"
+import { cartApi } from "./api/cart.api"
 
 
 export const storeconfig = () => {
@@ -11,13 +12,15 @@ export const storeconfig = () => {
             alert:alertReducer,
             [userApi.reducerPath]:userApi.reducer,
             [categoryApi.reducerPath]:categoryApi.reducer,
-            [productApi.reducerPath]:productApi.reducer
+            [productApi.reducerPath]:productApi.reducer,
+            [cartApi.reducerPath]:cartApi.reducer
         },
          middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
                 userApi .middleware,
                 categoryApi .middleware,
-                productApi.middleware
+                productApi.middleware,
+                cartApi.middleware
             ),
     })
 

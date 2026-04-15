@@ -38,6 +38,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
+import { useAddCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
 
 
 function Homepage() {
@@ -68,6 +69,10 @@ function Homepage() {
 
     const { data, error, isLoading } = useGetCategoryQuery();
     console.log("dislaydata", data?.data)
+
+    //const {data:cartdata,error:carterror,isLoading:cartisLoading} = useGetCartQuery();
+
+    const [addcart] = useAddCartMutation();
 
     const { data: pdata,
         error: perror,
@@ -256,6 +261,10 @@ function Homepage() {
         navigate(`/productdetail/${id}`)
     }
 
+    const handleCartClick = (id) => {
+        console.log(id)
+        addcart({user_id:localStorage.getItem('loginid'),product_id:id})
+    }   
 
 
 
@@ -1168,8 +1177,10 @@ function Homepage() {
                                                                         xs: '12px',
                                                                         sm: '14px',
                                                                         md: '16px'
-                                                                    }
+                                                                    },
+                                                                    cursor:'default'
                                                                 }}
+                                                                onClick={(e) => handleCartClick(v._id)}
                                                             >
                                                                 Add To Cart
                                                             </Typography>
@@ -1261,13 +1272,13 @@ function Homepage() {
                                                                                         <label key={v1.color} style={{ cursor: "pointer" }}>
                                                                                             <input
                                                                                                 type="radio"
-                                                                                                name={`color-${v._id}`} // 👈 unique per product
+                                                                                                name={`color-${v._id}`} 
                                                                                                 value={v1.color}
                                                                                                 checked={selectedColor === v1.color}
                                                                                                 onChange={() =>
                                                                                                     setSelectedColors((prev) => ({
                                                                                                         ...prev,
-                                                                                                        [v._id]: v1.color, // 👈 store per product
+                                                                                                        [v._id]: v1.color, 
                                                                                                     }))
                                                                                                 }
                                                                                                 style={{ display: "none" }}

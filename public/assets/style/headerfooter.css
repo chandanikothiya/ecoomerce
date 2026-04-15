@@ -649,14 +649,14 @@ hr {
     text-align: center;
     background-color: #eef0f3;
     padding: 12px;
-    
+
 }
 
 .deatail-main-img {
     display: flex;
     align-items: center;
     padding: 0 50px;
-    width:100%
+    width: 100%
 }
 
 .sizebox {
@@ -668,6 +668,14 @@ hr {
     border: solid 1.8px;
     border-color: rgb(172, 167, 167);
     /* font-size: 14px !important; */
+}
+
+.fsizebox {
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px !important;
+    border: solid 1.8px;
+    border-color: rgb(172, 167, 167);
 }
 
 .countbox {
@@ -891,7 +899,7 @@ hr {
 
 .demoi {
     background-color: #e0dddd !important;
-    width:300px;
+    width: 300px;
     height: 300px;
 }
 

@@ -19,6 +19,7 @@ function Productdetail() {
     const [selectedImage, setSelectedImage] = useState("");
     const [selectedVariant, setSelectedVariant] = useState("");
     const [allproducts, setAllproducts] = useState([]);
+    const [selectedColor, setSelectedColor] = useState("");
 
     const { id } = useParams()
     console.log(id)
@@ -40,16 +41,25 @@ function Productdetail() {
 
     useEffect(() => {
         if (detailproduct?.variants?.[0]?.images?.length) {
-            setSelectedImage(detailproduct.variants[0].images[0]);
+            setSelectedImage(detailproduct?.variants[0]?.images[0]);
         }
 
         if (detailproduct?.variants?.length) {
-            setSelectedVariant(detailproduct.variants[0])
+            setSelectedVariant(detailproduct?.variants[0])
+            setSelectedColor(detailproduct?.variants[0]?.color);
         }
 
     }, [detailproduct]);
 
-    console.log(selectedVariant)
+    useEffect(() => {
+        const v = detailproduct?.variants?.find((v) => v?.color === selectedColor)
+        console.log(v)
+
+        setSelectedVariant(v)
+        setSelectedImage(v?.images[0])
+    }, [selectedColor]);
+
+    console.log(selectedVariant, selectedImage)
 
 
     const handleIncrese = () => {
@@ -72,7 +82,6 @@ function Productdetail() {
         { value: '#E07575', label: 'red' },
         { value: '#8aa8d4', label: 'blue' },
     ];
-    const [selectedValue, setSelectedValue] = React.useState(availableColors[0].label);
 
 
     const Size = ['XS', 'S', 'M', 'L', 'XL']
@@ -87,6 +96,7 @@ function Productdetail() {
             },
         },
     });
+    console.log(selectedColor, selectedVariant)
 
     return (
         <main>
@@ -178,7 +188,7 @@ function Productdetail() {
                                             detailproduct?.variants?.map((v) => (
                                                 <Box
                                                     sx={{
-                                                        width: '100px', padding: '10px', backgroundColor: '#ffffff', border: 1,
+                                                        width: '70px', padding: '10px', backgroundColor: '#ffffff', border: 1,
                                                         border: selectedVariant?._id === v._id
                                                             ? "2px solid black"
                                                             : "1px solid #ccc",
@@ -202,7 +212,7 @@ function Productdetail() {
                         </Grid>
 
                         <Grid size={{ xs: 12, sm: 6, lg: 5 }}>
-                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '18px', sm: '20px', md: '24px' } }}>{detailproduct.name}</Typography>
+                            <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '18px', sm: '20px', md: '24px' } }}>{detailproduct?.name}</Typography>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
                                 <Rating name="read-only" value={3} readOnly sx={{ fontSize: { xs: '20px', md: '24px' } }} />
@@ -210,7 +220,7 @@ function Productdetail() {
                                 <Typography className="rate-detail"> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
                             </Box>
 
-                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 }, fontSize: { xs: '20px', sm: '20px', md: '24px' } }}>₹{detailproduct.price}</Typography>
+                            <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 }, fontSize: { xs: '20px', sm: '20px', md: '24px' } }}>₹{detailproduct?.price}</Typography>
 
                             <Typography sx={{ fontSize: '14px', maxWidth: '373px', mb: { xs: 3, sm: 2, md: 3 } }}>
                                 PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.
@@ -220,52 +230,88 @@ function Productdetail() {
 
                             <Box sx={{ mt: { xs: 3, sm: 1, md: 3 }, display: "flex", alignItems: 'center', columnGap: 2 }}>
                                 <Typography sx={{ fontSize: { sm: '18px', md: '20px' } }}>Colours :</Typography>
-                                <RadioGroup
-                                    name="dynamic-radio-buttons-group"
-                                    value={selectedValue}
-                                    onChange={handleChange}
-
-                                >
-                                    <div>
-                                        {
-                                            availableColors.map((v) => (
-                                                <FormControlLabel
-                                                    key={v.value}
-                                                    value={v.label}
-
-                                                    label={v.label}
-                                                    control={
-                                                        <Radio
-                                                            sx={{
-                                                                color: v.value,
-                                                                '&.Mui-checked': {
-                                                                    color: v.value,
-                                                                },
-                                                            }}
-                                                        />
-                                                    }
-
+                                <Box sx={{ display: 'flex', gap: 2 }}>
+                                    {
+                                        detailproduct?.variants?.map((v) => (
+                                            <label key={v.color} style={{ cursor: "pointer" }}>
+                                                <input
+                                                    type="radio"
+                                                    // name={`color-${v._id}`} // 👈 unique per product
+                                                    value={v.color}
+                                                    checked={selectedColor === v.color}
+                                                    onChange={() => setSelectedColor(v.color)}
+                                                    style={{ display: "none" }}
                                                 />
 
-                                            ))
-                                        }
+                                                <span
+                                                    style={{
+                                                        width: "15px",
+                                                        height: "15px",
+                                                        borderRadius: "50%",
+                                                        backgroundColor: v.color,
+                                                        display: "inline-block",
+                                                        border: "1px solid #ccc",
+                                                        outline:
+                                                            selectedColor === v.color
+                                                                ? "2px solid black"
+                                                                : "none",
+                                                        outlineOffset: "2px",
+                                                    }}
+                                                />
+                                            </label>
 
-                                    </div>
-                                </RadioGroup>
+                                        ))
+                                    }
+
+                                </Box>
+
                             </Box>
+
+                            {/* <label key={v1.color} style={{ cursor: "pointer" }}>
+                                <input
+                                    type="radio"
+                                    name={`color-${v._id}`} // 👈 unique per product
+                                    value={v1.color}
+                                    checked={selectedColor === v1.color}
+                                    onChange={() =>
+                                        setSelectedColors((prev) => ({
+                                            ...prev,
+                                            [v._id]: v1.color, // 👈 store per product
+                                        }))
+                                    }
+                                    style={{ display: "none" }}
+                                />
+
+                                <span
+                                    style={{
+                                        width: "15px",
+                                        height: "15px",
+                                        borderRadius: "50%",
+                                        backgroundColor: v1.color,
+                                        display: "inline-block",
+                                        border: "1px solid #ccc",
+                                        outline:
+                                            selectedColor === v1.color
+                                                ? "2px solid black"
+                                                : "none",
+                                        outlineOffset: "3px",
+                                    }}
+                                />
+                            </label> */}
+
                             {/* size */}
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: { xs: 3, sm: 1, md: 3 } }}>
                                 <Typography sx={{ fontSize: { sm: '18px', md: '20px' } }}>Size :</Typography>
 
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     {
-                                        Size.map((v) => (
-                                            <Typography className="sizebox">{v}</Typography>
+                                        selectedVariant?.size?.map((v) => {
 
-                                        ))
+                                          return ( v === 'Free_Size' ? <Typography className="fsizebox">{v}</Typography> : <Typography className="sizebox">{v}</Typography> )
+                                        }
+                                       )
                                     }
                                 </Box>
-
                             </Box>
 
                             {/* counter */}

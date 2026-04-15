@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { BorderBottom, Margin, Padding, WidthNormal } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box, FormControl, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -19,15 +19,32 @@ import Myuploadfile from "../../components/Myuploadfile";
 import { useAddProductMutation, useDeleteProductMutation, useEditProductMutation, useGetProductQuery } from "../../../redux/api/product.api";
 import { asyncThunkCreator } from "@reduxjs/toolkit";
 import { IMG_URL } from "../../../utility/url";
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    slotProps: {
+        paper: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    },
+};
 
 function Product() {
 
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
     const [variants, setVariants] = useState([
-        { color: "#000000", images: [] }
+        { color: "#000000", images: [], size: [] }
     ]);
+    //const [sizeName, setSizeName] = React.useState([]);
+
 
     const { data: catdata,
         error: caterror,
@@ -62,6 +79,7 @@ function Product() {
         name: string().required(),
         price: string().required(),
         product_img: mixed(),
+
         //discount: string().required()
 
     })
@@ -76,6 +94,30 @@ function Product() {
         pdata.push({ value: v?._id, label: v?.name })
     })
 
+    let sizedata = [
+
+        { value: 'Free_Size', label: 'Free Size' },
+        { value: 'XS', label: 'XS' },
+        { value: 'S', label: 'S' },
+        { value: 'M', label: 'M' },
+        { value: 'L', label: 'L' },
+        { value: 'XL', label: 'XL' },
+    ]
+
+    // const handleChange = (event) => {
+    //     const {
+    //         target: { value },
+    //     } = event;
+    //     setSizeName(
+    //         // On autofill we get a stringified value.
+    //         typeof value === 'string' ? value.split(',') : value,
+    //     );
+    // };
+
+    // console.log(sizeName)
+
+
+
     const handlesubmit = async (values) => {
         console.log("values", values.product_img, values)
 
@@ -83,6 +125,7 @@ function Product() {
         formData.append("name", values.name);
         formData.append("price", values.price);
         formData.append("category_id", values.category_id);
+        // formData.append("size", values.size);
         //formData.append("discount", values.discount);
         // formData.append("color", values.color)
 
@@ -93,6 +136,8 @@ function Product() {
                 formData.append(`variant_images_${i}`, file);
             });
         });
+
+        formData.append("size", JSON.stringify(values.size));
 
         // if (Array.isArray(values.product_img)) {
         //     values.product_img.forEach((file) => {
@@ -206,6 +251,8 @@ function Product() {
         }
     ];
 
+    console.log("variants",variants)
+
 
     return (
         <>
@@ -225,7 +272,7 @@ function Product() {
                                     category_id: "",
 
                                     variants: [
-                                        { color: "", images: [] }
+                                        { color: "", images: [], size: [] }
                                     ]
                                 }}
                                 validationSchema={categorySchema}
@@ -235,7 +282,7 @@ function Product() {
                                     handleClose();
                                 }}
                             >
-                                {({ values }) => (
+                                {({ values, setFieldValue }) => (
                                     <Form id="subscription-form">
 
                                         <MyTextField
@@ -264,6 +311,7 @@ function Product() {
                                             label="Price"
                                         />
 
+
                                         {/* <MyTextField
                                             name="discount"
                                             id="discount"
@@ -275,39 +323,94 @@ function Product() {
                                                 <>
                                                     {
                                                         values.variants.map((v, index) => (
-                                                            <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
-                                                                <MyTextField
-                                                                    name={`variants[${index}].color`}  // ✅ dynamic name
-                                                                    type="color"
-                                                                    InputProps={{ disableUnderline: true }}
+                                                            <>
+                                                                <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
+                                                                    <MyTextField
+                                                                        name={`variants[${index}].color`}  // ✅ dynamic name
+                                                                        type="color"
+                                                                        InputProps={{ disableUnderline: true }}
 
-                                                                    label="color"
+                                                                        label="color"
 
-                                                                    value={v.color}
-                                                                    sx={{
-                                                                        width: "30px", '& .MuiInputBase-input-MuiInput-input': {
-                                                                            Padding: 0
-                                                                        }
+                                                                        value={v.color}
+                                                                        sx={{
+                                                                            width: "30px", '& .MuiInputBase-input-MuiInput-input': {
+                                                                                Padding: 0
+                                                                            }
+                                                                        }}
+
+                                                                    />
+
+                                                                    <Myuploadfile
+                                                                        name={`variants[${index}].images`}
+
+                                                                    />
+
+                                                                    {index !== 0 && (
+                                                                        <Button
+                                                                            color="error"
+                                                                            onClick={() => remove(index)}
+                                                                            sx={{ height: 'fit-content' }}
+                                                                        >
+                                                                            Remove
+                                                                        </Button>
+                                                                    )}
+
+                                                                </Box>
+
+                                                                {/* <MyTextField
+                                                                    name={`variants[${index}].size`}
+                                                                    id="size"
+                                                                    label="size"
+                                                                    select
+                                                                    data={sizedata}
+                                                                    slotProps={{
+                                                                        select: {
+                                                                            native: true,
+                                                                            multiple:true
+                                                                        },
                                                                     }}
+                                                                     //multiple={true}
+                                                                    InputLabelProps={{ shrink: true }}
+                                                                    sx={{ mt: 2, mb: 2 }}
+                                                                /> */}
+                                                                <FormControl sx={{ m: 1, width: 300 }}>
+                                                                    <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                                                                    <Select
+                                                                        labelId="demo-multiple-checkbox-label"
+                                                                        id="demo-multiple-checkbox"
+                                                                        multiple
+                                                                        value={values.variants[index].size || []}
+                                                                        onChange={(event) => {
+                                                                            const value = event.target.value;
 
-                                                                />
+                                                                            const finalValue =
+                                                                                typeof value === "string" ? value.split(",") : value;
 
-                                                                <Myuploadfile
-                                                                    name={`variants[${index}].images`}
-
-                                                                />
-
-                                                                {index !== 0 && (
-                                                                    <Button
-                                                                        color="error"
-                                                                        onClick={() => remove(index)}
-                                                                        sx={{ height: 'fit-content' }}
+                                                                            // ✅ update specific variant
+                                                                            setFieldValue(`variants[${index}].size`, finalValue);
+                                                                        }}
+                                                                        input={<OutlinedInput label="Tag" />}
+                                                                        renderValue={(selected) => selected.join(', ')}
+                                                                        MenuProps={MenuProps}
                                                                     >
-                                                                        Remove
-                                                                    </Button>
-                                                                )}
+                                                                        {sizedata.map((v) => {
+                                                                            const selected = (values.variants[index].size || []).includes(v.value);
+                                                                            const SelectionIcon = selected ? CheckBoxIcon : CheckBoxOutlineBlankIcon;
 
-                                                            </Box>
+                                                                            return (
+                                                                                <MenuItem key={v.value} value={v.value}>
+                                                                                    <SelectionIcon
+                                                                                        fontSize="small"
+                                                                                        style={{ marginRight: 8, padding: 9, boxSizing: 'content-box' }}
+                                                                                    />
+                                                                                    <ListItemText primary={v.label} />
+                                                                                </MenuItem>
+                                                                            );
+                                                                        })}
+                                                                    </Select>
+                                                                </FormControl>
+                                                            </>
                                                         ))
                                                     }
                                                     < Button
