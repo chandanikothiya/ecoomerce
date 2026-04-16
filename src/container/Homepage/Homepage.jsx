@@ -261,10 +261,17 @@ function Homepage() {
         navigate(`/productdetail/${id}`)
     }
 
-    const handleCartClick = (id) => {
-        console.log(id)
-        addcart({user_id:localStorage.getItem('loginid'),product_id:id})
-    }   
+    const handleCartClick = async (id, vid) => {
+        console.log("click", id, vid)
+        const response = await addcart({ user_id: localStorage.getItem('loginid'), product_id: id, variant_id: vid })
+        console.log("cartres", response)
+        if (response.data.success) {
+
+            dispatch(setalert({ text: response.data.message, variant: 'success' }))
+        } else {
+            dispatch(setalert({ text: response.data.message, variant: 'error' }))
+        }
+    }
 
 
 
@@ -1135,55 +1142,61 @@ function Homepage() {
                                                                     const validVariants = v?.variants?.filter(
                                                                         (x) => x?.color && x.color.trim() !== ""
                                                                     );
+                                                                    let selectedVariant;
 
-                                                                    const selectedColor =
-                                                                        selectedColors[v._id] || validVariants[0]?.color;
+                                                                    if (validVariants.length > 0) {
+                                                                        const selectedColor =
+                                                                            selectedColors[v._id] || validVariants[0]?.color;
 
-                                                                    const selectedVariant = v?.variants?.find(
-                                                                        (x) => x.color === selectedColor
-                                                                    );
+                                                                        selectedVariant = v?.variants?.find(
+                                                                            (x) => x.color === selectedColor
+                                                                        );
+                                                                    } else {
+                                                                        // ✅ fallback when no color exists
+                                                                        selectedVariant = v?.variants?.[0];
+                                                                    }
+                                                                    console.log(selectedVariant)
 
                                                                     return (
-                                                                        <CardMedia
-                                                                            component="img"
-                                                                            className="cardimg"
-                                                                            sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
-                                                                            image={
-                                                                                selectedVariant?.images?.[0]
-                                                                                    ? IMG_URL + selectedVariant.images[0]
-                                                                                    : IMG_URL + v.variants[0]?.images?.[0]
-                                                                            }
-                                                                            title="productimg"
-                                                                            onClick={() => handlepProduct(v._id)}
-                                                                        />
+                                                                        <>
+                                                                            <CardMedia
+                                                                                component="img"
+                                                                                className="cardimg"
+                                                                                sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                                                image={
+                                                                                    selectedVariant?.images?.[0]
+                                                                                        ? IMG_URL + selectedVariant.images[0]
+                                                                                        : IMG_URL + v.variants[0]?.images?.[0]
+                                                                                }
+                                                                                title="productimg"
+                                                                                onClick={() => handlepProduct(v._id)}
+                                                                            />
+
+
+                                                                            <Typography
+                                                                                className="addcart"
+                                                                                sx={{
+                                                                                    bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                                    textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                                    bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
+                                                                                    fontSize: {
+                                                                                        xs: '12px',
+                                                                                        sm: '14px',
+                                                                                        md: '16px'
+                                                                                    },
+                                                                                    cursor: 'default'
+                                                                                }}
+                                                                                onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
+                                                                            >
+                                                                                Add To Cart
+                                                                            </Typography>
+                                                                        </>
+
                                                                     );
                                                                 })()}
-                                                            {/* <CardMedia
-                                                                component="img"
-                                                                className="cardimg"
-                                                                sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
-                                                                image={IMG_URL + v.variants[0].images[0]}
-                                                                title="productimg"
 
-                                                            /> */}
 
-                                                            <Typography
-                                                                className="addcart"
-                                                                sx={{
-                                                                    bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                                    textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                                    bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
-                                                                    fontSize: {
-                                                                        xs: '12px',
-                                                                        sm: '14px',
-                                                                        md: '16px'
-                                                                    },
-                                                                    cursor:'default'
-                                                                }}
-                                                                onClick={(e) => handleCartClick(v._id)}
-                                                            >
-                                                                Add To Cart
-                                                            </Typography>
+
                                                         </Box>
 
 
@@ -1264,7 +1277,7 @@ function Homepage() {
                                                                     return (
                                                                         <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
                                                                             {
-                                                                               validVariants?.map((v1) => {
+                                                                                validVariants?.map((v1) => {
                                                                                     if (!v1?.color || v1.color.trim() === "") return null;
 
 
@@ -1272,13 +1285,13 @@ function Homepage() {
                                                                                         <label key={v1.color} style={{ cursor: "pointer" }}>
                                                                                             <input
                                                                                                 type="radio"
-                                                                                                name={`color-${v._id}`} 
+                                                                                                name={`color-${v._id}`}
                                                                                                 value={v1.color}
                                                                                                 checked={selectedColor === v1.color}
                                                                                                 onChange={() =>
                                                                                                     setSelectedColors((prev) => ({
                                                                                                         ...prev,
-                                                                                                        [v._id]: v1.color, 
+                                                                                                        [v._id]: v1.color,
                                                                                                     }))
                                                                                                 }
                                                                                                 style={{ display: "none" }}

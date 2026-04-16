@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import '../../../public/assets/style/headerfooter.css'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -20,15 +20,19 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import { TbLogout2 } from "react-icons/tb";
-import { Box } from "@mui/material";
+import { Badge, badgeClasses, Box } from "@mui/material";
 import { useLogoutMutation } from "../../redux/api/user.api";
 import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
+import { useGetCartQuery } from "../../redux/api/cart.api";
+import { styled } from '@mui/material/styles';
 
 
 function Header() {
 
     const [anchorEll, setAnchorEll] = React.useState(null);
+    const [showBudget, setShowBudget] = useState(false);
+    const prevcounter = useRef(0)
     const dispatch = useDispatch();
     const openl = Boolean(anchorEll);
     const handleClickl = (event) => {
@@ -38,6 +42,15 @@ function Header() {
         setAnchorEll(null);
     };
 
+    const id = localStorage.getItem('loginid');
+    console.log(id)
+
+    const { data, error, isLoading } = useGetCartQuery(id);
+    console.log({ data, error, isLoading })
+
+    console.log(data, data?.body?.products?.length)
+    const cartcount = data?.body?.products?.length || 0;
+    console.log(cartcount)
 
     const [logout] = useLogoutMutation();
 
@@ -73,11 +86,11 @@ function Header() {
     const handleLogout = async () => {
 
         const id = localStorage.getItem('loginid')
-        console.log("id",id)
+        console.log("id", id)
 
-    
-        if (id) {         
-            const response = await logout({ _id: id});
+
+        if (id) {
+            const response = await logout({ _id: id });
             console.log("response", response)
             if (response?.data?.success) {
                 dispatch(setalert({ text: response.data.message, variant: 'success' }))
@@ -94,6 +107,28 @@ function Header() {
         setOpenMenu(false);
         setShowAccount(false);
     }, [location]);
+
+    const NotificationBadge = styled(Badge)`
+        & .${badgeClasses.badge} {
+            top: -12px;
+            right: -6px;
+        }
+        `;
+
+    useEffect(() => {
+        if (prevcounter.current !== 0 && cartcount > prevcounter.current) {
+            setShowBudget(true);
+        }
+
+        prevcounter.current = cartcount;
+    }, [cartcount]);
+
+    useEffect(() => {
+        if (location.pathname === '/cart') {
+            setShowBudget(false)
+        }
+    }, [location.pathname])
+    console.log(showBudget)
 
     return (
         <>
@@ -154,11 +189,11 @@ function Header() {
                                     <li><NavLink to="/contact">Contact</NavLink></li>
                                     <li><NavLink to="/about">About</NavLink></li>
                                     {
-                                         localStorage.getItem('loginid') ? 
-                                         <li ><NavLink onClick={handleLogout}>Sign OUT</NavLink></li> :
-                                         <li><NavLink to="/signup" >Sign Up</NavLink></li>    
+                                        localStorage.getItem('loginid') ?
+                                            <li ><NavLink onClick={handleLogout}>Sign OUT</NavLink></li> :
+                                            <li><NavLink to="/signup" >Sign Up</NavLink></li>
                                     }
-                                    
+
                                 </ul>
                             </div>
 
@@ -170,13 +205,22 @@ function Header() {
                                     </div>
                                 </form>
 
-                                <FavoriteBorderIcon className="header-icone" />
+                                <IconButton>
+                                    <FavoriteBorderIcon className="header-icone" />
+                                </IconButton>
 
-                                <ShoppingCartOutlinedIcon className="header-icone" />
+                                <NavLink to="/cart">
+                                    <IconButton >
+                                        <ShoppingCartOutlinedIcon className="header-icone" />
+                                        {showBudget && (<NotificationBadge badgeContent={cartcount} color="error" overlap="circular" />)}
+                                    </IconButton>
+                                </NavLink>
+
+
 
                                 {
-                                    localStorage.getItem('loginid') && 
-                                 
+                                    localStorage.getItem('loginid') &&
+
                                     <>
                                         <Tooltip title="Account settings" className="account-menu1">
                                             <IconButton

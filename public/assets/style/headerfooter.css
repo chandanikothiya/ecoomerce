@@ -73,6 +73,10 @@ body {
     overflow: visible !important
 }
 
+.header-icone{
+    color: black;
+}
+
 .second-header ul {
     list-style-type: none;
     display: flex;

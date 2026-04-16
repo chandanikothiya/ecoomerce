@@ -10,9 +10,12 @@ import Paper from '@mui/material/Paper';
 import { IoChevronUp } from "react-icons/io5";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import { useGetCartQuery } from "../../redux/api/cart.api";
+import { Link, NavLink } from "react-router-dom";
+import { useDeleteCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
+import { IMG_URL } from "../../utility/url";
+import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
+import { vars } from "@mui/x-data-grid/internals";
 
 
 
@@ -21,6 +24,7 @@ function Cart() {
     const [cart, setCart] = useState([]);
     const [allproduct, setAllproduct] = useState([])
     const [quantity, setQuantity] = useState({});
+    const [mobilecartdelete, setMobilecartdelete] = useState(false);
     const theme = useTheme();
 
     const isMobile = useMediaQuery("(max-width:320px)");
@@ -28,22 +32,35 @@ function Cart() {
     const id = localStorage.getItem('loginid');
     console.log(id)
 
-    const {data,error,isLoading} = useGetCartQuery(id);
-    console.log({data,error,isLoading})
+    const { data, error, isLoading } = useGetCartQuery(id);
+    console.log({ data, error, isLoading })
 
-    const {data:pdata,error:perror,isLoading:ploading} = useGetProductQuery();
+    const [deletecart] = useDeleteCartMutation();
+
+    const { data: pdata, error: perror, isLoading: ploading } = useGetProductQuery();
     console.log(pdata?.data)
 
-    const cartp = pdata?.data?.filter((v) => data?.body?.products?.some((v1) => v1.product_id.toString() === v._id.toString()));
-    console.log(cartp)
+    // const cartp = pdata?.data?.filter((v) => data?.body?.products?.some((v1) => v1.product_id.toString() === v._id.toString()));
+    // console.log(cartp)
+
+    const cartp = data?.body?.products?.map((cartItem) => {
+        const product = pdata?.data?.find(
+            (p) => p._id === cartItem.product_id
+        );
+
+        const variant = product?.variants?.find(
+            (v) => v._id === cartItem.variant_id
+        );
+
+        return {
+            ...product,
+            selectedVariant: variant,
+        };
+    });
+    console.log("cartp", cartp)
+    // console.log("cartpp",cartpp)
 
     let displaycart = ''
-
-    // const getcartdata = async () => {
-    //     const cart = await getcart({ id: localStorage.getItem('loginid') })
-    //     return cart;
-    // }
-
 
     useEffect(() => {
         fetch("http://localhost:3000/cart")
@@ -62,7 +79,13 @@ function Cart() {
     const cartdata = allproduct.filter((v) => cart.some(v1 => v.id === v1.product_id))
     console.log(cart, allproduct)
 
-    const columns = [
+    const handledeltecart = (data) => {
+        console.log(data)
+
+        deletecart({ variant_id: data.selectedVariant._id, id: localStorage.getItem('loginid') })
+    }
+
+    const [columns, setColumns] = useState([
 
         {
             field: 'sname',
@@ -70,12 +93,15 @@ function Cart() {
             // width: 400,
             flex: 2,
             minWidth: 200,
-            renderCell: (params) => (
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
-                    <img src={params.row.img} alt="" width='50' height='50' style={{ objectFit: 'contain' }}></img>
-                    <Typography variant="subtitle2">{params.row.sname}</Typography>
-                </Box>
-            ),
+            renderCell: (params) => {
+                console.log(params.row, data?.body?.products)
+
+
+                return (<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
+                    <img src={IMG_URL + params.row.selectedVariant?.images?.[0]} alt="" width='50' height='50' style={{ objectFit: 'contain' }}></img>
+                    <Typography variant="subtitle2">{params.row.name}</Typography>
+                </Box>)
+            },
         },
         {
             field: 'price',
@@ -97,19 +123,19 @@ function Cart() {
                 <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '4px 15px', width: 'fit-content', gap: 2 }}>
                         <Typography>
-                            {quantity[params.row.id] || 1}
+                            {quantity[params.row._id] || 1}
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <IconButton aria-label="up" className="icone-btn"
                                 onClick={() =>
-                                    setQuantity(prev => ({ ...prev, [params.row.id]: (prev[params.row.id] || 1) + 1 }))}>
+                                    setQuantity(prev => ({ ...prev, [params.row._id]: (prev[params.row._id] || 1) + 1 }))}>
                                 <IoChevronUp />
                             </IconButton>
 
                             <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
                                 setQuantity(prev => ({
                                     ...prev,
-                                    [params.row.id]: Math.max((prev[params.row.id] || 1) - 1, 1),
+                                    [params.row._id]: Math.max((prev[params.row._id] || 1) - 1, 1),
 
                                 }))
                             }>
@@ -121,17 +147,67 @@ function Cart() {
             ),
         },
         {
-            field: 'discoutprice',
+            field: '',
             headerName: 'sub Total',
             headerAlign: 'rigth',
             // width: 150,
             flex: 1,
             minWidth: 120,
             renderCell: (params) => (
-                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{params.row.price * (quantity[params.row.id] || 1)}</Typography>
+                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{params.row.price * (quantity[params.row._id] || 1)}</Typography>
             ),
         },
-    ];
+    ]);
+
+    function handleupdatecart() {
+        console.log("ok")
+
+        if (isMobile) {
+            setMobilecartdelete(!mobilecartdelete)
+        } else {
+            setColumns((prev) => {
+                const exists = prev.some(col => col.field === 'action');
+                if (exists) return prev;
+                return [
+                    ...prev,
+                    {
+                        field: 'action',
+                        headerName: 'Action',
+                        width: 120,
+                        editable: true,
+                        renderCell: (params) => (
+                            <>
+                                <IconButton aria-label="delete" onClick={() => { handledeltecart(params.row) }}>
+                                    <MdDeleteOutline />
+                                </IconButton>
+                            </>
+                        )
+                    }
+                ]
+
+            })
+        }
+        // columns = [
+        //     ...prev,
+        //     {
+        //         field: '',
+        //         headerName: 'Action',
+        //         width: 120,
+        //         editable: true,
+        //         renderCell: (params) => (
+        //             <>
+        //                 <IconButton aria-label="edit" >
+        //                     <MdOutlineModeEdit />
+        //                 </IconButton>
+
+        //                 <IconButton aria-label="delete">
+        //                     <MdDeleteOutline />
+        //                 </IconButton>
+        //             </>
+        //         )
+        //     }
+        // ]
+    }
 
     return (
         <main>
@@ -175,7 +251,7 @@ function Cart() {
                                                     component="img"
                                                     className="cardimg"
                                                     sx={{ objectFit: "contain" }}
-                                                    image={v.img}
+                                                    image={IMG_URL + v?.selectedVariant?.images?.[0]}
                                                     title="green iguana"
 
                                                 />
@@ -190,8 +266,10 @@ function Cart() {
                                                 <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
 
                                                     <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
-                                                        {v.price}
+                                                        ₹{v.price}
                                                     </Typography>
+
+
                                                 </Box>
                                             </CardContent>
 
@@ -199,28 +277,39 @@ function Cart() {
                                                 <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                                                     <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
                                                         <Typography>
-                                                            {quantity[v.id] || 1}
+                                                            {quantity[v._id] || 1}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                                             <IconButton aria-label="up" className="icone-btn"
                                                                 onClick={() =>
-                                                                    setQuantity(prev => ({ ...prev, [v.id]: (prev[v.id] || 1) + 1 }))}>
+                                                                    setQuantity(prev => ({ ...prev, [v.selectedVariant._id]: (prev[v.selectedVariant._id] || 1) + 1 }))}>
                                                                 <IoChevronUp />
                                                             </IconButton>
 
                                                             <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
                                                                 setQuantity(prev => ({
                                                                     ...prev,
-                                                                    [v.id]: Math.max((prev[v.id] || 1) - 1, 1),
+                                                                    [v.selectedVariant._id]: Math.max((prev[v.selectedVariant._id] || 1) - 1, 1),
 
                                                                 }))
                                                             }>
                                                                 <IoChevronDownSharp />
                                                             </IconButton>
+
+
                                                         </Box>
                                                     </Box>
                                                 </Box>
+
+                                                <IconButton className="deletemobilecart" sx={{ display: mobilecartdelete ? 'block' : 'none' }}>
+                                                    <MdDeleteOutline onClick={() => { handledeltecart(v) }} />
+                                                </IconButton>
+
+                                                {console.log(quantity)}
                                             </CardActions>
+                                            <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
+                                                <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{quantity.hasOwnProperty(v.selectedVariant._id) ?(quantity[v.selectedVariant._id] * (v?.price)) : v?.price }
+                                            </Typography>
                                         </Card>
                                     </Grid>
                                 ))
@@ -231,7 +320,8 @@ function Cart() {
                     ) : (
                         <DataGrid
                             rows={cartp}
-                            getRowId={rows?._id}
+                            getRowId={(rows) => rows.variants._id || Math.random()}
+                            // getRowId={cartp?._id || Math.random()}
                             columns={columns}
                             initialState={{
                                 pagination: {
@@ -254,7 +344,8 @@ function Cart() {
                                     }
                                 },
                                 '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
-                                '& .MuiDataGrid-row': { display: 'flex', justifyContent: 'space-between' }
+                                '& .MuiDataGrid-row': { display: 'flex', justifyContent: 'space-between' },
+                                '& .MuiDataGrid-cell:focus-within': { outline: 0 }
                             }} //target every grid's child element with a class attribute that starts with MuiDataGrid
                         />
                     )}
@@ -262,8 +353,8 @@ function Cart() {
 
 
                     <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
-                        <button className="my-custome-button carts-btn">Return To Shope</button>
-                        <button className="my-custome-button carts-btn">Update Cart</button>
+                        <NavLink to='/'><button className="my-custome-button carts-btn">Return To Shope</button></NavLink>
+                        <button className="my-custome-button carts-btn" onClick={handleupdatecart}>Update Cart</button>
                     </Box>
 
 
