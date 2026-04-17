@@ -3,10 +3,17 @@ import { Box, Breadcrumbs, Button, Collapse, Divider, Drawer, FormControl, FormL
 import { Link } from "react-router-dom";
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useEdituserMutation, useGetUserQuery } from "../../redux/api/user.api";
+import { useFormik } from "formik";
+import { number, object, ref, string } from "yup";
+import { useDispatch } from "react-redux";
+import { setalert } from "../../redux/slice/Alert.slice";
 
 function Myaccount() {
 
+    const dispatch = useDispatch();
     const [menuname, setMenuname] = useState('My Profile');
+    const [edituser] = useEdituserMutation();
 
     const handlechnage = (event) => {
         setMenuname(event.target.innerText)
@@ -23,6 +30,73 @@ function Myaccount() {
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
+
+    const id = localStorage.getItem('loginid')
+    const { data, error, isLoading } = useGetUserQuery(id)
+    console.log(data?.data)
+
+    useEffect(() => {
+        if (data?.data) {
+            formik.setValues({
+                fname: data?.data?.name?.split(" ")[0] || "",
+                lname: data?.data?.name?.split(" ")[1] || "",
+                email: data?.data?.email || "",
+                address: "",
+                oldpassword: "",
+                password: "",
+
+            });
+        }
+    }, [data]);
+
+    const fschema = object({
+        fname: string().required(),
+        lname: string().required(),
+        email: string().email().required(),
+        address: string().required(),
+        oldpassword: string(),
+        password: string(),
+        cpassword: string().oneOf([ref('password'), null], 'Passwords must match'),
+    })
+
+
+
+    const formik = useFormik({
+        initialValues: {
+            fname: '',
+            lname: '',
+            email: '',
+            address: '',
+            oldpassword: '',
+            password: '',
+
+        },
+        validationSchema: fschema,
+        onSubmit: async (values) => {
+            console.log("svalue", values)
+            const response = await edituser({ 
+                id: id, 
+                name: values.fname + " " + values.lname, 
+                email: values.email, 
+                address: values.address, 
+                oldpassword: values.oldpassword, 
+                password: values.password 
+            })
+
+            if (response?.data?.success) {
+                dispatch(setalert({ text: response.data.message, variant: 'success' }))
+                formik.setValues({
+                    oldpassword: "",
+                    password: "",
+                });
+            } else {
+                dispatch(setalert({ text: response.data.message, variant: 'error' }))
+            }
+        },
+    });
+
+    const { handleSubmit, handleChange, handleBlur, errors, touched, values } = formik;
+    console.log(errors)
 
     return (
         <main>
@@ -95,7 +169,7 @@ function Myaccount() {
                                 <Typography sx={{ color: 'text.primary' }}>My account</Typography>
                             </Breadcrumbs>
 
-                            <Breadcrumbs sx={{ '& .MuiBreadcrumbs-separator': { display: 'none' },width:'fit-content' }} aria-label="breadcrumb" className="breadcrumbs">
+                            <Breadcrumbs sx={{ '& .MuiBreadcrumbs-separator': { display: 'none' }, width: 'fit-content' }} aria-label="breadcrumb" className="breadcrumbs">
 
                                 <Link underlin e="hover" href="/" sx={{ color: 'black' }}>
                                     Welcome
@@ -105,10 +179,7 @@ function Myaccount() {
                         </Box>
                     </Box>
 
-
-
-
-                    <Grid container sx={{ mt: { xs: 4, sm: 2, md: 5 } }} spacing={{ sm: 4, md: 7, lg:0 }} justifyContent='center'>
+                    <Grid container sx={{ mt: { xs: 4, sm: 2, md: 5 } }} spacing={{ sm: 4, md: 7, lg: 0 }} justifyContent='center'>
                         <Grid size={{ sm: 4, md: 3, lg: 3 }} className="accpont-menu">
                             <List component="nav" sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                                 {/* Main Item */}
@@ -165,7 +236,7 @@ function Myaccount() {
                         </Grid>
 
 
-                        <Grid size={{ xs: 11, sm: 10, md: 8, lg:9 }}
+                        <Grid size={{ xs: 11, sm: 10, md: 8, lg: 9 }}
                             sx={{
                                 padding: {
                                     sm: '20px 0',
@@ -178,7 +249,7 @@ function Myaccount() {
                                 }
                             }}>
                             <Typography variant="h6" sx={{ color: '#DB4444', fontWeight: '600' }}>Edit Your Profile</Typography>
-                            <form className="my-form">
+                            <form className="my-form" onSubmit={handleSubmit}>
                                 <Grid container size={12} columnSpacing={{ xs: 3, sm: 3, md: 6 }}>
                                     <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                         <FormControl className="myaccount-textfiled">
@@ -186,10 +257,13 @@ function Myaccount() {
                                             <TextField
                                                 id="fname"
                                                 name="fname"
-                                                value='md'
+                                                value={values.fname}
                                                 variant="filled"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                                 InputProps={{ disableUnderline: true }}
                                             />
+                                            {errors.fname && touched.fname ? <span>**{errors.fname}</span> : ""}
                                         </FormControl>
                                     </Grid>
 
@@ -199,10 +273,13 @@ function Myaccount() {
                                             <TextField
                                                 id="lname"
                                                 name="lname"
-                                                value='Rimple'
+                                                value={values.lname}
                                                 variant="filled"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                                 InputProps={{ disableUnderline: true }}
                                             />
+                                            {errors.lname && touched.lname ? <span>**{errors.lname}</span> : ""}
                                         </FormControl>
                                     </Grid>
 
@@ -212,10 +289,13 @@ function Myaccount() {
                                             <TextField
                                                 id="email"
                                                 name="email"
-                                                value='rimel1111@gmail.com'
+                                                value={values.email}
                                                 variant="filled"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                                 InputProps={{ disableUnderline: true }}
                                             />
+                                            {errors.email && touched.email ? <span>**{errors.email}</span> : ""}
                                         </FormControl>
                                     </Grid>
 
@@ -225,10 +305,12 @@ function Myaccount() {
                                             <TextField
                                                 id="address"
                                                 name="address"
-                                                value='Kingston, 5236, United State@gmail.com'
                                                 variant="filled"
-                                                InputProps={{ disableUnderline: true }}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                placeholder="Enter Adress"
                                             />
+                                            {errors.address && touched.address ? <span>**{errors.address}</span> : ""}
                                         </FormControl>
                                     </Grid>
 
@@ -236,31 +318,39 @@ function Myaccount() {
                                         <FormControl className="myaccount-textfiled">
                                             <FormLabel htmlFor="component-outlined" className="input-label" sx={{ pb: 0 }}>Password Change</FormLabel>
                                             <TextField
-                                                id="address"
-                                                name="address"
+                                                id="oldpassword"
+                                                name="oldpassword"
                                                 label="Current Passwod"
                                                 variant="filled"
-                                                InputProps={{ disableUnderline: true }}
-
+                                                InputProps={{ disableUnderline: true, shrink: true }}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                             />
+                                            {errors.oldpassword && touched.oldpassword ? <span>**{errors.oldpassword}</span> : ""}
 
                                             <TextField
-                                                id="address"
-                                                name="address"
+                                                id="password"
+                                                name="password"
                                                 label="New Passwod"
                                                 variant="filled"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                                 InputProps={{ disableUnderline: true }}
                                                 className="passwodtext-filed"
                                             />
+                                            {errors.password && touched.password ? <span>**{errors.password}</span> : ""}
 
                                             <TextField
-                                                id="address"
-                                                name="address"
+                                                id="cpassword"
+                                                name="cpassword"
                                                 label="Confirm New Passwod"
                                                 variant="filled"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                                 InputProps={{ disableUnderline: true }}
                                                 className="passwodtext-filed"
                                             />
+                                            {errors.cpassword && touched.cpassword ? <span>**{errors.cpassword}</span> : ""}
                                         </FormControl>
                                     </Grid>
 
@@ -270,7 +360,7 @@ function Myaccount() {
                                         </Grid>
 
                                         <Grid size={{ md: 4, lg: 3 }}>
-                                            <button className="my-custome-button">Save Change</button>
+                                            <button className="my-custome-button" type="submit">Save Change</button>
                                         </Grid>
                                     </Grid>
 

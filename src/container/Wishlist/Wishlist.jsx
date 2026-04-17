@@ -3,11 +3,43 @@ import React, { useEffect, useState } from "react";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import { useDeleteWishlistMutation, useGetWishlistQuery } from "../../redux/api/wishlist.api";
+import { useGetCartQuery } from "../../redux/api/cart.api";
+import { useGetProductQuery } from "../../redux/api/product.api";
+import { IMG_URL } from "../../utility/url";
+import DeleteOutlineSharpIcon from '@mui/icons-material/DeleteOutlineSharp';
 
 function Wishlist() {
 
     const [allproducts, setAllproducts] = useState([]);
     const [cartproducts, setCartproducts] = useState([]);
+
+
+    const id = localStorage.getItem('loginid');
+    console.log("cdata", id)
+
+
+    const {data,error,isLoading} = useGetWishlistQuery(id);
+    console.log(data?.body)
+
+    const {data:pdata,error:perror,isLoading:pisloading} = useGetProductQuery();
+    console.log(pdata?.data)
+
+    const [deletewishlist] = useDeleteWishlistMutation();
+
+    const wlistdata = data?.body?.products?.map((v) => {
+        const product = pdata?.data?.find((p) => p._id === v.product_id)
+
+        const variant = product?.variants?.find((v1) => v1._id === v.variant_id)
+        console.log("variant",variant)
+
+        return  {
+            ...product,
+            selectedVariant:variant
+        }
+    })
+
+    console.log("variant",wlistdata)
 
     useEffect(() => {
         fetch("http://localhost:3000/products")
@@ -19,7 +51,7 @@ function Wishlist() {
             .then(data => setCartproducts(data))
     }, [])
 
-    console.log(allproducts, cartproducts)
+   // console.log(allproducts, cartproducts)
 
     const theme = createTheme({
         breakpoints: {
@@ -32,6 +64,12 @@ function Wishlist() {
             },
         },
     });
+
+    const handledeletewishlist = (v) => {
+        console.log('ok',v)
+
+        deletewishlist({ variant_id: v?.selectedVariant?._id, id: localStorage.getItem('loginid') })
+    }
 
     return (
         <>
@@ -46,10 +84,11 @@ function Wishlist() {
                             </Box>
                             <Grid container sx={{ mt: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
                                 {
-                                    cartproducts.map((v) => {
-                                        const cp = allproducts.find((v1) => v1.id === v.product_id);
-                                        console.log(cp)
-                                        if (cp) {
+                                    wlistdata?.map((v) => {
+                                        // const cp = allproducts.find((v1) => v1.id === v.product_id);
+                                        // console.log(cp)
+                                        console.log(v)
+                                        if (wlistdata) {
                                             return (
                                                 <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
                                                     <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
@@ -68,8 +107,8 @@ function Wishlist() {
                                                             <CardMedia
                                                                 component="img"
                                                                 className="cardimg"
-                                                                sx={{ objectFit: "contain" }}
-                                                                image={cp.img}
+                                                                sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                                image={IMG_URL + v?.selectedVariant?.images?.[0]}
                                                                 title="green iguana"
 
                                                             />
@@ -90,19 +129,22 @@ function Wishlist() {
 
                                                         <CardContent sx={{ outline: 0 }}>
                                                             <Typography gutterBottom variant="h6" component="div" className="cart-name">
-                                                                {cp.name}
+                                                                {v.name}
                                                             </Typography>
                                                             <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-                                                                <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                    {cp.discoutprice}
-                                                                </Typography>
-                                                                <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                    {cp.price}
+                                                                {/* <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                    {v?.discoutprice}
+                                                                </Typography> */}
+                                                                {/* <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                    {v.price}
+                                                                </Typography> */}
+                                                                <Typography variant="body1" sx={{ color: '#DB4444', fontWeight: 500}}>
+                                                                    ₹{v.price}
                                                                 </Typography>
                                                             </Box>
 
                                                             {
-                                                                cp.discount ?
+                                                                v?.discount ?
                                                                     <Box sx={{
                                                                         bgcolor: '#DB4444', color: 'white', width: 'fit-content',
                                                                         padding: {
@@ -131,14 +173,14 @@ function Wishlist() {
                                                                 }
                                                             }}
                                                         >
-                                                            <IconButton size="small" sx={{ bgcolor: "white" }}>
-                                                                <DeleteForeverOutlinedIcon sx={{
-                                                                     fontSize: {
-                                                                       xs: '18px',
+                                                            <IconButton size="small" sx={{ bgcolor: "white" }} onClick={() => handledeletewishlist(v)}>
+                                                                <DeleteOutlineSharpIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '18px',
                                                                         sx: '18px',
                                                                         md: '20px',
                                                                         lg: '25px'
-                                                                    }, color: 'black'
+                                                                    }, color: 'black',
                                                                 }} />
                                                             </IconButton>
 
@@ -164,7 +206,7 @@ function Wishlist() {
                                 <a href="#" className="my-custome-button">See All</a>
                             </Box>
 
-                            <Grid container sx={{ mt:3 }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
+                            <Grid container sx={{ mt: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
                                 {
                                     allproducts.slice(0, 4).map((v) => {
                                         const r = v.rating.reduce((acc, v) => acc + v, 0)
@@ -227,20 +269,21 @@ function Wishlist() {
                                                             <Typography sx={{ color: '#FFAD33' }}>
                                                                 <Stack spacing={1}>
                                                                     <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
-                                                                            fontSize: {
-                                                                                xs: '15px',
-                                                                                sm: '18px',
-                                                                                md: '20px'
-                                                                            }
-                                                                        }} />
+                                                                        fontSize: {
+                                                                            xs: '15px',
+                                                                            sm: '18px',
+                                                                            md: '20px'
+                                                                        }
+                                                                    }} />
                                                                 </Stack>
                                                             </Typography>
-                                                            <Typography sx={{ color: 'grey', fontWeight: '600',
-                                                                fontSize:{
-                                                                    xs:'12px',
-                                                                    sm:'16px'
+                                                            <Typography sx={{
+                                                                color: 'grey', fontWeight: '600',
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '16px'
                                                                 }
-                                                             }}>
+                                                            }}>
                                                                 {`(${r})`}
                                                             </Typography>
                                                         </Box>

@@ -82,7 +82,7 @@ function Cart() {
     const handledeltecart = (data) => {
         console.log(data)
 
-        deletecart({ variant_id: data.selectedVariant._id, id: localStorage.getItem('loginid') })
+        deletecart({ variant_id: data?.selectedVariant?._id, id: localStorage.getItem('loginid') })
     }
 
     const [columns, setColumns] = useState([
@@ -94,7 +94,7 @@ function Cart() {
             flex: 2,
             minWidth: 200,
             renderCell: (params) => {
-                console.log(params.row, data?.body?.products)
+                console.log(params.row.selectedVariant, data?.body?.products)
 
 
                 return (<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
@@ -320,7 +320,7 @@ function Cart() {
                     ) : (
                         <DataGrid
                             rows={cartp}
-                            getRowId={(rows) => rows.variants._id || Math.random()}
+                            getRowId={(rows) => rows?.variants?._id || Math.random()}
                             // getRowId={cartp?._id || Math.random()}
                             columns={columns}
                             initialState={{

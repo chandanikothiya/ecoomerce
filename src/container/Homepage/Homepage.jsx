@@ -39,6 +39,9 @@ import { useGetCategoryQuery } from "../../redux/api/category.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
 import { useAddCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
+import { useAddWishlistMutation } from "../../redux/api/wishlist.api";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+
 
 
 function Homepage() {
@@ -73,6 +76,7 @@ function Homepage() {
     //const {data:cartdata,error:carterror,isLoading:cartisLoading} = useGetCartQuery();
 
     const [addcart] = useAddCartMutation();
+    const [addwishlist] = useAddWishlistMutation();
 
     const { data: pdata,
         error: perror,
@@ -263,17 +267,37 @@ function Homepage() {
 
     const handleCartClick = async (id, vid) => {
         console.log("click", id, vid)
-        const response = await addcart({ user_id: localStorage.getItem('loginid'), product_id: id, variant_id: vid })
-        console.log("cartres", response)
-        if (response.data.success) {
 
-            dispatch(setalert({ text: response.data.message, variant: 'success' }))
+        if (localStorage.getItem('loginid')) {
+            const response = await addcart({ user_id: localStorage.getItem('loginid'), product_id: id, variant_id: vid })
+            console.log("cartres", response)
+            if (response.data.success) {
+
+                dispatch(setalert({ text: response.data.message, variant: 'success' }))
+            } else {
+                dispatch(setalert({ text: response.data.message, variant: 'error' }))
+            }
         } else {
-            dispatch(setalert({ text: response.data.message, variant: 'error' }))
+            navigate('/signup')
         }
+
     }
 
+    const handleWishlistClick = async (id, vid) => {
+        console.log("click", id, vid)
+        if (localStorage.getItem('loginid')) {
+            const response = await addwishlist({ user_id: localStorage.getItem('loginid'), product_id: id, variant_id: vid })
+            console.log("cartres", response)
+            if (response.data.success) {
+                dispatch(setalert({ text: response.data.message, variant: 'success' }))
+            } else {
+                dispatch(setalert({ text: response.data.message, variant: 'error' }))
+            }
+        } else {
+            navigate('/signup')
+        }
 
+    }
 
     return (
         <>
@@ -684,7 +708,7 @@ function Homepage() {
                                                                 }
                                                             }}
                                                         >
-                                                            Add To Cart
+                                                            <ShoppingCartOutlinedIcon /> Add To Cart
                                                         </Typography>
                                                     </Box>
 
@@ -1119,6 +1143,23 @@ function Homepage() {
 
                                     >
                                         {pdata?.data?.map((v, i) => {
+                                            const validVariants = v?.variants?.filter(
+                                                (x) => x?.color && x.color.trim() !== ""
+                                            );
+                                            let selectedVariant;
+
+                                            if (validVariants.length > 0) {
+                                                const selectedColor =
+                                                    selectedColors[v._id] || validVariants[0]?.color;
+
+                                                selectedVariant = v?.variants?.find(
+                                                    (x) => x.color === selectedColor
+                                                );
+                                            } else {
+                                                // ✅ fallback when no color exists
+                                                selectedVariant = v?.variants?.[0];
+                                            }
+                                            console.log(selectedVariant)
                                             // const r = v.rating.reduce((acc, v) => acc + v, 0)
                                             // console.log(r)
                                             // const rate = r / v.rating.length;
@@ -1139,23 +1180,7 @@ function Homepage() {
                                                             }}>
                                                             {
                                                                 (() => {
-                                                                    const validVariants = v?.variants?.filter(
-                                                                        (x) => x?.color && x.color.trim() !== ""
-                                                                    );
-                                                                    let selectedVariant;
 
-                                                                    if (validVariants.length > 0) {
-                                                                        const selectedColor =
-                                                                            selectedColors[v._id] || validVariants[0]?.color;
-
-                                                                        selectedVariant = v?.variants?.find(
-                                                                            (x) => x.color === selectedColor
-                                                                        );
-                                                                    } else {
-                                                                        // ✅ fallback when no color exists
-                                                                        selectedVariant = v?.variants?.[0];
-                                                                    }
-                                                                    console.log(selectedVariant)
 
                                                                     return (
                                                                         <>
@@ -1188,7 +1213,7 @@ function Homepage() {
                                                                                 }}
                                                                                 onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
                                                                             >
-                                                                                Add To Cart
+                                                                                <ShoppingCartOutlinedIcon /> Add To Cart
                                                                             </Typography>
                                                                         </>
 
@@ -1324,6 +1349,8 @@ function Homepage() {
                                                             }
                                                         </CardContent>
 
+
+
                                                         <CardActions
                                                             sx={{
                                                                 flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
@@ -1332,7 +1359,7 @@ function Homepage() {
                                                                 }
                                                             }}
                                                         >
-                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
+                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => handleWishlistClick(v?._id, selectedVariant?._id)}>
                                                                 <FavoriteBorderIcon sx={{
                                                                     fontSize: {
                                                                         xs: '12px',

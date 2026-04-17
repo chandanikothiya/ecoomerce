@@ -8,17 +8,19 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => async (args, api, extr
 
         const result = await axiosInstance({
             url: baseUrl + url,
-            method: method || get,
+            method: method || "get",
             data: body,
             params,
             headers
         });
+        console.log("AXIOS RESULT:", result);
 
         // return Promise.resolve(result);
         return {
             data: result.data
         }
     } catch (error) {
+        console.log("❌ AXIOS ERROR:", error);
         return {
             error: {
                 status: error.response?.status || 500,

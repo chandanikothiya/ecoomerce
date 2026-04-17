@@ -26,13 +26,16 @@ import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
 import { useGetCartQuery } from "../../redux/api/cart.api";
 import { styled } from '@mui/material/styles';
+import { useGetWishlistQuery } from "../../redux/api/wishlist.api";
 
 
 function Header() {
 
     const [anchorEll, setAnchorEll] = React.useState(null);
     const [showBudget, setShowBudget] = useState(false);
+    const [showwBudget, setShowwBudget] = useState(false);
     const prevcounter = useRef(0)
+    const prevcounterwishlist = useRef(0)
     const dispatch = useDispatch();
     const openl = Boolean(anchorEll);
     const handleClickl = (event) => {
@@ -45,12 +48,19 @@ function Header() {
     const id = localStorage.getItem('loginid');
     console.log(id)
 
+    //cart count
     const { data, error, isLoading } = useGetCartQuery(id);
     console.log({ data, error, isLoading })
 
     console.log(data, data?.body?.products?.length)
     const cartcount = data?.body?.products?.length || 0;
     console.log(cartcount)
+
+    //wishlit count
+    const { data: wdata, error: werror, isLoading: wisLoading } = useGetWishlistQuery(id);
+    //console.log(wdata)
+    const wishlistcount = wdata?.body?.products?.length || 0;
+    console.log(wishlistcount)
 
     const [logout] = useLogoutMutation();
 
@@ -116,16 +126,25 @@ function Header() {
         `;
 
     useEffect(() => {
-        if (prevcounter.current !== 0 && cartcount > prevcounter.current) {
+        if (wishlistcount > prevcounterwishlist.current) {
+            setShowwBudget(true);
+        }
+
+        prevcounterwishlist.current = wishlistcount;
+
+        if (cartcount > prevcounter.current) {
             setShowBudget(true);
         }
 
         prevcounter.current = cartcount;
-    }, [cartcount]);
+
+    }, [cartcount, wishlistcount]);
 
     useEffect(() => {
         if (location.pathname === '/cart') {
             setShowBudget(false)
+        } else if  (location.pathname === '/wishlist') {
+            setShowwBudget(false);
         }
     }, [location.pathname])
     console.log(showBudget)
@@ -190,9 +209,9 @@ function Header() {
                                     <li><NavLink to="/about">About</NavLink></li>
                                     {
                                         localStorage.getItem('loginid') ?
-                                            <li ><NavLink onClick={handleLogout}>Sign OUT</NavLink></li> :
+                                            <li ><NavLink onClick={handleLogout}>SignOut</NavLink></li> :
                                             <li><NavLink to="/signup" >Sign Up</NavLink></li>
-                                    }
+                                    }       
 
                                 </ul>
                             </div>
@@ -205,14 +224,17 @@ function Header() {
                                     </div>
                                 </form>
 
-                                <IconButton>
-                                    <FavoriteBorderIcon className="header-icone" />
-                                </IconButton>
+                                <NavLink to="/wishlist">
+                                    <IconButton>
+                                        <FavoriteBorderIcon className="header-icone" />
+                                        {wishlistcount > 0 && showwBudget && (<NotificationBadge badgeContent={wishlistcount} color="error" overlap="circular" />)}
+                                    </IconButton>
+                                </NavLink>
 
                                 <NavLink to="/cart">
                                     <IconButton >
                                         <ShoppingCartOutlinedIcon className="header-icone" />
-                                        {showBudget && (<NotificationBadge badgeContent={cartcount} color="error" overlap="circular" />)}
+                                        {cartcount > 0 && showBudget && (<NotificationBadge badgeContent={cartcount} color="error" overlap="circular" />)}
                                     </IconButton>
                                 </NavLink>
 

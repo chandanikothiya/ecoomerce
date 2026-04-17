@@ -11,6 +11,12 @@ export const userApi = createApi({
             }),
               providesTags: ['Auth'],
         }),
+        getUser: builder.query({
+            query: (id) => ({
+                url:`/user/getuser/${id}`,
+            }),
+              providesTags: ['Auth'],
+        }),
         addUser: builder.mutation({
             query: (data) => ({
                 url: "/user/adduser",
@@ -54,11 +60,19 @@ export const userApi = createApi({
                 body: data
             }),
             invalidatesTags: ['Auth']
+        }),
+        edituser: builder.mutation({
+            query: (data) => ({
+                url: `/user/edituser/${data.id}`,
+                method: 'put',
+                body: data
+            }),
+            invalidatesTags: ['Auth']
         })
     })
 })
 
 export const {
     useAddUserMutation, useVerifyUserMutation, useLoginUserMutation,
-    useForgetpasswordMutation, useResetpasswordMutation, useCheckauthQuery, useLogoutMutation
+    useForgetpasswordMutation, useResetpasswordMutation, useCheckauthQuery, useLogoutMutation,useGetUserQuery,useEdituserMutation
 } = userApi;
