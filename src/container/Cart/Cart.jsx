@@ -26,6 +26,7 @@ function Cart() {
     const [quantity, setQuantity] = useState({});
     const [mobilecartdelete, setMobilecartdelete] = useState(false);
     const theme = useTheme();
+    const [gridKey, setGridKey] = useState(0);
 
     const isMobile = useMediaQuery("(max-width:320px)");
 
@@ -48,16 +49,19 @@ function Cart() {
             (p) => p._id === cartItem.product_id
         );
 
+        if (!product) return null;
+
         const variant = product?.variants?.find(
             (v) => v._id === cartItem.variant_id
         );
 
         return {
             ...product,
-            selectedVariant: variant,
+            selectedVariant: variant || product?.variants?.[0],
+
         };
-    });
-    console.log("cartp", cartp)
+    }).filter(Boolean); // remove null
+    console.log("cartp", cartp, cartp?.selectedVariant?._id)
     // console.log("cartpp",cartpp)
 
     let displaycart = ''
@@ -74,6 +78,8 @@ function Cart() {
         // displaycart = getcart();
     }, [])
 
+
+
     console.log(displaycart)
 
     const cartdata = allproduct.filter((v) => cart.some(v1 => v.id === v1.product_id))
@@ -85,6 +91,29 @@ function Cart() {
         deletecart({ variant_id: data?.selectedVariant?._id, id: localStorage.getItem('loginid') })
     }
 
+    // useEffect(() => {
+    //     if (!data?.body?.products) return;
+
+    //     const initialQty = {};
+
+    //     data.body.products.forEach(item => {
+    //         console.log("item", item)
+    //         const key = item.variant_id;
+    //         initialQty[key] = initialQty[key] || 1;
+    //     });
+
+    //     setQuantity(initialQty);
+
+    // }, [data]);
+
+    console.log("item", quantity)
+
+    const initializedRef = React.useRef(false);
+
+    useEffect(() => {
+        console.log("🔥 quantity changed:", quantity);
+    }, [quantity]);
+
     const [columns, setColumns] = useState([
 
         {
@@ -94,7 +123,7 @@ function Cart() {
             flex: 2,
             minWidth: 200,
             renderCell: (params) => {
-                console.log(params.row.selectedVariant, data?.body?.products)
+                console.log(params?.row, params?.row?.selectedVariant, data?.body?.products)
 
 
                 return (<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
@@ -111,40 +140,53 @@ function Cart() {
             minWidth: 100,
         },
         {
-
-            headerName: 'quantity',
+            field: 'quantity',
+            headerName: 'Quantity',
             headerAlign: 'left',
             type: 'number',
-            // width: 350,
             flex: 1,
             minWidth: 120,
-            editable: true,
-            renderCell: (params) => (
-                <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '4px 15px', width: 'fit-content', gap: 2 }}>
-                        <Typography>
-                            {quantity[params.row._id] || 1}
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <IconButton aria-label="up" className="icone-btn"
-                                onClick={() =>
-                                    setQuantity(prev => ({ ...prev, [params.row._id]: (prev[params.row._id] || 1) + 1 }))}>
-                                <IoChevronUp />
-                            </IconButton>
 
-                            <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
-                                setQuantity(prev => ({
-                                    ...prev,
-                                    [params.row._id]: Math.max((prev[params.row._id] || 1) - 1, 1),
+            renderCell: (params) => {
+                const variantId = params.row.selectedVariant?._id;
+                console.log(variantId)
+                const qty = quantity?.[variantId] ?? 1;
+                console.log(qty)
 
-                                }))
-                            }>
-                                <IoChevronDownSharp />
-                            </IconButton>
+                console.log("variantId:", `[${variantId}]`);
+                console.log("length:", variantId.length);
+                console.log("keys:", Object.keys(quantity).map(k => `[${k}]`));
+                console.log("quantity", params.row.selectedVariant._id, quantity)
+                return (
+                    <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '4px 15px', width: 'fit-content', gap: 2 }}>
+                            <Typography>
+                                {qty}
+                            </Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <IconButton aria-label="up" className="icone-btn"
+                                    onClick={() =>
+                                        setQuantity(prev => ({
+                                            ...prev,
+                                            [variantId]: (prev?.[variantId] ?? 1) + 1
+                                        }))
+                                    }>
+                                    <IoChevronUp />
+                                </IconButton>
+
+                                <IconButton aria-label="down" className="icone-btn" onClick={() =>
+                                    setQuantity(prev => ({
+                                        ...prev,
+                                       [variantId]: Math.max((prev?.[variantId] ?? 1) - 1, 1)
+                                    }))
+                                }>
+                                    <IoChevronDownSharp />
+                                </IconButton>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
-            ),
+                )
+            },
         },
         {
             field: '',
@@ -154,10 +196,12 @@ function Cart() {
             flex: 1,
             minWidth: 120,
             renderCell: (params) => (
-                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{params.row.price * (quantity[params.row._id] || 1)}</Typography>
+                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{params.row.price * (quantity[params.row.selectedVariant?._id] || 1)}</Typography>
             ),
         },
     ]);
+
+    console.log("quantity", quantity)
 
     function handleupdatecart() {
         console.log("ok")
@@ -277,7 +321,7 @@ function Cart() {
                                                 <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                                                     <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
                                                         <Typography>
-                                                            {quantity[v._id] || 1}
+                                                            {quantity[v.selectedVariant._id] || 1}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                                             <IconButton aria-label="up" className="icone-btn"
@@ -308,7 +352,7 @@ function Cart() {
                                                 {console.log(quantity)}
                                             </CardActions>
                                             <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
-                                                <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{quantity.hasOwnProperty(v.selectedVariant._id) ?(quantity[v.selectedVariant._id] * (v?.price)) : v?.price }
+                                                <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{quantity.hasOwnProperty(v.selectedVariant._id) ? (quantity[v.selectedVariant._id] * (v?.price)) : v?.price}
                                             </Typography>
                                         </Card>
                                     </Grid>
@@ -320,19 +364,20 @@ function Cart() {
                     ) : (
                         <DataGrid
                             rows={cartp}
-                            getRowId={(rows) => rows?.variants?._id || Math.random()}
+                            getRowId={(row) => row.selectedVariant?._id + "_" + row._id}
+                            key={gridKey}
                             // getRowId={cartp?._id || Math.random()}
                             columns={columns}
                             initialState={{
                                 pagination: {
                                     paginationModel: {
-                                        pageSize: 5,
+                                        pageSize: 15,
                                     },
                                 },
                             }}
                             hideFooterPagination
                             rowHeight={80}
-                            pageSizeOptions={[5]}
+                            pageSizeOptions={[10]}
                             disableRowSelectionOnClick
                             checkboxSelection={false}
                             sx={{

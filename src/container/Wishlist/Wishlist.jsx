@@ -27,16 +27,22 @@ function Wishlist() {
 
     const [deletewishlist] = useDeleteWishlistMutation();
 
-    const wlistdata = data?.body?.products?.map((v) => {
-        const product = pdata?.data?.find((p) => p._id === v.product_id)
+    const wlistdata = data?.body?.products?.map((v1) => {
+        const product = pdata?.data?.find(
+            (p) => p._id === v1.product_id
+        );
 
-        const variant = product?.variants?.find((v1) => v1._id === v.variant_id)
-        console.log("variant",variant)
+        if (!product) return null;
 
-        return  {
+        const variant = product?.variants?.find(
+            (v) => v._id === v1.variant_id
+        );
+
+        return {
             ...product,
-            selectedVariant:variant
-        }
+            selectedVariant: variant || product?.variants?.[0],
+            
+        };
     })
 
     console.log("variant",wlistdata)

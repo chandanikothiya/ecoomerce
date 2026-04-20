@@ -20,8 +20,8 @@ import Alert from './components/Alert/Alert'
 const store = storeconfig();
 
 function App() {
+  
   const [count, setCount] = useState(0)
-
 
   return (
     <>

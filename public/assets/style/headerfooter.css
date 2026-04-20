@@ -894,6 +894,9 @@ hr {
 #allproducts .swiper-slide {
     margin-top: 10px !important;
 }
+#allproducts .swiper-wrapper {
+  row-gap: 20px !important;
+}
 
 .category-title:hover {
     background-color: var(--secondary-color);

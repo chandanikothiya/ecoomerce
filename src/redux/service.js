@@ -11,7 +11,8 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => async (args, api, extr
             method: method || "get",
             data: body,
             params,
-            headers
+            headers,
+            withCredentials: true 
         });
         console.log("AXIOS RESULT:", result);
 

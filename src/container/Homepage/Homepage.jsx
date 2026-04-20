@@ -782,7 +782,7 @@ function Homepage() {
                                                                     xs: '12px',
                                                                     sm: '18px',
                                                                     md: '20px',
-                                                                    lg: '24px'
+                                                                    lg: '22px'
                                                                 },
                                                             }} />
                                                         </IconButton>
@@ -792,7 +792,7 @@ function Homepage() {
                                                                     xs: '12px',
                                                                     sm: '18px',
                                                                     md: '20px',
-                                                                    lg: '24px'
+                                                                    lg: '22px'
                                                                 },
                                                             }} />
                                                         </IconButton>
@@ -996,8 +996,8 @@ function Homepage() {
                                                                     xs: '12px',
                                                                     sm: '18px',
                                                                     md: '20px',
-                                                                    lg: '25px'
-                                                                }, color: 'black'
+                                                                    lg: '22px'
+                                                                }, 
                                                             }} />
                                                         </IconButton>
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
@@ -1006,8 +1006,8 @@ function Homepage() {
                                                                     xs: '12px',
                                                                     sm: '18px',
                                                                     md: '20px',
-                                                                    lg: '25px'
-                                                                }, color: 'black'
+                                                                    lg: '22px'
+                                                                },  
                                                             }} />
                                                         </IconButton>
                                                     </CardActions>
@@ -1365,7 +1365,7 @@ function Homepage() {
                                                                         xs: '12px',
                                                                         sm: '18px',
                                                                         md: '20px',
-                                                                        lg: '25px'
+                                                                        lg: '22px'
                                                                     }
                                                                 }} />
                                                             </IconButton>
@@ -1375,7 +1375,7 @@ function Homepage() {
                                                                         xs: '12px',
                                                                         sm: '18px',
                                                                         md: '20px',
-                                                                        lg: '25px'
+                                                                        lg: '22px'
                                                                     }
                                                                 }} />
                                                             </IconButton>

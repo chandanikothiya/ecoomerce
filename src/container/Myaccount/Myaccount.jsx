@@ -41,10 +41,9 @@ function Myaccount() {
                 fname: data?.data?.name?.split(" ")[0] || "",
                 lname: data?.data?.name?.split(" ")[1] || "",
                 email: data?.data?.email || "",
-                address: "",
+                address:data?.data?.address || "",
                 oldpassword: "",
                 password: "",
-
             });
         }
     }, [data]);
@@ -305,6 +304,7 @@ function Myaccount() {
                                             <TextField
                                                 id="address"
                                                 name="address"
+                                                value={values.address}
                                                 variant="filled"
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}

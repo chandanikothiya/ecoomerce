@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { BorderBottom, Margin, Padding, WidthNormal } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { Avatar, Box, FormControl, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Avatar, Box, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -38,6 +38,7 @@ const MenuProps = {
 
 function Product() {
 
+    const [checked, setChecked] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
     const [variants, setVariants] = useState([
@@ -251,7 +252,7 @@ function Product() {
         }
     ];
 
-    console.log("variants",variants)
+    console.log("variants", variants)
 
 
     return (
@@ -272,7 +273,15 @@ function Product() {
                                     category_id: "",
 
                                     variants: [
-                                        { color: "", images: [], size: [] }
+                                        {
+                                            color: "",
+                                            images: [],
+                                            size: [],
+                                            isFlashSale: false,
+                                            flashPrice: "",
+                                            flashStart: "",
+                                            flashEnd: ""
+                                        }
                                     ]
                                 }}
                                 validationSchema={categorySchema}
@@ -410,6 +419,41 @@ function Product() {
                                                                         })}
                                                                     </Select>
                                                                 </FormControl>
+
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox
+                                                                            checked={values.variants[index].isFlashSale || false}
+                                                                            onChange={(e) =>
+                                                                                setFieldValue(
+                                                                                    `variants[${index}].isFlashSale`,
+                                                                                    e.target.checked
+                                                                                )
+                                                                            }
+                                                                           
+                                                                        />
+                                                                    }
+                                                                    label="Enable Flash Sale"
+                                                                     sx={{display:'block'}}
+                                                                />
+                                                                {values.variants[index].isFlashSale && (
+                                                                    <>
+                                                                        <MyTextField
+                                                                            name={`variants[${index}].flashPrice`}
+                                                                            placeholder="Flash Price"
+                                                                        />
+
+                                                                        <MyTextField
+                                                                            type="datetime-local"
+                                                                            name={`variants[${index}].flashStart`}
+                                                                        />
+
+                                                                        <MyTextField
+                                                                            type="datetime-local"
+                                                                            name={`variants[${index}].flashEnd`}
+                                                                        />
+                                                                    </>
+                                                                )}
                                                             </>
                                                         ))
                                                     }

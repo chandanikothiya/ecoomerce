@@ -21,6 +21,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { BiSolidCategory } from "react-icons/bi";
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaBoxOpen } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 
 const drawerWidth = 240;
@@ -121,7 +122,7 @@ function Layout({ children }) {
      const menulist = [
         { label: "Dashboard", icone: <BiSolidDashboard />, to: "/admin/dashboard" },
         { label: "Category", icone: <BiSolidCategory />, to: "/admin/category" },
-        { label: "Products", icone: <FaBoxOpen />, to: "/admin/subcategory" },
+        { label: "Products", icone: <FaBoxOpen />, to: "/admin/product" },
         
     ]
 
@@ -158,7 +159,7 @@ function Layout({ children }) {
                 <Divider />
                 <List>
                     {menulist.map((v, index) => (
-                        <ListItem key={index} disablePadding sx={{ display: 'block',fontSize:'20px' }}>
+                        <ListItem key={index} disablePadding sx={{ display: 'block',fontSize:'20px' }} component={NavLink} to={v.to}>
                             <ListItemButton
                                 sx={[
                                     {

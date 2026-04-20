@@ -16,13 +16,21 @@ axiosInstance.interceptors.request.use(function (config) {
 axiosInstance.interceptors.response.use(function (response) {
     return response;
 }, async function (error) {
-    console.log(error)
+        console.log("error  ",error.response)
 
     if (error.response && error.response.status === 401) {
-        const response = await axios.post(BASE_URL+'user/genratenewtoken',{},{withCredentials:true})
-        console.log('response',response)
+        console.log("loginid ")
+        // localStorage.removeItem('loginid')
+        const response = await axios.post(BASE_URL + 'user/genratenewtoken', {}, { withCredentials: true })
+        console.log('response', response)
+        
+        // if (response.status === 401) {
+        //     console.log("refeshtoken error")
+        // }
 
         return axiosInstance(error.config)
     }
     return Promise.reject(error);
 })
+const response = await axios.post(BASE_URL + 'user/genratenewtoken', {}, { withCredentials: true })
+        console.log('response', response)

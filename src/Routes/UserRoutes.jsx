@@ -17,12 +17,23 @@ import Demo from '../container/Demo/Demo';
 
 function UserRoutes(props) {
 
+    const isLoggedIn = !!localStorage.getItem('loginid');
+
+    // /refetchOnMountOrArgChange: true
     const { data, error, isLoading, refetch } = useCheckauthQuery(undefined, {
-        refetchOnMountOrArgChange: true
+        skip: !isLoggedIn
     }
     );
 
-    //console.log(data)
+    console.log("authdata", { data, error, isLoading })
+    useEffect(() => {
+        if (error?.status === 401) {
+            console.log("auth failed");
+
+            // optional: only logout after confirming refresh failed
+            localStorage.removeItem('loginid');
+        }
+    }, [error]);
 
     useEffect(() => {
         refetch();
@@ -42,7 +53,7 @@ function UserRoutes(props) {
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/checkout' element={<Checkout />} />
                 <Route path='/myaccount' element={<Myaccount />} />
-                <Route path='/demo' element={< Demo/>} />
+                <Route path='/demo' element={< Demo />} />
             </Routes>
             <Footer />
         </>
