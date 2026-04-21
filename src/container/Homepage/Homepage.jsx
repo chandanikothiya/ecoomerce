@@ -39,9 +39,9 @@ import { useGetCategoryQuery } from "../../redux/api/category.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
 import { useAddCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
-import { useAddWishlistMutation } from "../../redux/api/wishlist.api";
+import { useAddWishlistMutation, useGetWishlistQuery } from "../../redux/api/wishlist.api";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 function Homepage() {
@@ -64,6 +64,7 @@ function Homepage() {
     // ✅ Use MUI breakpoint (BEST PRACTICE)
     const isMobile = useMediaQuery(theme1.breakpoints.down("md"));
     const [selectedColors, setSelectedColors] = useState({});
+    const [selectedColorsfalsh, setSelectedColorsfalsh] = useState({});
 
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -82,11 +83,17 @@ function Homepage() {
         error: perror,
         isLoading: pisLoading } = useGetProductQuery();
 
-    console.log("productdata", pdata?.data)
+    console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
 
 
+    const flashsaleproduct = pdata?.data
+        ?.map(v => ({
+            ...v,
+            variants: v.variants.filter(v1 => v1.isFlashSale)
+        })).filter(v => v.variants.length > 0);
+    console.log("flashsaleproduct", flashsaleproduct)
 
-    const categorymenu = data?.data.filter((v) => v.parentcategory_id === null)
+    const categorymenu = data?.data?.filter((v) => v.parentcategory_id === null)
     console.log("catemenu", categorymenu)
 
     const open = Boolean(anchorEl);
@@ -230,19 +237,6 @@ function Homepage() {
     });
 
 
-
-    // const menuItems = [
-    //     { name: "Woman’s Fashion", subcategories: ["Dresses", "Tops", "Shoes"] },
-    //     { name: "Men’s Fashion", subcategories: ["Shirts", "Pants", "Shoes"] },
-    //     { name: "Electronics", subcategories: [] },
-    //     { name: "Home & Lifestyle", subcategories: [] },
-    //     { name: "Medicine", subcategories: [] },
-    //     { name: "Sports & Outdoor", subcategories: ["Fitness", "Camping"] },
-    //     { name: "Baby’s & Toys", subcategories: [] },
-    //     { name: "Groceries & Pets", subcategories: [] },
-    //     { name: "Health & Beauty", subcategories: [] },
-    // ];
-
     const colors = [
         { name: "Red", value: "#ff0000" },
         { name: "Blue", value: "#0000ff" },
@@ -265,17 +259,29 @@ function Homepage() {
         navigate(`/productdetail/${id}`)
     }
 
+    let uid;
+    if (localStorage.getItem('loginid')) {
+        uid = localStorage.getItem('loginid');
+        console.log(uid)
+    }
+
+    const { data: wdata, error: werror, isLoading: wisLoading, refetch } = useGetWishlistQuery(uid, {
+        skip: !uid,
+    });
+
+    console.log(wdata?.body)
+
+
     const handleCartClick = async (id, vid) => {
         console.log("click", id, vid)
 
         if (localStorage.getItem('loginid')) {
             const response = await addcart({ user_id: localStorage.getItem('loginid'), product_id: id, variant_id: vid })
             console.log("cartres", response)
-            if (response.data.success) {
-
+            if (response?.data?.success) {
                 dispatch(setalert({ text: response.data.message, variant: 'success' }))
-            } else {
-                dispatch(setalert({ text: response.data.message, variant: 'error' }))
+            } else if (response.error) {
+                dispatch(setalert({ text: response.error.data?.message, variant: 'error' }))
             }
         } else {
             navigate('/signup')
@@ -293,11 +299,13 @@ function Homepage() {
             } else {
                 dispatch(setalert({ text: response.data.message, variant: 'error' }))
             }
+            refetch();
         } else {
             navigate('/signup')
         }
 
     }
+
 
     return (
         <>
@@ -658,7 +666,7 @@ function Homepage() {
                                         spaceBetween: 30,
                                     },
                                     992: {
-                                        slidesPerView: 3.5,
+                                        slidesPerView: 4,
                                         spaceBetween: 30,
                                     },
                                 }}
@@ -666,11 +674,39 @@ function Homepage() {
 
                             >
                                 {
-                                    fsale.map((v, i) => {
-                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                    flashsaleproduct?.map((v, i) => {
+                                        //const r = v.rating.reduce((acc, v) => acc + v, 0)
                                         // console.log(r)
-                                        const rate = r / v.rating.length;
-                                        // console.log(rate)
+                                        //const rate = r / v.rating.length;
+                                        console.log(v)
+
+                                        const validVariants = v?.variants?.filter(
+                                            (x) => x?.color && x.color.trim() !== ""
+                                        );
+                                        let selectedVariant;
+
+                                        if (validVariants.length > 0) {
+                                            const selectedColor =
+                                                selectedColorsfalsh[v._id] || validVariants[0]?.color;
+
+                                            selectedVariant = v?.variants?.find(
+                                                (x) => x.color === selectedColor
+                                            );
+                                        } else {
+                                            // ✅ fallback when no color exists
+                                            selectedVariant = v?.variants?.[0];
+                                        }
+                                        console.log(selectedVariant)
+
+                                        const discount = ((v.price - selectedVariant.flashPrice) / v.price) * 100;
+
+                                        const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
+                                        console.log("wishlistselect", wishlistselect);
+
+                                        const isInWishlist = wishlistselect?.some(
+                                            (v1) => v1.variant_id === selectedVariant._id
+                                        );
+
                                         return (
                                             <SwiperSlide>
                                                 <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
@@ -687,9 +723,13 @@ function Homepage() {
                                                         <CardMedia
                                                             component="img"
 
-                                                            className="flashsale-cardmedia cardimg"
-                                                            sx={{ objectFit: "contain" }}
-                                                            image={v.img}
+                                                            className=" cardimg"
+                                                            sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                            image={
+                                                                selectedVariant?.images?.[0]
+                                                                    ? IMG_URL + selectedVariant.images[0]
+                                                                    : IMG_URL + v.variants[0]?.images?.[0]
+                                                            }
                                                             title="green iguana"
 
                                                         />
@@ -705,8 +745,10 @@ function Homepage() {
                                                                     xs: '12px',
                                                                     sm: '14px',
                                                                     md: '16px'
-                                                                }
+                                                                },
+                                                                cursor: 'default'
                                                             }}
+                                                            onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
                                                         >
                                                             <ShoppingCartOutlinedIcon /> Add To Cart
                                                         </Typography>
@@ -719,7 +761,7 @@ function Homepage() {
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                {v.discoutprice}
+                                                                {selectedVariant.flashPrice}
                                                             </Typography>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
                                                                 {v.price}
@@ -729,13 +771,13 @@ function Homepage() {
                                                         <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                             <Typography sx={{ color: '#FFAD33' }}>
                                                                 <Stack spacing={1}>
-                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                    <Rating name="half-rating" defaultValue={3} precision={0.5} sx={{
                                                                         fontSize: {
                                                                             xs: '15px',
                                                                             sm: '18px',
                                                                             md: '20px'
                                                                         }
-                                                                    }} />
+                                                                    }} readOnly />
                                                                 </Stack>
                                                             </Typography>
                                                             <Typography sx={{
@@ -745,7 +787,7 @@ function Homepage() {
                                                                     sm: '16px'
                                                                 }
                                                             }}>
-                                                                {`(${r})`}
+                                                                (4)
                                                             </Typography>
                                                         </Box>
 
@@ -763,10 +805,76 @@ function Homepage() {
                                                                     sm: '12',
                                                                     md: '14px'
                                                                 }
-                                                            }}>{v.discount}</Typography>
+                                                            }}>-{parseInt(discount)}%</Typography>
                                                         </Box>
 
                                                     </CardContent>
+
+                                                    {
+                                                        v?.variants?.length > 1 && (() => {
+
+                                                            const validVariants = v?.variants?.filter(
+                                                                (x) => x?.color && x.color.trim() !== ""
+                                                            )
+
+                                                            const selectedColor =
+                                                                selectedColorsfalsh[v._id] || validVariants[0]?.color;
+
+
+                                                            // const selectedColor =
+                                                            //     selectedColors[v._id] ??
+                                                            //     v?.variants?.find((x) => x?.color && x.color.trim() !== "")?.color;
+                                                            // console.log(selectedColor, selectedColors)
+                                                            // const [selectedColors, setSelectedColors] = useState({});
+
+                                                            return (
+                                                                <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                    {
+                                                                        validVariants?.map((v1) => {
+                                                                            if (!v1?.color || v1.color.trim() === "") return null;
+
+
+                                                                            return (
+                                                                                <label key={v1.color} style={{ cursor: "pointer" }}>
+                                                                                    <input
+                                                                                        type="radio"
+                                                                                        name={`color-${v._id}`}
+                                                                                        value={v1.color}
+                                                                                        checked={selectedColor === v1.color}
+                                                                                        onChange={() =>
+                                                                                            setSelectedColorsfalsh((prev) => ({
+                                                                                                ...prev,
+                                                                                                [v._id]: v1.color,
+                                                                                            }))
+                                                                                        }
+                                                                                        style={{ display: "none" }}
+                                                                                    />
+
+                                                                                    <span
+                                                                                        style={{
+                                                                                            width: "15px",
+                                                                                            height: "15px",
+                                                                                            borderRadius: "50%",
+                                                                                            backgroundColor: v1.color,
+                                                                                            display: "inline-block",
+                                                                                            border: "1px solid #ccc",
+                                                                                            outline:
+                                                                                                selectedColor === v1.color
+                                                                                                    ? "2px solid black"
+                                                                                                    : "none",
+                                                                                            outlineOffset: "3px",
+                                                                                        }}
+                                                                                    />
+                                                                                </label>
+                                                                            )
+                                                                        }
+
+                                                                        )
+                                                                    }
+                                                                </Box>
+                                                            )
+                                                        })()
+                                                    }
 
                                                     <CardActions
                                                         sx={{
@@ -776,15 +884,26 @@ function Homepage() {
                                                             }
                                                         }}
                                                     >
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                            <FavoriteBorderIcon sx={{
-                                                                fontSize: {
-                                                                    xs: '12px',
-                                                                    sm: '18px',
-                                                                    md: '20px',
-                                                                    lg: '22px'
-                                                                },
-                                                            }} />
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => handleWishlistClick(v?._id, selectedVariant?._id)}>
+                                                            {isInWishlist ?
+                                                                <FavoriteIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '22px'
+                                                                    },
+                                                                    color: 'red'
+                                                                }} />
+                                                                :
+                                                                <FavoriteBorderIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '22px'
+                                                                    }
+                                                                }} />}
                                                         </IconButton>
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
                                                             <RemoveRedEyeOutlinedIcon sx={{
@@ -997,7 +1116,7 @@ function Homepage() {
                                                                     sm: '18px',
                                                                     md: '20px',
                                                                     lg: '22px'
-                                                                }, 
+                                                                },
                                                             }} />
                                                         </IconButton>
                                                         <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
@@ -1007,7 +1126,7 @@ function Homepage() {
                                                                     sm: '18px',
                                                                     md: '20px',
                                                                     lg: '22px'
-                                                                },  
+                                                                },
                                                             }} />
                                                         </IconButton>
                                                     </CardActions>
@@ -1164,6 +1283,14 @@ function Homepage() {
                                             // console.log(r)
                                             // const rate = r / v.rating.length;
                                             // console.log(rate)
+
+                                            const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
+                                            console.log("wishlistselect", wishlistselect);
+
+                                            const isInWishlist = wishlistselect?.some(
+                                                (v1) => v1.variant_id === selectedVariant._id
+                                            );
+                                            console.log("wishlistvarient", isInWishlist)
                                             return (
                                                 <SwiperSlide key={v.id}>
                                                     <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
@@ -1360,14 +1487,27 @@ function Homepage() {
                                                             }}
                                                         >
                                                             <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => handleWishlistClick(v?._id, selectedVariant?._id)}>
-                                                                <FavoriteBorderIcon sx={{
-                                                                    fontSize: {
-                                                                        xs: '12px',
-                                                                        sm: '18px',
-                                                                        md: '20px',
-                                                                        lg: '22px'
-                                                                    }
-                                                                }} />
+                                                                {isInWishlist ?
+                                                                    <FavoriteIcon sx={{
+                                                                        fontSize: {
+                                                                            xs: '12px',
+                                                                            sm: '18px',
+                                                                            md: '20px',
+                                                                            lg: '22px'
+                                                                        },
+                                                                        color: 'red'
+                                                                    }} />
+                                                                    :
+                                                                    <FavoriteBorderIcon sx={{
+                                                                        fontSize: {
+                                                                            xs: '12px',
+                                                                            sm: '18px',
+                                                                            md: '20px',
+                                                                            lg: '22px'
+                                                                        }
+                                                                    }} />}
+
+
                                                             </IconButton>
                                                             <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
                                                                 <RemoveRedEyeOutlinedIcon sx={{
@@ -1395,7 +1535,7 @@ function Homepage() {
                                 </Box>
                             </Box>
 
-                            <a href="#" className="my-custome-button" style={{ margin: '0px auto 0 auto' }}>View More Product</a>
+                            <a href="#" className="my-custome-button" style={{ margin: '20px auto 0 auto' }}>View More Product</a>
                         </div>
                     </section>
                 </ThemeProvider>

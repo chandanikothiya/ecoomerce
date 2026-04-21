@@ -23,7 +23,7 @@ function Cart() {
 
     const [cart, setCart] = useState([]);
     const [allproduct, setAllproduct] = useState([])
-    const [quantity, setQuantity] = useState({});
+    const [cartquan, setCartquan] = useState({})
     const [mobilecartdelete, setMobilecartdelete] = useState(false);
     const theme = useTheme();
     const [gridKey, setGridKey] = useState(0);
@@ -55,10 +55,13 @@ function Cart() {
             (v) => v._id === cartItem.variant_id
         );
 
+        const selectedVariant = variant || product?.variants?.[0];
+        const variantId = selectedVariant?._id;
+
         return {
             ...product,
-            selectedVariant: variant || product?.variants?.[0],
-
+            selectedVariant,
+            qty: cartquan?.[variantId] ?? 1  
         };
     }).filter(Boolean); // remove null
     console.log("cartp", cartp, cartp?.selectedVariant?._id)
@@ -91,28 +94,7 @@ function Cart() {
         deletecart({ variant_id: data?.selectedVariant?._id, id: localStorage.getItem('loginid') })
     }
 
-    // useEffect(() => {
-    //     if (!data?.body?.products) return;
 
-    //     const initialQty = {};
-
-    //     data.body.products.forEach(item => {
-    //         console.log("item", item)
-    //         const key = item.variant_id;
-    //         initialQty[key] = initialQty[key] || 1;
-    //     });
-
-    //     setQuantity(initialQty);
-
-    // }, [data]);
-
-    console.log("item", quantity)
-
-    const initializedRef = React.useRef(false);
-
-    useEffect(() => {
-        console.log("🔥 quantity changed:", quantity);
-    }, [quantity]);
 
     const [columns, setColumns] = useState([
 
@@ -127,7 +109,7 @@ function Cart() {
 
 
                 return (<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
-                    <img src={IMG_URL + params.row.selectedVariant?.images?.[0]} alt="" width='50' height='50' style={{ objectFit: 'contain' }}></img>
+                    <img src={IMG_URL + params.row.selectedVariant?.images?.[0]} alt="" width='50' height='50' style={{ objectFit: 'contain', mixBlendMode: "multiply" }}></img>
                     <Typography variant="subtitle2">{params.row.name}</Typography>
                 </Box>)
             },
@@ -148,38 +130,46 @@ function Cart() {
             minWidth: 120,
 
             renderCell: (params) => {
-                const variantId = params.row.selectedVariant?._id;
-                console.log(variantId)
-                const qty = quantity?.[variantId] ?? 1;
-                console.log(qty)
-
-                console.log("variantId:", `[${variantId}]`);
-                console.log("length:", variantId.length);
-                console.log("keys:", Object.keys(quantity).map(k => `[${k}]`));
-                console.log("quantity", params.row.selectedVariant._id, quantity)
+                // const id = params?.row?.selectedVariant?._id;
+                // console.log("target", cartquan[params.row.selectedVariant?._id])
+                const id1 = params.row.selectedVariant?._id;
+                console.log("target", id1)
+                const qty = cartquan?.[id1] ?? 1;
                 return (
                     <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '4px 15px', width: 'fit-content', gap: 2 }}>
+
                             <Typography>
-                                {qty}
+                                {params.row.qty}
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <IconButton aria-label="up" className="icone-btn"
-                                    onClick={() =>
-                                        setQuantity(prev => ({
+                                    onClick={() => {
+                                        const id = params.row.selectedVariant?._id;
+
+                                        if (!id) return;
+
+                                        setCartquan((prev) => ({
                                             ...prev,
-                                            [variantId]: (prev?.[variantId] ?? 1) + 1
-                                        }))
-                                    }>
+                                            [id]: (prev[id] ?? 1) + 1
+                                        }));
+                                    }}
+                                >
                                     <IoChevronUp />
                                 </IconButton>
 
-                                <IconButton aria-label="down" className="icone-btn" onClick={() =>
-                                    setQuantity(prev => ({
-                                        ...prev,
-                                       [variantId]: Math.max((prev?.[variantId] ?? 1) - 1, 1)
-                                    }))
-                                }>
+                                <IconButton aria-label="down" className="icone-btn"
+                                    onClick={() => {
+                                        const id = params.row.selectedVariant?._id;
+
+                                        if (!id) return;
+
+                                        setCartquan((prev) => ({
+                                            ...prev,
+                                            [id]: Math.max((prev[id] ?? 1) - 1, 1)
+                                        }));
+                                    }}
+                                >
                                     <IoChevronDownSharp />
                                 </IconButton>
                             </Box>
@@ -196,12 +186,12 @@ function Cart() {
             flex: 1,
             minWidth: 120,
             renderCell: (params) => (
-                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{params.row.price * (quantity[params.row.selectedVariant?._id] || 1)}</Typography>
-            ),
+                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{(params?.row?.price) * (params.row.qty  || 1)}</Typography>
+            ), 
         },
     ]);
 
-    console.log("quantity", quantity)
+    console.log("target", cartquan)
 
     function handleupdatecart() {
         console.log("ok")
@@ -321,17 +311,17 @@ function Cart() {
                                                 <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                                                     <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
                                                         <Typography>
-                                                            {quantity[v.selectedVariant._id] || 1}
+                                                            {cartquan[v.selectedVariant._id] || 1}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                                             <IconButton aria-label="up" className="icone-btn"
                                                                 onClick={() =>
-                                                                    setQuantity(prev => ({ ...prev, [v.selectedVariant._id]: (prev[v.selectedVariant._id] || 1) + 1 }))}>
+                                                                    setCartquan(prev => ({ ...prev, [v.selectedVariant._id]: (prev[v.selectedVariant._id] || 1) + 1 }))}>
                                                                 <IoChevronUp />
                                                             </IconButton>
 
                                                             <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
-                                                                setQuantity(prev => ({
+                                                                setCartquan(prev => ({
                                                                     ...prev,
                                                                     [v.selectedVariant._id]: Math.max((prev[v.selectedVariant._id] || 1) - 1, 1),
 
@@ -349,10 +339,10 @@ function Cart() {
                                                     <MdDeleteOutline onClick={() => { handledeltecart(v) }} />
                                                 </IconButton>
 
-                                                {console.log(quantity)}
+                                               
                                             </CardActions>
                                             <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
-                                                <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{quantity.hasOwnProperty(v.selectedVariant._id) ? (quantity[v.selectedVariant._id] * (v?.price)) : v?.price}
+                                                <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{cartquan.hasOwnProperty(v.selectedVariant._id) ? (cartquan[v.selectedVariant._id] * (v?.price)) : v?.price}
                                             </Typography>
                                         </Card>
                                     </Grid>

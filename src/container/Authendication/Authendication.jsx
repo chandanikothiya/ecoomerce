@@ -141,7 +141,6 @@ function Authendication() {
 
                 if (response.success) {
                     setAuthtype('verify OTP')
-
                 }
             } else if (authtype === 'verify OTP') {
 

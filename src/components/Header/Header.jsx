@@ -45,11 +45,17 @@ function Header() {
         setAnchorEll(null);
     };
 
-    const id = localStorage.getItem('loginid');
-    console.log(id)
+    let id;
+
+    if (localStorage.getItem('loginid')) {
+        id = localStorage.getItem('loginid');
+        console.log(id)
+    }
 
     //cart count
-    const { data, error, isLoading } = useGetCartQuery(id);
+    const { data, error, isLoading } = useGetCartQuery(id, {
+        skip: !id,
+    });
     console.log({ data, error, isLoading })
 
     console.log(data, data?.body?.products?.length)
@@ -57,7 +63,9 @@ function Header() {
     console.log(cartcount)
 
     //wishlit count
-    const { data: wdata, error: werror, isLoading: wisLoading } = useGetWishlistQuery(id);
+    const { data: wdata, error: werror, isLoading: wisLoading } = useGetWishlistQuery(id, {
+        skip: !id,
+    });
     //console.log(wdata)
     const wishlistcount = wdata?.body?.products?.length || 0;
     console.log(wishlistcount)
@@ -122,7 +130,18 @@ function Header() {
         & .${badgeClasses.badge} {
             top: -12px;
             right: -6px;
+            min-width: 15px;
+            height: 15px;
+            font-size:8px;
         }
+
+         @media (min-width: 768px) {
+    & .${badgeClasses.badge} {
+      min-width: 20px;
+      height: 20px;
+    }
+  }
+        
         `;
 
     useEffect(() => {
@@ -143,7 +162,7 @@ function Header() {
     useEffect(() => {
         if (location.pathname === '/cart') {
             setShowBudget(false)
-        } else if  (location.pathname === '/wishlist') {
+        } else if (location.pathname === '/wishlist') {
             setShowwBudget(false);
         }
     }, [location.pathname])
@@ -157,7 +176,7 @@ function Header() {
                         <p className="topheader-p">Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! <a href="#">ShopNow</a></p>
                         <div>
                             <Button
-                                id="demo-positioned-button "
+                                id="demo-positioned-button"
                                 aria-controls={openl ? 'demo-positioned-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={openl ? 'true' : undefined}
@@ -211,7 +230,7 @@ function Header() {
                                         localStorage.getItem('loginid') ?
                                             <li ><NavLink onClick={handleLogout}>SignOut</NavLink></li> :
                                             <li><NavLink to="/signup" >Sign Up</NavLink></li>
-                                    }       
+                                    }
 
                                 </ul>
                             </div>

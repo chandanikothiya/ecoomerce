@@ -32,5 +32,5 @@ axiosInstance.interceptors.response.use(function (response) {
     }
     return Promise.reject(error);
 })
-const response = await axios.post(BASE_URL + 'user/genratenewtoken', {}, { withCredentials: true })
-        console.log('response', response)
+// const response = await axios.post(BASE_URL + 'user/genratenewtoken', {}, { withCredentials: true })
+//         console.log('response', response)

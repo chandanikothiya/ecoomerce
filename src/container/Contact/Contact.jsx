@@ -3,8 +3,15 @@ import React from "react";
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { number, object, string } from "yup";
+import { useAddContactMutation } from "../../redux/api/contact.api";
+import { setalert } from "../../redux/slice/Alert.slice";
+import { useDispatch } from "react-redux";
 
 function Contact() {
+
+    const dispatch = useDispatch();
 
     const theme = createTheme({
         breakpoints: {
@@ -19,8 +26,44 @@ function Contact() {
     });
 
     const theme1 = useTheme();
-  const isMobile = useMediaQuery("(max-width:320px)");
+    const isMobile = useMediaQuery("(max-width:320px)");
 
+    const [addcontact] = useAddContactMutation();
+
+    const contactschema = object({
+        name: string().required(),
+        email: string().required(),
+        phone: number().required(),
+        message: string().required()
+    })
+
+        const formik = useFormik({
+            initialValues: {
+                name: '',
+                email: '',
+                phone: '',
+                message: '',
+            },
+            validationSchema: contactschema,
+            onSubmit: async (values, { resetForm }) => {
+                console.log(values)
+                // handlesubmit(values)
+                const response = await addcontact(values)
+                console.log(response)
+
+                if (response.data?.success) {              
+                    dispatch(setalert({ text: response.data.message, variant: 'success' }))
+                } else if (response.error) {
+                    console.log(response.error.data.message)
+                    dispatch(setalert({ text: response.error.data?.message, variant: 'error' }))
+                }
+
+                resetForm();
+            },
+        });
+
+    const { handleSubmit, handleChange, handleBlur, errors, touched, values } = formik;
+    console.log(errors, touched)
 
     return (
         <main>
@@ -42,8 +85,8 @@ function Contact() {
                         </Breadcrumbs>
 
 
-                        <Grid container sx={{ padding:{ xs:'10px',sm:'40px'},paddingTop:{xs:0,sm:0,md:'10px',lg:'40px'}}} columnSpacing={{ md: 5, lg: 10, xl: 20 }} >
-                            <Grid size={{ md: 4, lg: 4 }} sx={{ mt:{ xs:3,md:5} }}>
+                        <Grid container sx={{ padding: { xs: '10px', sm: '40px' }, paddingTop: { xs: 0, sm: 0, md: '10px', lg: '40px' } }} columnSpacing={{ md: 5, lg: 10, xl: 20 }} >
+                            <Grid size={{ md: 4, lg: 4 }} sx={{ mt: { xs: 3, md: 5 } }}>
                                 <Box sx={{ mb: 5 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                                         <CallOutlinedIcon sx={{ bgcolor: '#DB4444', borderRadius: '50%', p: 1, color: 'white', fontSize: '40px' }} />
@@ -67,10 +110,10 @@ function Contact() {
 
                             </Grid>
 
-                            <Grid container size={{ xs:12,md: 8, lg: 8 }} id="contact-grid" sx={{ mt: 5,"& .MuiGrid-container":{padding:0}}}>
-                                <form style={{ width: "100%" }}>
+                            <Grid container size={{ xs: 12, md: 8, lg: 8 }} id="contact-grid" sx={{ mt: 5, "& .MuiGrid-container": { padding: 0 } }}>
+                                <form style={{ width: "100%" }} className="contactform" onSubmit={handleSubmit}>
                                     <Grid container size={12} spacing={3} >
-                                        <Grid size={{ xs: 12, sm: 12,md:4 }}>
+                                        <Grid size={{ xs: 12, sm: 12, md: 4 }}>
                                             <TextField
                                                 id="name"
                                                 name="name"
@@ -78,18 +121,26 @@ function Contact() {
                                                 variant="filled"
                                                 InputProps={{ disableUnderline: true }}
                                                 className="contactus-textfiled"
+                                                value={values.name}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                             />
+                                            {errors.name && touched.name ? <span>**{errors.name}</span> : ""}
                                         </Grid>
-                                        <Grid size={{ xs: 12, sm:12,md:4 }}>
+                                        <Grid size={{ xs: 12, sm: 12, md: 4 }}>
                                             <TextField
                                                 id="email"
                                                 name="email"
                                                 label="Your Email"
                                                 variant="filled" InputProps={{ disableUnderline: true }}
                                                 className="contactus-textfiled"
+                                                value={values.name}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                             />
+                                            {errors.email && touched.email ? <span>**{errors.email}</span> : ""}
                                         </Grid>
-                                        <Grid size={{ xs: 12, sm:12,md:4 }}>
+                                        <Grid size={{ xs: 12, sm: 12, md: 4 }}>
                                             <TextField
                                                 id="phone"
                                                 name="phone"
@@ -97,7 +148,11 @@ function Contact() {
                                                 variant="filled"
                                                 InputProps={{ disableUnderline: true }}
                                                 className="contactus-textfiled"
+                                                value={values.phone}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                             />
+                                            {errors.phone && touched.phone ? <span>**{errors.phone}</span> : ""}
                                         </Grid>
                                     </Grid>
                                     <Grid size={12} sx={{ mt: 5 }}>
@@ -109,7 +164,11 @@ function Contact() {
                                             rows={isMobile ? 5 : 8}
                                             variant="filled" InputProps={{ disableUnderline: true }}
                                             className="contactus-textfiled"
+                                            value={values.message}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
                                         />
+                                        {errors.message && touched.message ? <span>**{errors.message}</span> : ""}
                                     </Grid>
 
                                     <button type="submit" className="my-custome-button">Send Message</button>

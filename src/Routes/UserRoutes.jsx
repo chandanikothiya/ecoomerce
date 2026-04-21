@@ -36,8 +36,10 @@ function UserRoutes(props) {
     }, [error]);
 
     useEffect(() => {
-        refetch();
-    }, [])
+        if (isLoggedIn) {
+            refetch?.();
+        }
+    }, [isLoggedIn, refetch]);
 
     return (
         <>

@@ -19,10 +19,10 @@ function Wishlist() {
     console.log("cdata", id)
 
 
-    const {data,error,isLoading} = useGetWishlistQuery(id);
+    const { data, error, isLoading } = useGetWishlistQuery(id);
     console.log(data?.body)
 
-    const {data:pdata,error:perror,isLoading:pisloading} = useGetProductQuery();
+    const { data: pdata, error: perror, isLoading: pisloading } = useGetProductQuery();
     console.log(pdata?.data)
 
     const [deletewishlist] = useDeleteWishlistMutation();
@@ -41,11 +41,11 @@ function Wishlist() {
         return {
             ...product,
             selectedVariant: variant || product?.variants?.[0],
-            
+
         };
     })
 
-    console.log("variant",wlistdata)
+    console.log("variant", wlistdata)
 
     useEffect(() => {
         fetch("http://localhost:3000/products")
@@ -57,7 +57,7 @@ function Wishlist() {
             .then(data => setCartproducts(data))
     }, [])
 
-   // console.log(allproducts, cartproducts)
+    // console.log(allproducts, cartproducts)
 
     const theme = createTheme({
         breakpoints: {
@@ -72,7 +72,7 @@ function Wishlist() {
     });
 
     const handledeletewishlist = (v) => {
-        console.log('ok',v)
+        console.log('ok', v)
 
         deletewishlist({ variant_id: v?.selectedVariant?._id, id: localStorage.getItem('loginid') })
     }
@@ -93,6 +93,10 @@ function Wishlist() {
                                     wlistdata?.map((v) => {
                                         // const cp = allproducts.find((v1) => v1.id === v.product_id);
                                         // console.log(cp)
+                                        console.log(v)
+
+                                        const discount = ((v.price - v.selectedVariant.flashPrice) / v.price) * 100;
+
                                         console.log(v)
                                         if (wlistdata) {
                                             return (
@@ -141,31 +145,36 @@ function Wishlist() {
                                                                 {/* <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
                                                                     {v?.discoutprice}
                                                                 </Typography> */}
-                                                                {/* <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                    {v.price}
-                                                                </Typography> */}
-                                                                <Typography variant="body1" sx={{ color: '#DB4444', fontWeight: 500}}>
-                                                                    ₹{v.price}
+                                                                <Typography variant="body1" sx={{ color: '#DB4444', fontWeight: 500 }}>
+                                                                    ₹{v.selectedVariant.isFlashSale ? v.selectedVariant.flashPrice : v.price}
                                                                 </Typography>
+                                                                {
+                                                                    v.selectedVariant.isFlashSale &&
+                                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                        {v.price}
+                                                                    </Typography>
+                                                                }
                                                             </Box>
 
                                                             {
-                                                                v?.discount ?
-                                                                    <Box sx={{
-                                                                        bgcolor: '#DB4444', color: 'white', width: 'fit-content',
-                                                                        padding: {
-                                                                            xs: '2px 8px',
-                                                                            sm: '2px 12px'
-                                                                        }, borderRadius: 1, position: 'absolute', top: '3%'
-                                                                    }}>
-                                                                        <Typography variant="body2" sx={{
-                                                                            fontSize: {
-                                                                                xs: '10px',
-                                                                                sm: '14px'
-                                                                            }
-                                                                        }}>{cp.discount}</Typography>
-                                                                    </Box>
-                                                                    : ""
+                                                                v.selectedVariant.isFlashSale &&
+                                                                <Box sx={{
+                                                                    bgcolor: '#DB4444', color: 'white', width: 'fit-content',
+                                                                    padding: {
+                                                                        xs: '2px 8px',
+                                                                        sm: '2px 8px',
+                                                                        md: '2px 12px'
+                                                                    }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
+                                                                }}>
+                                                                    <Typography variant="body2" sx={{
+                                                                        fontSize: {
+                                                                            xs: '10px',
+                                                                            sm: '12',
+                                                                            md: '14px'
+                                                                        }
+                                                                    }}>-{parseInt(discount)}%</Typography>
+                                                                </Box>
+
                                                             }
 
 

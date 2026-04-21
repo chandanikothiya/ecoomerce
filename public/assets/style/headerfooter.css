@@ -507,7 +507,9 @@ hr {
     margin-bottom: 0;
 }
 
-#authendication form span {
+#authendication form span,
+#contactus .contactform span
+{
     color: red;
 }
 
