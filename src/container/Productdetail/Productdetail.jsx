@@ -11,16 +11,16 @@ import { Link, useParams } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
-import { Navigation, Pagination, Scrollbar} from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import { IoIosArrowDown } from "react-icons/io";
-import { MdKeyboardArrowUp } from "react-icons/md";
-import { IoIosArrowUp } from "react-icons/io";
+// import { Navigation, Pagination, Scrollbar} from 'swiper/modules';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// // Import Swiper styles
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import 'swiper/css/pagination';
+// import 'swiper/css/scrollbar';
+// import { IoIosArrowDown } from "react-icons/io";
+// import { MdKeyboardArrowUp } from "react-icons/md";
+// import { IoIosArrowUp } from "react-icons/io";
 
 
 function Productdetail() {
