@@ -119,7 +119,7 @@ function Productdetail() {
                         <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Havic HV G-92 Gamepad</Typography>
                     </Breadcrumbs>
 
-                     <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 2, md: 5, lg: 6 }}>
+                    <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 2, md: 5, lg: 6 }}>
                         <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs: 2, sm: 2, md: 3, lg: 3.5, xl: 4 }} alignItems="stretch">
                             <Grid size={{ xs: 3, sm: 3, md: 3 }} sx={{
                                 // flexDirection: {
@@ -128,17 +128,77 @@ function Productdetail() {
                                 // }
                             }} container spacing={{ sm: 2, md: 2, lg: 2, xl: 4 }} alignSelf="flex-start">
                                 {
-                                    selectedVariant?.images?.map((v) => (
-                                        <Grid size={12}>
-                                            <Box
-                                                className="detailimg-box"
-                                                sx={{ width: '100%', height: { xs: '58px', sm: '58px', md: '70px', lg: '97px', xl: '120px' }, border: selectedImage === v ? "2px solid black" : "1px solid #ccc", }}
-                                                onClick={() => setSelectedImage(v)}
-                                            >
-                                                <img src={IMG_URL + v} alt="no" className="demoimg" />
-                                            </Box>
-                                        </Grid>
-                                    ))
+                                    selectedVariant?.images?.length > 4 ?
+                                        // <Box sx={{ marginTop: 0, height: '100%', position: 'relative' }}>
+                                        //     <Swiper
+                                        //         // install Swiper modules
+                                        //         modules={[Navigation]}
+                                        //         spaceBetween={20}
+                                        //         slidesPerView={4}
+
+                                        //         style={{ height: '580px', marginTop: '20px' }}
+                                        //         onSwiper={(swiper) => console.log(swiper)}
+                                        //         onSlideChange={() => console.log('slide change')}
+                                        //         direction="vertical"
+                                        //         // onBeforeInit={(swiper) => {
+                                        //         //     swiper.params.navigation.prevEl = prevRef1.current;
+                                        //         //     swiper.params.navigation.nextEl = nextRef1.current;
+                                        //         // }}
+                                        //         // navigation={{
+                                        //         //     prevEl: prevRef1.current,
+                                        //         //     nextEl: nextRef1.current,
+                                        //         // }}
+                                        //     >
+                                        //         {
+                                        //             selectedVariant?.images?.map((v) => (
+                                        //                 <SwiperSlide >
+                                        //                     <Grid size={12}>
+                                        //                         <Box
+                                        //                             className="detailimg-box"
+                                        //                             sx={{
+                                        //                                 width: '100%',
+                                        //                                 height: { xs: '58px', sm: '58px', md: '70px', lg: '97px', xl: '120px' }, border: selectedImage === v ? "2px solid black" : "",
+
+                                        //                             }}
+                                        //                             onClick={() => setSelectedImage(v)}
+                                        //                         >
+                                        //                             <img src={IMG_URL + v} alt="no" className="demoimg" />
+                                        //                         </Box>
+                                        //                     </Grid>
+                                        //                 </SwiperSlide>
+                                        //             ))
+                                        //         }
+
+
+                                        //     </Swiper>
+                                        //     {/* <Box sx={{
+                                        //         width: '100%', backgroundColor: 'red', display: 'flex',
+                                        //         flexDirection: 'column',
+                                        //         alignItems: 'center',
+                                        //         justifyContent: 'center',
+                                        //     }}>
+
+                                        //         <button ref={prevRef1} className="pbtn-prev">
+                                        //             <IoIosArrowUp />
+                                        //         </button>
+
+                                        //         <button ref={nextRef1} className="pbtn-next">
+                                        //             <IoIosArrowDown />
+                                        //         </button>
+                                        //     </Box> */}
+                                        // </Box>
+                                        ""
+                                        : selectedVariant?.images?.map((v) => (
+                                            <Grid size={12}>
+                                                <Box
+                                                    className="detailimg-box"
+                                                    sx={{ width: '100%', height: { xs: '58px', sm: '58px', md: '70px', lg: '97px', xl: '120px' }, border: selectedImage === v ? "2px solid black" : "1px solid #ccc", }}
+                                                    onClick={() => setSelectedImage(v)}
+                                                >
+                                                    <img src={IMG_URL + v} alt="no" className="demoimg" />
+                                                </Box>
+                                            </Grid>
+                                        ))
                                 }
                                 {/* <Grid size={12}>
                                     <Box className="detailimg-box" sx={{ width: '100%', height: '97px' }}>
