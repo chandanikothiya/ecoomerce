@@ -693,7 +693,7 @@ hr {
 }
 
 .count-btn {
-    padding: 5PX 20px;
+    padding: 5px 25px;
     border: none;
     background-color: white;
     height: 100%;
@@ -897,7 +897,7 @@ hr {
     margin-top: 10px !important;
 }
 #allproducts .swiper-wrapper {
-  row-gap: 20px !important;
+  row-gap: 10px !important;
 }
 
 .category-title:hover {
