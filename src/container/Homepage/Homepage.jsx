@@ -730,7 +730,7 @@ function Homepage() {
                                                                     ? IMG_URL + selectedVariant.images[0]
                                                                     : IMG_URL + v.variants[0]?.images?.[0]
                                                             }
-                                                            title="green iguana"
+                                                            title={v.name}
 
                                                         />
 
@@ -761,10 +761,10 @@ function Homepage() {
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                {selectedVariant.flashPrice}
+                                                                 ₹{selectedVariant.flashPrice}
                                                             </Typography>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                {v.price}
+                                                                 ₹{v.price}
                                                             </Typography>
                                                         </Box>
 
@@ -982,7 +982,7 @@ function Homepage() {
                                         }}
                                     >
                                         {
-                                            elecategory.map((v, i) => (
+                                            elecategory?.map((v, i) => (
                                                 <SwiperSlide>
                                                     <Box sx={{ border: 'solid 2px rgb(224, 222, 224)', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }} className="category-title">
                                                         {caticone[v.name]}
@@ -1320,8 +1320,9 @@ function Homepage() {
                                                                                             ? IMG_URL + selectedVariant.images[0]
                                                                                             : IMG_URL + v.variants[0]?.images?.[0]
                                                                                     }
-                                                                                    title="productimg"
+                                                                                    title={v.name}
                                                                                     onClick={() => handlepProduct(v._id)}
+                                                                                    alt={v.name}
                                                                                 />
 
 
@@ -1410,7 +1411,7 @@ function Homepage() {
                                                                 }
 
                                                                 {
-                                                                    v?.variants?.length > 0 && (() => {
+                                                                    v?.variants?.length > 1 && (() => {
 
                                                                         const validVariants = v?.variants?.filter(
                                                                             (x) => x?.color && x.color.trim() !== ""
