@@ -1539,7 +1539,6 @@ function Homepage() {
                             </div>
                         </section>
                     </ThemeProvider>
-
                 {/* new arraival fecutre section */}
                 <ThemeProvider theme={theme}>
                     <section id="newarrival">
