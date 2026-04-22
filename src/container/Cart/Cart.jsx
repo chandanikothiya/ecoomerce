@@ -16,8 +16,7 @@ import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 import { vars } from "@mui/x-data-grid/internals";
-
-
+import { IoCloseSharp } from "react-icons/io5";
 
 function Cart() {
 
@@ -27,6 +26,7 @@ function Cart() {
     const [mobilecartdelete, setMobilecartdelete] = useState(false);
     const theme = useTheme();
     const [gridKey, setGridKey] = useState(0);
+    const [deletecartdisplay, setDeletecartdisplay] = useState(false);
 
     const isMobile = useMediaQuery("(max-width:320px)");
 
@@ -61,7 +61,7 @@ function Cart() {
         return {
             ...product,
             selectedVariant,
-            qty: cartquan?.[variantId] ?? 1  
+            qty: cartquan?.[variantId] ?? 1
         };
     }).filter(Boolean); // remove null
     console.log("cartp", cartp, cartp?.selectedVariant?._id)
@@ -88,15 +88,16 @@ function Cart() {
     const cartdata = allproduct.filter((v) => cart.some(v1 => v.id === v1.product_id))
     console.log(cart, allproduct)
 
-    const handledeltecart = (data) => {
-        console.log(data)
+    const handledeltecart = async (data) => {
+        console.log("deletedata", data)
 
-        deletecart({ variant_id: data?.selectedVariant?._id, id: localStorage.getItem('loginid') })
+        const res = await deletecart({ variant_id: data?.selectedVariant?._id, id: localStorage.getItem('loginid') })
+        console.log("res", res)
     }
 
 
 
-    const [columns, setColumns] = useState([
+    const columns = [
 
         {
             field: 'sname',
@@ -108,10 +109,39 @@ function Cart() {
                 console.log(params?.row, params?.row?.selectedVariant, data?.body?.products)
 
 
-                return (<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%' }}>
-                    <img src={IMG_URL + params.row.selectedVariant?.images?.[0]} alt="" width='50' height='50' style={{ objectFit: 'contain', mixBlendMode: "multiply" }}></img>
-                    <Typography variant="subtitle2">{params.row.name}</Typography>
-                </Box>)
+                return (
+                    <>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, height: '100%', position: 'relative' }}>
+                            <img src={IMG_URL + params.row.selectedVariant?.images?.[0]} alt="" width='50' height='50' style={{ objectFit: 'contain', mixBlendMode: "multiply" }} />
+                            <Typography variant="subtitle2">{params.row.name}</Typography>
+
+                            {deletecartdisplay && (
+                                <IconButton
+                                    sx={{
+                                        p: 0,
+                                        position: 'absolute',
+                                        top: '20%',
+                                        left: '-1%'
+                                    }}
+                                    onClick={() => { handledeltecart(params.row) }}
+                                >
+                                    <IoCloseSharp
+                                        style={{
+                                            backgroundColor: '#DB4444',
+                                            padding: '3px',
+                                            borderRadius: '50%',
+                                            color: '#fff',
+                                            width: '18px',
+                                            height: '18px'
+                                        }}
+
+                                    />
+                                </IconButton>
+                            )}
+
+                        </Box>
+                    </>
+                )
             },
         },
         {
@@ -120,6 +150,15 @@ function Cart() {
             // width: 350,
             flex: 1,
             minWidth: 100,
+             renderCell: (params) => {
+                console.log(params?.row, params?.row?.selectedVariant, data?.body?.products)
+
+                return (
+                    <>
+                      <Typography variant="">{params?.row?.selectedVariant.isFlashSale ? params?.row?.selectedVariant.flashPrice : params?.row?.price}</Typography>
+                    </>
+                )
+            },
         },
         {
             field: 'quantity',
@@ -186,10 +225,10 @@ function Cart() {
             flex: 1,
             minWidth: 120,
             renderCell: (params) => (
-                <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{(params?.row?.price) * (params.row.qty  || 1)}</Typography>
-            ), 
+                <Typography variant="" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{(params?.row?.selectedVariant.isFlashSale ? params?.row?.selectedVariant.flashPrice : params?.row?.price) * (params.row.qty || 1)}</Typography>
+            ),
         },
-    ]);
+    ];
 
     console.log("target", cartquan)
 
@@ -199,49 +238,20 @@ function Cart() {
         if (isMobile) {
             setMobilecartdelete(!mobilecartdelete)
         } else {
-            setColumns((prev) => {
-                const exists = prev.some(col => col.field === 'action');
-                if (exists) return prev;
-                return [
-                    ...prev,
-                    {
-                        field: 'action',
-                        headerName: 'Action',
-                        width: 120,
-                        editable: true,
-                        renderCell: (params) => (
-                            <>
-                                <IconButton aria-label="delete" onClick={() => { handledeltecart(params.row) }}>
-                                    <MdDeleteOutline />
-                                </IconButton>
-                            </>
-                        )
-                    }
-                ]
 
-            })
+            setDeletecartdisplay(prev => !prev);
         }
-        // columns = [
-        //     ...prev,
-        //     {
-        //         field: '',
-        //         headerName: 'Action',
-        //         width: 120,
-        //         editable: true,
-        //         renderCell: (params) => (
-        //             <>
-        //                 <IconButton aria-label="edit" >
-        //                     <MdOutlineModeEdit />
-        //                 </IconButton>
 
-        //                 <IconButton aria-label="delete">
-        //                     <MdDeleteOutline />
-        //                 </IconButton>
-        //             </>
-        //         )
-        //     }
-        // ]
     }
+    console.log("deletecartdisplay", deletecartdisplay)
+
+
+    const totalprice = cartp.reduce((acc,v) => {
+        const price = v?.selectedVariant?.isFlashSale ? v?.selectedVariant?.flashPrice : v.price;
+
+        return (price)*v.qty + acc
+    },0)
+    console.log('totalprice',totalprice,cartquan)
 
     return (
         <main>
@@ -268,7 +278,7 @@ function Cart() {
                             {
                                 cartp?.map((v) => (
                                     <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
-                                        <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                        <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0, overflow: 'visible' }}>
                                             <Box
                                                 className="carttop"
                                                 sx={{
@@ -289,7 +299,6 @@ function Cart() {
                                                     title="green iguana"
 
                                                 />
-
                                             </Box>
 
 
@@ -302,7 +311,6 @@ function Cart() {
                                                     <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
                                                         ₹{v.price}
                                                     </Typography>
-
 
                                                 </Box>
                                             </CardContent>
@@ -335,15 +343,41 @@ function Cart() {
                                                     </Box>
                                                 </Box>
 
-                                                <IconButton className="deletemobilecart" sx={{ display: mobilecartdelete ? 'block' : 'none' }}>
+                                                {/* <IconButton className="deletemobilecart" sx={{ display: mobilecartdelete ? 'block' : 'none' }}>
                                                     <MdDeleteOutline onClick={() => { handledeltecart(v) }} />
-                                                </IconButton>
-
-                                               
+                                                </IconButton> */}
                                             </CardActions>
+
                                             <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
                                                 <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{cartquan.hasOwnProperty(v.selectedVariant._id) ? (cartquan[v.selectedVariant._id] * (v?.price)) : v?.price}
                                             </Typography>
+
+                                            {
+                                                mobilecartdelete &&
+                                                <IconButton
+                                                    sx={{
+                                                        p: 0,
+                                                        position: 'absolute',
+                                                        top: '-2%',
+                                                        left: '-1%',
+
+                                                    }}
+                                                    onClick={() => { handledeltecart(v) }}
+                                                >
+                                                    <IoCloseSharp
+                                                        style={{
+                                                            backgroundColor: '#DB4444',
+                                                            padding: '3px',
+                                                            borderRadius: '50%',
+                                                            color: '#fff',
+                                                            width: '18px',
+                                                            height: '18px'
+                                                        }}
+
+                                                    />
+                                                </IconButton>
+                                            }
+
                                         </Card>
                                     </Grid>
                                 ))
@@ -413,7 +447,7 @@ function Cart() {
 
                                 <Box className='cart-total'>
                                     <Typography>Subtotal:</Typography>
-                                    <Typography>$1750</Typography>
+                                    <Typography variant="">₹{totalprice}</Typography>
                                 </Box>
 
                                 <Divider />
@@ -427,7 +461,7 @@ function Cart() {
 
                                 <Box className='cart-total'>
                                     <Typography>Total:</Typography>
-                                    <Typography>$1750</Typography>
+                                    <Typography variant="">₹{totalprice}</Typography>
                                 </Box>
 
                                 <button className="my-custome-button cardototal-btn" >Procees to checkout</button>

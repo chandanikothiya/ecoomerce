@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, createTheme, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Rating, Stack, ThemeProvider, Typography } from "@mui/material";
 import { PiLineVerticalThin } from "react-icons/pi";
 import { CiHeart } from "react-icons/ci";
@@ -11,6 +11,17 @@ import { Link, useParams } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
+import { Navigation, Pagination, Scrollbar} from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import { IoIosArrowDown } from "react-icons/io";
+import { MdKeyboardArrowUp } from "react-icons/md";
+import { IoIosArrowUp } from "react-icons/io";
+
 
 function Productdetail() {
 
@@ -98,6 +109,9 @@ function Productdetail() {
     });
     console.log(selectedColor, selectedVariant)
 
+    // const prevRef1 = useRef(null);
+    // const nextRef1 = useRef(null);
+
     return (
         <main>
             <section id="product-detail">
@@ -118,50 +132,93 @@ function Productdetail() {
                         <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Havic HV G-92 Gamepad</Typography>
                     </Breadcrumbs>
 
-                    <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 5, lg: 6 }}>
-                        <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs: 2, sm: 3, xl: 3 }} alignItems="stretch">
-                            <Grid size={{ xs: 3, sm: 4, md: 3 }} sx={{
+                    <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 2, md: 5, lg: 6 }}>
+                        <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs: 2, sm: 2, md: 3, lg: 3.5, xl: 4 }} alignItems="stretch">
+                            <Grid size={{ xs: 3, sm: 3, md: 3 }} sx={{
                                 // flexDirection: {
                                 //     xs: 'row',     // mobile → row
                                 //     md: 'column'   // desktop → column
                                 // }
-                            }} container spacing={{ sm: 2, md: 4 }} alignSelf="flex-start">
+                            }} container spacing={{ sm: 2, md: 2, lg: 2, xl: 4 }} alignSelf="flex-start">
                                 {
-                                    selectedVariant?.images?.map((v) => (
-                                        <Grid size={12}>
-                                            <Box
-                                                className="detailimg-box"
-                                                sx={{ width: '100%', height: '97px', border: selectedImage === v ? "2px solid black" : "1px solid #ccc", }}
-                                                onClick={() => setSelectedImage(v)}
-                                            >
-                                                <img src={IMG_URL + v} alt="no" className="demoimg" />
-                                            </Box>
-                                        </Grid>
-                                    ))
+                                    selectedVariant?.images?.length > 4 ?
+                                        // <Box sx={{ marginTop: 0, height: '100%', position: 'relative' }}>
+                                        //     <Swiper
+                                        //         // install Swiper modules
+                                        //         modules={[Navigation]}
+                                        //         spaceBetween={20}
+                                        //         slidesPerView={4}
+
+                                        //         style={{ height: '580px', marginTop: '20px' }}
+                                        //         onSwiper={(swiper) => console.log(swiper)}
+                                        //         onSlideChange={() => console.log('slide change')}
+                                        //         direction="vertical"
+                                        //         // onBeforeInit={(swiper) => {
+                                        //         //     swiper.params.navigation.prevEl = prevRef1.current;
+                                        //         //     swiper.params.navigation.nextEl = nextRef1.current;
+                                        //         // }}
+                                        //         // navigation={{
+                                        //         //     prevEl: prevRef1.current,
+                                        //         //     nextEl: nextRef1.current,
+                                        //         // }}
+                                        //     >
+                                        //         {
+                                        //             selectedVariant?.images?.map((v) => (
+                                        //                 <SwiperSlide >
+                                        //                     <Grid size={12}>
+                                        //                         <Box
+                                        //                             className="detailimg-box"
+                                        //                             sx={{
+                                        //                                 width: '100%',
+                                        //                                 height: { xs: '58px', sm: '58px', md: '70px', lg: '97px', xl: '120px' }, border: selectedImage === v ? "2px solid black" : "",
+
+                                        //                             }}
+                                        //                             onClick={() => setSelectedImage(v)}
+                                        //                         >
+                                        //                             <img src={IMG_URL + v} alt="no" className="demoimg" />
+                                        //                         </Box>
+                                        //                     </Grid>
+                                        //                 </SwiperSlide>
+                                        //             ))
+                                        //         }
+
+
+                                        //     </Swiper>
+                                        //     {/* <Box sx={{
+                                        //         width: '100%', backgroundColor: 'red', display: 'flex',
+                                        //         flexDirection: 'column',
+                                        //         alignItems: 'center',
+                                        //         justifyContent: 'center',
+                                        //     }}>
+
+                                        //         <button ref={prevRef1} className="pbtn-prev">
+                                        //             <IoIosArrowUp />
+                                        //         </button>
+
+                                        //         <button ref={nextRef1} className="pbtn-next">
+                                        //             <IoIosArrowDown />
+                                        //         </button>
+                                        //     </Box> */}
+                                        // </Box>
+""
+
+                                        : selectedVariant?.images?.map((v) => (
+                                            <Grid size={12}>
+                                                <Box
+                                                    className="detailimg-box"
+                                                    sx={{ width: '100%', height: { xs: '58px', sm: '58px', md: '70px', lg: '97px', xl: '120px' }, border: selectedImage === v ? "2px solid black" : "1px solid #ccc", }}
+                                                    onClick={() => setSelectedImage(v)}
+                                                >
+                                                    <img src={IMG_URL + v} alt="no" className="demoimg" />
+                                                </Box>
+                                            </Grid>
+                                        ))
                                 }
-                                {/* <Grid size={12}>
-                                    <Box className="detailimg-box" sx={{ width: '100%', height: '97px' }}>
-                                        <img src="../../../public/assets/images/new/ww6.avif" alt="" className="demoimg" />
-                                    </Box>
-                                </Grid>
-                                <Grid size={12}>
-                                    <Box className="detailimg-box" sx={{ width: '100%', height: '97px' }}>
-                                        <img src="../../../public/assets/images/productdetail/image 58.png" alt="" className="demoimg" />
-                                    </Box>
-                                </Grid>
-                                <Grid >
-                                    <Box className="detailimg-box">
-                                        <img src="../../../public/assets/images/productdetail/image 59.png" alt="" />
-                                    </Box>
-                                </Grid>
-                                <Grid >
-                                    <Box className="detailimg-box">
-                                        <img src="../../../public/assets/images/productdetail/image 61.png" alt="" />
-                                    </Box>
-                                </Grid> */}
+
                             </Grid>
-                            <Grid size={{ xs: 9, sm: 8, md: 9 }} display="flex" flexDirection='column'>
-                                <Box className="detailimg-box deatail-main-img" sx={{ height: detailproduct?.variants?.length > 1 ? '600px' : '100%' }}>
+                            <Grid size={{ xs: 9, sm: 9, md: 9 }} display="flex" flexDirection='column'>
+                                {/* height: detailproduct?.variants?.length > 1 ? '600px' : '100%' */}
+                                <Box className="detailimg-box deatail-main-img" sx={{ height: { xs: '100%', sm: '75%', md: '75%', lg: '100%' } }}>
                                     {/* <img src="../../../public/assets/images/productdetail/image 63.png" alt="" width='100%' /> */}
                                     <img
                                         src={
@@ -175,7 +232,7 @@ function Productdetail() {
                                     />
                                 </Box>
 
-                                {
+                                {/* {
                                     detailproduct?.variants?.length > 1 &&
                                     <Box
                                         sx={{
@@ -204,7 +261,7 @@ function Productdetail() {
                                         }
 
                                     </Box>
-                                }
+                                } */}
 
                             </Grid>
 
@@ -222,7 +279,7 @@ function Productdetail() {
 
                             <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 }, fontSize: { xs: '20px', sm: '20px', md: '24px' } }}>₹{detailproduct?.price}</Typography>
 
-                            <Typography sx={{ fontSize: '14px', maxWidth: '373px', mb: { xs: 3, sm: 2, md: 3 } }}>
+                            <Typography sx={{ fontSize: '14px', mb: { xs: 3, sm: 2, md: 3 } }}>
                                 PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.
                             </Typography>
 
@@ -300,25 +357,25 @@ function Productdetail() {
                             </label> */}
 
                             {/* size */}
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: { xs: 3, sm: 1, md: 3 } }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: { xs: 3, sm: 2, md: 3 } }}>
                                 <Typography sx={{ fontSize: { sm: '18px', md: '20px' } }}>Size :</Typography>
 
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     {
                                         selectedVariant?.size?.map((v) => {
 
-                                          return ( v === 'Free_Size' ? <Typography className="fsizebox">{v}</Typography> : <Typography className="sizebox">{v}</Typography> )
+                                            return (v === 'Free_Size' ? <Typography className="fsizebox">{v}</Typography> : <Typography className="sizebox">{v}</Typography>)
                                         }
-                                       )
+                                        )
                                     }
                                 </Box>
                             </Box>
 
                             {/* counter */}
-                            <Box sx={{ display: 'flex', mt: { xs: 3, sm: 2, md: 3 }, gap: { xs: 3, sm: 2, lg: 4 } }} className="counter-box">
-                                <Box className='countbox'>
+                            <Box sx={{ display: 'flex', mt: { xs: 3, sm: 2, md: 3 }, gap: { xs: 2, sm: 2, md: 2, lg: 2, xl: 4 } }} className="counter-box">
+                                <Box className='countbox' sx={{ width: { md: '175px' } }}>
                                     <button className="count-btn" style={{ borderRight: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'decrese' ? '#DB4444' : 'white', color: active === 'decrese' ? 'white' : 'black' }} onClick={handleDecrese}>-</button>
-                                    <Typography sx={{ padding: { xs: '0 35px', sm: '0 15px', lg: '0 35px' } }} className="counter-no">{counter}</Typography>
+                                    <Typography sx={{ padding: { xs: '0 35px', sm: '0 20px', md: '0 32px', lg: '0 35px' } }} className="counter-no">{counter}</Typography>
                                     <button className="count-btn" style={{ borderLeft: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'increse' ? '#DB4444' : 'white', color: active === 'increse' ? 'white' : 'black' }} onClick={handleIncrese}>+</button>
                                 </Box>
 

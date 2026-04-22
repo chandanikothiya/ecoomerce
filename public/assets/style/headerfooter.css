@@ -73,7 +73,7 @@ body {
     overflow: visible !important
 }
 
-.header-icone{
+.header-icone {
     color: black;
 }
 
@@ -303,25 +303,33 @@ body {
 
 .swiper-button-prev,
 .swiper-button-next {
-    display: inline-block;
+    display: inline-block !important;
+    background-color: #eef0f3 !important;
+    border-radius: 50% !important;
+    margin-top: auto !important;
+    position: absolute !important;
+    z-index: 999 !important;
+    color: black !important;
+}
+
+
+
+/* .pbtn-prev,
+.pbtn-next {   
     background-color: #eef0f3;
     border-radius: 50%;
-    margin-top: auto;
+    padding: 10px 14px;  
     position: absolute;
-    z-index: 999;
+    border: none;
+   
 }
 
+.pbtn-prev{
+    top:-1%
+} */
 
 
-.todays .swiper-button-prev {
-    /* top:10%; */
-    /* transform: rotate(180deg); */
-}
 
-.todays .swiper-button-next {
-    /* top: 7%; */
-
-}
 
 #category .swiper-button-prev,
 #category .swiper-button-next {
@@ -386,14 +394,7 @@ hr {
     padding: 60px 0;
 }
 
-/* #category{
-    position: relative;
-} */
 
-/* #category .swiper-button-prev,
-#allproducts .swiper-button-prev {
-    transform: rotate(180deg);
-} */
 
 #category .swiper-button-next,
 #allproducts .swiper-button-next {
@@ -508,8 +509,7 @@ hr {
 }
 
 #authendication form span,
-#contactus .contactform span
-{
+#contactus .contactform span {
     color: red;
 }
 
@@ -693,7 +693,7 @@ hr {
 }
 
 .count-btn {
-    padding: 5PX 20px;
+    padding: 5px 25px;
     border: none;
     background-color: white;
     height: 100%;
@@ -893,11 +893,11 @@ hr {
     /* reduce this more if needed */
 }
 
-#allproducts .swiper-slide {
+/* #allproducts .swiper-slide {
     margin-top: 10px !important;
-}
+} */
 #allproducts .swiper-wrapper {
-  row-gap: 20px !important;
+    row-gap: 10px !important;
 }
 
 .category-title:hover {
