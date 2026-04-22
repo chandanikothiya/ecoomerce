@@ -49,7 +49,7 @@ function Header() {
 
     if (localStorage.getItem('loginid')) {
         id = localStorage.getItem('loginid');
-        console.log(id)
+        console.log("id",id)
     }
 
     //cart count
@@ -243,14 +243,14 @@ function Header() {
                                     </div>
                                 </form>
 
-                                <NavLink to="/wishlist">
+                                <NavLink to={id ? "/wishlist" : "/signup"}>
                                     <IconButton>
                                         <FavoriteBorderIcon className="header-icone" />
                                         {wishlistcount > 0 && showwBudget && (<NotificationBadge badgeContent={wishlistcount} color="error" overlap="circular" />)}
                                     </IconButton>
                                 </NavLink>
 
-                                <NavLink to="/cart">
+                                <NavLink to={id ? "/cart" : "/signup"}>
                                     <IconButton >
                                         <ShoppingCartOutlinedIcon className="header-icone" />
                                         {cartcount > 0 && showBudget && (<NotificationBadge badgeContent={cartcount} color="error" overlap="circular" />)}
