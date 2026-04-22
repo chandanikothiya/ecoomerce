@@ -386,6 +386,10 @@
             font-size: 16px !important;
         }
 
+        .cardototal-btn{
+            margin-top:30px;
+         }
+
         .checkout-typo {
             font-size: 14px !important;
         }
@@ -975,6 +979,11 @@
             font-size: 16px;
         }
 
+         .fsizebox{
+            font-size: 14px !important;
+        }
+
+
         /* .coupon-text {
             width: 200px;
         } */
@@ -986,6 +995,10 @@
         .coupon-text {
             width: 320px !important;
         }
+
+          .cardototal-btn{
+            margin-top:0px;
+         }
 
         .breadcrumbs,
         .breadcrumbs-typo {
@@ -1052,6 +1065,10 @@
         .authlink a {
             font-size: 16px !important;
             margin-top: 32px !important;
+        }
+
+        #product-detail .my-custome-button {
+            padding: 7px 35px !important;
         }
     }
 
@@ -1304,6 +1321,10 @@
             font-size: 16px;
         }
 
+         .cardototal-btn{
+            margin-top:30px;
+         }
+
         .todays .my-custome-button {
             margin: 40px auto 0 auto;
         }
@@ -1339,7 +1360,7 @@
         }
 
         #product-detail .my-custome-button {
-            padding: 5px 25px !important;
+            padding: 5px 30px !important;
         }
 
         .wishlist-deatil {
@@ -1430,7 +1451,9 @@
         .authlink {
             font-size: 18px !important;
         }
-        
+         .fsizebox{
+            font-size: 16px !important;
+        }
     }
 
     /* lg */
@@ -1726,6 +1749,14 @@
             width: fit-content !important;
             left: 58% !important;
         }
+
+        .count-btn {
+            padding: 5px 20px !important;
+        }
+
+         #product-detail .my-custome-button {
+            padding: 10px 50px !important;
+        }
     }
 
     /* xl */
@@ -1828,7 +1859,7 @@
         }
 
         #product-detail .my-custome-button {
-            padding: 10px 30px !important;
+            padding: 10px 40px !important;
         }
 
         .caticone {
@@ -1969,6 +2000,10 @@
             width: fit-content !important;
             left: 55% !important;
         }
+
+         .count-btn {
+            padding: 5px 18px !important;
+        }
     }
 
     /* xxl */
@@ -1991,7 +2026,7 @@
         }
 
         #product-detail .my-custome-button {
-            padding: 20px 48px !important;
+            padding: 10px 48px !important;
         }
 
         /* .todays .swiper-button-next {
