@@ -1316,7 +1316,7 @@
 
         .cart-coupon-box-btn,
         .cardototal-btn {
-            padding: 12px 30px !important;
+            padding: 12px 48px !important;
             margin: 0 auto;
             font-size: 16px;
         }
@@ -1913,7 +1913,7 @@
         }
 
         .cart-coupon-box-btn {
-            padding: 12px 48px !important;
+            padding: 12px 55px !important;
         }
 
         .newarrival-grid-box img {

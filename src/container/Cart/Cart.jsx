@@ -259,7 +259,7 @@ function Cart() {
     console.log("deletecartdisplay", deletecartdisplay)
 
 
-    const totalprice = cartp.reduce((acc, v) => {
+    const totalprice = cartp?.reduce((acc, v) => {
         const price = v?.selectedVariant?.isFlashSale ? v?.selectedVariant?.flashPrice : v.price;
 
         return (price) * v.qty + acc
@@ -447,7 +447,8 @@ function Cart() {
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <form>
                                 <Box sx={{ display: 'flex', gap: { xs: 3, md: 0, lg: 3 } }} className="cart-coupon-box">
-                                    <TextField id="outlined-basic" className="coupon-text" label="Coupon Code" variant="outlined" sx={{ width: { xs: '56%', lg: '280px', xl: '350px' } }} />
+                                    <TextField id="outlined-basic" className="coupon-text" label="Coupon Code" variant="outlined" 
+                                    sx={{ width: { xs: '56%', lg: '280px', xl: '350px' },'& .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input':{padding:'14px'}}} />
                                     <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                 </Box>
                             </form>
