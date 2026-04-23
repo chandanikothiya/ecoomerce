@@ -11,21 +11,21 @@ import MyTextField from "../../components/MyTextField";
 import { Margin } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import Myuploadfile from "../../components/Myuploadfile";
-import { useGetContactQuery } from "../../../redux/api/contact.api";
+import { useDeleteContactMutation, useGetContactQuery } from "../../../redux/api/contact.api";
 
 
 function Contact() {
 
     const [open, setOpen] = React.useState(false);
-    const [updatedata, setUpdatedata] = useState({});
 
     const { data, error, isLoading } = useGetContactQuery();
     console.log(data)
+    const [deletecontact] = useDeleteContactMutation();
    
     const handleClickOpen = () => {
         setOpen(true);
@@ -71,14 +71,11 @@ function Contact() {
 
     }
 
-    const handleedit = (values) => {
-        setUpdatedata(values)
-        handleClickOpen()
-    }
-    console.log(updatedata)
+ 
 
-    const handledelete = (_id) => {
-        deletecategory(_id);
+    const handledelete = (id) => {
+        console.log("id",id)
+        deletecontact(id);
     }
 
     const columns = [
@@ -86,13 +83,13 @@ function Contact() {
         {
             field: 'email',
             headerName: 'email',
-            width: 200,
+            width: 300,
             editable: true,
         },
         {
             field: 'phone',
             headerName: 'phone No',
-            width: 300,
+            width:200,
             editable: true,
            
         },
@@ -106,13 +103,13 @@ function Contact() {
         {
             field: '',
             headerName: 'Action',
-            width: 150,
+            width: 100,
             editable: true,
             renderCell: (params) => (
                 <>
-                    <IconButton aria-label="edit" onClick={(e) => handleedit(params.row)}>
+                    {/* <IconButton aria-label="edit" onClick={(e) => handleedit(params.row)}>
                         <MdOutlineModeEdit />
-                    </IconButton>
+                    </IconButton> */}
 
                     <IconButton aria-label="delete" onClick={(e) => handledelete(params.row._id)}>
                         <MdDeleteOutline />
@@ -127,7 +124,7 @@ function Contact() {
         <>
             <div className="container">
 
-
+            <Typography variant="h5" sx={{marginLeft:'-20px',fontSize:'30px'}}>Users Message</Typography>
                 <DataGrid
                     rows={data?.data}
                     getRowId={(rows) => rows?._id || Math.random()}

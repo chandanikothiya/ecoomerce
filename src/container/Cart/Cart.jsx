@@ -117,7 +117,7 @@ function Cart() {
                                 p: 0,
                                 position: 'absolute',
                                 top: '20%',
-                                left: '-1%'
+                                left: '0%'
                             }}
                             onClick={() => { handledeltecart(params.row) }}
                         >
@@ -234,26 +234,6 @@ function Cart() {
         } else {
             setDeletecartdisplay(prev => !prev);
         }
-        // columns = [
-        //     ...prev,
-        //     {
-        //         field: '',
-        //         headerName: 'Action',
-        //         width: 120,
-        //         editable: true,
-        //         renderCell: (params) => (
-        //             <>
-        //                 <IconButton aria-label="edit" >
-        //                     <MdOutlineModeEdit />
-        //                 </IconButton>
-
-        //                 <IconButton aria-label="delete">
-        //                     <MdDeleteOutline />
-        //                 </IconButton>
-        //             </>
-        //         )
-        //     }
-        // ]
     }
 
     console.log("deletecartdisplay", deletecartdisplay)

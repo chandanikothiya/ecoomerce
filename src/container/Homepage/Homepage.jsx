@@ -39,7 +39,7 @@ import { useGetCategoryQuery } from "../../redux/api/category.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
 import { useAddCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
-import { useAddWishlistMutation, useGetWishlistQuery } from "../../redux/api/wishlist.api";
+import { useAddWishlistMutation, useDeleteWishlistMutation, useGetWishlistQuery } from "../../redux/api/wishlist.api";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -65,12 +65,8 @@ function Homepage() {
     const isMobile = useMediaQuery(theme1.breakpoints.down("md"));
     const [selectedColors, setSelectedColors] = useState({});
     const [selectedColorsfalsh, setSelectedColorsfalsh] = useState({});
-
-
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [activeIndex, setActiveIndex] = React.useState(null);
-
-
     const { data, error, isLoading } = useGetCategoryQuery();
     console.log("dislaydata", data?.data)
 
@@ -78,11 +74,11 @@ function Homepage() {
 
     const [addcart] = useAddCartMutation();
     const [addwishlist] = useAddWishlistMutation();
+    const [deletewishlist] = useDeleteWishlistMutation();
 
     const { data: pdata,
         error: perror,
         isLoading: pisLoading } = useGetProductQuery();
-
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
 
 
@@ -292,6 +288,8 @@ function Homepage() {
     const handleWishlistClick = async (id, vid) => {
         console.log("click", id, vid)
         if (localStorage.getItem('loginid')) {
+
+
             const response = await addwishlist({ user_id: localStorage.getItem('loginid'), product_id: id, variant_id: vid })
             console.log("cartres", response)
             if (response.data.success) {
@@ -299,14 +297,26 @@ function Homepage() {
             } else {
                 dispatch(setalert({ text: response.data.message, variant: 'error' }))
             }
+
+
             refetch();
+            // setInwhishlist(false)
         } else {
             navigate('/signup')
         }
-
     }
 
+    const handledelWishlistClick = async (id, vid) => {
+        if (localStorage.getItem('loginid')) {
+            deletewishlist({ variant_id: vid, id: localStorage.getItem('loginid') })
+            refetch();
+            // setInwhishlist(false)
+        } else {
+            navigate('/signup')
+        }
+    }
 
+    
     return (
         <>
             <main>
@@ -321,7 +331,7 @@ function Homepage() {
                                         {isMobile ? (
                                             <>
                                                 <Swiper key="mobile-swiper" slidesPerView="auto" spaceBetween={10} freeMode={true}>
-                                                    {categorymenu.map((item, index) => {
+                                                    {categorymenu?.map((item, index) => {
                                                         const subcategories = data?.data.filter((v) => v.parentcategory_id === item._id)
                                                         return (
                                                             <SwiperSlide key={index} style={{ width: "auto" }}>
@@ -670,8 +680,6 @@ function Homepage() {
                                         spaceBetween: 30,
                                     },
                                 }}
-
-
                             >
                                 {
                                     flashsaleproduct?.map((v, i) => {
@@ -731,7 +739,7 @@ function Homepage() {
                                                                     : IMG_URL + v.variants[0]?.images?.[0]
                                                             }
                                                             title={v.name}
-
+                                                            onClick={() => handlepProduct(v._id)}
                                                         />
 
 
@@ -761,10 +769,10 @@ function Homepage() {
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                 ₹{selectedVariant.flashPrice}
+                                                                ₹{selectedVariant.flashPrice}
                                                             </Typography>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                 ₹{v.price}
+                                                                ₹{v.price}
                                                             </Typography>
                                                         </Box>
 
@@ -884,8 +892,10 @@ function Homepage() {
                                                             }
                                                         }}
                                                     >
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => handleWishlistClick(v?._id, selectedVariant?._id)}>
-                                                            {isInWishlist ?
+
+
+                                                        {isInWishlist ?
+                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handledelWishlistClick(v?._id, selectedVariant?._id) }}>
                                                                 <FavoriteIcon sx={{
                                                                     fontSize: {
                                                                         xs: '12px',
@@ -895,7 +905,8 @@ function Homepage() {
                                                                     },
                                                                     color: 'red'
                                                                 }} />
-                                                                :
+                                                            </IconButton>
+                                                            : <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handleWishlistClick(v?._id, selectedVariant?._id) }}>
                                                                 <FavoriteBorderIcon sx={{
                                                                     fontSize: {
                                                                         xs: '12px',
@@ -903,9 +914,11 @@ function Homepage() {
                                                                         md: '20px',
                                                                         lg: '22px'
                                                                     }
-                                                                }} />}
-                                                        </IconButton>
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                                }} />
+                                                            </IconButton>
+                                                        }
+
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small" onClick={() => handlepProduct(v._id)}>
                                                             <RemoveRedEyeOutlinedIcon sx={{
                                                                 fontSize: {
                                                                     xs: '12px',
@@ -1186,332 +1199,321 @@ function Homepage() {
 
 
                 {/* explore our product */}
-                    <ThemeProvider theme={theme}>
-                        <section id="allproducts">
-                            <div className="container" >
-                                <Box className="sub-title">
-                                    <i className="fa-solid fa-square"></i>
-                                    <Typography sx={{ fontWeight: 600 }} className="subtitle">Our Products</Typography>
-                                </Box>
+                <ThemeProvider theme={theme}>
+                    <section id="allproducts">
+                        <div className="container" >
+                            <Box className="sub-title">
+                                <i className="fa-solid fa-square"></i>
+                                <Typography sx={{ fontWeight: 600 }} className="subtitle">Our Products</Typography>
+                            </Box>
 
-                                <Box sx={{ position: 'relative', mt: 2 }}>
-                                    <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
+                            <Box sx={{ position: 'relative', mt: 2 }}>
+                                <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Explore Our Products</Typography>
 
-                                    <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '23px', md: '35px' } }}>
-                                        <Swiper
-                                            // slidesPerView={4}
-                                            // grid={{ rows: 2, fill: "row" }}
+                                <Box sx={{ width: '100%', marginTop: { xs: '20px', sm: '23px', md: '35px' } }}>
+                                    <Swiper
+                                        // slidesPerView={4}
+                                        // grid={{ rows: 2, fill: "row" }}
 
-                                            pagination={{
-                                                clickable: true,
-                                            }}
-                                            modules={[Navigation, SwiperGrid, Pagination]}
-                                            onSwiper={setSwiperInstance}
-                                            navigation={{
-                                                prevEl: prevRef3.current,
-                                                nextEl: nextRef3.current,
-                                            }}
-                                            onBeforeInit={(swiper) => {
-                                                swiper.params.navigation.prevEl = prevRef3.current;
-                                                swiper.params.navigation.nextEl = nextRef3.current;
-                                            }}
+                                        pagination={{
+                                            clickable: true,
+                                        }}
+                                        modules={[Navigation, SwiperGrid, Pagination]}
+                                        onSwiper={setSwiperInstance}
+                                        navigation={{
+                                            prevEl: prevRef3.current,
+                                            nextEl: nextRef3.current,
+                                        }}
+                                        onBeforeInit={(swiper) => {
+                                            swiper.params.navigation.prevEl = prevRef3.current;
+                                            swiper.params.navigation.nextEl = nextRef3.current;
+                                        }}
 
-                                            className="mySwiper"
-                                            breakpoints={{
-                                                0: {
-                                                    slidesPerView: 2,
-                                                    grid: {
-                                                        rows: 1,
-                                                        fill: "row"
-                                                    },
-                                                    spaceBetween: 20
+                                        className="mySwiper"
+                                        breakpoints={{
+                                            0: {
+                                                slidesPerView: 2,
+                                                grid: {
+                                                    rows: 1,
+                                                    fill: "row"
                                                 },
-                                                576: {
-                                                    slidesPerView: 3,
-                                                    grid: {
-                                                        rows: 2,
-                                                        fill: "row"
-                                                    },
-                                                    spaceBetween: 20
+                                                spaceBetween: 20
+                                            },
+                                            576: {
+                                                slidesPerView: 3,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
                                                 },
-                                                768: {
-                                                    slidesPerView: 3,
-                                                    grid: {
-                                                        rows: 2,
-                                                        fill: "row"
-                                                    },
-                                                    spaceBetween: 20
+                                                spaceBetween: 20
+                                            },
+                                            768: {
+                                                slidesPerView: 3,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
                                                 },
-                                                992: {
-                                                    slidesPerView: 4,
-                                                    grid: {
-                                                        rows: 2,
-                                                        fill: "row"
-                                                    },
-                                                    spaceBetween: 20
+                                                spaceBetween: 20
+                                            },
+                                            992: {
+                                                slidesPerView: 4,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
                                                 },
-                                                1200: {
-                                                    slidesPerView: 4,
-                                                    grid: {
-                                                        rows: 2,
-                                                        fill: "row"
-                                                    },
-                                                    spaceBetween: 30
-                                                }
-                                            }}
+                                                spaceBetween: 20
+                                            },
+                                            1200: {
+                                                slidesPerView: 4,
+                                                grid: {
+                                                    rows: 2,
+                                                    fill: "row"
+                                                },
+                                                spaceBetween: 30
+                                            }
+                                        }}
 
-                                        >
-                                            {pdata?.data?.map((v, i) => {
-                                                const validVariants = v?.variants?.filter(
-                                                    (x) => x?.color && x.color.trim() !== ""
+                                    >
+                                        {pdata?.data?.map((v, i) => {
+                                            const validVariants = v?.variants?.filter(
+                                                (x) => x?.color && x.color.trim() !== ""
+                                            );
+                                            let selectedVariant;
+
+                                            if (validVariants.length > 0) {
+                                                const selectedColor =
+                                                    selectedColors[v._id] || validVariants[0]?.color;
+
+                                                selectedVariant = v?.variants?.find(
+                                                    (x) => x.color === selectedColor
                                                 );
-                                                let selectedVariant;
+                                            } else {
+                                                // ✅ fallback when no color exists
+                                                selectedVariant = v?.variants?.[0];
+                                            }
+                                            console.log(selectedVariant)
+                                            // const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                            // console.log(r)
+                                            // const rate = r / v.rating.length;
+                                            // console.log(rate)
 
-                                                if (validVariants.length > 0) {
-                                                    const selectedColor =
-                                                        selectedColors[v._id] || validVariants[0]?.color;
+                                            const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
+                                            console.log("wishlistselect", wishlistselect);
 
-                                                    selectedVariant = v?.variants?.find(
-                                                        (x) => x.color === selectedColor
-                                                    );
-                                                } else {
-                                                    // ✅ fallback when no color exists
-                                                    selectedVariant = v?.variants?.[0];
-                                                }
-                                                console.log(selectedVariant)
-                                                // const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                                // console.log(r)
-                                                // const rate = r / v.rating.length;
-                                                // console.log(rate)
-
-                                                const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
-                                                console.log("wishlistselect", wishlistselect);
-
-                                                const isInWishlist = wishlistselect?.some(
-                                                    (v1) => v1.variant_id === selectedVariant._id
-                                                );
-                                                console.log("wishlistvarient", isInWishlist)
-                                                return (
-                                                    <SwiperSlide key={v.id}>
-                                                        <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
-                                                            <Box
-                                                                className="carttop"
-                                                                sx={{
-                                                                    bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                                    alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
-                                                                    height: {
-                                                                        xs: '120px',
-                                                                        sm: '160px',
-                                                                        lg: '250px'
-                                                                    }, position: 'relative'
-                                                                }}>
-                                                                {
-                                                                    (() => {
+                                            const isInWishlist = wishlistselect?.some(
+                                                (v1) => v1.variant_id === selectedVariant._id
+                                            );
+                                            console.log("wishlistvarient", isInWishlist)
+                                            return (
+                                                <SwiperSlide key={v.id}>
+                                                    <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
+                                                        <Box
+                                                            className="carttop"
+                                                            sx={{
+                                                                bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                                alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                                height: {
+                                                                    xs: '120px',
+                                                                    sm: '160px',
+                                                                    lg: '250px'
+                                                                }, position: 'relative'
+                                                            }}>
+                                                            {
+                                                                (() => {
 
 
-                                                                        return (
-                                                                            <>
-                                                                                <CardMedia
-                                                                                    component="img"
-                                                                                    className="cardimg"
-                                                                                    sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
-                                                                                    image={
-                                                                                        selectedVariant?.images?.[0]
-                                                                                            ? IMG_URL + selectedVariant.images[0]
-                                                                                            : IMG_URL + v.variants[0]?.images?.[0]
-                                                                                    }
-                                                                                    title={v.name}
-                                                                                    onClick={() => handlepProduct(v._id)}
-                                                                                    alt={v.name}
-                                                                                />
+                                                                    return (
+                                                                        <>
+                                                                            <CardMedia
+                                                                                component="img"
+                                                                                className="cardimg"
+                                                                                sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                                                image={
+                                                                                    selectedVariant?.images?.[0]
+                                                                                        ? IMG_URL + selectedVariant.images[0]
+                                                                                        : IMG_URL + v.variants[0]?.images?.[0]
+                                                                                }
+                                                                                title={v.name}
+                                                                                onClick={() => handlepProduct(v._id)}
+                                                                                alt={v.name}
+                                                                            />
 
 
-                                                                                <Typography
-                                                                                    className="addcart"
-                                                                                    sx={{
-                                                                                        bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                                                        textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                                                        bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
-                                                                                        fontSize: {
-                                                                                            xs: '12px',
-                                                                                            sm: '14px',
-                                                                                            md: '16px'
-                                                                                        },
-                                                                                        cursor: 'default'
-                                                                                    }}
-                                                                                    onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
-                                                                                >
-                                                                                    <ShoppingCartOutlinedIcon /> Add To Cart
-                                                                                </Typography>
-                                                                            </>
+                                                                            <Typography
+                                                                                className="addcart"
+                                                                                sx={{
+                                                                                    bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                                    textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                                    bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
+                                                                                    fontSize: {
+                                                                                        xs: '12px',
+                                                                                        sm: '14px',
+                                                                                        md: '16px'
+                                                                                    },
+                                                                                    cursor: 'default'
+                                                                                }}
+                                                                                onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
+                                                                            >
+                                                                                <ShoppingCartOutlinedIcon /> Add To Cart
+                                                                            </Typography>
+                                                                        </>
 
-                                                                        );
-                                                                    })()}
+                                                                    );
+                                                                })()}
 
 
 
+                                                        </Box>
+
+
+                                                        <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important' }}>
+                                                            <Typography gutterBottom variant="h6" component="div" className="product-name">
+                                                                {v.name}
+                                                            </Typography>
+                                                            <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+
+                                                                <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                    ₹{v.price}
+                                                                </Typography>
+
+
+                                                                <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
+                                                                    <Typography sx={{ color: '#FFAD33' }}>
+                                                                        <Stack spacing={1}>
+                                                                            <Rating name="half-rating" defaultValue={4} precision={0.5} sx={{
+                                                                                fontSize: {
+                                                                                    xs: '15px',
+                                                                                    sm: '18px',
+                                                                                    md: '20px'
+                                                                                }
+                                                                            }} />
+                                                                        </Stack>
+                                                                    </Typography>
+                                                                    <Typography sx={{
+                                                                        color: 'grey', fontWeight: '600',
+                                                                        fontSize: {
+                                                                            xs: '12px',
+                                                                            sm: '16px'
+                                                                        }
+                                                                    }}>
+                                                                        (4)
+                                                                        {/* {`(${r})`} */}
+                                                                    </Typography>
+                                                                </Box>
                                                             </Box>
 
 
-                                                            <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important' }}>
-                                                                <Typography gutterBottom variant="h6" component="div" className="product-name">
-                                                                    {v.name}
-                                                                </Typography>
-                                                                <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
 
-                                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                        ₹{v.price}
-                                                                    </Typography>
-
-
-                                                                    <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
-                                                                        <Typography sx={{ color: '#FFAD33' }}>
-                                                                            <Stack spacing={1}>
-                                                                                <Rating name="half-rating" defaultValue={4} precision={0.5} sx={{
-                                                                                    fontSize: {
-                                                                                        xs: '15px',
-                                                                                        sm: '18px',
-                                                                                        md: '20px'
-                                                                                    }
-                                                                                }} />
-                                                                            </Stack>
-                                                                        </Typography>
-                                                                        <Typography sx={{
-                                                                            color: 'grey', fontWeight: '600',
+                                                            {
+                                                                v.new ?
+                                                                    <Box sx={{
+                                                                        bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
+                                                                            xs: '2px 8px',
+                                                                            sm: '2px 12px'
+                                                                        }, borderRadius: 1, position: 'absolute', top: '3%', left: '4%'
+                                                                    }}>
+                                                                        <Typography variant="body2" sx={{
                                                                             fontSize: {
-                                                                                xs: '12px',
-                                                                                sm: '16px'
+                                                                                xs: '10px',
+                                                                                sm: '12px',
+                                                                                md: '14px'
                                                                             }
-                                                                        }}>
-                                                                            (4)
-                                                                            {/* {`(${r})`} */}
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
+                                                                        }}>NEW</Typography>
+                                                                    </Box> :
+                                                                    ""
+                                                            }
+
+                                                            {
+                                                                v?.variants?.length > 1 && (() => {
+
+                                                                    const validVariants = v?.variants?.filter(
+                                                                        (x) => x?.color && x.color.trim() !== ""
+                                                                    )
+
+                                                                    const selectedColor =
+                                                                        selectedColors[v._id] || validVariants[0]?.color;
 
 
+                                                                    // const selectedColor =
+                                                                    //     selectedColors[v._id] ??
+                                                                    //     v?.variants?.find((x) => x?.color && x.color.trim() !== "")?.color;
+                                                                    // console.log(selectedColor, selectedColors)
+                                                                    // const [selectedColors, setSelectedColors] = useState({});
 
-                                                                {
-                                                                    v.new ?
-                                                                        <Box sx={{
-                                                                            bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
-                                                                                xs: '2px 8px',
-                                                                                sm: '2px 12px'
-                                                                            }, borderRadius: 1, position: 'absolute', top: '3%', left: '4%'
-                                                                        }}>
-                                                                            <Typography variant="body2" sx={{
-                                                                                fontSize: {
-                                                                                    xs: '10px',
-                                                                                    sm: '12px',
-                                                                                    md: '14px'
-                                                                                }
-                                                                            }}>NEW</Typography>
-                                                                        </Box> :
-                                                                        ""
-                                                                }
-
-                                                                {
-                                                                    v?.variants?.length > 1 && (() => {
-
-                                                                        const validVariants = v?.variants?.filter(
-                                                                            (x) => x?.color && x.color.trim() !== ""
-                                                                        )
-
-                                                                        const selectedColor =
-                                                                            selectedColors[v._id] || validVariants[0]?.color;
+                                                                    return (
+                                                                        <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                            {
+                                                                                validVariants?.map((v1) => {
+                                                                                    if (!v1?.color || v1.color.trim() === "") return null;
 
 
-                                                                        // const selectedColor =
-                                                                        //     selectedColors[v._id] ??
-                                                                        //     v?.variants?.find((x) => x?.color && x.color.trim() !== "")?.color;
-                                                                        // console.log(selectedColor, selectedColors)
-                                                                        // const [selectedColors, setSelectedColors] = useState({});
+                                                                                    return (
+                                                                                        <label key={v1.color} style={{ cursor: "pointer" }}>
+                                                                                            <input
+                                                                                                type="radio"
+                                                                                                name={`color-${v._id}`}
+                                                                                                value={v1.color}
+                                                                                                checked={selectedColor === v1.color}
+                                                                                                onChange={() =>
+                                                                                                    setSelectedColors((prev) => ({
+                                                                                                        ...prev,
+                                                                                                        [v._id]: v1.color,
+                                                                                                    }))
+                                                                                                }
+                                                                                                style={{ display: "none" }}
+                                                                                            />
 
-                                                                        return (
-                                                                            <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
-                                                                                {
-                                                                                    validVariants?.map((v1) => {
-                                                                                        if (!v1?.color || v1.color.trim() === "") return null;
-
-
-                                                                                        return (
-                                                                                            <label key={v1.color} style={{ cursor: "pointer" }}>
-                                                                                                <input
-                                                                                                    type="radio"
-                                                                                                    name={`color-${v._id}`}
-                                                                                                    value={v1.color}
-                                                                                                    checked={selectedColor === v1.color}
-                                                                                                    onChange={() =>
-                                                                                                        setSelectedColors((prev) => ({
-                                                                                                            ...prev,
-                                                                                                            [v._id]: v1.color,
-                                                                                                        }))
-                                                                                                    }
-                                                                                                    style={{ display: "none" }}
-                                                                                                />
-
-                                                                                                <span
-                                                                                                    style={{
-                                                                                                        width: "15px",
-                                                                                                        height: "15px",
-                                                                                                        borderRadius: "50%",
-                                                                                                        backgroundColor: v1.color,
-                                                                                                        display: "inline-block",
-                                                                                                        border: "1px solid #ccc",
-                                                                                                        outline:
-                                                                                                            selectedColor === v1.color
-                                                                                                                ? "2px solid black"
-                                                                                                                : "none",
-                                                                                                        outlineOffset: "3px",
-                                                                                                    }}
-                                                                                                />
-                                                                                            </label>
-                                                                                        )
-                                                                                    }
-
+                                                                                            <span
+                                                                                                style={{
+                                                                                                    width: "15px",
+                                                                                                    height: "15px",
+                                                                                                    borderRadius: "50%",
+                                                                                                    backgroundColor: v1.color,
+                                                                                                    display: "inline-block",
+                                                                                                    border: "1px solid #ccc",
+                                                                                                    outline:
+                                                                                                        selectedColor === v1.color
+                                                                                                            ? "2px solid black"
+                                                                                                            : "none",
+                                                                                                    outlineOffset: "3px",
+                                                                                                }}
+                                                                                            />
+                                                                                        </label>
                                                                                     )
                                                                                 }
-                                                                            </Box>
-                                                                        )
-                                                                    })()
-                                                                }
-                                                            </CardContent>
 
-
-
-                                                            <CardActions
-                                                                sx={{
-                                                                    flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                                    '& .MuiIconButton-root': {
-                                                                        marginLeft: 0
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => handleWishlistClick(v?._id, selectedVariant?._id)}>
-                                                                    {isInWishlist ?
-                                                                        <FavoriteIcon sx={{
-                                                                            fontSize: {
-                                                                                xs: '12px',
-                                                                                sm: '18px',
-                                                                                md: '20px',
-                                                                                lg: '22px'
-                                                                            },
-                                                                            color: 'red'
-                                                                        }} />
-                                                                        :
-                                                                        <FavoriteBorderIcon sx={{
-                                                                            fontSize: {
-                                                                                xs: '12px',
-                                                                                sm: '18px',
-                                                                                md: '20px',
-                                                                                lg: '22px'
+                                                                                )
                                                                             }
-                                                                        }} />}
+                                                                        </Box>
+                                                                    )
+                                                                })()
+                                                            }
+                                                        </CardContent>
 
 
+
+                                                        <CardActions
+                                                            sx={{
+                                                                flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                                '& .MuiIconButton-root': {
+                                                                    marginLeft: 0
+                                                                }
+                                                            }}
+                                                        >
+                                                            {isInWishlist ?
+                                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handledelWishlistClick(v?._id, selectedVariant?._id) }}>
+                                                                    <FavoriteIcon sx={{
+                                                                        fontSize: {
+                                                                            xs: '12px',
+                                                                            sm: '18px',
+                                                                            md: '20px',
+                                                                            lg: '22px'
+                                                                        },
+                                                                        color: 'red'
+                                                                    }} />
                                                                 </IconButton>
-                                                                <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
-                                                                    <RemoveRedEyeOutlinedIcon sx={{
+                                                                : <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handleWishlistClick(v?._id, selectedVariant?._id) }}>
+                                                                    <FavoriteBorderIcon sx={{
                                                                         fontSize: {
                                                                             xs: '12px',
                                                                             sm: '18px',
@@ -1520,26 +1522,38 @@ function Homepage() {
                                                                         }
                                                                     }} />
                                                                 </IconButton>
-                                                            </CardActions>
-                                                        </Card>
-                                                    </SwiperSlide>
-                                                )
-                                            })}
-                                        </Swiper>
-                                        <button ref={prevRef3} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
-                                            <FaArrowLeftLong />
-                                        </button>
+                                                            }
+                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small" onClick={() => handlepProduct(v._id)}>
+                                                                <RemoveRedEyeOutlinedIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '22px'
+                                                                    }
+                                                                }} />
+                                                            </IconButton>
+                                                        </CardActions>
+                                                    </Card>
+                                                </SwiperSlide>
+                                            )
+                                        })}
+                                    </Swiper>
+                                    <button ref={prevRef3} className="custom-prev swiper-button-prev" style={{ border: 'none' }}>
+                                        <FaArrowLeftLong />
+                                    </button>
 
-                                        <button ref={nextRef3} className="custom-next swiper-button-next" style={{ border: 'none' }}>
-                                            <FaArrowRightLong />
-                                        </button>
-                                    </Box>
+                                    <button ref={nextRef3} className="custom-next swiper-button-next" style={{ border: 'none' }}>
+                                        <FaArrowRightLong />
+                                    </button>
                                 </Box>
+                            </Box>
 
-                                <a href="#" className="my-custome-button" style={{ margin: '20px auto 0 auto' }}>View More Product</a>
-                            </div>
-                        </section>
-                    </ThemeProvider>
+                            <a href="#" className="my-custome-button" style={{ margin: '20px auto 0 auto' }}>View More Product</a>
+                        </div>
+                    </section>
+                </ThemeProvider>
+
                 {/* new arraival fecutre section */}
                 <ThemeProvider theme={theme}>
                     <section id="newarrival">

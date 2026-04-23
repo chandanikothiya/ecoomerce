@@ -22,7 +22,7 @@ import { BiSolidCategory } from "react-icons/bi";
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaBoxOpen } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 
 const drawerWidth = 240;
 
@@ -123,7 +123,7 @@ function Layout({ children }) {
         { label: "Dashboard", icone: <BiSolidDashboard />, to: "/admin/dashboard" },
         { label: "Category", icone: <BiSolidCategory />, to: "/admin/category" },
         { label: "Products", icone: <FaBoxOpen />, to: "/admin/product" },
-        
+        { label: "Contact/Messages", icone: <ContactMailIcon />, to: "/admin/contact" },
     ]
 
     return (

@@ -162,8 +162,8 @@ function Authendication() {
                 if (response.success) {
                     navigate('/')
                     dispatch(setalert({ text: response.message, variant: 'success' }))
-                } else {
-                    dispatch(setalert({ text: response.message, variant: 'error' }))
+                } else if (response.error) {
+                    dispatch(setalert({ text: response.error.data?.message, variant: 'error' }))
                 }
             } else if (authtype === 'forgetpassword') {
                 localStorage.setItem("femailphone", values.email)
@@ -190,10 +190,9 @@ function Authendication() {
 
         } catch (error) {
             console.error("FAILED:", error);
+            dispatch(setalert({ text: error.data?.message, variant: 'error' }))
         }
     }
-
-
 
     const formik = useFormik({
         initialValues: intialvalues,

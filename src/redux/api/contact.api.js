@@ -20,10 +20,9 @@ export const contactApi = createApi({
             invalidatesTags: ['contact']
         }),
         deleteContact:builder.mutation({
-            query:({variant_id,id}) => ({
-                url:`/cart/deleteCart/${id}`,
+            query:(id) => ({
+                url:`/contact/deletecontact/${id}`,
                 method:'delete',
-                body:{variant_id}
             }),
             invalidatesTags: ['contact']
         })
