@@ -28,7 +28,6 @@ function Authendication() {
         event.preventDefault();
     };
 
-
     const [adduser] = useAddUserMutation();
     const [verifyuser] = useVerifyUserMutation();
     const [loginuser] = useLoginUserMutation();

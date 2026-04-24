@@ -59,7 +59,7 @@ function Header() {
     console.log({ data, error, isLoading })
 
     console.log(data, data?.body?.products?.length)
-    const cartcount = data?.body?.products?.length || 0;
+    const cartcount = id ? (data?.body?.products?.length || 0) : 0;
     console.log(cartcount)
 
     //wishlit count
@@ -67,7 +67,7 @@ function Header() {
         skip: !id,
     });
     //console.log(wdata)
-    const wishlistcount = wdata?.body?.products?.length || 0;
+    const wishlistcount = id ? (wdata?.body?.products?.length || 0) : 0;
     console.log(wishlistcount)
 
     const [logout] = useLogoutMutation();
@@ -113,6 +113,8 @@ function Header() {
             if (response?.data?.success) {
                 dispatch(setalert({ text: response.data.message, variant: 'success' }))
                 localStorage.removeItem('loginid')
+
+               // dispatch(api.util.resetApiState());
             } else {
                 dispatch(setalert({ text: response.data.message, variant: 'error' }))
             }

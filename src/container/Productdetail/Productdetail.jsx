@@ -7,7 +7,7 @@ import { MdAutorenew } from "react-icons/md";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
@@ -46,8 +46,11 @@ function Productdetail() {
     const detailproduct = data?.data?.find((v) => v._id === id)
     console.log(detailproduct)
 
-    //const {data:cdata,error:derror,isLoading:eisLoading} = useGetCategoryQuery();
+    const { data: catdata, error: caterror, isLoading: catisLoading } = useGetCategoryQuery();
     console.log(selectedVariant, detailproduct)
+
+    const categoryname = catdata?.data?.find((v) => v._id === detailproduct.category_id).name;
+    console.log(categoryname, catdata)
 
     const relateditem = data?.data?.filter((v) => v.category_id === detailproduct.category_id)
     console.log(relateditem)
@@ -194,7 +197,8 @@ function Productdetail() {
 
     }
 
-     const handledelWishlistClick = async (id, vid) => {
+    const handledelWishlistClick = async (id, vid) => {
+        console.log("ok")
         if (localStorage.getItem('loginid')) {
             deletewishlist({ variant_id: vid, id: localStorage.getItem('loginid') })
             refetch();
@@ -202,6 +206,19 @@ function Productdetail() {
         } else {
             navigate('/signup')
         }
+    }
+
+    const wishlistselect1 = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === detailproduct?._id)) : ''
+    console.log("wishlistselect", wishlistselect1);
+
+    const isInWishlist1 = uid ? wishlistselect1?.some(
+        (v1) => v1?.variant_id === selectedVariant?._id
+    ) : '';
+
+    console.log("isInWishlist1", isInWishlist1)
+
+    const handlepProduct = (id) => {
+        navigate(`/productdetail/${id}`)
     }
 
 
@@ -220,9 +237,9 @@ function Productdetail() {
                             color="error"
                             href="/material-ui/getting-started/installation/"
                         >
-                            Gaming
+                            {categoryname}
                         </Link>
-                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Havic HV G-92 Gamepad</Typography>
+                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">{detailproduct.name}</Typography>
                     </Breadcrumbs>
 
                     <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 3, md: 5, lg: 6 }}>
@@ -334,37 +351,6 @@ function Productdetail() {
                                     />
                                 </Box>
 
-                                {/* {
-                                    detailproduct?.variants?.length > 1 &&
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            columnGap: 2
-                                        }}
-                                        marginTop={3}
-                                    >
-                                        {
-                                            detailproduct?.variants?.map((v) => (
-                                                <Box
-                                                    sx={{
-                                                        width: '70px', padding: '10px', backgroundColor: '#ffffff', border: 1,
-                                                        border: selectedVariant?._id === v._id
-                                                            ? "2px solid black"
-                                                            : "1px solid #ccc",
-                                                    }}
-                                                    onClick={() => {
-                                                        setSelectedVariant(v);
-                                                        setSelectedImage(v.images[0]);
-                                                    }}
-                                                >
-                                                    <img src={IMG_URL + v?.images[0]} alt="" width='100%' />
-                                                </Box>
-                                            ))
-                                        }
-
-                                    </Box>
-                                } */}
-
                             </Grid>
 
 
@@ -426,38 +412,6 @@ function Productdetail() {
 
                             </Box>
 
-                            {/* <label key={v1.color} style={{ cursor: "pointer" }}>
-                                <input
-                                    type="radio"
-                                    name={`color-${v._id}`} // 👈 unique per product
-                                    value={v1.color}
-                                    checked={selectedColor === v1.color}
-                                    onChange={() =>
-                                        setSelectedColors((prev) => ({
-                                            ...prev,
-                                            [v._id]: v1.color, // 👈 store per product
-                                        }))
-                                    }
-                                    style={{ display: "none" }}
-                                />
-
-                                <span
-                                    style={{
-                                        width: "15px",
-                                        height: "15px",
-                                        borderRadius: "50%",
-                                        backgroundColor: v1.color,
-                                        display: "inline-block",
-                                        border: "1px solid #ccc",
-                                        outline:
-                                            selectedColor === v1.color
-                                                ? "2px solid black"
-                                                : "none",
-                                        outlineOffset: "3px",
-                                    }}
-                                />
-                            </label> */}
-
                             {/* size */}
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: { xs: 3, sm: 2, md: 3 } }}>
                                 <Typography sx={{ fontSize: { sm: '18px', md: '20px' } }}>Size :</Typography>
@@ -481,11 +435,19 @@ function Productdetail() {
                                     <button className="count-btn" style={{ borderLeft: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'increse' ? '#DB4444' : 'white', color: active === 'increse' ? 'white' : 'black' }} onClick={handleIncrese}>+</button>
                                 </Box>
 
-                                <buton className="my-custome-button">Buy Now</buton>
+                                <NavLink to={`/checkout/${detailproduct?._id}/${selectedVariant?._id}`}> <buton className="my-custome-button">Buy Now</buton></NavLink>
 
-                                <button className="wishlist-deatil">
-                                    <CiHeart />
-                                </button>
+                                {
+                                    isInWishlist1 ?
+                                        <button className="wishlist-deatil" onClick={(e) => { handledelWishlistClick(detailproduct?._id, selectedVariant?._id) }}>
+                                            <FavoriteIcon sx={{ color: 'red' }} />
+                                        </button>
+                                        :
+                                        <button className="wishlist-deatil" onClick={(e) => { handleWishlistClick(detailproduct?._id, selectedVariant?._id) }}>
+                                            <CiHeart />
+                                        </button>
+                                }
+
                             </Box>
 
                             <Box sx={{
@@ -703,12 +665,12 @@ function Productdetail() {
                                     // const rate = r / v.rating.length;
                                     // console.log(rate)
 
-                                    const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
+                                    const wishlistselect = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)) : ""
                                     console.log("wishlistselect", wishlistselect);
 
-                                    const isInWishlist = wishlistselect?.some(
+                                    const isInWishlist = uid ? wishlistselect?.some(
                                         (v1) => v1.variant_id === selectedVariant._id
-                                    );
+                                    ) : "";
                                     console.log("wishlistvarient", isInWishlist)
 
                                     let discount;
@@ -782,10 +744,16 @@ function Productdetail() {
                                                         {v.name}
                                                     </Typography>
                                                     <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
-
                                                         <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                            ₹{v.price}
+                                                            ₹{selectedVariant.isFlashSale ? selectedVariant.flashPrice : v.price}
                                                         </Typography>
+                                                        {
+                                                            selectedVariant.isFlashSale &&
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                ₹{v.price}
+                                                            </Typography>
+                                                        }
+
 
 
                                                         <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>

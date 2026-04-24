@@ -49,13 +49,15 @@ function UserRoutes(props) {
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/signup' element={<Auth />} />
                 <Route path='/about' element={<Aboutus />} />
-                <Route path='/notfound' element={<Notfound />} />
+                {/* <Route path='/notfound' element={<Notfound />} /> */}
                 <Route path='/productdetail/:id' element={<Productdetail />} />
                 <Route path='/wishlist' element={<Wishlist />} />
                 <Route path='/cart' element={<Cart />} />
-                <Route path='/checkout' element={<Checkout />} />
+                <Route path='/checkout/:id/:vid' element={<Checkout />} />
+                <Route path='/checkout/:cid' element={<Checkout />} />
                 <Route path='/myaccount' element={<Myaccount />} />
                 <Route path='/demo' element={< Demo />} />
+                 <Route path='*' element={<Notfound />} />
             </Routes>
             <Footer />
         </>

@@ -5,6 +5,12 @@ export const wishlistApi = createApi({
     reducerPath:'wishlistApi',
     baseQuery:axiosBaseQuery(),
     endpoints:(builder) => ({
+        getallWishlist:builder.query({
+            query:() => ({
+                url:'/wishlist/getallWishlist'
+            }),
+            providesTags: ['wishlist'],
+        }),
         getWishlist:builder.query({
             query:(id) => ({
                 url:`/wishlist/getwishlist/${id}`
@@ -31,5 +37,5 @@ export const wishlistApi = createApi({
     })
 })
 
-export const { useGetWishlistQuery,useAddWishlistMutation,useDeleteWishlistMutation } = wishlistApi;
+export const { useGetallWishlistQuery,useGetWishlistQuery,useAddWishlistMutation,useDeleteWishlistMutation } = wishlistApi;
 

@@ -5,6 +5,12 @@ export const cartApi = createApi({
     reducerPath:'cartApi',
     baseQuery:axiosBaseQuery(),
     endpoints:(builder) => ({
+         getallCart:builder.query({
+            query:() => ({
+                url:"/cart/getallCart"
+            }),
+            providesTags: ['cart'],
+        }),
         getCart:builder.query({
             query:(id) => ({
                 url:`/cart/getCart/${id}`
@@ -30,5 +36,5 @@ export const cartApi = createApi({
     })
 })
 
-export const {useGetCartQuery,useAddCartMutation,useDeleteCartMutation} = cartApi;
+export const {useGetallCartQuery,useGetCartQuery,useAddCartMutation,useDeleteCartMutation} = cartApi;
 

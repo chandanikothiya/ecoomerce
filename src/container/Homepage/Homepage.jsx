@@ -316,7 +316,8 @@ function Homepage() {
         }
     }
 
-    
+ 
+
     return (
         <>
             <main>
@@ -708,12 +709,12 @@ function Homepage() {
 
                                         const discount = ((v.price - selectedVariant.flashPrice) / v.price) * 100;
 
-                                        const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
+                                        const wishlistselect = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)) : ''
                                         console.log("wishlistselect", wishlistselect);
 
-                                        const isInWishlist = wishlistselect?.some(
+                                        const isInWishlist = uid ? wishlistselect?.some(
                                             (v1) => v1.variant_id === selectedVariant._id
-                                        );
+                                        ) : '';
 
                                         return (
                                             <SwiperSlide>
@@ -892,8 +893,6 @@ function Homepage() {
                                                             }
                                                         }}
                                                     >
-
-
                                                         {isInWishlist ?
                                                             <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handledelWishlistClick(v?._id, selectedVariant?._id) }}>
                                                                 <FavoriteIcon sx={{
@@ -1297,12 +1296,12 @@ function Homepage() {
                                             // const rate = r / v.rating.length;
                                             // console.log(rate)
 
-                                            const wishlistselect = wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)
+                                            const wishlistselect = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)) : ''
                                             console.log("wishlistselect", wishlistselect);
 
-                                            const isInWishlist = wishlistselect?.some(
+                                            const isInWishlist = uid ? wishlistselect?.some(
                                                 (v1) => v1.variant_id === selectedVariant._id
-                                            );
+                                            ) : '';
                                             console.log("wishlistvarient", isInWishlist)
                                             return (
                                                 <SwiperSlide key={v.id}>
