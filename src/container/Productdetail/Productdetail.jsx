@@ -435,7 +435,7 @@ function Productdetail() {
                                     <button className="count-btn" style={{ borderLeft: 'solid 1px rgb(172, 167, 167)', backgroundColor: active === 'increse' ? '#DB4444' : 'white', color: active === 'increse' ? 'white' : 'black' }} onClick={handleIncrese}>+</button>
                                 </Box>
 
-                                <NavLink to={`/checkout/${detailproduct?._id}/${selectedVariant?._id}`}> <buton className="my-custome-button">Buy Now</buton></NavLink>
+                                <NavLink to={uid ? `/checkout/${detailproduct?._id}/${selectedVariant?._id}/?${selectedVariant?._id}=${counter}` : '/signup'}> <buton className="my-custome-button">Buy Now</buton></NavLink>
 
                                 {
                                     isInWishlist1 ?

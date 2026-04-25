@@ -2,7 +2,7 @@ import { Box, Breadcrumbs, Checkbox, Divider, FormControl, FormControlLabel, For
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
 import { useGetUserQuery } from "../../redux/api/user.api";
@@ -21,6 +21,13 @@ function Checkout() {
 
     const { id, vid, cid } = useParams();
     console.log(id, vid)
+
+    const quantity = {};
+    const [searchParams, setSearchParams] = useSearchParams();
+    //const getquery = searchParams
+    searchParams.forEach((v, k) => quantity[k] = Number(v))
+    console.log(quantity)
+
 
     useEffect(() => {
         fetch("http://localhost:3000/cart")
@@ -58,7 +65,14 @@ function Checkout() {
         detailproduct = data?.data?.find((v) => v._id === id)
         console.log(detailproduct)
 
-        varient = detailproduct?.variants?.find((v) => v._id === vid)
+        const uvarient = detailproduct?.variants?.find((v) => v._id === vid)
+
+        if (!uvarient) return;
+
+        varient = {
+            ...uvarient,
+            qty:quantity[uvarient._id]
+        }
         console.log(varient)
     } else if (cid) {
         cartp = cartdatafilter?.products?.map((cartItem) => {
@@ -79,7 +93,7 @@ function Checkout() {
             return {
                 ...product,
                 selectedVariant,
-                qty: cartquan?.[variantId] ?? 1
+                qty: quantity?.[variantId] ?? 1
             };
         }).filter(Boolean);
         console.log("cartp", cartp)
@@ -101,9 +115,11 @@ function Checkout() {
         comname: string(),
         address: string().required(),
         secondaddress: string(),
+        pincode:string().matches(/^\d+$/, "pincode only in numbers").length(6, "Pincode must be exactly 6 digits").required(),
         city: string().required(),
+        state:string().required(),
         email: string().required(),
-        phoneno: number().max(10,'Phone number must be 10 digit').min(10,'Phone number must be 10 digit').required(),
+        phoneno: number().max(10, 'Phone number must be 10 digit').min(10, 'Phone number must be 10 digit').required(),
         // message: string().required()
     })
 
@@ -113,14 +129,16 @@ function Checkout() {
             comname: '',
             address: udata?.data?.address || '',
             secondaddress: '',
+            pincode:'',
             city: '',
+            state:'',
             email: udata?.data?.email || '',
             phoneno: ''
         },
         enableReinitialize: true,
         validationSchema: contactschema,
         onSubmit: async (values, { resetForm }) => {
-            console.log("values",values)
+            console.log("values", values)
 
             resetForm();
         },
@@ -174,7 +192,7 @@ function Checkout() {
                                     <TextField
                                         id="fname"
                                         name="fname"
-                                        value={udata?.data?.name} 
+                                        value={udata?.data?.name}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
                                         onChange={handleChange}
@@ -220,6 +238,19 @@ function Checkout() {
                                 </FormControl>
 
                                 <FormControl className="billing-textfiled">
+                                    <FormLabel htmlFor="component-outlined" className="input-label">Pincode<span>*</span></FormLabel>
+                                    <TextField
+                                        id="pincode"
+                                        name="pincode"
+                                        variant="filled"
+                                        InputProps={{ disableUnderline: true }}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.pincode && touched.pincode ? <span>**{errors.pincode}</span> : ""}
+                                </FormControl>
+
+                                <FormControl className="billing-textfiled">
                                     <FormLabel htmlFor="component-outlined" className="input-label">Town/City<span>*</span></FormLabel>
                                     <TextField
                                         id="city"
@@ -230,6 +261,20 @@ function Checkout() {
                                         onBlur={handleBlur}
                                     />
                                     {errors.city && touched.city ? <span>**{errors.city}</span> : ""}
+                                </FormControl>
+
+                                
+                                <FormControl className="billing-textfiled">
+                                    <FormLabel htmlFor="component-outlined" className="input-label">State<span>*</span></FormLabel>
+                                    <TextField
+                                        id="state"
+                                        name="state"
+                                        variant="filled"
+                                        InputProps={{ disableUnderline: true }}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.state && touched.state ? <span>**{errors.state}</span> : ""}
                                 </FormControl>
 
                                 <FormControl className="billing-textfiled">
@@ -268,7 +313,7 @@ function Checkout() {
                             </form>
                         </Grid>
 
-                        <Grid size={{ xs: 12, sm: 10, md: 6 }} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Grid size={{ xs: 12, sm: 10, md: 6 }} sx={{ marginTop:'50px' }}>
                             <Box >
                                 <Box sx={{ maxWidth: '425px' }} className="checkout-box">
                                     {
@@ -278,7 +323,7 @@ function Checkout() {
                                                     <img src={IMG_URL + varient.images?.[0]} alt="" width='50' />
                                                     <Typography className="checkout-typo">{detailproduct.name}</Typography>
                                                 </Box>
-                                                <Typography className="checkout-typo">₹{varient.isFlashSale ? varient.flashPrice : detailproduct.price}</Typography>
+                                                <Typography className="checkout-typo">₹{(varient.isFlashSale ? varient.flashPrice : detailproduct.price) * varient.qty}</Typography>
                                             </Box>)
                                             :
                                             cartp?.length > 0 &&
@@ -290,7 +335,7 @@ function Checkout() {
                                                             <img src={IMG_URL + v?.selectedVariant.images?.[0]} alt="" width='50' />
                                                             <Typography className="checkout-typo">{v?.name}</Typography>
                                                         </Box>
-                                                        <Typography className="checkout-typo">₹{v?.selectedVariant?.isFlashSale ? v.selectedVariant?.flashPrice : v.price}</Typography>
+                                                        <Typography className="checkout-typo">₹{(v?.selectedVariant?.isFlashSale ? v.selectedVariant?.flashPrice : v.price)*v.qty }</Typography>
                                                     </Box>
                                                 )
                                             })
@@ -306,7 +351,7 @@ function Checkout() {
                                         <Typography className="checkout-typo">
                                             ₹{
                                                 varient !== '' ?
-                                                    varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price
+                                                    (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
                                                     : cartp !== '' &&
                                                     totalprice
                                             }
@@ -327,7 +372,7 @@ function Checkout() {
                                         <Typography className="checkout-typo">Total:</Typography>
                                         <Typography className="checkout-typo">₹{
                                             varient !== '' ?
-                                                varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price
+                                                (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
                                                 : cartp !== '' &&
                                                 totalprice
                                         }</Typography>

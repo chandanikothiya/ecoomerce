@@ -244,6 +244,11 @@ function Cart() {
     }, 0)
     console.log('totalprice', totalprice, cartquan,)
     console.log('totalprice', data?.data?.body?._id)
+
+
+    const query = Object.keys(cartquan).map((v) => v + '=' + cartquan[v]).join('&')
+    console.log("query",query)
+
     return (
         <main>
             <section id="cart">
@@ -460,7 +465,7 @@ function Cart() {
                                 {
                                     console.log("cid", data?.data?.body?._id)
                                 }
-                                <NavLink to={`/checkout/${data?.body?._id}`}>
+                                <NavLink to={`/checkout/${data?.body?._id}/?${query}`}>
                                     <button className="my-custome-button cardototal-btn" >Procees to checkout</button>
                                 </NavLink>
                             </Box>
