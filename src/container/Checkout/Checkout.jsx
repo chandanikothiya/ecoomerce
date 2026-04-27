@@ -110,6 +110,11 @@ function Checkout() {
     const { data: udata, error: uerror, isLoading: uisloading } = useGetUserQuery(uid)
     console.log(udata?.data)
 
+
+    const handleordersubmit = (values) => {
+        console.log("values",values)
+    }
+
     const contactschema = object({
         fname: string().required(),
         comname: string(),
@@ -119,7 +124,7 @@ function Checkout() {
         city: string().required(),
         state:string().required(),
         email: string().required(),
-        phoneno: number().max(10, 'Phone number must be 10 digit').min(10, 'Phone number must be 10 digit').required(),
+        phoneno: string().required().matches(/^\+?[1-9]\d{9,14}$/,'invalid phone'),
         // message: string().required()
     })
 
@@ -139,7 +144,7 @@ function Checkout() {
         validationSchema: contactschema,
         onSubmit: async (values, { resetForm }) => {
             console.log("values", values)
-
+            handleordersubmit(values);
             resetForm();
         },
     });
