@@ -26,6 +26,14 @@ export const paymentApi = createApi({
             }),
             invalidatesTags: ['payment'],
         }),
+         createPayment:builder.mutation({
+            query:(data) => ({
+                url:'/payment/',
+                method:'post',
+                body:data
+            }),
+            invalidatesTags: ['payment'],
+        }),
         updatePaymentStatus:builder.mutation({
             query:(id,data) => ({
                 url:`/payment/updatepaymentstatus/${id}`,
@@ -37,4 +45,4 @@ export const paymentApi = createApi({
     })
 })
 
-export const {useGetPaymentQuery,useGetPaymentOnOrderQuery,useAddPaymentMutation,useUpdatePaymentStatusMutation} = paymentApi;
+export const {useGetPaymentQuery,useGetPaymentOnOrderQuery,useCreatePaymentMutation,useAddPaymentMutation,useUpdatePaymentStatusMutation} = paymentApi;

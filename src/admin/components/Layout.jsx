@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -23,6 +23,7 @@ import { BiSolidDashboard } from "react-icons/bi";
 import { FaBoxOpen } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 
 const drawerWidth = 240;
 
@@ -74,7 +75,7 @@ const AppBar = styled(MuiAppBar, {
                     easing: theme.transitions.easing.sharp,
                     duration: theme.transitions.duration.enteringScreen,
                 }),
-                
+
             },
         },
     ],
@@ -119,17 +120,18 @@ function Layout({ children }) {
         setOpen(false);
     };
 
-     const menulist = [
+    const menulist = [
         { label: "Dashboard", icone: <BiSolidDashboard />, to: "/admin/dashboard" },
         { label: "Category", icone: <BiSolidCategory />, to: "/admin/category" },
         { label: "Products", icone: <FaBoxOpen />, to: "/admin/product" },
         { label: "Contact/Messages", icone: <ContactMailIcon />, to: "/admin/contact" },
+        { label: "Order", icone: <MarkChatReadIcon />, to: "/admin/order" },
     ]
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} sx={{backgroundColor:'#DB4444'}}>
+            <AppBar position="fixed" open={open} sx={{ backgroundColor: '#DB4444' }}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -159,7 +161,7 @@ function Layout({ children }) {
                 <Divider />
                 <List>
                     {menulist.map((v, index) => (
-                        <ListItem key={index} disablePadding sx={{ display: 'block',fontSize:'20px' }} component={NavLink} to={v.to}>
+                        <ListItem key={index} disablePadding sx={{ display: 'block', fontSize: '20px' }} component={NavLink} to={v.to}>
                             <ListItemButton
                                 sx={[
                                     {
@@ -209,11 +211,11 @@ function Layout({ children }) {
                     ))}
                 </List>
 
-               
+
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, pl: 3,mt:-4 }}>
+            <Box component="main" sx={{ flexGrow: 1, pl: 3, mt: -4 }}>
                 {/* <DrawerHeader /> */}
-                
+
                 {children}
             </Box>
         </Box>

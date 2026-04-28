@@ -8,6 +8,7 @@ import { wishlistApi } from "./api/wishlist.api"
 import { contactApi } from "./api/contact.api"
 import { orderApi } from "./api/order.api"
 import { paymentApi } from "./api/payment.api"
+import { addressApi } from "./api/address.api"
 
 
 export const storeconfig = () => {
@@ -21,7 +22,8 @@ export const storeconfig = () => {
             [wishlistApi.reducerPath]:wishlistApi.reducer,
             [contactApi.reducerPath]:contactApi.reducer,
             [orderApi.reducerPath]:orderApi.reducer,
-            [paymentApi.reducerPath]:paymentApi.reducerPath
+            [paymentApi.reducerPath]:paymentApi.reducer,
+            [addressApi.reducerPath]:addressApi.reducer,
         },
          middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
@@ -32,7 +34,8 @@ export const storeconfig = () => {
                 wishlistApi.middleware,
                 contactApi.middleware,
                 orderApi.middleware,
-                paymentApi.middleware
+                paymentApi.middleware,
+                addressApi.middleware
             ),
     })
 

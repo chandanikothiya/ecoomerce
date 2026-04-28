@@ -1,7 +1,7 @@
 import { Box, Breadcrumbs, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, OutlinedInput, Radio, RadioGroup, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
@@ -11,10 +11,15 @@ import { useGetallWishlistQuery } from "../../redux/api/wishlist.api";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
 import { number, object, string } from "yup";
 import { useFormik } from "formik";
+import { useAddOrderMutation } from "../../redux/api/order.api";
+import { useAddAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from "../../redux/api/address.api";
+import { useCreatePaymentMutation } from "../../redux/api/payment.api";
+import { load } from "@cashfreepayments/cashfree-js";
 
 function Checkout() {
 
     const [cart, setCart] = useState([]);
+    const [sessionid, setSessionId] = useState();
     const [allproduct, setAllproduct] = useState([])
     const [poption, setPoption] = useState('cashondelivery');
     const [cartquan, setCartquan] = useState({})
@@ -27,7 +32,6 @@ function Checkout() {
     //const getquery = searchParams
     searchParams.forEach((v, k) => quantity[k] = Number(v))
     console.log(quantity)
-
 
     useEffect(() => {
         fetch("http://localhost:3000/cart")
@@ -45,7 +49,10 @@ function Checkout() {
     const handleChangeo = (e) => {
         setPoption(e.target.value)
     }
-    console.log(poption)
+    console.log("poption", poption)
+
+
+
 
     const { data, error, isLoading } = useGetProductQuery();
     console.log(data?.data);
@@ -67,13 +74,15 @@ function Checkout() {
 
         const uvarient = detailproduct?.variants?.find((v) => v._id === vid)
 
-        if (!uvarient) return;
-
-        varient = {
-            ...uvarient,
-            qty:quantity[uvarient._id]
+        if (uvarient) {
+            varient = {
+                ...uvarient,
+                qty: quantity[uvarient._id]
+            };
         }
         console.log(varient)
+
+        totalprice = (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
     } else if (cid) {
         cartp = cartdatafilter?.products?.map((cartItem) => {
             console.log(cartItem)
@@ -106,13 +115,140 @@ function Checkout() {
 
     }
 
-
     const { data: udata, error: uerror, isLoading: uisloading } = useGetUserQuery(uid)
     console.log(udata?.data)
+    const [addorder] = useAddOrderMutation();
+    const [addaddress] = useAddAddressMutation();
+    const [updateaddress] = useUpdateAddressMutation();
+    const { data: addressdata, error: addresserror, isLoading: addressisloading } = useGetAddressQuery(uid);
+    console.log("addressdata", addressdata)
+
+    // cashfree start
+    // let cashfree;
+    const cashfree = useRef(null);
+    var initializeSDK = async function () {
+        cashfree.current = await load({
+            mode: "sandbox",
+        });
+    };
+
+
+    // const payemntobject = {
+    //     "orderamt": totalprice,
+    //     "customer_id": udata?.data?._id,
+    //     "customer_name":udata?.data?.name,
+    //     "customer_email": udata?.data?.email,
+    // }
+
+    const [createpayemnt] = useCreatePaymentMutation();
+
+    useEffect(() => {
+
+        const getresponse = async () => {
+            try {
+
+                const paymentObject = {
+                    orderamt: totalprice,
+                    customer_id: udata?.data?._id,
+                    customer_name: udata?.data?.name,
+                    customer_email: udata?.data?.email,
+                    customer_phone: "9999999999"
+                };
+
+                const response = await createpayemnt(paymentObject).unwrap();
+
+                console.log("response", response);
+
+                setSessionId(response?.payment_session_id);
+
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getresponse();
+        initializeSDK();
+    }, [udata, totalprice])
+    console.log(sessionid)
+
+    const doPayment = async () => {
+        if (!cashfree.current || !sessionid) {
+            console.log("Cashfree not loaded");
+            return;
+        }
+        console.log("ok")
+        let checkoutOptions = {
+            paymentSessionId: sessionid,
+            redirectTarget: "_self",
+        };
+        await cashfree.current.checkout(checkoutOptions);
+    };
+    // cashfree end
 
 
     const handleordersubmit = (values) => {
-        console.log("values",values)
+        console.log("values", values, cartp, varient, detailproduct)
+
+        const products = [];
+        //let totalamount;
+
+        if (cartp?.length > 0) {
+            cartp?.forEach((v) => {
+                products.push({
+                    "product_id": v._id, "variant_id": v.selectedVariant._id, "quantity":
+                        v.qty, "price": v.selectedVariant.isFlashSale ? v.selectedVariant.flashPrice : v.price
+                })
+            })
+            // totalamount = totalprice;
+
+        } else if (varient !== '') {
+            products.push({
+                "product_id": detailproduct._id, "variant_id": varient._id, "quantity":
+                    varient.qty, "price": varient.isFlashSale ? varient.flashPrice : detailproduct.price
+            })
+            //totalamount = (products[0].price) * varient.qty;
+        }
+
+        // /(varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
+        console.log("values", products)
+        const { fname, email, phoneno, ...address } = values;
+        console.log("values", address)
+
+        const obj = {
+            "user_id": uid,
+            "products": products,
+            "totalamount": totalprice,
+            "address": { ...address, "streetaddress": address.address },
+            "phoneno": phoneno
+        }
+        console.log("values", obj)
+        addorder(obj);
+
+        console.log("isAddressExist")
+
+        const isAddressExist = addressdata?.data?.streetaddress === values.address &&
+            addressdata?.data?.city === values.city &&
+            addressdata?.data?.state === values.state &&
+            addressdata?.data?.pincode === values.pincode
+
+
+        console.log("isAddressExist", isAddressExist)
+
+        if (!isAddressExist) {
+            addaddress({ ...address, "user_id": uid, "streetaddress": address.address })
+        } else {
+            const needupdate = addressdata?.data?.companyname !== values.comname || addressdata?.data?.aptfloor !== values.aptfloor
+            console.log("needupdate", needupdate)
+            if (needupdate) {
+                console.log("address", addressdata?.data?._id)
+                updateaddress({ data: address, id: addressdata?.data?._id })
+            }
+        }
+
+        console.log("poption", poption)
+        if (poption === 'bank') {
+            doPayment();
+        }
     }
 
     const contactschema = object({
@@ -120,23 +256,23 @@ function Checkout() {
         comname: string(),
         address: string().required(),
         secondaddress: string(),
-        pincode:string().matches(/^\d+$/, "pincode only in numbers").length(6, "Pincode must be exactly 6 digits").required(),
+        pincode: string().matches(/^\d+$/, "pincode only in numbers").length(6, "Pincode must be exactly 6 digits").required(),
         city: string().required(),
-        state:string().required(),
+        state: string().required(),
         email: string().required(),
-        phoneno: string().required().matches(/^\+?[1-9]\d{9,14}$/,'invalid phone'),
+        phoneno: string().required().matches(/^\+?[1-9]\d{9,14}$/, 'invalid phone'),
         // message: string().required()
     })
 
     const formik = useFormik({
         initialValues: {
             fname: udata?.data?.name || '',
-            comname: '',
-            address: udata?.data?.address || '',
-            secondaddress: '',
-            pincode:'',
-            city: '',
-            state:'',
+            companyname: addressdata?.data?.companyname || '',
+            address: addressdata?.data?.streetaddress || '',
+            aptfloor: addressdata?.data?.aptfloor || '',
+            pincode: addressdata?.data?.pincode || '',
+            city: addressdata?.data?.city || '',
+            state: addressdata?.data?.state || '',
             email: udata?.data?.email || '',
             phoneno: ''
         },
@@ -151,6 +287,8 @@ function Checkout() {
 
     const { handleSubmit, handleChange, handleBlur, errors, touched, values } = formik;
     console.log(errors, touched)
+
+
 
     return (
         <main>
@@ -209,10 +347,13 @@ function Checkout() {
                                 <FormControl className="billing-textfiled">
                                     <FormLabel htmlFor="component-outlined" className="input-label">Company Name</FormLabel>
                                     <TextField
-                                        id="comname"
-                                        name="comname"
+                                        id="companyname"
+                                        name="companyname"
+                                        value={values.companyname}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                     />
                                 </FormControl>
 
@@ -222,7 +363,7 @@ function Checkout() {
                                     <TextField
                                         id="address"
                                         name="address"
-                                        value={udata?.data?.address}
+                                        value={values.address}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
                                         onChange={handleChange}
@@ -237,8 +378,11 @@ function Checkout() {
                                     <TextField
                                         id="secondaddress"
                                         name="secondaddress"
+                                        value={values.aptfloor}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                     />
                                 </FormControl>
 
@@ -247,6 +391,7 @@ function Checkout() {
                                     <TextField
                                         id="pincode"
                                         name="pincode"
+                                        value={values.pincode}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
                                         onChange={handleChange}
@@ -260,6 +405,7 @@ function Checkout() {
                                     <TextField
                                         id="city"
                                         name="city"
+                                        value={values.city}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
                                         onChange={handleChange}
@@ -268,12 +414,13 @@ function Checkout() {
                                     {errors.city && touched.city ? <span>**{errors.city}</span> : ""}
                                 </FormControl>
 
-                                
+
                                 <FormControl className="billing-textfiled">
                                     <FormLabel htmlFor="component-outlined" className="input-label">State<span>*</span></FormLabel>
                                     <TextField
                                         id="state"
                                         name="state"
+                                        value={values.state}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
                                         onChange={handleChange}
@@ -287,6 +434,7 @@ function Checkout() {
                                     <TextField
                                         id="phoneno"
                                         name="phoneno"
+                                        value={values.phoneno}
                                         variant="filled"
                                         InputProps={{ disableUnderline: true }}
                                         onChange={handleChange}
@@ -318,7 +466,7 @@ function Checkout() {
                             </form>
                         </Grid>
 
-                        <Grid size={{ xs: 12, sm: 10, md: 6 }} sx={{ marginTop:'50px' }}>
+                        <Grid size={{ xs: 12, sm: 10, md: 6 }} sx={{ marginTop: '50px' }}>
                             <Box >
                                 <Box sx={{ maxWidth: '425px' }} className="checkout-box">
                                     {
@@ -340,7 +488,7 @@ function Checkout() {
                                                             <img src={IMG_URL + v?.selectedVariant.images?.[0]} alt="" width='50' />
                                                             <Typography className="checkout-typo">{v?.name}</Typography>
                                                         </Box>
-                                                        <Typography className="checkout-typo">₹{(v?.selectedVariant?.isFlashSale ? v.selectedVariant?.flashPrice : v.price)*v.qty }</Typography>
+                                                        <Typography className="checkout-typo">₹{(v?.selectedVariant?.isFlashSale ? v.selectedVariant?.flashPrice : v.price) * v.qty}</Typography>
                                                     </Box>
                                                 )
                                             })
@@ -376,10 +524,11 @@ function Checkout() {
                                     <Box className='cart-total'>
                                         <Typography className="checkout-typo">Total:</Typography>
                                         <Typography className="checkout-typo">₹{
-                                            varient !== '' ?
-                                                (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
-                                                : cartp !== '' &&
-                                                totalprice
+                                            // varient !== '' ?
+                                            //     (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
+                                            //     : cartp !== '' &&
+                                            //     totalprice
+                                            totalprice
                                         }</Typography>
                                     </Box>
                                 </Box>
@@ -411,9 +560,7 @@ function Checkout() {
                                                 <img src="../../../public/assets/images/payment_cards/Nagad.png" alt="" />
                                             </Box>
                                         </Box>
-
                                         <FormControlLabel value="cashondelivery" control={<Radio />} label="Cash on delivery" />
-
                                     </RadioGroup>
                                 </FormControl>
 
@@ -424,7 +571,7 @@ function Checkout() {
                                     </Box>
                                 </form>
 
-                                <button className="my-custome-button place-order-btn" onClick={handleSubmit}>Place Order</button>
+                                <button type="submit" className="my-custome-button place-order-btn" onClick={handleSubmit}>Place Order</button>
                             </Box>
 
                         </Grid>
