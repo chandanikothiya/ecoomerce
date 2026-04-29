@@ -22,8 +22,7 @@ function Checkout() {
     const [sessionid, setSessionId] = useState();
     const [allproduct, setAllproduct] = useState([])
     const [poption, setPoption] = useState('cashondelivery');
-    const [cartquan, setCartquan] = useState({})
-
+    const [cartquan, setCartquan] = useState({});
     const { id, vid, cid } = useParams();
     console.log(id, vid)
 
@@ -50,9 +49,6 @@ function Checkout() {
         setPoption(e.target.value)
     }
     console.log("poption", poption)
-
-
-
 
     const { data, error, isLoading } = useGetProductQuery();
     console.log(data?.data);
@@ -132,53 +128,21 @@ function Checkout() {
         });
     };
 
-
-    // const payemntobject = {
-    //     "orderamt": totalprice,
-    //     "customer_id": udata?.data?._id,
-    //     "customer_name":udata?.data?.name,
-    //     "customer_email": udata?.data?.email,
-    // }
-
     const [createpayemnt] = useCreatePaymentMutation();
 
     useEffect(() => {
-
-        const getresponse = async () => {
-            try {
-
-                const paymentObject = {
-                    orderamt: totalprice,
-                    customer_id: udata?.data?._id,
-                    customer_name: udata?.data?.name,
-                    customer_email: udata?.data?.email,
-                    customer_phone: "9999999999"
-                };
-
-                const response = await createpayemnt(paymentObject).unwrap();
-
-                console.log("response", response);
-
-                setSessionId(response?.payment_session_id);
-
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        getresponse();
         initializeSDK();
-    }, [udata, totalprice])
+    }, [])
     console.log(sessionid)
 
-    const doPayment = async () => {
-        if (!cashfree.current || !sessionid) {
+    const doPayment = async (paymentSessionId) => {
+        if (!cashfree.current || !paymentSessionId) {
             console.log("Cashfree not loaded");
             return;
         }
         console.log("ok")
         let checkoutOptions = {
-            paymentSessionId: sessionid,
+            paymentSessionId: paymentSessionId,
             redirectTarget: "_self",
         };
         await cashfree.current.checkout(checkoutOptions);
@@ -186,7 +150,7 @@ function Checkout() {
     // cashfree end
 
 
-    const handleordersubmit = (values) => {
+    const handleordersubmit = async (values) => {
         console.log("values", values, cartp, varient, detailproduct)
 
         const products = [];
@@ -222,9 +186,31 @@ function Checkout() {
             "phoneno": phoneno
         }
         console.log("values", obj)
-        addorder(obj);
+        const orderresponse = await addorder(obj);
+        console.log("orderresponse", orderresponse)
+
+
+        const paymentObject = {
+            order_id: orderresponse?.data?.data?._id,
+            orderamt: totalprice,
+            customer_id: udata?.data?._id,
+            customer_name: udata?.data?.name,
+            customer_email: udata?.data?.email,
+            customer_phone: "9999999999"
+        };
+
+        const response = await createpayemnt(paymentObject).unwrap();
+
+        console.log("createresponse", response);
+
+        setSessionId(response?.payment_session_id);
+
+         if (poption === 'bank') {
+           await doPayment(response?.payment_session_id);
+        }
 
         console.log("isAddressExist")
+
 
         const isAddressExist = addressdata?.data?.streetaddress === values.address &&
             addressdata?.data?.city === values.city &&
@@ -245,10 +231,8 @@ function Checkout() {
             }
         }
 
-        console.log("poption", poption)
-        if (poption === 'bank') {
-            doPayment();
-        }
+        //console.log("poption", poption)
+       
     }
 
     const contactschema = object({
