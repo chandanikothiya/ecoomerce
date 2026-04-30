@@ -47,10 +47,16 @@ export const paymentApi = createApi({
                 body: DataTransferItemList
             }),
             invalidatesTags: ['payment'],
-        })
+        }),
+        // getPdf: builder.query({
+        //     query: (id) => ({
+        //         url: `/invoice/${id}`
+        //     }),
+        //     invalidatesTags: ['payment'],
+        // }),
     })
 })
 
-export const { useGetPaymentQuery, useGetPaymentOnOrderQuery, 
-    useCreatePaymentMutation, useAddPaymentMutation, 
-    useUpdatePaymentStatusMutation,useGetCashfreePaymentQuery } = paymentApi;
+export const { useGetPaymentQuery, useGetPaymentOnOrderQuery,
+    useCreatePaymentMutation, useAddPaymentMutation,
+    useUpdatePaymentStatusMutation, useGetCashfreePaymentQuery,useGetPdfQuery } = paymentApi;

@@ -17,16 +17,21 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import Myuploadfile from "../../components/Myuploadfile";
 import { useDeleteContactMutation, useGetContactQuery } from "../../../redux/api/contact.api";
+import { useGetAllOrderQuery } from "../../../redux/api/order.api";
+import { useGetUserQuery } from "../../../redux/api/user.api";
+import { useAddProductMutation, useGetProductQuery } from "../../../redux/api/product.api";
 
 
 function Order() {
 
     const [open, setOpen] = React.useState(false);
 
-    const { data, error, isLoading } = useGetContactQuery();
-    console.log(data)
+    const { data, error, isLoading } = useGetAllOrderQuery();
+    //const {data:udata,error:uerror,isLoading:uisloading} = useGetUserQuery(data?.data?.user_id)
+    const { data: pdata, error: perror, isLoading: pislaoding } = useGetProductQuery();
+    console.log("pdata", data, pdata)
     const [deletecontact] = useDeleteContactMutation();
-   
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -50,20 +55,20 @@ function Order() {
 
     })
 
-    let pdata = [
-        { value: '', label: 'Select Parent Category' }
-    ]
+    // let pdata = [
+    //     { value: '', label: 'Select Parent Category' }
+    // ]
 
 
-    data?.data?.map((v, i) => {
-        console.log(v?._id)
-        pdata.push({ value: v?._id, label: v?.name })
-    })
+    // data?.data?.map((v, i) => {
+    //     console.log(v?._id)
+    //     pdata.push({ value: v?._id, label: v?.name })
+    // })
 
     const handlesubmit = (values) => {
         console.log("values", values)
         if (Object.keys(updatedata).length > 0) {
-            console.log("updateval",values)
+            console.log("updateval", values)
             updateCategory(values)
         } else {
             addcategory(values)
@@ -71,35 +76,71 @@ function Order() {
 
     }
 
- 
-
     const handledelete = (id) => {
-        console.log("id",id)
+        console.log("id", id)
         deletecontact(id);
     }
 
     const columns = [
         { field: 'name', headerName: 'name', width: 250 },
         {
-            field: 'email',
-            headerName: 'email',
+            headerName: 'products',
             width: 300,
             editable: true,
+            renderCell: (params) => (
+                <>
+                    {
+                        params?.row?.products?.map((v) => {
+                            console.log(v)
+                            const name = pdata?.data?.filter((v1) => v1._id === v.product_id)
+                            console.log("name", name[0].name)
+                            return (
+                                <Typography sx={{margin:'auto 0'}}>{name[0].name}</Typography>
+                            )
+                        })
+                    }
+                </>
+            )
         },
         {
-            field: 'phone',
-            headerName: 'phone No',
-            width:200,
+            field: 'products',
+            headerName: 'price',
+            width: 300,
+            editable: true,
+            renderCell: (params) => (
+                <>
+                    {
+                        params?.row?.products?.map((v) => {
+                            
+                            return (
+                                <Typography>{v.price}</Typography>
+                            )
+                        })
+                    }
+                </>
+            )
+        },
+        {
+            field: 'totalamount',
+            headerName: 'totalamount',
+            width: 300,
             editable: true,
            
         },
-         {
-            field: 'message',
-            headerName: 'message',
-            width: 350,
-            editable: true,
-           
-        },
+        // {
+        //     field: 'phone',
+        //     headerName: 'phone No',
+        //     width: 200,
+        //     editable: true,
+
+        // },
+        // {
+        //     field: 'message',
+        //     headerName: 'message',
+        //     width: 350,
+        //     editable: true,
+
+        // },
         {
             field: '',
             headerName: 'Action',
@@ -124,7 +165,7 @@ function Order() {
         <>
             <div className="container">
 
-            <Typography variant="h5" sx={{marginLeft:'-20px',fontSize:'30px'}}>Users Message</Typography>
+                <Typography variant="h5" sx={{ marginLeft: '-20px', fontSize: '30px' }}>Users Message</Typography>
                 <DataGrid
                     rows={data?.data}
                     getRowId={(rows) => rows?._id || Math.random()}
@@ -132,15 +173,15 @@ function Order() {
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize:10,
+                                pageSize: 10,
                             },
                         },
                     }}
-                    pageSizeOptions={[5,10,15,20]}
+                    pageSizeOptions={[5, 10, 15, 20]}
                     checkboxSelection
                     disableRowSelectionOnClick
                     sx={{
-                        marginTop: 2,marginBottom:1,
+                        marginTop: 2, marginBottom: 1,
                         '& .MuiDataGrid-columnSeparator': {
                             display: 'none',
                         },

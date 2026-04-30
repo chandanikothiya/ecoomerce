@@ -49,7 +49,7 @@ function Header() {
 
     if (localStorage.getItem('loginid')) {
         id = localStorage.getItem('loginid');
-        console.log("id",id)
+        console.log("loginid",id)
     }
 
     //cart count
@@ -104,7 +104,7 @@ function Header() {
     const handleLogout = async () => {
 
         const id = localStorage.getItem('loginid')
-        console.log("id", id)
+        console.log("loginid", id)
 
 
         if (id) {
