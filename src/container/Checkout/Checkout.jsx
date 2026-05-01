@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, OutlinedInput, Radio, RadioGroup, TextField } from "@mui/material";
+import { Box, Breadcrumbs, Checkbox, Divider, FormControl, FormControlLabel, FormLabel, IconButton, OutlinedInput, Radio, RadioGroup, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useRef, useState } from "react";
@@ -15,6 +15,10 @@ import { useAddOrderMutation } from "../../redux/api/order.api";
 import { useAddAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from "../../redux/api/address.api";
 import { useCreatePaymentMutation } from "../../redux/api/payment.api";
 import { load } from "@cashfreepayments/cashfree-js";
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import OtherHousesOutlinedIcon from '@mui/icons-material/OtherHousesOutlined';
+
 
 function Checkout() {
 
@@ -205,8 +209,8 @@ function Checkout() {
 
         setSessionId(response?.payment_session_id);
 
-         if (poption === 'bank') {
-           await doPayment(response?.payment_session_id);
+        if (poption === 'bank') {
+            await doPayment(response?.payment_session_id);
         }
 
         console.log("isAddressExist")
@@ -232,7 +236,7 @@ function Checkout() {
         }
 
         //console.log("poption", poption)
-       
+
     }
 
     const contactschema = object({
@@ -276,7 +280,16 @@ function Checkout() {
 
     return (
         <main>
-            <section id="billing">
+            <section id="billing" style={{ position: 'relative' }}>
+                <Stack sx={{ width: '400px', position: 'absolute', top: '-6%', right: 0, height: '200px' }} spacing={2}>
+                    <Alert variant="filled" icon={false} severity="success" sx={{ width: '400px', height: '100%' }}>
+                        <Box sx={{ padding: '30px 0'}}>
+                            <IconButton aria-label="deleLocalShipping"  sx={{backgroundColor:' rgba(255, 255, 255, 0.356)'}}>
+                                <OtherHousesOutlinedIcon sx={{backgroundColor:'white',borderRadius:'50%',}}/>
+                            </IconButton>
+                        </Box>
+                    </Alert>
+                </Stack>
                 <div className="container">
                     {/* <Typography><span style={{ color: 'grey' }}>Home / My Account / Product / View Cart /</span> Contact</Typography> */}
 
@@ -307,7 +320,7 @@ function Checkout() {
                         </Link> */}
                         <Typography sx={{ color: 'text.primary' }}>CheckOut</Typography>
                     </Breadcrumbs>
-
+                    
                     <Typography variant="h4" sx={{ fontSize: { xs: '25px', sm: "28px", md: '36px' }, mt: 8, mb: 2 }} >Billing Details</Typography>
 
                     <Grid container columnSpacing={{ xs: 0, sm: 5, md: 5, lg: 10, xl: 18 }} justifyContent='center'>
@@ -560,7 +573,6 @@ function Checkout() {
 
                         </Grid>
                     </Grid>
-
                 </div>
             </section>
         </main>

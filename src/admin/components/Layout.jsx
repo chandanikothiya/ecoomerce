@@ -24,6 +24,7 @@ import { FaBoxOpen } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const drawerWidth = 240;
 
@@ -126,6 +127,7 @@ function Layout({ children }) {
         { label: "Products", icone: <FaBoxOpen />, to: "/admin/product" },
         { label: "Contact/Messages", icone: <ContactMailIcon />, to: "/admin/contact" },
         { label: "Order", icone: <MarkChatReadIcon />, to: "/admin/order" },
+         { label: "Payment", icone: <PaymentIcon />, to: "/admin/order" },
     ]
 
     return (

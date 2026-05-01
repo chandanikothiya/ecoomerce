@@ -567,9 +567,6 @@ hr {
     width: 100%;
 }
 
-
-
-
 /* aboutus */
 
 .siteinfo-card {
@@ -930,4 +927,8 @@ hr {
     mix-blend-mode: multiply;
     z-index: 999;
     object-fit: contain;
+}
+
+.orderdata{
+    color: rgb(128, 128, 128);
 }
