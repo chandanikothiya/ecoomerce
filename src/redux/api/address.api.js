@@ -25,16 +25,16 @@ export const addressApi = createApi({
             }),
             invalidatesTags: ['address'],
         }),
-        updateAddress: builder.mutation({
-            query: ({data,id}) => ({
-                url: `/adress/updateaddress/${id}`,
+        deleteAddress: builder.mutation({
+            query: (data) => ({
+                url: `/adress/updatecoupon/${data.id}`,
                 method: 'put',
                 body:data
             }),
             invalidatesTags: ['address'],
         }),
-        
-         deleteAddress: builder.mutation({
+
+        deleteAddress: builder.mutation({
             query: (id) => ({
                 url: `/adress/addaddress`,
                 method: 'delete'

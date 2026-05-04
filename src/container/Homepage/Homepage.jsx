@@ -763,7 +763,6 @@ function Homepage() {
                                                         </Typography>
                                                     </Box>
 
-
                                                     <CardContent sx={{ outline: 0, padding: 0, pt: { xs: 3.5, md: 3 } }}>
                                                         <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                             {v.name}

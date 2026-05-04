@@ -239,7 +239,7 @@ function Productdetail() {
                         >
                             {categoryname}
                         </Link>
-                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">{detailproduct.name}</Typography>
+                        <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">{detailproduct?.name}</Typography>
                     </Breadcrumbs>
 
                     <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 3, md: 5, lg: 6 }}>
@@ -335,7 +335,7 @@ function Productdetail() {
 
                             </Grid>
                             <Grid size={{ xs: 12, sm: 12, md: 9 }} display="flex" flexDirection='column' sx={{
-                                order: { xs: 1, md: 2 } // 👈 mobile में पहले
+                                order: { xs: 1, md: 2 }
                             }}>
                                 <Box className="detailimg-box deatail-main-img" sx={{ height: { xs: '300px', sm: '380px', md: '75%', lg: '100%' } }}>
                                     {/* <img src="../../../public/assets/images/productdetail/image 63.png" alt="" width='100%' /> */}
@@ -362,11 +362,10 @@ function Productdetail() {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
                                 <Rating name="read-only" value={3} readOnly sx={{ fontSize: { xs: '20px', md: '24px' } }} />
                                 <Typography className="rate-detail">(150 Reviews) </Typography>
-                                <Typography className="rate-detail"> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: '#00FF66' }}> In Stock</span></Typography>
+                                <Typography className="rate-detail"> <PiLineVerticalThin sx={{ bgcolor: 'black' }} /> <span style={{ color: selectedVariant?.quantity !== 0 ? '#00FF66' : 'red' }}>{selectedVariant?.quantity !== 0 ? 'In Stock' : 'Out of stock'} </span></Typography>
                             </Box>
 
                             <Typography variant="h5" sx={{ mt: { xs: 2, sm: 1, md: 2 }, mb: { xs: 2, sm: 1, md: 3 }, fontSize: { xs: '20px', sm: '20px', md: '24px' } }}>₹{detailproduct?.price}</Typography>
-
                             <Typography sx={{ fontSize: '14px', mb: { xs: 3, sm: 2, md: 3 } }}>
                                 PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.
                             </Typography>
@@ -487,11 +486,16 @@ function Productdetail() {
             <ThemeProvider theme={theme}>
                 <section id="related-item">
                     <div className="container">
-                        <Box className="sub-title">
+                        {/* <Box className="sub-title">
                             <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1, color: '#DB4444' }}>
                                 <i className="fa-solid fa-square"></i>
                                 <Typography sx={{ fontWeight: '600' }}>Related Item</Typography>
                             </Box>
+                        </Box> */}
+
+                        <Box className="sub-title">
+                            <i className="fa-solid fa-square"></i>
+                            <Typography sx={{ fontWeight: 600 }} className="subtitle">Related Item</Typography>
                         </Box>
 
                         <Grid container sx={{ marginTop: { xs: '20px', sm: '23px', md: '35px' } }} spacing={{ xs: 1, sm: 3, lg: 4 }}>

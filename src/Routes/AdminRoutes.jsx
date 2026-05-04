@@ -5,6 +5,7 @@ import Category from '../admin/container/Category/Category'
 import Product from '../admin/container/Product/Product';
 import Contact from '../admin/container/Contact/Contact';
 import Order from '../admin/container/Order/Order';
+import Payment from '../admin/container/Payment/Payment';
 
 function AdminRoutes(props) {
     return (
@@ -15,6 +16,7 @@ function AdminRoutes(props) {
                     <Route path="/product" element={< Product/>} />
                     <Route path="/contact" element={< Contact/>} />
                     <Route path="/order" element={< Order/>} />
+                    <Route path="/payment" element={< Payment/>} />
                 </Routes>
             </Layout>
         </>

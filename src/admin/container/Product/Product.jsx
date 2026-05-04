@@ -42,7 +42,7 @@ function Product() {
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
     const [variants, setVariants] = useState([
-        { color: "#000000", images: [], size: [] }
+        { color: "#000000", images: [], size: [], quantity: '' }
     ]);
     //const [sizeName, setSizeName] = React.useState([]);
 
@@ -139,6 +139,7 @@ function Product() {
         });
 
         formData.append("size", JSON.stringify(values.size));
+        formData.append("quantity", parseInt(values.quantity));
 
         // if (Array.isArray(values.product_img)) {
         //     values.product_img.forEach((file) => {
@@ -147,7 +148,6 @@ function Product() {
         // }
 
         console.log("values", formData.get("name"))
-
 
         if (values._id) {
             formData.append("_id", values._id);
@@ -277,6 +277,7 @@ function Product() {
                                             color: "",
                                             images: [],
                                             size: [],
+                                            quantity: '',
                                             isFlashSale: false,
                                             flashPrice: "",
                                             flashStart: "",
@@ -333,14 +334,12 @@ function Product() {
                                                     {
                                                         values.variants.map((v, index) => (
                                                             <>
-                                                                <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
+                                                                <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'flex-end', mt: 1 }}>
                                                                     <MyTextField
                                                                         name={`variants[${index}].color`}  // ✅ dynamic name
                                                                         type="color"
                                                                         InputProps={{ disableUnderline: true }}
-
                                                                         label="color"
-
                                                                         value={v.color}
                                                                         sx={{
                                                                             width: "30px", '& .MuiInputBase-input-MuiInput-input': {
@@ -352,7 +351,6 @@ function Product() {
 
                                                                     <Myuploadfile
                                                                         name={`variants[${index}].images`}
-
                                                                     />
 
                                                                     {index !== 0 && (
@@ -383,8 +381,8 @@ function Product() {
                                                                     InputLabelProps={{ shrink: true }}
                                                                     sx={{ mt: 2, mb: 2 }}
                                                                 /> */}
-                                                                <FormControl sx={{ m: 1, width: 300 }}>
-                                                                    <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                                                                <FormControl sx={{ mt: 4, mb: 1, width: 300 }}>
+                                                                    <InputLabel id="demo-multiple-checkbox-label">Size</InputLabel>
                                                                     <Select
                                                                         labelId="demo-multiple-checkbox-label"
                                                                         id="demo-multiple-checkbox"
@@ -420,6 +418,13 @@ function Product() {
                                                                     </Select>
                                                                 </FormControl>
 
+                                                                <MyTextField
+                                                                    type="number"
+                                                                    name={`variants[${index}].quantity`}
+                                                                    id={`variants[${index}].quantity`}
+                                                                    label="Quantity"
+                                                                />
+
                                                                 <FormControlLabel
                                                                     control={
                                                                         <Checkbox
@@ -430,11 +435,14 @@ function Product() {
                                                                                     e.target.checked
                                                                                 )
                                                                             }
-                                                                           
+
                                                                         />
                                                                     }
                                                                     label="Enable Flash Sale"
-                                                                     sx={{display:'block'}}
+                                                                    sx={{
+                                                                        display: 'block',
+                                                                        marginTop: 2
+                                                                    }}
                                                                 />
                                                                 {values.variants[index].isFlashSale && (
                                                                     <>

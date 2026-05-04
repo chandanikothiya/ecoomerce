@@ -127,7 +127,7 @@ function Layout({ children }) {
         { label: "Products", icone: <FaBoxOpen />, to: "/admin/product" },
         { label: "Contact/Messages", icone: <ContactMailIcon />, to: "/admin/contact" },
         { label: "Order", icone: <MarkChatReadIcon />, to: "/admin/order" },
-         { label: "Payment", icone: <PaymentIcon />, to: "/admin/order" },
+        //  { label: "Payment", icone: <PaymentIcon />, to: "/admin/payment" },
     ]
 
     return (
@@ -212,9 +212,8 @@ function Layout({ children }) {
                         </ListItem>
                     ))}
                 </List>
-
-
             </Drawer>
+            
             <Box component="main" sx={{ flexGrow: 1, pl: 3, mt: -4 }}>
                 {/* <DrawerHeader /> */}
 

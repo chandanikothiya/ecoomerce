@@ -2,7 +2,7 @@ import { Box, Breadcrumbs, Checkbox, Divider, FormControl, FormControlLabel, For
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
 import { useGetUserQuery } from "../../redux/api/user.api";
@@ -13,12 +13,12 @@ import { number, object, string } from "yup";
 import { useFormik } from "formik";
 import { useAddOrderMutation } from "../../redux/api/order.api";
 import { useAddAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from "../../redux/api/address.api";
-import { useCreatePaymentMutation } from "../../redux/api/payment.api";
+import { useAddPaymentMutation, useCreatePaymentMutation } from "../../redux/api/payment.api";
 import { load } from "@cashfreepayments/cashfree-js";
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import OtherHousesOutlinedIcon from '@mui/icons-material/OtherHousesOutlined';
-
+import CheckIcon from '@mui/icons-material/Check';
 
 function Checkout() {
 
@@ -28,7 +28,10 @@ function Checkout() {
     const [poption, setPoption] = useState('cashondelivery');
     const [cartquan, setCartquan] = useState({});
     const { id, vid, cid } = useParams();
+    const [cashonsuccess, setCashonsuccess] = useState(false);
+    const navigate = useNavigate();
     console.log(id, vid)
+    const [addpayment] = useAddPaymentMutation();
 
     const quantity = {};
     const [searchParams, setSearchParams] = useSearchParams();
@@ -211,10 +214,28 @@ function Checkout() {
 
         if (poption === 'bank') {
             await doPayment(response?.payment_session_id);
+        } else if (poption === 'cashondelivery') {
+            const obj = {
+                user_id: uid,
+                order_id: orderresponse?.data?.data?._id,
+                amount: totalprice,
+                paymentstatus: "PENDING"
+            }
+
+            console.log('cashondelivery',obj)
+
+            addpayment(obj)
+
+            setCashonsuccess(true)
+
+            setTimeout(() => {
+                setCashonsuccess(false)
+            }, 1000);
+
+            navigate('/')
         }
 
         console.log("isAddressExist")
-
 
         const isAddressExist = addressdata?.data?.streetaddress === values.address &&
             addressdata?.data?.city === values.city &&
@@ -277,19 +298,26 @@ function Checkout() {
     console.log(errors, touched)
 
 
-
     return (
         <main>
             <section id="billing" style={{ position: 'relative' }}>
-                <Stack sx={{ width: '400px', position: 'absolute', top: '-6%', right: 0, height: '200px' }} spacing={2}>
-                    <Alert variant="filled" icon={false} severity="success" sx={{ width: '400px', height: '100%' }}>
-                        <Box sx={{ padding: '30px 0'}}>
-                            <IconButton aria-label="deleLocalShipping"  sx={{backgroundColor:' rgba(255, 255, 255, 0.356)'}}>
-                                <OtherHousesOutlinedIcon sx={{backgroundColor:'white',borderRadius:'50%',}}/>
-                            </IconButton>
-                        </Box>
-                    </Alert>
-                </Stack>
+                {
+                    cashonsuccess && <Stack sx={{ width: '350px', position: 'absolute', top: '-6%', right: 0, height: '150px' }} spacing={2}>
+                        <Alert variant="filled" icon={false} severity="success"
+                            sx={{
+                                minWidth: '100%', height: '100%', textAlign: 'center',
+                                '& .MuiAlert-message': { width: '100%' }
+                            }}>
+                            <Box sx={{ backgroundColor: ' rgba(255, 255, 255, 0.356)', borderRadius: '50%', p: 1, width: 'fit-content', margin: '0 auto' }}>
+                                <IconButton aria-label="deleLocalShipping" sx={{ backgroundColor: 'white' }}>
+                                    <CheckIcon sx={{}} />
+                                </IconButton>
+                            </Box>
+                            <Typography variant="h5" sx={{ mt: 2 }}>Your Order confirm</Typography>
+                        </Alert>
+                    </Stack>
+                }
+
                 <div className="container">
                     {/* <Typography><span style={{ color: 'grey' }}>Home / My Account / Product / View Cart /</span> Contact</Typography> */}
 
@@ -320,7 +348,7 @@ function Checkout() {
                         </Link> */}
                         <Typography sx={{ color: 'text.primary' }}>CheckOut</Typography>
                     </Breadcrumbs>
-                    
+
                     <Typography variant="h4" sx={{ fontSize: { xs: '25px', sm: "28px", md: '36px' }, mt: 8, mb: 2 }} >Billing Details</Typography>
 
                     <Grid container columnSpacing={{ xs: 0, sm: 5, md: 5, lg: 10, xl: 18 }} justifyContent='center'>

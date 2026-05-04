@@ -112,9 +112,15 @@ function Order() {
 
         const paymentMethod = paydata?.data?.[0]?.paymentmethod;
 
-        const formattedPaymentMethod = paymentMethod
+        let formattedPaymentMethod = paymentMethod
             ?.replace(/_/g, ' ')
             ?.replace(/\b\w/g, (char) => char.toUpperCase());
+
+        if (formattedPaymentMethod === 'Cod') {
+            formattedPaymentMethod = 'Cash on Delivery'
+        }
+
+        console.log("formattedPaymentMethod", formattedPaymentMethod)
 
         return <>{formattedPaymentMethod}</>;
     }
@@ -235,11 +241,22 @@ function Order() {
     ];
     console.log("orderid", orderdata)
 
+
+    const {
+        data: paymentdata,
+        error: paymenterror,
+        isLoading: paymentdataisloading
+    } = useGetPaymentOnOrderQuery(orderdata?._id, {
+        skip: !orderdata?._id
+    });
+
+    console.log("paymentdata", paymentdata)
+
     return (
         <>
             <div className="container">
 
-                <Typography variant="h5" sx={{ marginLeft: '-20px', fontSize: '30px' }}>Users Message</Typography>
+                <Typography variant="h5" sx={{ marginLeft: '-20px', fontSize: '30px' }}>Orders</Typography>
                 <DataGrid
                     rows={data?.data}
                     getRowId={(rows) => rows?._id || Math.random()}
@@ -342,8 +359,8 @@ function Order() {
                                         {
                                             (() => {
                                                 const date = new Date(orderdata?.createdAt);
-                                                
-                                               return (<Typography>{date.toLocaleString()}</Typography>) 
+
+                                                return (<Typography>{date.toLocaleString()}</Typography>)
 
                                             })()
 
@@ -395,7 +412,20 @@ function Order() {
                                         <Typography className="orderdata">Payment method</Typography>
                                     </Grid>
                                     <Grid size={8}>
-                                        <Typography variant="body2">Mastercard</Typography>
+                                        <Typography variant="body2">{paymentdata?.data?.[0]?.paymentmethod}</Typography>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid size={12}>
+                                    <Divider />
+                                </Grid>
+
+                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                    <Grid size={4}>
+                                        <Typography className="orderdata">Payment Status</Typography>
+                                    </Grid>
+                                    <Grid size={8}>
+                                        <Typography variant="body2">{paymentdata?.data?.[0]?.paymentstatus}</Typography>
                                     </Grid>
                                 </Grid>
 
