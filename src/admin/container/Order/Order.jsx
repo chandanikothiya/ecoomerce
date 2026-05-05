@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { Margin } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Divider, Drawer, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Divider, Drawer, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -52,6 +52,13 @@ function Order() {
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
+
+      const theme = useTheme();
+    
+        const isMobile = useMediaQuery("(max-width:576px)");
+        const isTablet = useMediaQuery("(max-width:768px)");
+        const isLarge = useMediaQuery("(min-width:1200px)");
+    
 
 
 
@@ -161,7 +168,9 @@ function Order() {
 
     const columns = [
         {
-            field: 'createdAt', headerName: 'Order', width: 350, headerClassName: 'order-header',
+            field: 'createdAt', headerName: 'Order',
+            flex: 1,
+             minWidth: 250,
             renderCell: (params) => {
                 const date = new Date(params.row.createdAt);
                 const month = date.toLocaleString('default', { month: 'short' });
@@ -186,20 +195,23 @@ function Order() {
             }
         },
         {
-            field: 'user_id', headerName: 'Customer', width: 250,
+            field: 'user_id', headerName: 'Customer', flex: 2,
+            minWidth: 160,
             renderCell: (params) => (
                 //console.log(params)
                 <Username user_id={params.row.user_id} />
             )
         },
         {
-            headerName: 'Payment', width: 250,
+            headerName: 'Payment', flex: 1.2,
+            minWidth: 160,
             renderCell: (params) => (
                 <Payment id={params.row._id} />
             )
         },
         {
-            field: 'orderstatus', headerName: 'Status', width: 250,
+            field: 'orderstatus', headerName: 'Status', flex: 1.2,
+             minWidth: 140,
             renderCell: (params) => {
 
                 const status = params.row.orderstatus;
@@ -220,7 +232,8 @@ function Order() {
         {
             field: ' ',
             headerName: 'Action',
-            width: 100,
+            // flex: 1,
+            width: 90,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -257,36 +270,53 @@ function Order() {
             <div className="container">
 
                 <Typography variant="h5" sx={{ marginLeft: '-20px', fontSize: '30px' }}>Orders</Typography>
-                <DataGrid
-                    rows={data?.data}
-                    getRowId={(rows) => rows?._id || Math.random()}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 10,
-                            },
-                        },
-                    }}
-                    rowHeight={75}
-                    pageSizeOptions={[5, 10, 15, 20]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
+
+                <Box
                     sx={{
-                        marginTop: 2, marginBottom: 1,
-                        '& .MuiDataGrid-columnSeparator': {
-                            display: 'none',
-                        },
-                        '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
-                        '& .order-header': {
-                            paddingLeft: '30px'
-                        },
-                        '& .MuiDataGrid-columnHeaderTitle': {
-                            fontSize: '16px',
-                            color: 'rgb(128, 128, 128)'
-                        }
+                        width: '100%',
+                        overflowX: isMobile ? 'auto' : 'hidden',
                     }}
-                />
+                >
+                    <Box
+                        sx={{
+                            minWidth: isMobile ? 900 : '100%',
+                        }}
+                    >
+                        <DataGrid
+                            rows={data?.data}
+                            getRowId={(rows) => rows?._id || Math.random()}
+                            columns={columns}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 10,
+                                    },
+                                },
+                            }}
+                            rowHeight={75}
+                            pageSizeOptions={[5, 10, 15, 20]}
+                            checkboxSelection
+                            disableRowSelectionOnClick
+                            sx={{
+                                marginTop: 2, marginBottom: 1,
+                                '& .MuiDataGrid-columnSeparator': {
+                                    display: 'none',
+                                },
+                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                                '& .order-header': {
+                                    paddingLeft: '30px'
+                                },
+                                '& .MuiDataGrid-columnHeaderTitle': {
+                                    fontSize: '16px',
+                                    color: 'rgb(128, 128, 128)'
+                                }
+                            }}
+                        />
+
+                    </Box>
+                </Box>
+
+
                 <Drawer
                     open={open}
                     onClose={toggleDrawer(false)}

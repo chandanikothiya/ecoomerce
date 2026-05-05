@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { Margin } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -26,7 +26,13 @@ function Contact() {
     const { data, error, isLoading } = useGetContactQuery();
     console.log(data)
     const [deletecontact] = useDeleteContactMutation();
-   
+
+    const theme = useTheme();
+
+    const isMobile = useMediaQuery("(max-width:576px)");
+    const isTablet = useMediaQuery("(max-width:768px)");
+    const isLarge = useMediaQuery("(min-width:1200px)");
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -63,7 +69,7 @@ function Contact() {
     const handlesubmit = (values) => {
         console.log("values", values)
         if (Object.keys(updatedata).length > 0) {
-            console.log("updateval",values)
+            console.log("updateval", values)
             updateCategory(values)
         } else {
             addcategory(values)
@@ -71,39 +77,43 @@ function Contact() {
 
     }
 
- 
+
 
     const handledelete = (id) => {
-        console.log("id",id)
+        console.log("id", id)
         deletecontact(id);
     }
 
     const columns = [
-        { field: 'name', headerName: 'name', width: 250 },
+        { field: 'name', headerName: 'name', flex: 1, minWidth: isMobile ? 220 : 150, },
         {
             field: 'email',
             headerName: 'email',
-            width: 300,
+            flex: 1,
+            minWidth: isMobile ? 250 : 150,
             editable: true,
         },
         {
             field: 'phone',
             headerName: 'phone No',
-            width:200,
+            flex: 1,
+            minWidth: isMobile ? 220 : 150,
             editable: true,
-           
+
         },
-         {
+        {
             field: 'message',
             headerName: 'message',
-            width: 350,
+            flex: 1,
+            minWidth: isMobile ? 120 : 100,
             editable: true,
-           
+
         },
         {
             field: '',
             headerName: 'Action',
-            width: 100,
+            flex: 1,
+            minWidth: isMobile ? 120 : 100,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -124,30 +134,44 @@ function Contact() {
         <>
             <div className="container">
 
-            <Typography variant="h5" sx={{marginLeft:'-20px',fontSize:'30px'}}>Users Message</Typography>
-                <DataGrid
-                    rows={data?.data}
-                    getRowId={(rows) => rows?._id || Math.random()}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize:10,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5,10,15,20]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
+                <Typography variant="h5" sx={{ marginLeft: '-20px', fontSize: '30px' }}>Users Message</Typography>
+
+                <Box
                     sx={{
-                        marginTop: 2,marginBottom:1,
-                        '& .MuiDataGrid-columnSeparator': {
-                            display: 'none',
-                        },
-                        '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                        width: '100%',
+                        overflowX: isMobile ? 'auto' : 'hidden',
                     }}
-                />
+                >
+                    <Box
+                        sx={{
+                            width: isMobile ? 900 : '100%',
+                        }}
+                    >
+                        <DataGrid
+                            rows={data?.data}
+                            columns={columns}
+                            getRowId={(rows) => rows?._id || Math.random()}
+                            sx={{
+                                mt: 2,
+                                mb: 1,
+
+                                '& .MuiDataGrid-columnSeparator': {
+                                    display: 'none',
+                                },
+
+                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': {
+                                    display: 'none',
+                                },
+
+                                '& .MuiDataGrid-main': {
+                                    overflow: 'hidden',
+                                },
+                            }}
+                        />
+                    </Box>
+                </Box>
             </div>
+
         </>
     )
 }

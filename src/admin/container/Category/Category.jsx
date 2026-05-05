@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { Margin } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { IconButton } from "@mui/material";
+import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -28,6 +28,12 @@ function Category() {
     const [addcategory] = useAddCategoryMutation();
     const [updateCategory] = useUpdateCategoryMutation();
     const [deletecategory] = useDeleteCategoryMutation();
+
+    const theme = useTheme();
+
+    const isMobile = useMediaQuery("(max-width:576px)");
+    const isTablet = useMediaQuery("(max-width:768px)");
+    const isLarge = useMediaQuery("(min-width:1200px)");
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -65,7 +71,7 @@ function Category() {
     const handlesubmit = (values) => {
         console.log("values", values)
         if (Object.keys(updatedata).length > 0) {
-            console.log("updateval",values)
+            console.log("updateval", values)
             updateCategory(values)
         } else {
             addcategory(values)
@@ -84,18 +90,27 @@ function Category() {
     }
 
     const columns = [
-        { field: 'name', headerName: 'name', width: 350 },
+        {
+            field: 'name', headerName: 'name', flex: 1,
+            minWidth: isMobile ? 220 : 150,
+            // minWidth: isLarge ? 350 : isTablet ? 120 : 200,
+        },
         {
             field: 'description',
             headerName: 'description',
-            width: 350,
+            flex: 1,
+            minWidth: isMobile ? 250 : 150,
+            // minWidth: isLarge ? 350 : isTablet ? 120 : 200,
             editable: true,
         },
         {
             field: 'parentcategory_id',
             headerName: 'parent Category',
-            width: 350,
+            flex: 1,
+            minWidth: isMobile ? 220 : 150,
+            //minWidth: isLarge ? 350 : isTablet ? 120 : 200,
             editable: true,
+
             renderCell: (params) => (
                 <>
                     {
@@ -105,9 +120,11 @@ function Category() {
             )
         },
         {
-            field: '',
+            field: ' ',
             headerName: 'Action',
-            width: 150,
+            flex: 1,
+            minWidth: isMobile ? 120 : 80,
+            //minWidth: isLarge ? 150 : isTablet ? 80 : 100,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -175,7 +192,7 @@ function Category() {
                                         label="Description"
                                     />
 
-                                   
+
 
                                 </Form>
                             </Formik>
@@ -189,29 +206,44 @@ function Category() {
                     </Dialog>
                 </React.Fragment>
 
-
-                <DataGrid
-                    rows={data?.data}
-                    getRowId={(rows) => rows?._id || Math.random()}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize:10,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5,10,15,20]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
+                <Box
                     sx={{
-                        marginTop: 2,marginBottom:1,
-                        '& .MuiDataGrid-columnSeparator': {
-                            display: 'none',
-                        },
-                        '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                        width: '100%',
+                        overflowX: isMobile ? 'auto' : 'hidden',
                     }}
-                />
+                >
+                    <Box
+                        sx={{
+                            minWidth: isMobile ? 900 : '100%',
+                        }}
+                    >
+                        <DataGrid
+                            rows={data?.data}
+                            getRowId={(rows) => rows?._id || Math.random()}
+                            columns={columns}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 10,
+                                    },
+                                },
+                            }}
+                            pageSizeOptions={[5, 10, 15, 20]}
+                            checkboxSelection
+                            disableRowSelectionOnClick
+                            sx={{
+                                marginTop: 2, marginBottom: 1,
+                                '& .MuiDataGrid-columnSeparator': {
+                                    display: 'none',
+                                },
+                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                            }}
+                        />
+                    </Box>
+                </Box>
+
+
+
             </div>
         </>
     )

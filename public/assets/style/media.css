@@ -386,6 +386,13 @@
             font-size: 16px !important;
         }
 
+        .cart-coupon-box-btn
+        {
+            padding: 9px 25px !important;
+          
+        }
+
+
         .cardototal-btn {
             margin-top: 30px;
         }
@@ -394,9 +401,9 @@
             font-size: 14px !important;
         }
 
-        .checkout-box {
+        /* .checkout-box {
             max-width: 300px !important;
-        }
+        } */
 
         .search_cart_wishlist form .seachbox {
             max-width: 300px !important;
@@ -560,7 +567,7 @@
             padding: 10px 15px;
         }
 
-        .productdetail-swiperbtn{
+        .productdetail-swiperbtn {
             display: none;
         }
 
@@ -974,9 +981,9 @@
             display: block !important;
         }
 
-        .coupon-textc {
+        /* .coupon-textc {
             width: fit-content !important;
-        }
+        } */
 
         .place-order-btn {
             margin-left: 0;
@@ -1003,7 +1010,6 @@
         .fsizebox {
             font-size: 14px !important;
         }
-
 
         /* .coupon-text {
             width: 200px;
@@ -1111,8 +1117,16 @@
             right: -4.5%;
         }
 
-        .productdetail-swiperbtn{
+        .productdetail-swiperbtn {
             display: flex;
+        }
+
+         .coupon-textc {
+            width: 280px !important;
+        }
+
+        .place-order-btn{
+            padding: 10px 32px;
         }
     }
 
@@ -1509,9 +1523,12 @@
         }
 
         .pbtn-prev,
-        .pbtn-next {  
+        .pbtn-next {
             padding: 4px 6px;
-           
+        }
+
+        .coupon-textc {
+            width: 320px !important;
         }
     }
 
@@ -1821,7 +1838,7 @@
         .pbtn-next {
             padding: 7px 10px;
             left: 50%;
-            top:auto;
+            top: auto;
             transform: translateX(-50%);
             right: auto;
         }
@@ -1833,10 +1850,11 @@
 
         .pbtn-next {
             bottom: -3%;
-
         }
 
-
+        .coupon-textc {
+            width: 250px !important;
+        }
     }
 
     /* xl */
@@ -2091,7 +2109,10 @@
 
         .pbtn-next {
             bottom: -1%;
+        }
 
+        .coupon-textc {
+            width: 270px !important;
         }
     }
 
@@ -2128,6 +2149,10 @@
 
         .coupon-text {
             width: 380px !important;
+        }
+
+        .coupon-textc {
+            width: 300px !important;
         }
 
         .ourstory-container {

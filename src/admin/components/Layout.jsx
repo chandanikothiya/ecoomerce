@@ -16,15 +16,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 import { BiSolidCategory } from "react-icons/bi";
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaBoxOpen } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import ContactMailIcon from '@mui/icons-material/ContactMail';
-import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
-import PaymentIcon from '@mui/icons-material/Payment';
+import { useMediaQuery } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -54,7 +52,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
 }));
 
@@ -76,63 +73,102 @@ const AppBar = styled(MuiAppBar, {
                     easing: theme.transitions.easing.sharp,
                     duration: theme.transitions.duration.enteringScreen,
                 }),
-
             },
         },
     ],
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme }) => ({
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        variants: [
-            {
-                props: ({ open }) => open,
-                style: {
-                    ...openedMixin(theme),
-                    '& .MuiDrawer-paper': openedMixin(theme),
-                },
-            },
-            {
-                props: ({ open }) => !open,
-                style: {
-                    ...closedMixin(theme),
-                    '& .MuiDrawer-paper': closedMixin(theme),
-                },
-            },
-        ],
+// DESKTOP ONLY: Standard permanent mini-variant drawer
+const DesktopDrawer = styled(MuiDrawer, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+        ...openedMixin(theme),
+        '& .MuiDrawer-paper': openedMixin(theme),
     }),
-);
-
+    ...(!open && {
+        ...closedMixin(theme),
+        '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+}));
 
 function Layout({ children }) {
-
     const theme = useTheme();
+    const isMobile = useMediaQuery("(max-width:768px)");
     const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    const handleDrawerOpen = () => setOpen(true);
+    const handleDrawerClose = () => setOpen(false);
 
     const menulist = [
-        { label: "Dashboard", icone: <BiSolidDashboard />, to: "/admin/dashboard" },
-        { label: "Category", icone: <BiSolidCategory />, to: "/admin/category" },
-        { label: "Products", icone: <FaBoxOpen />, to: "/admin/product" },
+        { label: "Dashboard", icone: <BiSolidDashboard style={{fontSize:'20px'}}/>, to: "/admin/dashboard" },
+        { label: "Category", icone: <BiSolidCategory style={{fontSize:'20px'}}/>, to: "/admin/category" },
+        { label: "Products", icone: <FaBoxOpen style={{fontSize:'20px'}}/>, to: "/admin/product" },
         { label: "Contact/Messages", icone: <ContactMailIcon />, to: "/admin/contact" },
         { label: "Order", icone: <MarkChatReadIcon />, to: "/admin/order" },
-        //  { label: "Payment", icone: <PaymentIcon />, to: "/admin/payment" },
-    ]
+    ];
+
+    // Reusable Menu List to avoid code duplication
+    const drawerContent = (
+        <>
+            <DrawerHeader>
+                <IconButton onClick={handleDrawerClose}>
+                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <List>
+                {menulist.map((v, index) => (
+                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+                        <ListItemButton
+                            component={NavLink}
+                            to={v.to}
+                            onClick={isMobile ? handleDrawerClose : null} // Auto-close drawer on mobile after clicking a link
+                            sx={[
+                                {
+                                    minHeight: 48,
+                                    px: 2.5,
+                                    '&.active': {
+                                        backgroundColor: 'rgba(219, 68, 68, 0.1)',
+                                        color: '#DB4444',
+                                        '& .MuiListItemIcon-root': { color: '#DB4444' },
+                                    }
+                                },
+                                !isMobile && (open
+                                    ? { justifyContent: 'initial' }
+                                    : { justifyContent: 'center' }
+                                ),
+                            ]}
+                        >
+                            <ListItemIcon
+                                sx={[
+                                    { minWidth: 0, justifyContent: 'center' },
+                                    !isMobile && (open ? { mr: 3 } : { mr: 'auto' }),
+                                ]}
+                            >
+                                {v.icone}
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={v.label}
+                                sx={[
+                                    !isMobile && (open ? { opacity: 1 } : { opacity: 0 }),
+                                ]}
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </>
+    );
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
+
             <AppBar position="fixed" open={open} sx={{ backgroundColor: '#DB4444' }}>
                 <Toolbar>
                     <IconButton
@@ -141,10 +177,8 @@ function Layout({ children }) {
                         onClick={handleDrawerOpen}
                         edge="start"
                         sx={[
-                            {
-                                marginRight: 5,
-                            },
-                            open && { display: 'none' },
+                            { marginRight: 5 },
+                            open && !isMobile && { display: 'none' }, // Hide hamburger only on Desktop when open
                         ]}
                     >
                         <MenuIcon />
@@ -154,73 +188,38 @@ function Layout({ children }) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {menulist.map((v, index) => (
-                        <ListItem key={index} disablePadding sx={{ display: 'block', fontSize: '20px' }} component={NavLink} to={v.to}>
-                            <ListItemButton
-                                sx={[
-                                    {
-                                        minHeight: 48,
-                                        px: 2.5,
-                                    },
-                                    open
-                                        ? {
-                                            justifyContent: 'initial',
-                                        }
-                                        : {
-                                            justifyContent: 'center',
-                                        },
-                                ]}
-                            >
-                                <ListItemIcon
-                                    sx={[
-                                        {
-                                            minWidth: 0,
-                                            justifyContent: 'center',
-                                        },
-                                        open
-                                            ? {
-                                                mr: 3,
-                                            }
-                                            : {
-                                                mr: 'auto',
-                                            },
-                                    ]}
-                                >
-                                    {v.icone}
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={v.label}
-                                    sx={[
-                                        open
-                                            ? {
-                                                opacity: 1,
-                                            }
-                                            : {
-                                                opacity: 0,
-                                            },
-                                    ]}
-                                />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            
-            <Box component="main" sx={{ flexGrow: 1, pl: 3, mt: -4 }}>
-                {/* <DrawerHeader /> */}
 
-                {children}
+            {/* 1. DESKTOP DRAWER: Hidden on mobile, renders the pure Mini-Variant logic */}
+            {!isMobile && (
+                <DesktopDrawer variant="permanent" open={open}>
+                    {drawerContent}
+                </DesktopDrawer>
+            )}
+
+            {/* 2. MOBILE DRAWER: Hidden on desktop, acts as a clean overlay */}
+            {isMobile && (
+                <MuiDrawer
+                    variant="temporary"
+                    open={open}
+                    onClose={handleDrawerClose}
+                    ModalProps={{ keepMounted: true }}
+                    sx={{
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                >
+                    {drawerContent}
+                </MuiDrawer>
+            )}
+
+            <Box component="main" sx={{ flexGrow: 1, width: '100%',mt:{xs:-8,sm:-5} }}>
+                {/* CRITICAL: DrawerHeader acts as a spacer so your content doesn't hide behind the Top App Bar */}
+                {/* <DrawerHeader /> */}
+                <Box sx={{ p: 3 }}>
+                    {children}
+                </Box>
             </Box>
         </Box>
-    )
+    );
 }
 
 export default Layout;

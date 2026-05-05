@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { BorderBottom, Margin, Padding, WidthNormal } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { Avatar, Box, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Avatar, Box, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, useMediaQuery, useTheme } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -45,6 +45,12 @@ function Product() {
         { color: "#000000", images: [], size: [], quantity: '' }
     ]);
     //const [sizeName, setSizeName] = React.useState([]);
+
+      const theme = useTheme();
+    
+        const isMobile = useMediaQuery("(max-width:576px)");
+        const isTablet = useMediaQuery("(max-width:768px)");
+        const isLarge = useMediaQuery("(min-width:1200px)");
 
 
     const { data: catdata,
@@ -180,7 +186,8 @@ function Product() {
         {
             field: 'price',
             headerName: 'Price',
-            width: 150,
+             flex: 1.5,
+    minWidth: 140,
             editable: true,
         },
         // {
@@ -489,30 +496,43 @@ function Product() {
                     </Dialog>
                 </React.Fragment>
 
-
-                <DataGrid
-                    rows={data?.data}
-                    getRowId={(rows) => rows?._id || Math.random()}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 10,
-                            },
-                        },
-                    }}
-                    rowHeight={150}
-                    pageSizeOptions={[5, 10, 15, 20]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
+                <Box
                     sx={{
-                        marginTop: 2, marginBottom: 1,
-                        '& .MuiDataGrid-columnSeparator': {
-                            display: 'none',
-                        },
-                        '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                        width: '100%',
+                        overflowX: isMobile ? 'auto' : 'hidden',
                     }}
-                />
+                >
+                    <Box
+                        sx={{
+                            minWidth: isMobile ? 900 : '100%',
+                        }}
+                    >
+
+                        <DataGrid
+                            rows={data?.data}
+                            getRowId={(rows) => rows?._id || Math.random()}
+                            columns={columns}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 10,
+                                    },
+                                },
+                            }}
+                            rowHeight={150}
+                            pageSizeOptions={[5, 10, 15, 20]}
+                            checkboxSelection
+                            disableRowSelectionOnClick
+                            sx={{
+                                marginTop: 2, marginBottom: 1,
+                                '& .MuiDataGrid-columnSeparator': {
+                                    display: 'none',
+                                },
+                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                            }}
+                        />
+                    </Box>
+                </Box>
             </div >
         </>
     )

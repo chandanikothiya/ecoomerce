@@ -19,9 +19,11 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import OtherHousesOutlinedIcon from '@mui/icons-material/OtherHousesOutlined';
 import CheckIcon from '@mui/icons-material/Check';
+import { useCheckCouponMutation } from "../../redux/api/coupon.api";
 
 function Checkout() {
 
+    const [coupon, setCoupon] = useState('');
     const [cart, setCart] = useState([]);
     const [sessionid, setSessionId] = useState();
     const [allproduct, setAllproduct] = useState([])
@@ -32,6 +34,7 @@ function Checkout() {
     const navigate = useNavigate();
     console.log(id, vid)
     const [addpayment] = useAddPaymentMutation();
+    const [finalprice, setFinalprice] = useState();
 
     const quantity = {};
     const [searchParams, setSearchParams] = useSearchParams();
@@ -85,7 +88,8 @@ function Checkout() {
         }
         console.log(varient)
 
-        totalprice = (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
+        totalprice = (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty;
+
     } else if (cid) {
         cartp = cartdatafilter?.products?.map((cartItem) => {
             console.log(cartItem)
@@ -125,6 +129,7 @@ function Checkout() {
     const [updateaddress] = useUpdateAddressMutation();
     const { data: addressdata, error: addresserror, isLoading: addressisloading } = useGetAddressQuery(uid);
     console.log("addressdata", addressdata)
+    const [checkcoupon] = useCheckCouponMutation();
 
     // cashfree start
     // let cashfree;
@@ -141,6 +146,12 @@ function Checkout() {
         initializeSDK();
     }, [])
     console.log(sessionid)
+
+    useEffect(() => {
+        if (totalprice) {
+            setFinalprice(totalprice);
+        }
+    }, [totalprice]);
 
     const doPayment = async (paymentSessionId) => {
         if (!cashfree.current || !paymentSessionId) {
@@ -199,7 +210,7 @@ function Checkout() {
 
         const paymentObject = {
             order_id: orderresponse?.data?.data?._id,
-            orderamt: totalprice,
+            orderamt: finalprice,
             customer_id: udata?.data?._id,
             customer_name: udata?.data?.name,
             customer_email: udata?.data?.email,
@@ -222,7 +233,7 @@ function Checkout() {
                 paymentstatus: "PENDING"
             }
 
-            console.log('cashondelivery',obj)
+            console.log('cashondelivery', obj)
 
             addpayment(obj)
 
@@ -296,6 +307,26 @@ function Checkout() {
 
     const { handleSubmit, handleChange, handleBlur, errors, touched, values } = formik;
     console.log(errors, touched)
+
+
+    const handlecoupon = async (e) => {
+        e.preventDefault();
+        console.log("coupon", coupon)
+
+        const res = await checkcoupon({ code: coupon })
+        console.log("response", res)
+
+        const discount = res?.data?.data?.discount;
+
+        const updatedPrice =
+            totalprice - ((totalprice * discount) / 100);
+
+        setFinalprice(updatedPrice);
+        console.log("response", totalprice)
+
+    }
+
+    console.log("response", finalprice)
 
 
     return (
@@ -486,14 +517,14 @@ function Checkout() {
                                 <FormControlLabel
                                     control={<Checkbox defaultChecked color="error" />}
                                     label="Save this information for faster check-out next time"
-                                    sx={{ mt: 3 }}
+                                    sx={{ mt: 3, mr: 0, '& .css-rizt0-MuiTypography-root': { fontSize: { xs: '11.5px', sm: '16px' } } }}
                                 />
                             </form>
                         </Grid>
 
-                        <Grid size={{ xs: 12, sm: 10, md: 6 }} sx={{ marginTop: '50px' }}>
+                        <Grid size={{ xs: 12, sm: 10, md: 6 }} sx={{ marginTop: '0px' }}>
                             <Box >
-                                <Box sx={{ maxWidth: '425px' }} className="checkout-box">
+                                <Box sx={{ maxWidth: { xs: '100%', sm: '425px' } }} className="checkout-box">
                                     {
                                         varient ? (
                                             <Box sx={{ display: 'flex', alignItems: "center", justifyContent: 'space-between', mt: 4 }}>
@@ -509,7 +540,7 @@ function Checkout() {
                                                 console.log(v)
                                                 return (
                                                     <Box sx={{ display: 'flex', alignItems: "center", justifyContent: 'space-between', mt: 4 }}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0, sm: 3 } }}>
                                                             <img src={IMG_URL + v?.selectedVariant.images?.[0]} alt="" width='50' />
                                                             <Typography className="checkout-typo">{v?.name}</Typography>
                                                         </Box>
@@ -528,10 +559,7 @@ function Checkout() {
                                         <Typography className="checkout-typo">Subtotal:</Typography>
                                         <Typography className="checkout-typo">
                                             ₹{
-                                                varient !== '' ?
-                                                    (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
-                                                    : cartp !== '' &&
-                                                    totalprice
+                                                finalprice
                                             }
 
                                         </Typography>
@@ -553,7 +581,7 @@ function Checkout() {
                                             //     (varient?.isFlashSale ? varient?.flashPrice : detailproduct?.price) * varient.qty
                                             //     : cartp !== '' &&
                                             //     totalprice
-                                            totalprice
+                                            finalprice
                                         }</Typography>
                                     </Box>
                                 </Box>
@@ -589,10 +617,29 @@ function Checkout() {
                                     </RadioGroup>
                                 </FormControl>
 
-                                <form style={{ margin: '32px 0' }} className="checkout-box">
-                                    <Box sx={{ display: 'flex', gap: 3 }} className="cart-coupon-box">
-                                        <TextField id="outlined-basic" className="coupon-textc" label="Outlined" variant="outlined" sx={{ width: { xs: '56%', lg: '280px', xl: '350px' } }} />
-                                        <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
+                                <form style={{ margin: '32px 0' }} className="checkout-box" onSubmit={handlecoupon}>
+                                    <Box sx={{ display: 'flex', columnGap: { sm: 0, md: 3 }, rowGap: { xs: 3, sm: 0 } }} className="cart-coupon-box">
+                                        <TextField id="coupon-code" name="coupon-code" className="coupon-textc"
+                                            label="Coupon Code" variant="outlined"
+                                            //sx={{ width: { xs: '56%', lg: '300px', xl: '300px' }}} 
+                                            onChange={(e) => setCoupon(e.target.value)}
+                                            sx={{
+                                                '& .MuiOutlinedInput-input': {
+                                                    padding: {
+                                                        xs: '12px 14px',
+                                                        md: '12px 14px',
+                                                        lg: '14px 14px'
+                                                    }
+                                                },
+                                                '& .MuiInputLabel-root': {
+                                                    top: {
+                                                        xs: -3,
+                                                        md: 0
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                        <button className="my-custome-button cart-coupon-box-btn" type="submit">Apply Coupon</button>
                                     </Box>
                                 </form>
 
