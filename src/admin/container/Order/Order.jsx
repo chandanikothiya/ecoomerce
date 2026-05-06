@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { Margin } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Divider, Drawer, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, createTheme, Divider, Drawer, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -53,13 +53,23 @@ function Order() {
         setOpen(newOpen);
     };
 
-      const theme = useTheme();
-    
-        const isMobile = useMediaQuery("(max-width:576px)");
-        const isTablet = useMediaQuery("(max-width:768px)");
-        const isLarge = useMediaQuery("(min-width:1200px)");
-    
+    const theme = useTheme();
 
+    const isMobile = useMediaQuery("(max-width:576px)");
+    const isTablet = useMediaQuery("(max-width:768px)");
+    const isLarge = useMediaQuery("(min-width:1200px)");
+
+    const theme1 = createTheme({
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 576,
+                md: 900,
+                lg: 1200,
+                xl: 1536,
+            },
+        },
+    });
 
 
     // const handleSubmit = (event) => {
@@ -169,8 +179,9 @@ function Order() {
     const columns = [
         {
             field: 'createdAt', headerName: 'Order',
-            flex: 1,
-             minWidth: 250,
+            flex: 2,
+            minWidth: 200,
+            headerClassName: 'first-header',
             renderCell: (params) => {
                 const date = new Date(params.row.createdAt);
                 const month = date.toLocaleString('default', { month: 'short' });
@@ -195,7 +206,7 @@ function Order() {
             }
         },
         {
-            field: 'user_id', headerName: 'Customer', flex: 2,
+            field: 'user_id', headerName: 'Customer', flex: 1.5,
             minWidth: 160,
             renderCell: (params) => (
                 //console.log(params)
@@ -211,7 +222,7 @@ function Order() {
         },
         {
             field: 'orderstatus', headerName: 'Status', flex: 1.2,
-             minWidth: 140,
+            minWidth: 140,
             renderCell: (params) => {
 
                 const status = params.row.orderstatus;
@@ -295,21 +306,26 @@ function Order() {
                             }}
                             rowHeight={75}
                             pageSizeOptions={[5, 10, 15, 20]}
-                            checkboxSelection
+
                             disableRowSelectionOnClick
                             sx={{
                                 marginTop: 2, marginBottom: 1,
                                 '& .MuiDataGrid-columnSeparator': {
                                     display: 'none',
                                 },
-                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': {
+                                    display: 'none',
+                                },
                                 '& .order-header': {
                                     paddingLeft: '30px'
                                 },
                                 '& .MuiDataGrid-columnHeaderTitle': {
                                     fontSize: '16px',
                                     color: 'rgb(128, 128, 128)'
-                                }
+                                },
+                                '& .first-header .MuiDataGrid-columnHeaderTitleContainer': {
+                                    marginLeft: 3,
+                                },
                             }}
                         />
 
@@ -326,16 +342,18 @@ function Order() {
                             position: 'fixed',
                             top: '10%',
                             // bottom: 'auto',
-                            right: '20px',
+                            right: { xs: "10px", sm: '20px' },
                             transform: 'translateY(-50%)',
 
-                            width: '600px',
+                            // width: '600px',
                             height: '800px',
 
                             borderRadius: '16px',
-                            overflow: 'hidden'
+                            overflowY: 'auto',
+                            overflowX: { xs: 'auto', sm: "hidden" }
                         }
                     }}
+                    className="orderdrawer"
                 >
                     <Box sx={{ padding: 4 }}>
                         <Box sx={{ textAlign: 'end' }}>
@@ -345,196 +363,203 @@ function Order() {
                             </IconButton>
                         </Box>
 
-                        <Typography variant="h6" sx={{ mt: 3 }}>Details</Typography>
+                        <Typography variant="h6" sx={{ mt: { xs: 0, sm: 3 } }}>Details</Typography>
 
-                        <Box sx={{ border: 1, borderColor: 'rgb(206, 199, 199)', borderRadius: 2, mt: 2 }}>
-                            <Grid container>
+                        <ThemeProvider theme={theme1}>
+                            <Box sx={{ border: 1, borderColor: 'rgb(206, 199, 199)', borderRadius: 2, mt: 2 }}>
+                                <Grid container rowSpacing={1}>
 
-                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
-                                    <Grid size={4}>
-                                        <Typography className="orderdata">Customer</Typography>
+                                    <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                        <Grid size={{ xs: 12, sm: 5, md: 4 }}>
+                                            <Typography className="orderdata">Customer</Typography>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 7, md: 8 }}>
+                                            <Typography sx={{ color: 'blue' }}><Username user_id={orderdata?.user_id} /></Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid size={8}>
-                                        <Typography sx={{ color: 'blue' }}><Username user_id={orderdata?.user_id} /></Typography>
+
+
+                                    <Grid size={12}>
+                                        <Divider />
                                     </Grid>
-                                </Grid>
 
-
-                                <Grid size={12}>
-                                    <Divider />
-                                </Grid>
-
-                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
-                                    <Grid size={4}>
-                                        <Typography className="orderdata">Address</Typography>
+                                    <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                        <Grid size={{ xs: 12, sm: 5, md: 4 }}>
+                                            <Typography className="orderdata">Address</Typography>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 7, md: 8 }}>
+                                            <Typography>{[
+                                                orderdata?.address?.streetaddress,
+                                                orderdata?.address?.city,
+                                                orderdata?.address?.state,
+                                                orderdata?.address?.pincode
+                                            ]
+                                                .filter(Boolean)
+                                                .join(", ")}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid size={8}>
-                                        <Typography>{
-                                            orderdata?.address?.streetaddress + "," +
-                                            orderdata?.address?.city + "," +
-                                            orderdata?.address?.state + "," + 125678
-                                        }</Typography>
+
+                                    <Grid size={12}>
+                                        <Divider />
                                     </Grid>
-                                </Grid>
 
-                                <Grid size={12}>
-                                    <Divider />
-                                </Grid>
+                                    <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                        <Grid size={{ xs: 12, sm: 5, md: 4 }}>
+                                            <Typography className="orderdata">Date</Typography>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 7, md: 8 }}>
+                                            {
+                                                (() => {
+                                                    const date = new Date(orderdata?.createdAt);
 
-                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
-                                    <Grid size={4}>
-                                        <Typography className="orderdata">Date</Typography>
+                                                    return (<Typography>{date.toLocaleString()}</Typography>)
+
+                                                })()
+
+                                            }
+                                        </Grid>
                                     </Grid>
-                                    <Grid size={8}>
-                                        {
-                                            (() => {
-                                                const date = new Date(orderdata?.createdAt);
 
-                                                return (<Typography>{date.toLocaleString()}</Typography>)
-
-                                            })()
-
-                                        }
+                                    <Grid size={12}>
+                                        <Divider />
                                     </Grid>
-                                </Grid>
 
-                                <Grid size={12}>
-                                    <Divider />
-                                </Grid>
+                                    <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                        <Grid size={{ xs: 12, sm: 5, md: 4 }}>
+                                            <Typography className="orderdata">Status</Typography>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 7, md: 8 }}>
+                                            {
+                                                (() => {
+                                                    const status = orderdata?.orderstatus;
+                                                    const style = getStatusStyle(status);
 
-                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
-                                    <Grid size={4}>
-                                        <Typography className="orderdata">Status</Typography>
-                                    </Grid>
-                                    <Grid size={8}>
-                                        {
-                                            (() => {
-                                                const status = orderdata?.orderstatus;
-                                                const style = getStatusStyle(status);
-
-                                                return (
-                                                    <Box
-                                                        sx={{
-                                                            backgroundColor: style.backgroundColor,
-                                                            color: style.color,
-                                                            padding: '5px 15px',
-                                                            borderRadius: '20px',
-                                                            display: 'inline-block'
-                                                        }}
-                                                    >
-                                                        <Typography variant="body2">
-                                                            {orderdata?.orderstatus}
-                                                        </Typography>
-                                                    </Box>
-                                                );
-                                            })()
-                                        }
-
-                                    </Grid>
-                                </Grid>
-
-                                <Grid size={12}>
-                                    <Divider />
-                                </Grid>
-
-                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
-                                    <Grid size={4}>
-                                        <Typography className="orderdata">Payment method</Typography>
-                                    </Grid>
-                                    <Grid size={8}>
-                                        <Typography variant="body2">{paymentdata?.data?.[0]?.paymentmethod}</Typography>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid size={12}>
-                                    <Divider />
-                                </Grid>
-
-                                <Grid container size={12} sx={{ padding: '10px 22px' }}>
-                                    <Grid size={4}>
-                                        <Typography className="orderdata">Payment Status</Typography>
-                                    </Grid>
-                                    <Grid size={8}>
-                                        <Typography variant="body2">{paymentdata?.data?.[0]?.paymentstatus}</Typography>
-                                    </Grid>
-                                </Grid>
-
-                            </Grid>
-                        </Box>
-
-                        <Typography variant="h6" sx={{ mt: 3 }}>Products</Typography>
-                        <TableContainer sx={{
-                            border: 1,
-                            borderColor: 'rgb(206, 199, 199)',
-                            borderRadius: 3,
-                            overflow: 'hidden',
-                            mt: 2
-                        }}>
-                            <Table aria-label="simple table" >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell> Product</TableCell>
-                                        <TableCell>unit Price</TableCell>
-                                        <TableCell> Price</TableCell>
-                                        <TableCell>qty</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-
-                                    {
-                                        orderdata?.products?.map((v) => {
-
-                                            const product = pdata?.data?.find(
-                                                (p) => p._id === v.product_id
-                                            );
-
-                                            const variant = product?.variants?.find(
-                                                (vr) => vr._id === v.variant_id
-                                            );
-
-                                            console.log("product", product, variant, v)
-                                            return (
-                                                <TableRow key={v.product_id}>
-                                                    <TableCell scope="row">
-                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                            <img src={IMG_URL + variant?.images?.[0]} width={50} />
-                                                            <Typography>{product?.name}</Typography>
+                                                    return (
+                                                        <Box
+                                                            sx={{
+                                                                backgroundColor: style.backgroundColor,
+                                                                color: style.color,
+                                                                padding: '5px 15px',
+                                                                borderRadius: '20px',
+                                                                display: 'inline-block'
+                                                            }}
+                                                        >
+                                                            <Typography variant="body2">
+                                                                {orderdata?.orderstatus}
+                                                            </Typography>
                                                         </Box>
+                                                    );
+                                                })()
+                                            }
 
-                                                    </TableCell>
+                                        </Grid>
+                                    </Grid>
 
-                                                    <TableCell >
-                                                        <Typography>{product?.price}</Typography>
-                                                    </TableCell>
+                                    <Grid size={12}>
+                                        <Divider />
+                                    </Grid>
 
-                                                    <TableCell >
-                                                        <Typography>{variant?.isFlashSale ? variant?.flashPrice : product?.price}</Typography>
-                                                    </TableCell>
+                                    <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                        <Grid size={{ xs: 12, sm: 5, md: 4 }}>
+                                            <Typography className="orderdata">Payment method</Typography>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 7, md: 8 }}>
+                                            <Typography variant="body2">{paymentdata?.data?.[0]?.paymentmethod}</Typography>
+                                        </Grid>
+                                    </Grid>
 
-                                                    <TableCell >
-                                                        <Typography>{v.quantity}</Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
+                                    <Grid size={12}>
+                                        <Divider />
+                                    </Grid>
 
-                                            // return (
-                                            //     <Typography key={v.product_id}>
-                                            //         {product?.name}
-                                            //     </Typography>
-                                            // );
-                                        })
-                                    }
-                                </TableBody>
-                            </Table>
-                            <Box sx={{
-                                display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'flex-end', mt: 2, mr: 2, mb: 2
-                            }}>
-                                <Typography sx={{ fontSize: "18px" }}>Total</Typography>
-                                <Typography sx={{ fontSize: "19px" }}>₹{orderdata?.totalamount}</Typography>
+                                    <Grid container size={12} sx={{ padding: '10px 22px' }}>
+                                        <Grid size={{ xs: 12, sm: 5, md: 4 }}>
+                                            <Typography className="orderdata">Payment Status</Typography>
+                                        </Grid>
+                                        <Grid size={{ xs: 12, sm: 7, md: 8 }}>
+                                            <Typography variant="body2">{paymentdata?.data?.[0]?.paymentstatus}</Typography>
+                                        </Grid>
+                                    </Grid>
+
+                                </Grid>
                             </Box>
-                        </TableContainer>
 
 
+                            <Typography variant="h6" sx={{ mt: 3 }}>Products</Typography>
+                            <TableContainer sx={{
+                                border: 1,
+                                borderColor: 'rgb(206, 199, 199)',
+                                borderRadius: 3,
+
+                                overflowX: 'auto',
+
+                                mt: 2
+                            }}>
+                                <Table aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell> Product</TableCell>
+                                            <TableCell>unit Price</TableCell>
+                                            <TableCell> Price</TableCell>
+                                            <TableCell>qty</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+
+                                        {
+                                            orderdata?.products?.map((v) => {
+
+                                                const product = pdata?.data?.find(
+                                                    (p) => p._id === v.product_id
+                                                );
+
+                                                const variant = product?.variants?.find(
+                                                    (vr) => vr._id === v.variant_id
+                                                );
+
+                                                console.log("product", product, variant, v)
+                                                return (
+                                                    <TableRow key={v.product_id}>
+                                                        <TableCell scope="row">
+                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                                <img src={IMG_URL + variant?.images?.[0]} width={50} />
+                                                                <Typography sx={{ fontSize: { xs: "14px", sm: '16px' } }}>{product?.name}</Typography>
+                                                            </Box>
+
+                                                        </TableCell>
+
+                                                        <TableCell >
+                                                            <Typography sx={{ fontSize: { xs: "14px", sm: '16px' } }}>{product?.price}</Typography>
+                                                        </TableCell>
+
+                                                        <TableCell >
+                                                            <Typography sx={{ fontSize: { xs: "14px", sm: '16px' } }}>{variant?.isFlashSale ? variant?.flashPrice : product?.price}</Typography>
+                                                        </TableCell>
+
+                                                        <TableCell >
+                                                            <Typography sx={{ fontSize: { xs: "14px", sm: '16px' } }}>{v.quantity}</Typography>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+
+                                                // return (
+                                                //     <Typography key={v.product_id}>
+                                                //         {product?.name}
+                                                //     </Typography>
+                                                // );
+                                            })
+                                        }
+                                    </TableBody>
+                                </Table>
+                                <Box sx={{
+                                    display: 'flex', alignItems: 'center', gap: { xs: 3, sm: 10 }, justifyContent: 'flex-end', mt: 2, mr: 2, mb: 2, ml: 'auto'
+                                }}>
+                                    <Typography sx={{ fontSize: "18px" }}>Total</Typography>
+                                    <Typography sx={{ fontSize: "19px" }}>₹{orderdata?.totalamount}</Typography>
+                                </Box>
+                            </TableContainer>
+                        </ThemeProvider>
                     </Box>
 
                     {/* <Box sx={{ width: 350, p: 2 }}>

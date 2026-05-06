@@ -16,6 +16,7 @@ import { useCheckauthQuery } from '../redux/api/user.api';
 import Demo from '../container/Demo/Demo';
 import CashfreeCheckout from '../container/Cashfree_Checkout/CashfreeCheckout';
 import Payment from '../container/Payment/Payment';
+import Search from '../container/Search/Search';
 
 function UserRoutes(props) {
 
@@ -61,6 +62,7 @@ function UserRoutes(props) {
                 <Route path='/demo' element={< Demo />} />
                 <Route path='/cashfree' element={< CashfreeCheckout />} />
                  <Route path='/payment' element={< Payment />} />
+                  <Route path='/search' element={< Search />} />
                 <Route path='*' element={<Notfound />} />
             </Routes>
             <Footer />

@@ -91,7 +91,10 @@ function Category() {
 
     const columns = [
         {
-            field: 'name', headerName: 'name', flex: 1,
+            field: 'name', headerName: 'name', flex: 1.5, headerClassName: 'first-header',
+            renderCell: (params) => (
+                <Box sx={{ ml: 3 }}>{params.row.name}</Box>
+            ),
             minWidth: isMobile ? 220 : 150,
             // minWidth: isLarge ? 350 : isTablet ? 120 : 200,
         },
@@ -229,7 +232,6 @@ function Category() {
                                 },
                             }}
                             pageSizeOptions={[5, 10, 15, 20]}
-                            checkboxSelection
                             disableRowSelectionOnClick
                             sx={{
                                 marginTop: 2, marginBottom: 1,
@@ -237,6 +239,9 @@ function Category() {
                                     display: 'none',
                                 },
                                 '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                                '& .first-header .MuiDataGrid-columnHeaderTitleContainer': {
+                                    marginLeft: 3,
+                                },
                             }}
                         />
                     </Box>

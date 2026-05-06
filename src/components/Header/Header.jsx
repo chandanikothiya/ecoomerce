@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import { FiUser } from "react-icons/fi";
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -31,9 +31,11 @@ import { useGetWishlistQuery } from "../../redux/api/wishlist.api";
 
 function Header() {
 
+    const navigate = useNavigate();
     const [anchorEll, setAnchorEll] = React.useState(null);
     const [showBudget, setShowBudget] = useState(false);
     const [showwBudget, setShowwBudget] = useState(false);
+    const [search, setSearch] = useState('');
     const prevcounter = useRef(0)
     const prevcounterwishlist = useRef(0)
     const dispatch = useDispatch();
@@ -49,7 +51,7 @@ function Header() {
 
     if (localStorage.getItem('loginid')) {
         id = localStorage.getItem('loginid');
-        console.log("loginid",id)
+        console.log("loginid", id)
     }
 
     //cart count
@@ -114,7 +116,7 @@ function Header() {
                 dispatch(setalert({ text: response.data.message, variant: 'success' }))
                 localStorage.removeItem('loginid')
 
-               // dispatch(api.util.resetApiState());
+                // dispatch(api.util.resetApiState());
             } else {
                 dispatch(setalert({ text: response.data.message, variant: 'error' }))
             }
@@ -169,6 +171,10 @@ function Header() {
         }
     }, [location.pathname])
     console.log(showBudget)
+
+    const handleSearch = () => {
+        navigate(`/search?search=${search}`)
+    }
 
     return (
         <>
@@ -240,7 +246,15 @@ function Header() {
                             <div className="search_cart_wishlist">
                                 <form>
                                     <div className="seachbox">
-                                        <input type="text" name="seacrh" id="seacrh" placeholder="What are you looking for?" />
+                                        <input type="text" name="seacrh" id="seacrh" placeholder="What are you looking for?"
+                                            onChange={(e) => setSearch(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                     e.preventDefault();
+                                                    handleSearch();
+                                                }
+                                            }}
+                                        />
                                         <SearchOutlinedIcon className="header-icone" />
                                     </div>
                                 </form>

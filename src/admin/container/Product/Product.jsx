@@ -11,7 +11,7 @@ import MyTextField from "../../components/MyTextField";
 import { BorderBottom, Margin, Padding, WidthNormal } from "@mui/icons-material";
 import { useAddCategoryMutation, useDeleteCategoryMutation, useGetCategoryQuery, useUpdateCategoryMutation } from "../../../redux/api/category.api";
 import { DataGrid } from '@mui/x-data-grid';
-import { Avatar, Box, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, useMediaQuery, useTheme } from "@mui/material";
+import { Avatar, Box, Checkbox, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
@@ -21,6 +21,7 @@ import { asyncThunkCreator } from "@reduxjs/toolkit";
 import { IMG_URL } from "../../../utility/url";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 
 
 const ITEM_HEIGHT = 48;
@@ -38,7 +39,9 @@ const MenuProps = {
 
 function Product() {
 
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = useState(false);
+    const [categoryselect, setCategoryselect] = useState('');
+    const [search, setSearch] = useState('');
     const [open, setOpen] = React.useState(false);
     const [updatedata, setUpdatedata] = useState({});
     const [variants, setVariants] = useState([
@@ -46,11 +49,11 @@ function Product() {
     ]);
     //const [sizeName, setSizeName] = React.useState([]);
 
-      const theme = useTheme();
-    
-        const isMobile = useMediaQuery("(max-width:576px)");
-        const isTablet = useMediaQuery("(max-width:768px)");
-        const isLarge = useMediaQuery("(min-width:1200px)");
+    const theme = useTheme();
+
+    const isMobile = useMediaQuery("(max-width:576px)");
+    const isTablet = useMediaQuery("(max-width:768px)");
+    const isLarge = useMediaQuery("(min-width:1200px)");
 
 
     const { data: catdata,
@@ -72,14 +75,7 @@ function Product() {
         setOpen(false);
     };
 
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     const formData = new FormData(event.currentTarget);
-    //     const formJson = Object.fromEntries(formData.entries());
-    //     const email = formJson.email;
-    //     console.log(email);
-    //     handleClose();
-    // };
+
 
     const categorySchema = object({
         category_id: string().required(),
@@ -110,18 +106,6 @@ function Product() {
         { value: 'L', label: 'L' },
         { value: 'XL', label: 'XL' },
     ]
-
-    // const handleChange = (event) => {
-    //     const {
-    //         target: { value },
-    //     } = event;
-    //     setSizeName(
-    //         // On autofill we get a stringified value.
-    //         typeof value === 'string' ? value.split(',') : value,
-    //     );
-    // };
-
-    // console.log(sizeName)
 
 
 
@@ -182,12 +166,20 @@ function Product() {
     }
 
     const columns = [
-        { field: 'name', headerName: 'name', width: 250 },
+        {
+            field: 'name', headerName: 'name', headerClassName: 'first-header', flex: 1.2,
+            minWidth: 220,
+            renderCell: (params) => (
+                <>
+                    <Box sx={{ ml: 3 }}>{params.row.name}</Box>
+                </>
+            )
+        },
         {
             field: 'price',
             headerName: 'Price',
-             flex: 1.5,
-    minWidth: 140,
+            flex: 0.7,
+            minWidth: 120,
             editable: true,
         },
         // {
@@ -199,7 +191,8 @@ function Product() {
         {
             field: 'category_id',
             headerName: 'Category',
-            width: 250,
+            flex: 1,
+            minWidth: 180,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -214,7 +207,8 @@ function Product() {
         {
             field: 'product_img',
             headerName: 'Images',
-            width: 470,
+            flex: 2,
+            minWidth: 340,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -243,7 +237,8 @@ function Product() {
         {
             field: '',
             headerName: 'Action',
-            width: 120,
+            flex: 0.7,
+            minWidth: 120,
             editable: true,
             renderCell: (params) => (
                 <>
@@ -262,13 +257,135 @@ function Product() {
     console.log("variants", variants)
 
 
+    let filterp = data?.data?.filter((v) => v.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || v.price <= Number(search));
+
+    if (categoryselect) {
+        filterp = filterp?.filter((v) => v.category_id === categoryselect)
+    }
+
+
+    console.log("filterp", filterp)
+
+    console.log(categoryselect)
+
     return (
         <>
             <div className="container">
                 <React.Fragment>
-                    <Button variant="outlined" onClick={handleClickOpen}>
-                        Add Product
-                    </Button>
+
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: { xs: 'wrap', md: 'nowrap' }, rowGap: 2 }}>
+                        <Button variant="outlined" onClick={handleClickOpen}>
+                            Add Product
+                        </Button>
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 2,
+                                Width: {
+                                    xs: '100%',
+                                    md: '500px'
+                                },
+                                alignItems: 'center',
+                                flexWrap: { xs: 'wrap', sm: 'nowrap' }
+                            }}
+                        >
+
+                            {/* SEARCH */}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    border: '1px solid rgb(221, 212, 212)',
+                                    padding: {
+                                        xs: '5px 8px',
+                                        sm: '7px 8px',
+                                        md: '8.5px 8px',
+                                        xl: '11px 8px'
+                                    },
+                                    borderRadius: 2,
+                                    Width: '180px',
+                                }}
+                            >
+                                <SearchTwoToneIcon
+                                    sx={{
+                                        color: 'action.active',
+                                        mr: 1
+                                    }}
+                                />
+
+                                <Input
+                                    placeholder="search by name or price.."
+                                    disableUnderline
+                                    fullWidth
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                            </Box>
+
+                            {/* SELECT 1 */}
+                            <FormControl sx={{
+                                width: '240px', '& .MuiInputLabel-root': {
+                                    top: {
+                                        xs: '-10%',
+                                        sm: '0'
+                                    }
+                                }
+                            }}>
+                                <InputLabel>Category</InputLabel>
+
+                                <Select
+                                    value={categoryselect}
+                                    label="Age"
+                                    onChange={(e) => setCategoryselect(e.target.value)}
+                                    sx={{
+                                        '& .MuiSelect-select': {
+                                            padding: {
+                                                xs: '9px 14px',
+                                                sm: '12px 14px',
+                                                md: '14px 14px',
+                                                xl: '16.5px 14px'
+                                            }
+                                        }
+                                    }}
+                                >
+                                    {
+                                        catdata?.data?.map((v, i) => (
+                                            <MenuItem value={v?._id}>{v?.name}</MenuItem>
+                                        ))
+                                    }
+
+                                </Select>
+                            </FormControl>
+
+                            {/* SELECT 2 */}
+                            {/* <FormControl sx={{ flex: 1 }}>
+                                <InputLabel>Price</InputLabel>
+
+                                <Select
+                                    value={age}
+                                    label="Age"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value={1}>under 1000</MenuItem>
+                                    <MenuItem value={2}>under 2000</MenuItem>
+                                    <MenuItem value={3}>under 3000</MenuItem>
+                                    <MenuItem value={3}>under 4000</MenuItem>
+                                    <MenuItem value={5}>under 5000</MenuItem>
+                                    <MenuItem value={7}>under 7000</MenuItem>
+                                    <MenuItem value={8}>under 8000</MenuItem>
+                                    <MenuItem value={10}>under 10000</MenuItem>
+                                    <MenuItem value={20}>under 20000</MenuItem>
+                                    <MenuItem value={30}>under 30000</MenuItem>
+                                    <MenuItem value={40}>under 40000</MenuItem>
+                                    <MenuItem value={50}>under 50000</MenuItem>
+                                    <MenuItem value={60}>under 60000</MenuItem>
+                                </Select>
+                            </FormControl> */}
+
+                        </Box>
+
+                    </Box>
+
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>Add Category</DialogTitle>
                         <DialogContent>
@@ -499,17 +616,20 @@ function Product() {
                 <Box
                     sx={{
                         width: '100%',
-                        overflowX: isMobile ? 'auto' : 'hidden',
+                        overflowX: 'auto',
                     }}
                 >
                     <Box
                         sx={{
-                            minWidth: isMobile ? 900 : '100%',
+                            minWidth: {
+                                xs: 700,
+                                md: '100%',
+                            },
                         }}
                     >
 
                         <DataGrid
-                            rows={data?.data}
+                            rows={filterp}
                             getRowId={(rows) => rows?._id || Math.random()}
                             columns={columns}
                             initialState={{
@@ -521,7 +641,6 @@ function Product() {
                             }}
                             rowHeight={150}
                             pageSizeOptions={[5, 10, 15, 20]}
-                            checkboxSelection
                             disableRowSelectionOnClick
                             sx={{
                                 marginTop: 2, marginBottom: 1,
@@ -529,6 +648,9 @@ function Product() {
                                     display: 'none',
                                 },
                                 '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                                '& .first-header .MuiDataGrid-columnHeaderTitleContainer': {
+                                    marginLeft: 3,
+                                },
                             }}
                         />
                     </Box>

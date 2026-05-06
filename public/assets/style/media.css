@@ -571,6 +571,10 @@
             display: none;
         }
 
+        .orderdrawer .MuiDrawer-paper{
+            width:280px !important;
+        }
+
     }
 
     /* sm */
@@ -1128,6 +1132,10 @@
         .place-order-btn{
             padding: 10px 32px;
         }
+
+        .orderdrawer .MuiDrawer-paper{
+            width: 500px !important;
+        }
     }
 
     /* md */
@@ -1529,6 +1537,9 @@
 
         .coupon-textc {
             width: 320px !important;
+        }
+        .orderdrawer .MuiDrawer-paper{
+            width: 600px !important;
         }
     }
 
