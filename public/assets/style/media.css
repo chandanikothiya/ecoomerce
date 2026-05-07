@@ -14,7 +14,7 @@
 
 
         body {
-            padding-top: 204px;
+            padding-top: 150px;
         }
 
         section {
@@ -386,10 +386,9 @@
             font-size: 16px !important;
         }
 
-        .cart-coupon-box-btn
-        {
+        .cart-coupon-box-btn {
             padding: 9px 25px !important;
-          
+
         }
 
 
@@ -571,8 +570,8 @@
             display: none;
         }
 
-        .orderdrawer .MuiDrawer-paper{
-            width:280px !important;
+        .orderdrawer .MuiDrawer-paper {
+            width: 280px !important;
         }
 
     }
@@ -599,7 +598,7 @@
         }
 
         body {
-            padding-top: 160.5px;
+            padding-top: 119.5px;
         }
 
         section {
@@ -1125,15 +1124,15 @@
             display: flex;
         }
 
-         .coupon-textc {
+        .coupon-textc {
             width: 280px !important;
         }
 
-        .place-order-btn{
+        .place-order-btn {
             padding: 10px 32px;
         }
 
-        .orderdrawer .MuiDrawer-paper{
+        .orderdrawer .MuiDrawer-paper {
             width: 500px !important;
         }
     }
@@ -1538,7 +1537,8 @@
         .coupon-textc {
             width: 320px !important;
         }
-        .orderdrawer .MuiDrawer-paper{
+
+        .orderdrawer .MuiDrawer-paper {
             width: 600px !important;
         }
     }
@@ -1558,6 +1558,10 @@
         section {
             margin-top: 80px;
             margin-bottom: 60px;
+        }
+
+        #authendication {
+            margin-top: 60px;
         }
 
         .menus {

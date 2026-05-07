@@ -27,6 +27,7 @@ import { setalert } from "../../redux/slice/Alert.slice";
 import { useGetCartQuery } from "../../redux/api/cart.api";
 import { styled } from '@mui/material/styles';
 import { useGetWishlistQuery } from "../../redux/api/wishlist.api";
+import Googletranslate from "../../Googletranslate/Googletranslate";
 
 
 function Header() {
@@ -172,12 +173,60 @@ function Header() {
     }, [location.pathname])
     console.log(showBudget)
 
+
+
     const handleSearch = () => {
         navigate(`/search?search=${search}`)
     }
 
+    useEffect(() => {
+
+        if (!window.googleTranslateElementInit) {
+
+            window.googleTranslateElementInit = () => {
+
+                if (!document.querySelector(".goog-te-combo")) {
+
+                    new window.google.translate.TranslateElement(
+                        {
+                            pageLanguage: "en",
+                            includedLanguages: "en,hi",
+                            autoDisplay: false,
+                        },
+                        "google_translate_element"
+                    );
+                }
+            };
+
+            const script = document.createElement("script");
+
+            script.src =
+                "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+
+            script.async = true;
+
+            document.body.appendChild(script);
+        }
+
+    }, []);
+
+    const changeLanguage = (lang) => {
+
+        document.cookie = `googtrans=/en/${lang};path=/`;
+
+        const select = document.querySelector(".goog-te-combo");
+
+        if (select) {
+            select.value = lang;
+            select.dispatchEvent(
+                new Event("change", { bubbles: true })
+            );
+        }
+    };
+
     return (
         <>
+            <div id="google_translate_element" style={{ display: "none" }}></div>
             <header id="header">
                 <div className="top-header">
                     <div className="container first-header">
@@ -193,7 +242,7 @@ function Header() {
                                 className="topheader-lang"
                                 endIcon={<KeyboardArrowDownIcon />}
                             >
-                                LANG
+                                <span className="notranslate">LANG</span>
                             </Button>
                             <Menu
                                 id="demo-positioned-menu"
@@ -211,8 +260,43 @@ function Header() {
                                 }}
                                 sx={{ mt: 4 }}
                             >
-                                <MenuItem onClick={handleClosel}>English</MenuItem>
-                                <MenuItem onClick={handleClosel}>Hindi</MenuItem>
+                                {/* <MenuItem onClick={handleClosel}>English</MenuItem>
+                                <MenuItem onClick={handleClosel}>Hindi</MenuItem> */}
+                                <MenuItem
+                                    translate="no"
+                                    className="notranslate"
+                                    onClick={() => {
+
+                                        const select = document.querySelector(".goog-te-combo");
+
+                                        if (select) {
+                                            select.value = "en";
+
+                                            select.dispatchEvent(
+                                                new Event("change", { bubbles: true })
+                                            );
+                                        }
+
+                                        handleClosel();
+                                    }}
+                                >
+                                    <span translate="no" className="notranslate">
+                                        English
+                                    </span>
+                                </MenuItem>
+
+                                <MenuItem
+                                    translate="no"
+                                    className="notranslate"
+                                    onClick={() => {
+                                        changeLanguage("hi");
+                                        handleClosel();
+                                    }}
+                                >
+                                    <span translate="no" className="notranslate">
+                                        Hindi
+                                    </span>
+                                </MenuItem>
                             </Menu>
                         </div>
                     </div>
@@ -250,7 +334,7 @@ function Header() {
                                             onChange={(e) => setSearch(e.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
-                                                     e.preventDefault();
+                                                    e.preventDefault();
                                                     handleSearch();
                                                 }
                                             }}
@@ -300,7 +384,7 @@ function Header() {
                                                 paper: {
                                                     elevation: 0,
                                                     sx: {
-                                                        bgcolor: "rgba(0, 0, 0, 0.69)", 
+                                                        bgcolor: "rgba(0, 0, 0, 0.69)",
                                                         backdropFilter: "blur(10px)",
                                                         boxShadow: "none",
                                                         color: "white",

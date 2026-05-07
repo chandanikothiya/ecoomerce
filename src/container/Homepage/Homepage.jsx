@@ -138,7 +138,6 @@ function Homepage() {
 
     const [swiperInstance, setSwiperInstance] = useState(null);
 
-
     useEffect(() => {
         fetch('http://localhost:3000/flashsale')
             .then(response => response.json())
@@ -205,8 +204,7 @@ function Homepage() {
 
             setSelectedColors(initialColors);
         }
-    }, [pdata]); // ✅ ONLY pdata
-
+    }, [pdata]);
 
     const caticone = {
         "phone": <PhoneIphoneOutlinedIcon className="caticone" />,
@@ -321,7 +319,7 @@ function Homepage() {
                 <section className="hero">
                     <div className="container">
                         <ThemeProvider theme={theme}>
-                            <Grid container alignItems="stretch" rowSpacing={3}>
+                            <Grid container alignItems="stretch" rowSpacing={{xs:2,sm:3}}>
                                 <Grid size={{ xs: 12, sm: 12, md: 3, lg: 2 }}>
 
                                     <Box className="hero-left" sx={{ p: { xs: '25px 0 0 0', md: "25px 20px 0 0" }, borderRight: { xs: 'none', md: 'solid 1px rgb(224, 222, 224)' } }}>
@@ -934,7 +932,8 @@ function Homepage() {
 
                         </Box>
 
-                        <a href="#" className="my-custome-button" onClick={}>View More Product</a>
+                        <a className="my-custome-button"
+                        onClick={() => { navigate('/allproduct?type=flashproduct') }}>View More Product</a>
                     </section>
                 </ThemeProvider>
                 <hr />
@@ -1543,7 +1542,7 @@ function Homepage() {
                                 </Box>
                             </Box>
 
-                            <a href="#" className="my-custome-button" style={{ margin: '20px auto 0 auto' }}>View More Product</a>
+                            <a className="my-custome-button" style={{ margin: '20px auto 0 auto' }} onClick={() => { navigate('/allproduct?type=allproduct') }}>View More Product</a>
                         </div>
                     </section>
                 </ThemeProvider>

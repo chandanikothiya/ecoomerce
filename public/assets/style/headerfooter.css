@@ -27,6 +27,23 @@ body {
     font-family: "Inter", sans-serif;
 }
 
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+iframe.skiptranslate {
+  display: none !important;
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0px !important;
+}
+
 /* body {
     padding-top: 160.5px;
 } */
@@ -73,7 +90,7 @@ body {
     overflow: visible !important
 }
 
-.header-icone{
+.header-icone {
     color: black;
 }
 
@@ -98,7 +115,7 @@ body {
 
     display: flex;
     align-items: center;
-    
+
     background-color: #F5F5F5;
 }
 
@@ -313,7 +330,7 @@ body {
 }
 
 .pbtn-prev,
-.pbtn-next{
+.pbtn-next {
     display: inline-block;
     background-color: #eef0f3;
     border-radius: 50%;
@@ -356,7 +373,7 @@ body {
     border-radius: 3px;
     color: white;
     text-decoration: none;
-
+    cursor: default;
     display: block;
     width: fit-content;
     border: none;
@@ -519,8 +536,7 @@ hr {
 }
 
 #authendication form span,
-#contactus .contactform span
-{
+#contactus .contactform span {
     color: red;
 }
 
@@ -650,12 +666,11 @@ hr {
 
 /* 404 not found page */
 
-
-
 #notfound .my-custome-button:hover {
     color: white;
 }
 
+/* cursor: default; */
 
 /* product detal page */
 
@@ -904,8 +919,9 @@ hr {
 #allproducts .swiper-slide {
     margin-top: 10px !important;
 }
+
 #allproducts .swiper-wrapper {
-  row-gap: 10px !important;
+    row-gap: 10px !important;
 }
 
 .category-title:hover {
@@ -929,6 +945,10 @@ hr {
     object-fit: contain;
 }
 
-.orderdata{
+.orderdata {
     color: rgb(128, 128, 128);
 }
+
+/* #authendication{
+    margin-top: 30px;
+} */

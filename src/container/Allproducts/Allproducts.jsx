@@ -19,6 +19,8 @@ function Allproducts() {
 
     const [selectedColors, setSelectedColors] = useState({});
     const [searchParams, setSearchParams] = useSearchParams();
+    const type = searchParams.get('type');
+    console.log(searchParams.get('type'))
     const navigate = useNavigate();
     const dispatch = useDispatch();
     let uid;
@@ -32,15 +34,20 @@ function Allproducts() {
         isLoading: pisLoading } = useGetProductQuery();
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
 
-    // const { data: catdata, error: caterror, isLoading: catislaoding } = useGetCategoryQuery();
-    // catdata?.data?.map((v) => {console.log("catid", v.name.toLowerCase() === searchParams.get('search').toLowerCase())});
-    // const catid = catdata?.data?.filter((v) => v.name.toLowerCase().includes(searchParams.get('search').toLowerCase()));
-    // console.log("catid", catid, searchParams.get('search'), catdata);
 
-    // const filterproduct = pdata?.data?.filter((v) => catid.some(v1 => v1._id === v.category_id))
-    // console.log("filterproduct",filterproduct)
+    let product;
 
-    //const produxt = pdata?.data?.filter((v) => v.category)
+    if (type === 'flashproduct') {
+        product = pdata?.data?.map((v) => ({
+            ...v,
+            variants: v.variants.filter(v1 => v1.isFlashSale)
+        })).filter(v => v.variants.length > 0);
+    } else if (type === 'allproduct') {
+        product = pdata?.data;
+    }
+
+
+
 
     const { data: wdata, error: werror, isLoading: wisLoading, refetch } = useGetWishlistQuery(uid, {
         skip: !uid,
@@ -124,7 +131,7 @@ function Allproducts() {
                     <div className="container" >
                         <Box className="sub-title">
                             <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }} className="subtitle">Search Products</Typography>
+                            <Typography sx={{ fontWeight: 600 }} className="subtitle">Products</Typography>
                         </Box>
 
                         <Box sx={{ position: 'relative', mt: 2 }}>
@@ -135,7 +142,7 @@ function Allproducts() {
                                     sx={{
                                         marginTop: { xs: '20px', sm: '23px', md: '35px' }
                                     }}>
-                                    {pdata?.data?.map((v, i) => {
+                                    {product?.map((v, i) => {
                                         const validVariants = v?.variants?.filter(
                                             (x) => x?.color && x.color.trim() !== ""
                                         );
@@ -221,9 +228,6 @@ function Allproducts() {
 
                                                                 );
                                                             })()}
-
-
-
                                                     </Box>
 
 
@@ -262,8 +266,6 @@ function Allproducts() {
                                                                 </Typography>
                                                             </Box>
                                                         </Box>
-
-
 
                                                         {
                                                             v.new ?
@@ -401,7 +403,7 @@ function Allproducts() {
                                     })}
                                 </Grid>
                             </Box>
-                        </Box>                
+                        </Box>
                     </div>
                 </section>
             </ThemeProvider>
