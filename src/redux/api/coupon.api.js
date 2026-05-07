@@ -25,9 +25,25 @@ export const couponApi = createApi({
             }),
             invalidatesTags: ['coupon'],
         }),
+        updateCoupon: builder.mutation({
+            query: (data) => ({
+                url: `/coupon/updatecoupon/${data._id}`,
+                method: 'put',
+                body: data
+            }),
+            invalidatesTags: ['coupon'],
+        }),
+        changeactive: builder.mutation({
+            query: (data) => ({
+                url: `/coupon/changeactive/${data.id}`,
+                method: 'put',
+                body: data
+            }),
+            invalidatesTags: ['coupon'],
+        }),
         checkCoupon: builder.mutation({
             query: (code) => ({
-                url: '/coupon/checkcoupon',
+                url: '/coupon/checkcoupon/',
                 method: 'post',
                 body: code
             }),
@@ -35,7 +51,7 @@ export const couponApi = createApi({
         }),
         deleteCoupon: builder.mutation({
             query: (id) => ({
-                url: `/coupon/deletecoupon`,
+                url: `/coupon/deletecoupon/${id}`,
                 method: 'delete'
             }),
             invalidatesTags: ['coupon'],
@@ -49,5 +65,6 @@ export const {
     useAddCouponMutation,
     useUpdateCouponMutation,
     useDeleteCouponMutation,
-    useCheckCouponMutation
+    useCheckCouponMutation,
+    useChangeactiveMutation
 } = couponApi;

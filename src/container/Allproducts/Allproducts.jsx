@@ -15,7 +15,7 @@ import { setalert } from "../../redux/slice/Alert.slice";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
 
 
-function Search() {
+function Allproducts() {
 
     const [selectedColors, setSelectedColors] = useState({});
     const [searchParams, setSearchParams] = useSearchParams();
@@ -32,13 +32,13 @@ function Search() {
         isLoading: pisLoading } = useGetProductQuery();
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
 
-    const { data: catdata, error: caterror, isLoading: catislaoding } = useGetCategoryQuery();
-    catdata?.data?.map((v) => {console.log("catid", v.name.toLowerCase() === searchParams.get('search').toLowerCase())});
-    const catid = catdata?.data?.filter((v) => v.name.toLowerCase().includes(searchParams.get('search').toLowerCase()));
-    console.log("catid", catid, searchParams.get('search'), catdata);
+    // const { data: catdata, error: caterror, isLoading: catislaoding } = useGetCategoryQuery();
+    // catdata?.data?.map((v) => {console.log("catid", v.name.toLowerCase() === searchParams.get('search').toLowerCase())});
+    // const catid = catdata?.data?.filter((v) => v.name.toLowerCase().includes(searchParams.get('search').toLowerCase()));
+    // console.log("catid", catid, searchParams.get('search'), catdata);
 
-    const filterproduct = pdata?.data?.filter((v) => catid.some(v1 => v1._id === v.category_id))
-    console.log("filterproduct",filterproduct)
+    // const filterproduct = pdata?.data?.filter((v) => catid.some(v1 => v1._id === v.category_id))
+    // console.log("filterproduct",filterproduct)
 
     //const produxt = pdata?.data?.filter((v) => v.category)
 
@@ -135,7 +135,7 @@ function Search() {
                                     sx={{
                                         marginTop: { xs: '20px', sm: '23px', md: '35px' }
                                     }}>
-                                    {filterproduct?.map((v, i) => {
+                                    {pdata?.data?.map((v, i) => {
                                         const validVariants = v?.variants?.filter(
                                             (x) => x?.color && x.color.trim() !== ""
                                         );
@@ -401,8 +401,7 @@ function Search() {
                                     })}
                                 </Grid>
                             </Box>
-                        </Box>
- 
+                        </Box>                
                     </div>
                 </section>
             </ThemeProvider>
@@ -410,4 +409,4 @@ function Search() {
     )
 }
 
-export default Search;
+export default Allproducts;

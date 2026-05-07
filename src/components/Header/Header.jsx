@@ -286,7 +286,6 @@ function Header() {
                                                 aria-controls={open ? 'account-menu' : undefined}
                                                 aria-haspopup="true"
                                                 aria-expanded={open ? 'true' : undefined}
-
                                             >
                                                 <Avatar sx={{ width: 32, height: 32, bgcolor: open ? '#DB4444' : 'white', color: open ? 'white' : 'black' }} className="profile-avtar"><FiUser /></Avatar>
                                             </IconButton>
@@ -301,12 +300,12 @@ function Header() {
                                                 paper: {
                                                     elevation: 0,
                                                     sx: {
-                                                        bgcolor: "rgba(0, 0, 0, 0.69)",   // ✅ FIX HERE
-                                                        backdropFilter: "blur(10px)", // optional glass effect
+                                                        bgcolor: "rgba(0, 0, 0, 0.69)", 
+                                                        backdropFilter: "blur(10px)",
                                                         boxShadow: "none",
                                                         color: "white",
                                                         mt: 1,
-                                                        zIndex: 9999,   // ✅ higher than navbar
+                                                        zIndex: 9999,
                                                     }
                                                 },
                                             }}

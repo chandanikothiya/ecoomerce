@@ -232,7 +232,6 @@ function Homepage() {
         },
     });
 
-
     const colors = [
         { name: "Red", value: "#ff0000" },
         { name: "Blue", value: "#0000ff" },
@@ -315,8 +314,6 @@ function Homepage() {
             navigate('/signup')
         }
     }
-
- 
 
     return (
         <>
@@ -683,7 +680,7 @@ function Homepage() {
                                 }}
                             >
                                 {
-                                    flashsaleproduct?.map((v, i) => {
+                                    flashsaleproduct?.slice(0, 6)?.map((v, i) => {
                                         //const r = v.rating.reduce((acc, v) => acc + v, 0)
                                         // console.log(r)
                                         //const rate = r / v.rating.length;
@@ -937,7 +934,7 @@ function Homepage() {
 
                         </Box>
 
-                        <a href="#" className="my-custome-button" >View More Product</a>
+                        <a href="#" className="my-custome-button" onClick={}>View More Product</a>
                     </section>
                 </ThemeProvider>
                 <hr />
@@ -1194,7 +1191,6 @@ function Homepage() {
                         </Box>
                     </div>
                 </section>
-
 
                 {/* explore our product */}
                 <ThemeProvider theme={theme}>

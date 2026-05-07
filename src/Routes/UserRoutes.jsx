@@ -17,6 +17,7 @@ import Demo from '../container/Demo/Demo';
 import CashfreeCheckout from '../container/Cashfree_Checkout/CashfreeCheckout';
 import Payment from '../container/Payment/Payment';
 import Search from '../container/Search/Search';
+import Allproducts from '../container/Allproducts/Allproducts';
 
 function UserRoutes(props) {
 
@@ -61,8 +62,9 @@ function UserRoutes(props) {
                 <Route path='/myaccount' element={<Myaccount />} />
                 <Route path='/demo' element={< Demo />} />
                 <Route path='/cashfree' element={< CashfreeCheckout />} />
-                 <Route path='/payment' element={< Payment />} />
-                  <Route path='/search' element={< Search />} />
+                <Route path='/payment' element={< Payment />} />
+                <Route path='/search' element={< Search />} />
+                <Route path='/allproduct' element={< Allproducts />} />
                 <Route path='*' element={<Notfound />} />
             </Routes>
             <Footer />

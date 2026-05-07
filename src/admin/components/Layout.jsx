@@ -23,6 +23,7 @@ import { BiSolidDashboard } from "react-icons/bi";
 import { FaBoxOpen } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
+import { RiCoupon2Fill } from "react-icons/ri";
 
 const drawerWidth = 240;
 
@@ -110,6 +111,7 @@ function Layout({ children }) {
         { label: "Products", icone: <FaBoxOpen style={{fontSize:'20px'}}/>, to: "/admin/product" },
         { label: "Contact/Messages", icone: <ContactMailIcon />, to: "/admin/contact" },
         { label: "Order", icone: <MarkChatReadIcon />, to: "/admin/order" },
+        { label: "Coupon", icone: <RiCoupon2Fill style={{fontSize:'20px'}}/>, to: "/admin/coupon" },
     ];
 
     // Reusable Menu List to avoid code duplication
