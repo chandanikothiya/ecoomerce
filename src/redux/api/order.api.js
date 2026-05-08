@@ -17,6 +17,13 @@ export const orderApi = createApi({
             }),
             invalidatesTags: ['order'],
         }),
+         moreSelling: builder.query({
+            query: (id) => ({
+                url: `/order/moreselling`
+            }),
+            invalidatesTags: ['order'],
+        }),
+        
         addOrder: builder.mutation({
             query: (data) => ({
                 url: '/order/addorder',
@@ -57,4 +64,4 @@ export const {
     useAddOrderMutation,
     useUpdateShippingAddressMutation,
     useUpdateOrderStatusMutation,
-    useDeleteOrderMutation} = orderApi;
+    useDeleteOrderMutation,useMoreSellingQuery} = orderApi;

@@ -242,7 +242,7 @@ function Productdetail() {
                         <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">{detailproduct?.name}</Typography>
                     </Breadcrumbs>
 
-                    <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 10 } }} spacing={{ xs: 3, sm: 3, md: 5, lg: 6 }}>
+                    <Grid container sx={{ mt: { xs: 3, sm: 5, lg: 5 } }} spacing={{ xs: 3, sm: 3, md: 5, lg: 6 }}>
                         <Grid size={{ xs: 12, sm: 6, lg: 7 }} container spacing={{ xs: 2, sm: 2, md: 3, lg: 3.5, xl: 4 }} alignItems="stretch">
                             <Grid size={{ xs: 12, sm: 12, md: 3 }} sx={{
                                 // flexDirection: {

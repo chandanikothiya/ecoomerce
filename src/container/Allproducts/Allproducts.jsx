@@ -47,8 +47,6 @@ function Allproducts() {
     }
 
 
-
-
     const { data: wdata, error: werror, isLoading: wisLoading, refetch } = useGetWishlistQuery(uid, {
         skip: !uid,
     });
@@ -131,7 +129,7 @@ function Allproducts() {
                     <div className="container" >
                         <Box className="sub-title">
                             <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }} className="subtitle">Products</Typography>
+                            <Typography sx={{ fontWeight: 600 }} className="subtitle">{type === 'flashproduct' ? 'Flash Products' : 'Products'}</Typography>
                         </Box>
 
                         <Box sx={{ position: 'relative', mt: 2 }}>
@@ -172,6 +170,13 @@ function Allproducts() {
                                             (v1) => v1.variant_id === selectedVariant._id
                                         ) : '';
                                         console.log("wishlistvarient", isInWishlist)
+
+                                        const discount = ((v?.price - selectedVariant?.flashPrice) / v.price) * 100;
+
+                                        const vdate = new Date(selectedVariant.createdAt);
+                                        const last24hours = new Date(Date.now() - 24 * 60 * 60 * 1000)
+                                        const isnew = vdate >= last24hours;
+
                                         return (
                                             <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
                                                 <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
@@ -351,6 +356,46 @@ function Allproducts() {
                                                                 )
                                                             })()
                                                         }
+
+                                                        {
+                                                            isnew ?
+                                                                <Box sx={{
+                                                                    bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
+                                                                        xs: '2px 8px',
+                                                                        sm: '2px 12px'
+                                                                    }, borderRadius: 1, position: 'absolute', top: '3%', left: '4%'
+                                                                }}>
+                                                                    <Typography variant="body2" sx={{
+                                                                        fontSize: {
+                                                                            xs: '10px',
+                                                                            sm: '12px',
+                                                                            md: '14px'
+                                                                        }
+                                                                    }}>NEW</Typography>
+                                                                </Box> :
+                                                                ""
+                                                        }
+
+                                                        {
+                                                            selectedVariant?.isFlashSale ?
+                                                                <Box sx={{
+                                                                    bgcolor: '#DB4444', color: 'white', width: 'fit-content',
+                                                                    padding: {
+                                                                        xs: '2px 8px',
+                                                                        sm: '2px 8px',
+                                                                        md: '2px 12px'
+                                                                    }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
+                                                                }}>
+                                                                    <Typography variant="body2" sx={{
+                                                                        fontSize: {
+                                                                            xs: '10px',
+                                                                            sm: '12',
+                                                                            md: '14px'
+                                                                        }
+                                                                    }}>-{parseInt(discount)}%</Typography>
+                                                                </Box>
+                                                                : ''
+                                                        }
                                                     </CardContent>
 
 
@@ -396,6 +441,7 @@ function Allproducts() {
                                                                 }
                                                             }} />
                                                         </IconButton>
+
                                                     </CardActions>
                                                 </Card>
                                             </Grid>

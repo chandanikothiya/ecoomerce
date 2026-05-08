@@ -155,7 +155,18 @@ function Product() {
     }
 
     const handleedit = (values) => {
-        setUpdatedata(values)
+
+        const formdata = {
+            ...values,
+            variants:values.variants.map((v) => ({
+                ...v,
+                flashStart:v.flashStart ?  new Date(v.flashStart).toISOString().slice(0,16) : "",
+                flashEnd:v.flashEnd ?  new Date(v.flashEnd).toISOString().slice(0,16) : "",
+            }))
+            
+        }
+        console.log('formdata',formdata)
+        setUpdatedata(formdata)
         handleClickOpen()
         console.log("updatedata", updatedata)
     }

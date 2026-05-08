@@ -42,6 +42,7 @@ import { useAddCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
 import { useAddWishlistMutation, useDeleteWishlistMutation, useGetWishlistQuery } from "../../redux/api/wishlist.api";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useMoreSellingQuery } from "../../redux/api/order.api";
 
 
 function Homepage() {
@@ -313,13 +314,45 @@ function Homepage() {
         }
     }
 
+    const { data: sdata, error: serror, isLoading: sisloading } = useMoreSellingQuery();
+    console.log('sdata', sdata);
+
+    const bsellingproduct = pdata?.data?.map((product) => {
+
+        const matchedVariants = product?.variants?.filter((variant) =>
+            sdata?.data?.some(
+                (saleItem) =>
+                    saleItem.product_id === product._id &&
+                    saleItem._id === variant._id
+            )
+        )
+
+        if (matchedVariants?.length > 0) {
+            return {
+                ...product,
+                variants: matchedVariants
+            }
+        }
+
+        return null
+
+    }).filter(Boolean)
+    console.log("sdata", bsellingproduct)
+
+    //  const flashsaleproduct = pdata?.data
+    //     ?.map(v => ({
+    //         ...v,
+    //         variants: v.variants.filter(v1 => v1.isFlashSale)
+    //     })).filter(v => v.variants.length > 0);
+    // console.log("flashsaleproduct", flashsaleproduct)
+
     return (
         <>
             <main>
                 <section className="hero">
                     <div className="container">
                         <ThemeProvider theme={theme}>
-                            <Grid container alignItems="stretch" rowSpacing={{xs:2,sm:3}}>
+                            <Grid container alignItems="stretch" rowSpacing={{ xs: 2, sm: 3 }}>
                                 <Grid size={{ xs: 12, sm: 12, md: 3, lg: 2 }}>
 
                                     <Box className="hero-left" sx={{ p: { xs: '25px 0 0 0', md: "25px 20px 0 0" }, borderRight: { xs: 'none', md: 'solid 1px rgb(224, 222, 224)' } }}>
@@ -933,7 +966,7 @@ function Homepage() {
                         </Box>
 
                         <a className="my-custome-button"
-                        onClick={() => { navigate('/allproduct?type=flashproduct') }}>View More Product</a>
+                            onClick={() => { navigate('/allproduct?type=flashproduct') }}>View More Product</a>
                     </section>
                 </ThemeProvider>
                 <hr />
@@ -1040,11 +1073,19 @@ function Homepage() {
                                     marginTop: { xs: '20px', sm: '23px', md: '35px' }
                                 }}>
                                 {
-                                    bestsellp.map((v) => {
-                                        const r = v.rating.reduce((acc, v) => acc + v, 0)
-                                        // console.log(r)
-                                        const rate = r / v.rating.length;
-                                        console.log(rate)
+                                    bsellingproduct?.slice(0, 4)?.map((v) => {
+                                        // const r = v.rating.reduce((acc, v) => acc + v, 0)
+                                        // // console.log(r)
+                                        // const rate = r / v.rating.length;
+                                        // console.log(rate)
+
+                                         const wishlistselect = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)) : ''
+                                        console.log("wishlistselect", wishlistselect);
+
+                                        
+                                        const isInWishlist = uid ? wishlistselect?.some(
+                                            (v1) => v1.variant_id === v?.variants?.[0]?._id
+                                        ) : '';
 
                                         return (
                                             <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
@@ -1063,36 +1104,55 @@ function Homepage() {
                                                         <CardMedia
                                                             component="img"
                                                             className="cardimg"
-                                                            sx={{ objectFit: "contain" }}
-                                                            image={v.img}
+                                                             sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                            image={IMG_URL + v?.variants?.[0]?.images?.[0]}
+                                                            onClick={() => handlepProduct(v._id)}
                                                         />
+
+                                                        <Typography
+                                                            className="addcart"
+                                                            sx={{
+                                                                bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
+                                                                fontSize: {
+                                                                    xs: '12px',
+                                                                    sm: '14px',
+                                                                    md: '16px'
+                                                                },
+                                                                cursor: 'default'
+                                                            }}
+                                                            onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
+                                                        >
+                                                            <ShoppingCartOutlinedIcon /> Add To Cart
+                                                        </Typography>
 
                                                     </Box>
 
 
-                                                    <CardContent sx={{ outline: 0, pl: 0 }}>
+                                                    <CardContent sx={{ outline: 0, pl: 0, pt: { xs: 3.5, md: 3 }  }}>
                                                         <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                             {v.name}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                {v.discoutprice}
+                                                                {v?.variants?.[0]?.isFlashSale ? v?.variants?.[0]?.flashPrice : v.price}
                                                             </Typography>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                {v.price}
+                                                                {v?.variants?.[0]?.isFlashSale  && v.price}
                                                             </Typography>
                                                         </Box>
 
                                                         <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                                             <Typography sx={{ color: '#FFAD33' }}>
                                                                 <Stack spacing={1}>
-                                                                    <Rating name="half-rating" defaultValue={rate} precision={0.5} sx={{
+                                                                    <Rating name="half-rating" defaultValue={4} precision={0.5} sx={{
                                                                         fontSize: {
                                                                             xs: '15px',
                                                                             sm: '18px',
                                                                             md: '20px'
                                                                         }
-                                                                    }} />
+                                                                    }} readOnly />
                                                                 </Stack>
                                                             </Typography>
                                                             <Typography sx={{
@@ -1102,13 +1162,13 @@ function Homepage() {
                                                                     sm: '16px'
                                                                 }
                                                             }}>
-                                                                {`(${r})`}
+                                                                (4)
                                                             </Typography>
                                                         </Box>
 
                                                     </CardContent>
 
-                                                    <CardActions
+                                                   <CardActions
                                                         sx={{
                                                             flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
                                                             '& .MuiIconButton-root': {
@@ -1116,17 +1176,31 @@ function Homepage() {
                                                             }
                                                         }}
                                                     >
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small">
-                                                            <FavoriteBorderIcon sx={{
-                                                                fontSize: {
-                                                                    xs: '12px',
-                                                                    sm: '18px',
-                                                                    md: '20px',
-                                                                    lg: '22px'
-                                                                },
-                                                            }} />
-                                                        </IconButton>
-                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small">
+                                                        {isInWishlist ?
+                                                            <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handledelWishlistClick(v?._id, v?.variants[0]?._id) }}>
+                                                                <FavoriteIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '22px'
+                                                                    },
+                                                                    color: 'red'
+                                                                }} />
+                                                            </IconButton>
+                                                            : <IconButton sx={{ bgcolor: 'white', boxShadow: 1, }} size="small" onClick={(e) => { handleWishlistClick(v?._id, v?.variants[0]?._id) }}>
+                                                                <FavoriteBorderIcon sx={{
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '18px',
+                                                                        md: '20px',
+                                                                        lg: '22px'
+                                                                    }
+                                                                }} />
+                                                            </IconButton>
+                                                        }
+
+                                                        <IconButton sx={{ bgcolor: 'white', boxShadow: 1 }} size="small" onClick={() => handlepProduct(v._id)}>
                                                             <RemoveRedEyeOutlinedIcon sx={{
                                                                 fontSize: {
                                                                     xs: '12px',
@@ -1297,6 +1371,11 @@ function Homepage() {
                                                 (v1) => v1.variant_id === selectedVariant._id
                                             ) : '';
                                             console.log("wishlistvarient", isInWishlist)
+
+                                            const vdate = new Date(selectedVariant.createdAt);
+                                            const last24hours = new Date(Date.now() - 24 * 60 * 60 * 1000)
+                                            const isnew = vdate >= last24hours;
+
                                             return (
                                                 <SwiperSlide key={v.id}>
                                                     <Card sx={{ maxWidth: '100%', position: 'relative', boxShadow: 0 }}>
@@ -1398,7 +1477,7 @@ function Homepage() {
 
 
                                                             {
-                                                                v.new ?
+                                                                isnew ?
                                                                     <Box sx={{
                                                                         bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
                                                                             xs: '2px 8px',
@@ -1482,8 +1561,6 @@ function Homepage() {
                                                                 })()
                                                             }
                                                         </CardContent>
-
-
 
                                                         <CardActions
                                                             sx={{

@@ -39,7 +39,12 @@ function Checkout() {
     const quantity = {};
     const [searchParams, setSearchParams] = useSearchParams();
     //const getquery = searchParams
-    searchParams.forEach((v, k) => quantity[k] = Number(v))
+    searchParams.forEach((v, k) => {
+        if (k !== 'couponprice') {
+            quantity[k] = Number(v);
+        }
+    }
+    )
     console.log(quantity)
 
     useEffect(() => {
@@ -122,6 +127,20 @@ function Checkout() {
 
     }
 
+    useEffect(() => {
+
+        const couponPrice = searchParams.get('couponprice');
+
+        if (couponPrice) {
+            setFinalprice(Number(couponPrice));
+        } else if (totalprice) {
+            setFinalprice(totalprice);
+        }
+
+    }, [searchParams, totalprice]);
+
+
+
     const { data: udata, error: uerror, isLoading: uisloading } = useGetUserQuery(uid)
     console.log(udata?.data)
     const [addorder] = useAddOrderMutation();
@@ -147,11 +166,11 @@ function Checkout() {
     }, [])
     console.log(sessionid)
 
-    useEffect(() => {
-        if (totalprice) {
-            setFinalprice(totalprice);
-        }
-    }, [totalprice]);
+    // useEffect(() => {
+    //     if (totalprice) {
+    //         setFinalprice(totalprice);
+    //     }
+    // }, [totalprice]);
 
     const doPayment = async (paymentSessionId) => {
         if (!cashfree.current || !paymentSessionId) {
@@ -166,7 +185,6 @@ function Checkout() {
         await cashfree.current.checkout(checkoutOptions);
     };
     // cashfree end
-
 
     const handleordersubmit = async (values) => {
         console.log("values", values, cartp, varient, detailproduct)
@@ -327,7 +345,6 @@ function Checkout() {
     }
 
     console.log("response", finalprice)
-
 
     return (
         <main>

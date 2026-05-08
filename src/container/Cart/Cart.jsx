@@ -17,7 +17,7 @@ import { IMG_URL } from "../../utility/url";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 import { vars } from "@mui/x-data-grid/internals";
 import { IoCloseSharp } from "react-icons/io5";
-
+import { useCheckCouponMutation } from "../../redux/api/coupon.api";
 
 function Cart() {
 
@@ -28,6 +28,9 @@ function Cart() {
     const theme = useTheme();
     const [gridKey, setGridKey] = useState(0);
     const [deletecartdisplay, setDeletecartdisplay] = useState(false);
+    const [coupon, setCoupon] = useState('');
+    const [finalprice, setFinalprice] = useState();
+    const [query, setQuery] = useState('');
 
     const isMobile = useMediaQuery("(max-width:320px)");
 
@@ -41,6 +44,7 @@ function Cart() {
 
     const { data: pdata, error: perror, isLoading: ploading } = useGetProductQuery();
     console.log(pdata?.data)
+    const [checkcoupon] = useCheckCouponMutation();
 
     // const cartp = pdata?.data?.filter((v) => data?.body?.products?.some((v1) => v1.product_id.toString() === v._id.toString()));
     // console.log(cartp)
@@ -210,7 +214,7 @@ function Cart() {
             },
         },
         {
-            field: '',
+            field: ' ',
             headerName: 'sub Total',
             headerAlign: 'rigth',
             // width: 150,
@@ -242,12 +246,49 @@ function Cart() {
 
         return (price) * v.qty + acc
     }, 0)
+
+    useEffect(() => {
+        if (totalprice) {
+            setFinalprice(totalprice);
+        }
+    }, [totalprice]);
     console.log('totalprice', totalprice, cartquan,)
     console.log('totalprice', data?.data?.body?._id)
 
 
-    const query = Object.keys(cartquan).map((v) => v + '=' + cartquan[v]).join('&')
-    console.log("query",query)
+    useEffect(() => {
+
+        let q = Object.keys(cartquan)
+            .map((v) => v + '=' + cartquan[v])
+            .join('&');
+
+        setQuery(q);
+
+    }, [cartquan]);
+
+    const handlecoupon = async (e) => {
+        console.log("ok")
+        e.preventDefault();
+        console.log("coupon", coupon)
+
+        const res = await checkcoupon({ code: coupon })
+        console.log("response", res)
+
+        const discount = res?.data?.data?.discount;
+
+        const updatedPrice =
+            totalprice - ((totalprice * discount) / 100);
+
+        setQuery((prev) =>
+            prev
+                ? `${prev}&couponprice=${updatedPrice}`
+                : `couponprice=${updatedPrice}`
+        );
+
+        setFinalprice(updatedPrice);
+        console.log("response", totalprice)
+
+    }
 
     return (
         <main>
@@ -428,10 +469,12 @@ function Cart() {
 
                     <Grid container id="coupon" sx={{ mt: { xs: 5, sm: 7, lg: 10 } }} spacing={{ xs: 0, sm: 5, md: 4, lg: 10, xl: 6 }} rowSpacing={4}>
                         <Grid size={{ xs: 12, sm: 6 }}>
-                            <form>
+                            <form onSubmit={handlecoupon}>
                                 <Box sx={{ display: 'flex', gap: { xs: 3, md: 0, lg: 3 } }} className="cart-coupon-box">
                                     <TextField id="outlined-basic" className="coupon-text" label="Coupon Code" variant="outlined"
-                                        sx={{ width: { xs: '56%', lg: '280px', xl: '350px' }, '& .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input': { padding: '14px' } }} />
+                                        sx={{ width: { xs: '56%', lg: '280px', xl: '350px' }, '& .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input': { padding: '14px' } }}
+                                        onChange={(e) => setCoupon(e.target.value)}
+                                    />
                                     <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
                                 </Box>
                             </form>
@@ -446,7 +489,7 @@ function Cart() {
 
                                 <Box className='cart-total'>
                                     <Typography>Subtotal:</Typography>
-                                    <Typography variant="">₹{totalprice}</Typography>
+                                    <Typography variant="">₹{finalprice}</Typography>
                                 </Box>
 
                                 <Divider />
@@ -460,7 +503,7 @@ function Cart() {
 
                                 <Box className='cart-total'>
                                     <Typography>Total:</Typography>
-                                    <Typography variant="">₹{totalprice}</Typography>
+                                    <Typography variant="">₹{finalprice}</Typography>
                                 </Box>
                                 {
                                     console.log("cid", data?.data?.body?._id)
