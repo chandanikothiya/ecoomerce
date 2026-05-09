@@ -230,7 +230,7 @@ function Header() {
             <header id="header">
                 <div className="top-header">
                     <div className="container first-header">
-                        <p className="topheader-p">Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! <a href="#">ShopNow</a></p>
+                        <p className="topheader-p">Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! <a href=" " onClick={() => { navigate('/allproduct?type=allproduct') }}>ShopNow</a></p>
                         <div>
                             <Button
                                 id="demo-positioned-button"

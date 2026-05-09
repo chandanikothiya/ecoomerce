@@ -151,7 +151,7 @@ function Cart() {
 
                 return (
                     <>
-                        <Typography variant="">{params?.row?.selectedVariant.isFlashSale ? params?.row?.selectedVariant.flashPrice : params?.row?.price}</Typography>
+                        <Typography variant="">₹{params?.row?.selectedVariant.isFlashSale ? params?.row?.selectedVariant.flashPrice : params?.row?.price}</Typography>
                     </>
                 )
             },
@@ -221,7 +221,7 @@ function Cart() {
             flex: 1,
             minWidth: 120,
             renderCell: (params) => (
-                <Typography variant="" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>{(params?.row?.selectedVariant.isFlashSale ? params?.row?.selectedVariant.flashPrice : params?.row?.price) * (params.row.qty || 1)}</Typography>
+                <Typography variant="" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>₹{(params?.row?.selectedVariant.isFlashSale ? params?.row?.selectedVariant.flashPrice : params?.row?.price) * (params.row.qty || 1)}</Typography>
             ),
         },
     ];

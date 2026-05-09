@@ -110,7 +110,7 @@ function Wishlist() {
         }
     }
 
-     const handlepProduct = (id) => {
+    const handlepProduct = (id) => {
         navigate(`/productdetail/${id}`)
     }
 
@@ -161,20 +161,28 @@ function Wishlist() {
                                                             />
 
 
+
                                                             <Typography
                                                                 className="addcart"
                                                                 sx={{
                                                                     bgcolor: 'black', width: "100%", color: 'white', display: 'none',
                                                                     textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                                    bottom: '10%', padding: '8px 0', borderRadius: '0 0 5px 5px'
+                                                                    bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
+                                                                    fontSize: {
+                                                                        xs: '12px',
+                                                                        sm: '14px',
+                                                                        md: '16px'
+                                                                    },
+                                                                    cursor: 'default'
                                                                 }}
+                                                                onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
                                                             >
                                                                 <ShoppingCartOutlinedIcon /> Add To Cart
                                                             </Typography>
                                                         </Box>
 
 
-                                                        <CardContent sx={{ outline: 0, pl: 0 }}>
+                                                        <CardContent sx={{ outline: 0, pl: 0,pt: { xs: 3.5, md: 3 } }}>
                                                             <Typography gutterBottom variant="h6" component="div" className="cart-name">
                                                                 {v.name}
                                                             </Typography>
@@ -188,7 +196,7 @@ function Wishlist() {
                                                                 {
                                                                     v.selectedVariant.isFlashSale &&
                                                                     <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                        {v.price}
+                                                                        ₹{v.price}
                                                                     </Typography>
                                                                 }
                                                             </Box>
@@ -303,8 +311,6 @@ function Wishlist() {
                                                     }}>
                                                     {
                                                         (() => {
-
-
                                                             return (
                                                                 <>
                                                                     <CardMedia
@@ -358,7 +364,7 @@ function Wishlist() {
                                                         {
                                                             selectedVariant?.isFlashSale &&
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                {v?.price}
+                                                                ₹{v?.price}
                                                             </Typography>
                                                         }
 
@@ -472,7 +478,7 @@ function Wishlist() {
                                                         })()
                                                     }
 
-                                                   
+
 
                                                     {
                                                         selectedVariant.isFlashSale ?

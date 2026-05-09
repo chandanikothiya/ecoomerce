@@ -442,7 +442,7 @@
         }
 
         #product-detail .my-custome-button {
-            padding: 5px 25px !important;
+            padding: 11px 25px !important;
             display: flex;
             align-items: center;
         }
@@ -572,6 +572,12 @@
 
         .orderdrawer .MuiDrawer-paper {
             width: 280px !important;
+        }
+
+        .colorradio {
+           width: 10px;
+           height: 10px;
+            outline-offset: 2px;
         }
 
     }
@@ -1135,6 +1141,14 @@
         .orderdrawer .MuiDrawer-paper {
             width: 500px !important;
         }
+
+        .colorradio {
+           width: 15px;
+           height: 15px;
+           outline-offset: 3px;
+        }
+
+
     }
 
     /* md */
@@ -1870,6 +1884,8 @@
         .coupon-textc {
             width: 250px !important;
         }
+
+        
     }
 
     /* xl */

@@ -10,6 +10,7 @@ import { orderApi } from "./api/order.api"
 import { paymentApi } from "./api/payment.api"
 import { addressApi } from "./api/address.api"
 import { couponApi } from "./api/coupon.api"
+import { subscribeApi } from "./api/subscribe.api"
 
 
 export const storeconfig = () => {
@@ -25,7 +26,8 @@ export const storeconfig = () => {
             [orderApi.reducerPath]:orderApi.reducer,
             [paymentApi.reducerPath]:paymentApi.reducer,
             [addressApi.reducerPath]:addressApi.reducer,
-            [couponApi.reducerPath]:couponApi.reducer
+            [couponApi.reducerPath]:couponApi.reducer,
+            [subscribeApi.reducerPath]:subscribeApi.reducer
         },
          middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
@@ -38,7 +40,8 @@ export const storeconfig = () => {
                 orderApi.middleware,
                 paymentApi.middleware,
                 addressApi.middleware,
-                couponApi.middleware
+                couponApi.middleware,
+                subscribeApi.middleware
             ),
     })
 

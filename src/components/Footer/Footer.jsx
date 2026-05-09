@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import '../../../public/assets/style/headerfooter.css'
 import Grid from '@mui/material/Grid';
-import { Box, createTheme, Divider, ListItemText, MenuItem, MenuList, TextField, ThemeProvider, Typography } from "@mui/material";
+import { Box, createTheme, Divider, IconButton, ListItemText, MenuItem, MenuList, TextField, ThemeProvider, Typography } from "@mui/material";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { GrFacebookOption } from "react-icons/gr";
@@ -9,9 +9,15 @@ import { LuTwitter } from "react-icons/lu";
 import { FiInstagram } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { useAddsubscribeMutation } from "../../redux/api/subscribe.api";
+import { useDispatch } from "react-redux";
+import { setalert } from "../../redux/slice/Alert.slice";
 
 
 function Footer() {
+
+    const [email, setEmail] = useState();
+    const dispatch = useDispatch();
 
     const theme = createTheme({
         breakpoints: {
@@ -24,6 +30,22 @@ function Footer() {
             },
         },
     });
+
+    const [addsubscribeemail] = useAddsubscribeMutation();
+
+    const handlesubscribe = async (e) => {
+        e.preventDefault();
+        console.log("ok", email)
+
+        const response = await addsubscribeemail({ email })
+        console.log("ok", response)
+
+        if (response?.data?.success) {
+            dispatch(setalert({ text: response.data.message, variant: 'success' }))
+        } else if (response.error) {
+            dispatch(setalert({ text: response.error.data?.message, variant: 'error' }))
+        }
+    }
 
     return (
         <>
@@ -56,9 +78,9 @@ function Footer() {
                                     <Typography variant="subtitle1" sx={{ mt: 1, mb: 1, fontWeight: 500, fontSize: { xs: '16px', sm: '20px' } }}>Subscribe</Typography>
                                     <Typography variant="subtitle1" sx={{ fontSize: { xs: '13px', sm: '16px' } }}>Get 10% off your first order</Typography>
 
-                                    <form className="footerform" style={{ marginTop: '16px', maxWidth: '250px' }}>
-                                        <input type="email" name="subemali" id="subemail" placeholder="Enter Email" />
-                                        <SendOutlinedIcon sx={{ mr: 1, my: 0.5 }} />
+                                    <form className="footerform" style={{ marginTop: '16px', maxWidth: '250px' }} onSubmit={handlesubscribe}>
+                                        <input type="email" name="subemali" id="subemail" placeholder="Enter Email" onChange={(e) => setEmail(e.target.value)} />
+                                        <IconButton sx={{ p: 0 }} type="submit"><SendOutlinedIcon sx={{ color: 'white', my: 0.5 }} /></IconButton>
                                     </form>
                                 </Box>
                             </Grid>
@@ -154,7 +176,7 @@ function Footer() {
 
                         </Grid>
                     </div>
-                    <Divider sx={{ mt: 5,maxWidth:'100%',color:'#999696' }} />
+                    <Divider sx={{ mt: 5, maxWidth: '100%', color: '#999696' }} />
 
 
                     <Box className="container" sx={{ display: 'flex', mt: { xs: 3, sm: 3 }, justifyContent: 'center', color: '#a5a1a1', gap: '0 5px', alignItems: 'center' }}>
@@ -167,7 +189,7 @@ function Footer() {
                             fontSize: {
                                 xs: '12px',
                                 sm: '16px',
-                                md:'18px',color:'#999696'
+                                md: '18px', color: '#999696'
                             }
                         }}>Copyright Rimel 2022. All right reserved</Typography>
                     </Box>

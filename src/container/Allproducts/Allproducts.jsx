@@ -13,6 +13,7 @@ import { useAddCartMutation } from "../../redux/api/cart.api";
 import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
+import { useMoreSellingQuery } from "../../redux/api/order.api";
 
 
 function Allproducts() {
@@ -34,6 +35,8 @@ function Allproducts() {
         isLoading: pisLoading } = useGetProductQuery();
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
 
+    const { data: sdata, error: serror, isLoading: sisloading } = useMoreSellingQuery();
+    console.log('sdata', sdata);
 
     let product;
 
@@ -44,6 +47,27 @@ function Allproducts() {
         })).filter(v => v.variants.length > 0);
     } else if (type === 'allproduct') {
         product = pdata?.data;
+    } else if (type === 'bestselling') {
+
+        product = pdata?.data?.map((product) => {
+            const matchedVariants = product?.variants?.filter((variant) =>
+                sdata?.data?.some(
+                    (saleItem) =>
+                        saleItem.product_id === product._id &&
+                        saleItem._id === variant._id
+                )
+            )
+
+            if (matchedVariants?.length > 0) {
+                return {
+                    ...product,
+                    variants: matchedVariants
+                }
+            }
+
+            return null
+
+        }).filter(Boolean)
     }
 
 
@@ -129,7 +153,9 @@ function Allproducts() {
                     <div className="container" >
                         <Box className="sub-title">
                             <i className="fa-solid fa-square"></i>
-                            <Typography sx={{ fontWeight: 600 }} className="subtitle">{type === 'flashproduct' ? 'Flash Products' : 'Products'}</Typography>
+                            <Typography sx={{ fontWeight: 600 }} className="subtitle">
+                                {type === 'flashproduct' ? 'Flash Products' : type === 'allproduct' ? 'Products' : 'Best Selling Products'}
+                            </Typography>
                         </Box>
 
                         <Box sx={{ position: 'relative', mt: 2 }}>
@@ -236,14 +262,17 @@ function Allproducts() {
                                                     </Box>
 
 
-                                                    <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important' }}>
+                                                    <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important',pt: { xs: 3.5, md: 3 } }}>
                                                         <Typography gutterBottom variant="h6" component="div" className="product-name">
                                                             {v.name}
                                                         </Typography>
-                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb:{xs:0,sm:1}, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
 
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                ₹{v.price}
+                                                                ₹{v?.variants?.[0]?.isFlashSale ? v?.variants?.[0]?.flashPrice : v.price}
+                                                            </Typography>
+                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                {v?.variants?.[0]?.isFlashSale && "₹" + v.price}
                                                             </Typography>
 
 
@@ -309,7 +338,7 @@ function Allproducts() {
                                                                 // const [selectedColors, setSelectedColors] = useState({});
 
                                                                 return (
-                                                                    <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                    <Box sx={{ display: "flex", gap: "10px", mt: {xs:0,sm:1}, pl: '5px' }}>
                                                                         {
                                                                             validVariants?.map((v1) => {
                                                                                 if (!v1?.color || v1.color.trim() === "") return null;
@@ -333,8 +362,6 @@ function Allproducts() {
 
                                                                                         <span
                                                                                             style={{
-                                                                                                width: "15px",
-                                                                                                height: "15px",
                                                                                                 borderRadius: "50%",
                                                                                                 backgroundColor: v1.color,
                                                                                                 display: "inline-block",
@@ -343,8 +370,8 @@ function Allproducts() {
                                                                                                     selectedColor === v1.color
                                                                                                         ? "2px solid black"
                                                                                                         : "none",
-                                                                                                outlineOffset: "3px",
                                                                                             }}
+                                                                                            className="colorradio"
                                                                                         />
                                                                                     </label>
                                                                                 )
@@ -362,8 +389,9 @@ function Allproducts() {
                                                                 <Box sx={{
                                                                     bgcolor: '#00FF66', color: 'white', width: 'fit-content', padding: {
                                                                         xs: '2px 8px',
-                                                                        sm: '2px 12px'
-                                                                    }, borderRadius: 1, position: 'absolute', top: '3%', left: '4%'
+                                                                        sm: '2px 8px',
+                                                                        md: '2px 12px'
+                                                                    }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
                                                                 }}>
                                                                     <Typography variant="body2" sx={{
                                                                         fontSize: {
@@ -389,10 +417,10 @@ function Allproducts() {
                                                                     <Typography variant="body2" sx={{
                                                                         fontSize: {
                                                                             xs: '10px',
-                                                                            sm: '12',
+                                                                            sm: '12px',
                                                                             md: '14px'
                                                                         }
-                                                                    }}>-{parseInt(discount)}%</Typography>
+                                                                    }}>- {parseInt(discount)}%</Typography>
                                                                 </Box>
                                                                 : ''
                                                         }

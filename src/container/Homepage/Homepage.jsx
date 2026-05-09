@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AppBar, Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, createTheme, Drawer, Grid, IconButton, ListItemText, Menu, MenuItem, MenuList, Pagination, ThemeProvider, Toolbar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import '../../../public/assets/style/headerfooter.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -34,7 +34,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { MdOutlineHeadphones } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
@@ -43,6 +43,7 @@ import { useAddWishlistMutation, useDeleteWishlistMutation, useGetWishlistQuery 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useMoreSellingQuery } from "../../redux/api/order.api";
+
 
 
 function Homepage() {
@@ -70,24 +71,32 @@ function Homepage() {
     const [activeIndex, setActiveIndex] = React.useState(null);
     const { data, error, isLoading } = useGetCategoryQuery();
     console.log("dislaydata", data?.data)
-
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
     //const {data:cartdata,error:carterror,isLoading:cartisLoading} = useGetCartQuery();
 
     const [addcart] = useAddCartMutation();
     const [addwishlist] = useAddWishlistMutation();
     const [deletewishlist] = useDeleteWishlistMutation();
 
+
     const { data: pdata,
         error: perror,
         isLoading: pisLoading } = useGetProductQuery();
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
 
-
-    const flashsaleproduct = pdata?.data
-        ?.map(v => ({
-            ...v,
-            variants: v.variants.filter(v1 => v1.isFlashSale)
-        })).filter(v => v.variants.length > 0);
+    const flashsaleproduct = useMemo(() => {
+        return pdata?.data
+            ?.map(v => ({
+                ...v,
+                variants: v.variants.filter(v1 => v1.isFlashSale)
+            }))
+            .filter(v => v.variants.length > 0);
+    }, [pdata]);
     console.log("flashsaleproduct", flashsaleproduct)
 
     const categorymenu = data?.data?.filter((v) => v.parentcategory_id === null)
@@ -340,11 +349,86 @@ function Homepage() {
     console.log("sdata", bsellingproduct)
 
     //  const flashsaleproduct = pdata?.data
-    //     ?.map(v => ({
-    //         ...v,
-    //         variants: v.variants.filter(v1 => v1.isFlashSale)
-    //     })).filter(v => v.variants.length > 0);
-    // console.log("flashsaleproduct", flashsaleproduct)
+
+    useEffect(() => {
+        if (!flashsaleproduct?.length) return;
+
+        let endTime = null;
+
+        for (let product of flashsaleproduct) {
+            const validVariant = product?.variants?.find(
+                (v) => v?.flashEnd &&
+                    new Date(v.flashEnd).getTime() > Date.now()
+            );
+
+            if (validVariant) {
+                endTime = new Date(validVariant.flashEnd).getTime();
+                break;
+            }
+        }
+
+        if (!endTime) return;
+
+        const updateTimer = () => {
+            setTimeLeft(calculateTimeLeft(endTime));
+        };
+
+        updateTimer();
+
+        const timer = setInterval(updateTimer, 1000);
+
+        return () => clearInterval(timer);
+
+    }, [flashsaleproduct]);
+
+    const calculateTimeLeft = (endTime) => {
+        const difference = endTime - new Date().getTime();
+
+        if (difference <= 0) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+
+        return {
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / (1000 * 60)) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+        };
+    };
+
+    const formatTime = (time) => String(time).padStart(2, "0");
+
+    const speaker = pdata?.data?.find((v) => v.name.toLowerCase() === "JBL Boombox Portable Bluetooth Speake".toLocaleLowerCase())
+    console.log('speaker', speaker)
+
+    const [speakerTimeLeft, setSpeakerTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
+
+    useEffect(() => {
+
+        const endTime =
+            new Date(speaker?.variants?.[0]?.flashEnd).getTime();
+
+        const timer = setInterval(() => {
+
+            const diff = endTime - Date.now();
+
+            setSpeakerTimeLeft({
+                days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((diff / (1000 * 60)) % 60),
+                seconds: Math.floor((diff / 1000) % 60),
+            });
+
+        }, 1000);
+
+        return () => clearInterval(timer);
+
+    }, []);
 
     return (
         <>
@@ -626,7 +710,7 @@ function Homepage() {
                                 display: 'flex', alignItems: 'end', justifyContent: 'space-between'
                             }}>
                                 <Box sx={{
-                                    display: 'flex', alignItems: 'end', mt: { xs: 2, md: 2 }, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
+                                    display: 'flex', alignItems: 'start', mt: { xs: 2, md: 2 }, columnGap: { xs: 5, md: 5, lg: 10 }, position: 'relative',
                                     flexWrap: {
                                         xs: 'wrap',
                                         sm: 'nowrap'
@@ -637,22 +721,22 @@ function Homepage() {
                                     <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 1 }}>
                                         <Box>
                                             <Typography variant="subtitle2" className="my-time-typo1">Days</Typography>
-                                            <Typography variant="h5" className="my-time-typo2">03</Typography>
+                                            <Typography variant="h5" className="my-time-typo2">{formatTime(timeLeft.days)}</Typography>
                                         </Box>
                                         <Typography variant="h5" className="time-colun">:</Typography>
                                         <Box>
                                             <Typography variant="subtitle2" className="my-time-typo1">Hours</Typography>
-                                            <Typography variant="h5" className="my-time-typo2">23</Typography>
+                                            <Typography variant="h5" className="my-time-typo2"> {formatTime(timeLeft.hours)}</Typography>
                                         </Box>
                                         <Typography variant="h5" className="time-colun">:</Typography>
                                         <Box>
                                             <Typography variant="subtitle2" className="my-time-typo1">Minutes</Typography>
-                                            <Typography variant="h5" className="my-time-typo2">19</Typography>
+                                            <Typography variant="h5" className="my-time-typo2"> {formatTime(timeLeft.minutes)}</Typography>
                                         </Box>
                                         <Typography variant="h5" className="time-colun">:</Typography>
                                         <Box>
                                             <Typography variant="subtitle2" className="my-time-typo1">Seconds</Typography>
-                                            <Typography variant="h5" className="my-time-typo2" >56</Typography>
+                                            <Typography variant="h5" className="my-time-typo2" > {formatTime(timeLeft.seconds)}</Typography>
                                         </Box>
 
                                     </Box>
@@ -715,7 +799,8 @@ function Homepage() {
                                         //const r = v.rating.reduce((acc, v) => acc + v, 0)
                                         // console.log(r)
                                         //const rate = r / v.rating.length;
-                                        console.log(v)
+
+                                        console.log("flash", v)
 
                                         const validVariants = v?.variants?.filter(
                                             (x) => x?.color && x.color.trim() !== ""
@@ -743,6 +828,8 @@ function Homepage() {
                                         const isInWishlist = uid ? wishlistselect?.some(
                                             (v1) => v1.variant_id === selectedVariant._id
                                         ) : '';
+
+
 
                                         return (
                                             <SwiperSlide>
@@ -795,7 +882,7 @@ function Homepage() {
                                                         <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                             {v.name}
                                                         </Typography>
-                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                        <Box sx={{ display: 'flex', columnGap: 2,mb:{xs:0,sm:1}}}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
                                                                 ₹{selectedVariant.flashPrice}
                                                             </Typography>
@@ -864,7 +951,7 @@ function Homepage() {
                                                             // const [selectedColors, setSelectedColors] = useState({});
 
                                                             return (
-                                                                <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                <Box sx={{ display: "flex", gap: "10px", mt: {xs:0,sm:1}, pl: '5px' }}>
                                                                     {
                                                                         validVariants?.map((v1) => {
                                                                             if (!v1?.color || v1.color.trim() === "") return null;
@@ -888,8 +975,7 @@ function Homepage() {
 
                                                                                     <span
                                                                                         style={{
-                                                                                            width: "15px",
-                                                                                            height: "15px",
+                                                                                            
                                                                                             borderRadius: "50%",
                                                                                             backgroundColor: v1.color,
                                                                                             display: "inline-block",
@@ -898,8 +984,8 @@ function Homepage() {
                                                                                                 selectedColor === v1.color
                                                                                                     ? "2px solid black"
                                                                                                     : "none",
-                                                                                            outlineOffset: "3px",
                                                                                         }}
+                                                                                        className="colorradio"
                                                                                     />
                                                                                 </label>
                                                                             )
@@ -1065,7 +1151,7 @@ function Homepage() {
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', mt: 1, columnGap: 10, position: 'relative' }}>
                                 <Typography variant="h4" sx={{ fontWeight: 600 }} className="title">Best Selling Products</Typography>
-                                <a href="#" className="bsleft-btn my-custome-button">View All</a>
+                                <a href=" " className="bsleft-btn my-custome-button" onClick={() => { navigate('/allproduct?type=bestselling') }}>View All</a>
                             </Box>
 
                             <Grid container columnSpacing={{ xs: 1, sm: 3, lg: 4 }} rowSpacing={0}
@@ -1079,10 +1165,10 @@ function Homepage() {
                                         // const rate = r / v.rating.length;
                                         // console.log(rate)
 
-                                         const wishlistselect = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)) : ''
+                                        const wishlistselect = uid ? (wdata?.body?.products?.filter((v1) => v1?.product_id === v._id)) : ''
                                         console.log("wishlistselect", wishlistselect);
 
-                                        
+
                                         const isInWishlist = uid ? wishlistselect?.some(
                                             (v1) => v1.variant_id === v?.variants?.[0]?._id
                                         ) : '';
@@ -1104,7 +1190,7 @@ function Homepage() {
                                                         <CardMedia
                                                             component="img"
                                                             className="cardimg"
-                                                             sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                            sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
                                                             image={IMG_URL + v?.variants?.[0]?.images?.[0]}
                                                             onClick={() => handlepProduct(v._id)}
                                                         />
@@ -1130,16 +1216,16 @@ function Homepage() {
                                                     </Box>
 
 
-                                                    <CardContent sx={{ outline: 0, pl: 0, pt: { xs: 3.5, md: 3 }  }}>
+                                                    <CardContent sx={{ outline: 0, pl: 0, pt: { xs: 3.5, md: 3 } }}>
                                                         <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                             {v.name}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                {v?.variants?.[0]?.isFlashSale ? v?.variants?.[0]?.flashPrice : v.price}
+                                                                ₹{v?.variants?.[0]?.isFlashSale ? v?.variants?.[0]?.flashPrice : v.price}
                                                             </Typography>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                {v?.variants?.[0]?.isFlashSale  && v.price}
+                                                                ₹{v?.variants?.[0]?.isFlashSale && v.price}
                                                             </Typography>
                                                         </Box>
 
@@ -1168,7 +1254,7 @@ function Homepage() {
 
                                                     </CardContent>
 
-                                                   <CardActions
+                                                    <CardActions
                                                         sx={{
                                                             flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
                                                             '& .MuiIconButton-root': {
@@ -1217,11 +1303,8 @@ function Homepage() {
                                     })
                                 }
                             </Grid>
-
-                            <a href="#" className="best-seal-btn my-custome-button">View All</a>
-
+                            <a href=" " className="best-seal-btn my-custome-button" onClick={() => { navigate('/allproduct?type=bestselling') }}>View All</a>
                         </div>
-
                     </section>
                 </ThemeProvider>
 
@@ -1235,31 +1318,33 @@ function Homepage() {
 
                                 <Box sx={{ display: 'flex', columnGap: 3, mt: 4, flexWrap: 'wrap', rowGap: '20px' }}>
                                     <Box className="musixexp-timebox">
-                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>23</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>{speakerTimeLeft.hours}</Typography>
                                         <Typography variant="caption" sx={{ mt: '-1px' }}>Hours</Typography>
                                     </Box>
 
                                     <Box className="musixexp-timebox">
-                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>05</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>{speakerTimeLeft.days}</Typography>
                                         <Typography variant="caption" sx={{ mt: '-1px' }}>Days</Typography>
                                     </Box>
 
                                     <Box className="musixexp-timebox">
-                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>59</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>{speakerTimeLeft.minutes}</Typography>
                                         <Typography variant="caption" sx={{ mt: '-1px' }}>Minutes</Typography>
                                     </Box>
 
                                     <Box className="musixexp-timebox">
-                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>35</Typography>
+                                        <Typography variant="body1" sx={{ fontWeight: '600' }}>{speakerTimeLeft.seconds}</Typography>
                                         <Typography variant="caption" sx={{ mt: '-1px' }}>Seconds</Typography>
                                     </Box>
                                 </Box>
 
-                                <a href="#" className="my-custome-button">Buy Now!</a>
+                                <NavLink to={uid ? `/checkout/${speaker?._id}/${speaker?.variants?.[0]?._id}/?${speaker?.variants?.[0]?._id}=1` : '/signup'}>
+                                    <a href="#" className="my-custome-button">Buy Now!</a>
+                                </NavLink>
                             </Box>
 
                             <Box className="musicexp-imgbox">
-                                <img src="../../../public/assets/images/musicexp.png" alt="musicexp" width='100%' />
+                                <img src={IMG_URL + speaker?.variants?.[0]?.images?.[0]} alt="musicexp" width='100%' />
                             </Box>
                         </Box>
                     </div>
@@ -1392,8 +1477,6 @@ function Homepage() {
                                                             }}>
                                                             {
                                                                 (() => {
-
-
                                                                     return (
                                                                         <>
                                                                             <CardMedia
@@ -1442,7 +1525,7 @@ function Homepage() {
                                                             <Typography gutterBottom variant="h6" component="div" className="product-name">
                                                                 {v.name}
                                                             </Typography>
-                                                            <Box sx={{ display: 'flex', columnGap: 2, mb: 1, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+                                                            <Box sx={{ display: 'flex', columnGap: 2, mb:{xs:0,sm:1}, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
 
                                                                 <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
                                                                     ₹{v.price}
@@ -1513,7 +1596,7 @@ function Homepage() {
                                                                     // const [selectedColors, setSelectedColors] = useState({});
 
                                                                     return (
-                                                                        <Box sx={{ display: "flex", gap: "10px", mt: 1, pl: '5px' }}>
+                                                                        <Box sx={{ display: "flex", gap: "10px",  mt: {xs:0,sm:1}, pl: '5px' }}>
                                                                             {
                                                                                 validVariants?.map((v1) => {
                                                                                     if (!v1?.color || v1.color.trim() === "") return null;
@@ -1537,8 +1620,8 @@ function Homepage() {
 
                                                                                             <span
                                                                                                 style={{
-                                                                                                    width: "15px",
-                                                                                                    height: "15px",
+                                                                                                    // width: "15px",
+                                                                                                    // height: "15px",
                                                                                                     borderRadius: "50%",
                                                                                                     backgroundColor: v1.color,
                                                                                                     display: "inline-block",
@@ -1547,8 +1630,10 @@ function Homepage() {
                                                                                                         selectedColor === v1.color
                                                                                                             ? "2px solid black"
                                                                                                             : "none",
-                                                                                                    outlineOffset: "3px",
+                                                                                                   
+                                                                                                    
                                                                                                 }}
+                                                                                                className="colorradio"
                                                                                             />
                                                                                         </label>
                                                                                     )

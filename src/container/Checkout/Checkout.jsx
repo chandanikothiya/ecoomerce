@@ -20,6 +20,8 @@ import Stack from '@mui/material/Stack';
 import OtherHousesOutlinedIcon from '@mui/icons-material/OtherHousesOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import { useCheckCouponMutation } from "../../redux/api/coupon.api";
+import { setalert } from "../../redux/slice/Alert.slice";
+import { useDispatch } from "react-redux";
 
 function Checkout() {
 
@@ -30,11 +32,12 @@ function Checkout() {
     const [poption, setPoption] = useState('cashondelivery');
     const [cartquan, setCartquan] = useState({});
     const { id, vid, cid } = useParams();
-    const [cashonsuccess, setCashonsuccess] = useState(false);
+    const [cashonsuccess, setCashonsuccess] = useState(true);
     const navigate = useNavigate();
     console.log(id, vid)
     const [addpayment] = useAddPaymentMutation();
     const [finalprice, setFinalprice] = useState();
+     const dispatch = useDispatch();
 
     const quantity = {};
     const [searchParams, setSearchParams] = useSearchParams();
@@ -253,7 +256,13 @@ function Checkout() {
 
             console.log('cashondelivery', obj)
 
-            addpayment(obj)
+            const response = await addpayment(obj)
+
+            if (response?.data?.success) {
+                dispatch(setalert({ text: 'Your Order confirm', variant: 'success' }))
+            } else if (response.error) {
+                dispatch(setalert({ text: 'Your Order not confirm', variant: 'error' }))
+            }
 
             setCashonsuccess(true)
 
@@ -349,8 +358,8 @@ function Checkout() {
     return (
         <main>
             <section id="billing" style={{ position: 'relative' }}>
-                {
-                    cashonsuccess && <Stack sx={{ width: '350px', position: 'absolute', top: '-6%', right: 0, height: '150px' }} spacing={2}>
+                {/* {
+                    cashonsuccess && <Stack sx={{ width: '350px', position: 'absolute', top:{sm:'-2%', md:'-6%'}, right: 0, height: '150px' }} spacing={2}>
                         <Alert variant="filled" icon={false} severity="success"
                             sx={{
                                 minWidth: '100%', height: '100%', textAlign: 'center',
@@ -364,7 +373,7 @@ function Checkout() {
                             <Typography variant="h5" sx={{ mt: 2 }}>Your Order confirm</Typography>
                         </Alert>
                     </Stack>
-                }
+                } */}
 
                 <div className="container">
                     {/* <Typography><span style={{ color: 'grey' }}>Home / My Account / Product / View Cart /</span> Contact</Typography> */}

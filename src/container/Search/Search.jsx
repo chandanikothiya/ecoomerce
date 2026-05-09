@@ -37,7 +37,7 @@ function Search() {
     const catid = catdata?.data?.filter((v) => v.name.toLowerCase().includes(searchParams.get('search').toLowerCase()));
     console.log("catid", catid, searchParams.get('search'), catdata);
 
-    const filterproduct = pdata?.data?.filter((v) => catid.some(v1 => v1._id === v.category_id))
+    const filterproduct = pdata?.data?.filter((v) => catid.some(v1 => v1?._id === v?.category_id))
     console.log("filterproduct",filterproduct)
 
     //const produxt = pdata?.data?.filter((v) => v.category)

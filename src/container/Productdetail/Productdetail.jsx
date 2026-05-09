@@ -446,7 +446,6 @@ function Productdetail() {
                                             <CiHeart />
                                         </button>
                                 }
-
                             </Box>
 
                             <Box sx={{
