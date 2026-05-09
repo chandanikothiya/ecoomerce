@@ -579,7 +579,9 @@
            height: 10px;
             outline-offset: 2px;
         }
-
+.emptyimages{
+            width: 150px;
+        }
     }
 
     /* sm */
@@ -1148,6 +1150,9 @@
            outline-offset: 3px;
         }
 
+        .emptyimages{
+            width: 400px;
+        }
 
     }
 

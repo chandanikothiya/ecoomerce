@@ -119,142 +119,154 @@ function Wishlist() {
             <ThemeProvider theme={theme}>
                 <main>
 
-                    <section id="cart wishlist">
-                        <div className="container">
-                            <Box className="cart-title">
-                                <Typography variant="h5" sx={{ fontWeight: 600 }} className="title">Wishlist ({cartproducts.length})</Typography>
-                                <a href="#" className="my-custome-button wishlist-btn" onClick={handlecartaddd}>Move All To Bag</a>
-                            </Box>
-                            <Grid container sx={{ mt: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
-                                {
-                                    wlistdata?.map((v) => {
-                                        // const cp = allproducts.find((v1) => v1.id === v.product_id);
-                                        // console.log(cp)
-                                        console.log(v)
+                    {
+                        wlistdata?.length > 0 ?
 
-                                        const discount = ((v.price - v.selectedVariant.flashPrice) / v.price) * 100;
+                            <section id="cart wishlist">
+                                <div className="container">
+                                    <Box className="cart-title">
+                                        <Typography variant="h5" sx={{ fontWeight: 600 }} className="title">Wishlist ({cartproducts.length})</Typography>
+                                        <a href="#" className="my-custome-button wishlist-btn" onClick={handlecartaddd}>Move All To Bag</a>
+                                    </Box>
+                                    <Grid container sx={{ mt: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }}>
+                                        {
+                                            wlistdata?.map((v) => {
+                                                // const cp = allproducts.find((v1) => v1.id === v.product_id);
+                                                // console.log(cp)
+                                                console.log(v)
 
-                                        console.log(v)
-                                        if (wlistdata) {
-                                            return (
-                                                <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
-                                                    <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
-                                                        <Box
-                                                            className="carttop"
-                                                            sx={{
-                                                                bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                                alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
-                                                                height: {
-                                                                    xs: '120px',
-                                                                    sm: '160px',
-                                                                    lg: '250px'
-                                                                },
-                                                                position: 'relative'
-                                                            }}>
-                                                            <CardMedia
-                                                                component="img"
-                                                                className="cardimg"
-                                                                sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
-                                                                image={IMG_URL + v?.selectedVariant?.images?.[0]}
-                                                                title="green iguana"
+                                                const discount = ((v.price - v.selectedVariant.flashPrice) / v.price) * 100;
 
-                                                            />
+                                                console.log(v)
+                                                if (wlistdata) {
+                                                    return (
+                                                        <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
+                                                            <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0 }}>
+                                                                <Box
+                                                                    className="carttop"
+                                                                    sx={{
+                                                                        bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                                        alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                                        height: {
+                                                                            xs: '120px',
+                                                                            sm: '160px',
+                                                                            lg: '250px'
+                                                                        },
+                                                                        position: 'relative'
+                                                                    }}>
+                                                                    <CardMedia
+                                                                        component="img"
+                                                                        className="cardimg"
+                                                                        sx={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                                                                        image={IMG_URL + v?.selectedVariant?.images?.[0]}
+                                                                        title="green iguana"
 
-
-
-                                                            <Typography
-                                                                className="addcart"
-                                                                sx={{
-                                                                    bgcolor: 'black', width: "100%", color: 'white', display: 'none',
-                                                                    textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
-                                                                    bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
-                                                                    fontSize: {
-                                                                        xs: '12px',
-                                                                        sm: '14px',
-                                                                        md: '16px'
-                                                                    },
-                                                                    cursor: 'default'
-                                                                }}
-                                                                onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
-                                                            >
-                                                                <ShoppingCartOutlinedIcon /> Add To Cart
-                                                            </Typography>
-                                                        </Box>
+                                                                    />
 
 
-                                                        <CardContent sx={{ outline: 0, pl: 0,pt: { xs: 3.5, md: 3 } }}>
-                                                            <Typography gutterBottom variant="h6" component="div" className="cart-name">
-                                                                {v.name}
-                                                            </Typography>
-                                                            <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-                                                                {/* <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
-                                                                    {v?.discoutprice}
-                                                                </Typography> */}
-                                                                <Typography variant="body1" sx={{ color: '#DB4444', fontWeight: 500 }}>
-                                                                    ₹{v.selectedVariant.isFlashSale ? v.selectedVariant.flashPrice : v.price}
-                                                                </Typography>
-                                                                {
-                                                                    v.selectedVariant.isFlashSale &&
-                                                                    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
-                                                                        ₹{v.price}
+
+                                                                    <Typography
+                                                                        className="addcart"
+                                                                        sx={{
+                                                                            bgcolor: 'black', width: "100%", color: 'white', display: 'none',
+                                                                            textAlign: 'center', justifySelf: 'flex-end', position: 'absolute',
+                                                                            bottom: '10%', padding: { xs: '3px 0', md: '8px 0' }, borderRadius: '0 0 5px 5px',
+                                                                            fontSize: {
+                                                                                xs: '12px',
+                                                                                sm: '14px',
+                                                                                md: '16px'
+                                                                            },
+                                                                            cursor: 'default'
+                                                                        }}
+                                                                        onClick={(e) => handleCartClick(v?._id, selectedVariant?._id)}
+                                                                    >
+                                                                        <ShoppingCartOutlinedIcon /> Add To Cart
                                                                     </Typography>
-                                                                }
-                                                            </Box>
-
-                                                            {
-                                                                v.selectedVariant.isFlashSale &&
-                                                                <Box sx={{
-                                                                    bgcolor: '#DB4444', color: 'white', width: 'fit-content',
-                                                                    padding: {
-                                                                        xs: '2px 8px',
-                                                                        sm: '2px 8px',
-                                                                        md: '2px 12px'
-                                                                    }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
-                                                                }}>
-                                                                    <Typography variant="body2" sx={{
-                                                                        fontSize: {
-                                                                            xs: '10px',
-                                                                            sm: '12',
-                                                                            md: '14px'
-                                                                        }
-                                                                    }}>-{parseInt(discount)}%</Typography>
                                                                 </Box>
 
-                                                            }
+
+                                                                <CardContent sx={{ outline: 0, pl: 0, pt: { xs: 3.5, md: 3 } }}>
+                                                                    <Typography gutterBottom variant="h6" component="div" className="cart-name">
+                                                                        {v.name}
+                                                                    </Typography>
+                                                                    <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+                                                                        {/* <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
+                                                                    {v?.discoutprice}
+                                                                </Typography> */}
+                                                                        <Typography variant="body1" sx={{ color: '#DB4444', fontWeight: 500 }}>
+                                                                            ₹{v.selectedVariant.isFlashSale ? v.selectedVariant.flashPrice : v.price}
+                                                                        </Typography>
+                                                                        {
+                                                                            v.selectedVariant.isFlashSale &&
+                                                                            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, textDecoration: 'line-through', color: 'grey' }}>
+                                                                                ₹{v.price}
+                                                                            </Typography>
+                                                                        }
+                                                                    </Box>
+
+                                                                    {
+                                                                        v.selectedVariant.isFlashSale &&
+                                                                        <Box sx={{
+                                                                            bgcolor: '#DB4444', color: 'white', width: 'fit-content',
+                                                                            padding: {
+                                                                                xs: '2px 8px',
+                                                                                sm: '2px 8px',
+                                                                                md: '2px 12px'
+                                                                            }, borderRadius: 1, position: 'absolute', top: '3%', left: '6%'
+                                                                        }}>
+                                                                            <Typography variant="body2" sx={{
+                                                                                fontSize: {
+                                                                                    xs: '10px',
+                                                                                    sm: '12',
+                                                                                    md: '14px'
+                                                                                }
+                                                                            }}>-{parseInt(discount)}%</Typography>
+                                                                        </Box>
+
+                                                                    }
 
 
-                                                        </CardContent>
+                                                                </CardContent>
 
-                                                        <CardActions
-                                                            sx={{
-                                                                flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
-                                                                '& .MuiIconButton-root': {
-                                                                    marginLeft: 0
-                                                                }
-                                                            }}
-                                                        >
-                                                            <IconButton size="small" sx={{ bgcolor: "white" }} onClick={() => handledeletewishlist(v)}>
-                                                                <DeleteOutlineSharpIcon sx={{
-                                                                    fontSize: {
-                                                                        xs: '18px',
-                                                                        sx: '18px',
-                                                                        md: '20px',
-                                                                        lg: '25px'
-                                                                    }, color: 'black',
-                                                                }} />
-                                                            </IconButton>
+                                                                <CardActions
+                                                                    sx={{
+                                                                        flexDirection: 'column', rowGap: 1, position: "absolute", top: '5px', right: '0',
+                                                                        '& .MuiIconButton-root': {
+                                                                            marginLeft: 0
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <IconButton size="small" sx={{ bgcolor: "white" }} onClick={() => handledeletewishlist(v)}>
+                                                                        <DeleteOutlineSharpIcon sx={{
+                                                                            fontSize: {
+                                                                                xs: '18px',
+                                                                                sx: '18px',
+                                                                                md: '20px',
+                                                                                lg: '25px'
+                                                                            }, color: 'black',
+                                                                        }} />
+                                                                    </IconButton>
 
-                                                        </CardActions>
-                                                    </Card>
-                                                </Grid>
+                                                                </CardActions>
+                                                            </Card>
+                                                        </Grid>
 
-                                            )
+                                                    )
+                                                }
+                                            })
                                         }
-                                    })
-                                }
-                            </Grid>
-                        </div>
-                    </section>
+                                    </Grid>
+                                </div>
+                            </section>
+                            :
+                            <Box sx={{ textAlign: 'center',mt:2 }}>
+                                <img src="../../../public/assets/images/emptywishlist.png" className="emptyimages"/>
+                                <Typography fontSize={{ fontSize:{ xs:'18px',sm:'22px'} }}>No Product in Wishlist</Typography>
+                                <a className="my-custome-button" style={{ margin: '10px auto 0 auto', backgroundColor: '#DB4444', border: '0', color: 'white' }} onClick={() => { navigate('/allproduct?type=allproduct') }}>
+                                    Continue Shopping
+                                </a>
+                            </Box>
+                    }
 
                     <section id="foryou">
                         <div className="container">

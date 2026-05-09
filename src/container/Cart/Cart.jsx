@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import { IoChevronUp } from "react-icons/io5";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDeleteCartMutation, useGetCartQuery } from "../../redux/api/cart.api";
 import { useGetProductQuery } from "../../redux/api/product.api";
 import { IMG_URL } from "../../utility/url";
@@ -31,6 +31,7 @@ function Cart() {
     const [coupon, setCoupon] = useState('');
     const [finalprice, setFinalprice] = useState();
     const [query, setQuery] = useState('');
+    const navigate = useNavigate();
 
     const isMobile = useMediaQuery("(max-width:320px)");
 
@@ -307,213 +308,226 @@ function Cart() {
                         </Link>
                         <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Cart</Typography>
                     </Breadcrumbs>
+                    {
+                        cartp.length > 0 ?
 
-                    {isMobile ? (
-                        // ✅ MOBILE VIEW (CARD)
+                            <>
+                                {isMobile ? (
+                                    // ✅ MOBILE VIEW (CARD)
 
-                        <Grid container sx={{ mt: 3, mb: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }} rowSpacing={2}>
-                            {
-                                cartp?.map((v) => (
-                                    <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
-                                        <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0, overflow: 'visible' }}>
-                                            <Box
-                                                className="carttop"
-                                                sx={{
-                                                    bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
-                                                    alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
-                                                    height: {
-                                                        xs: '120px',
-                                                        sm: '160px',
-                                                        lg: '250px'
-                                                    },
-                                                    position: 'relative'
-                                                }}>
-                                                <CardMedia
-                                                    component="img"
-                                                    className="cardimg"
-                                                    sx={{ objectFit: "contain" }}
-                                                    image={IMG_URL + v?.selectedVariant?.images?.[0]}
-                                                    title="green iguana"
+                                    <Grid container sx={{ mt: 3, mb: 3 }} spacing={{ xs: 1, sm: 3, lg: 4 }} rowSpacing={2}>
+                                        {
+                                            cartp?.map((v) => (
+                                                <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
+                                                    <Card sx={{ maxWidth: 310, position: 'relative', boxShadow: 0, overflow: 'visible' }}>
+                                                        <Box
+                                                            className="carttop"
+                                                            sx={{
+                                                                bgcolor: '#eef0f3', display: 'flex', justifyContent: 'center',
+                                                                alignItems: 'center', padding: '20px  0 0', borderRadius: 1,
+                                                                height: {
+                                                                    xs: '120px',
+                                                                    sm: '160px',
+                                                                    lg: '250px'
+                                                                },
+                                                                position: 'relative'
+                                                            }}>
+                                                            <CardMedia
+                                                                component="img"
+                                                                className="cardimg"
+                                                                sx={{ objectFit: "contain" }}
+                                                                image={IMG_URL + v?.selectedVariant?.images?.[0]}
+                                                                title="green iguana"
 
-                                                />
-
-                                            </Box>
-
-
-                                            <CardContent sx={{ outline: 0, pl: 0, pb: 0 }}>
-                                                <Typography gutterBottom variant="h6" component="div" className="cart-name">
-                                                    {v.name}
-                                                </Typography>
-                                                <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
-
-                                                    <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
-                                                        ₹{v.price}
-                                                    </Typography>
-
-
-                                                </Box>
-                                            </CardContent>
-
-                                            <CardActions sx={{ padding: 0, pb: 1 }}>
-                                                <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
-                                                        <Typography>
-                                                            {cartquan[v.selectedVariant._id] || 1}
-                                                        </Typography>
-                                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                                            <IconButton aria-label="up" className="icone-btn"
-                                                                onClick={() =>
-                                                                    setCartquan(prev => ({ ...prev, [v.selectedVariant._id]: (prev[v.selectedVariant._id] || 1) + 1 }))}>
-                                                                <IoChevronUp />
-                                                            </IconButton>
-
-                                                            <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
-                                                                setCartquan(prev => ({
-                                                                    ...prev,
-                                                                    [v.selectedVariant._id]: Math.max((prev[v.selectedVariant._id] || 1) - 1, 1),
-
-                                                                }))
-                                                            }>
-                                                                <IoChevronDownSharp />
-                                                            </IconButton>
-
+                                                            />
 
                                                         </Box>
-                                                    </Box>
-                                                </Box>
 
-                                                {/* <IconButton className="deletemobilecart" sx={{ display: mobilecartdelete ? 'block' : 'none' }}>
+
+                                                        <CardContent sx={{ outline: 0, pl: 0, pb: 0 }}>
+                                                            <Typography gutterBottom variant="h6" component="div" className="cart-name">
+                                                                {v.name}
+                                                            </Typography>
+                                                            <Box sx={{ display: 'flex', columnGap: 2, mb: 1 }}>
+
+                                                                <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
+                                                                    ₹{v.price}
+                                                                </Typography>
+
+
+                                                            </Box>
+                                                        </CardContent>
+
+                                                        <CardActions sx={{ padding: 0, pb: 1 }}>
+                                                            <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                                                                <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid rgb(172, 167, 167)', padding: '1px 15px', width: 'fit-content', gap: 2 }}>
+                                                                    <Typography>
+                                                                        {cartquan[v.selectedVariant._id] || 1}
+                                                                    </Typography>
+                                                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                                                        <IconButton aria-label="up" className="icone-btn"
+                                                                            onClick={() =>
+                                                                                setCartquan(prev => ({ ...prev, [v.selectedVariant._id]: (prev[v.selectedVariant._id] || 1) + 1 }))}>
+                                                                            <IoChevronUp />
+                                                                        </IconButton>
+
+                                                                        <IconButton aria-label="down" className="icone-btn" onClick={(event) =>
+                                                                            setCartquan(prev => ({
+                                                                                ...prev,
+                                                                                [v.selectedVariant._id]: Math.max((prev[v.selectedVariant._id] || 1) - 1, 1),
+
+                                                                            }))
+                                                                        }>
+                                                                            <IoChevronDownSharp />
+                                                                        </IconButton>
+
+
+                                                                    </Box>
+                                                                </Box>
+                                                            </Box>
+
+                                                            {/* <IconButton className="deletemobilecart" sx={{ display: mobilecartdelete ? 'block' : 'none' }}>
                                                     <MdDeleteOutline onClick={() => { handledeltecart(v) }} />
                                                 </IconButton> */}
 
 
-                                            </CardActions>
-                                            <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
-                                                <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{cartquan.hasOwnProperty(v.selectedVariant._id) ? (cartquan[v.selectedVariant._id] * (v?.price)) : v?.price}
-                                            </Typography>
+                                                        </CardActions>
+                                                        <Typography variant="body1" sx={{ fontWeight: 500, color: 'black' }}>
+                                                            <Typography variant="body2" sx={{ display: 'inline' }}> total Price : </Typography>₹{cartquan.hasOwnProperty(v.selectedVariant._id) ? (cartquan[v.selectedVariant._id] * (v?.price)) : v?.price}
+                                                        </Typography>
 
-                                            {
-                                                mobilecartdelete &&
-                                                <IconButton
-                                                    sx={{
-                                                        p: 0,
-                                                        position: 'absolute',
-                                                        top: '-2%',
-                                                        left: '-1%',
+                                                        {
+                                                            mobilecartdelete &&
+                                                            <IconButton
+                                                                sx={{
+                                                                    p: 0,
+                                                                    position: 'absolute',
+                                                                    top: '-2%',
+                                                                    left: '-1%',
 
-                                                    }}
-                                                    onClick={() => { handledeltecart(v) }}
-                                                >
-                                                    <IoCloseSharp
-                                                        style={{
-                                                            backgroundColor: '#DB4444',
-                                                            padding: '3px',
-                                                            borderRadius: '50%',
-                                                            color: '#fff',
-                                                            width: '18px',
-                                                            height: '18px'
-                                                        }}
+                                                                }}
+                                                                onClick={() => { handledeltecart(v) }}
+                                                            >
+                                                                <IoCloseSharp
+                                                                    style={{
+                                                                        backgroundColor: '#DB4444',
+                                                                        padding: '3px',
+                                                                        borderRadius: '50%',
+                                                                        color: '#fff',
+                                                                        width: '18px',
+                                                                        height: '18px'
+                                                                    }}
 
-                                                    />
-                                                </IconButton>
-                                            }
-                                        </Card>
+                                                                />
+                                                            </IconButton>
+                                                        }
+                                                    </Card>
+                                                </Grid>
+                                            ))
+                                        }
+
                                     </Grid>
-                                ))
-                            }
 
-                        </Grid>
-
-                    ) : (
-                        <DataGrid
-                            rows={cartp}
-                            getRowId={(row) => row.selectedVariant?._id + "_" + row._id}
-                            key={gridKey}
-                            // getRowId={cartp?._id || Math.random()}
-                            columns={columns}
-                            initialState={{
-                                pagination: {
-                                    paginationModel: {
-                                        pageSize: 15,
-                                    },
-                                },
-                            }}
-                            hideFooterPagination
-                            rowHeight={80}
-                            pageSizeOptions={[10]}
-                            disableRowSelectionOnClick
-                            checkboxSelection={false}
-                            sx={{
-                                '&, [class^=MuiDataGrid]': { border: 'none' }, mt: 3,
-                                '  & .MuiDataGrid-columnHeaders': {
-                                    borderBottom: 'none',
-                                    '& .MuiDataGrid-columnSeparator': {
-                                        display: 'none',
-                                    }
-                                },
-                                '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
-                                '& .MuiDataGrid-row': { display: 'flex', justifyContent: 'space-between' },
-                                '& .MuiDataGrid-cell:focus-within': { outline: 0 }
-                            }} //target every grid's child element with a class attribute that starts with MuiDataGrid
-                        />
-                    )}
-
-
-
-                    <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
-                        <NavLink to='/'><button className="my-custome-button carts-btn">Return To Shope</button></NavLink>
-                        <button className="my-custome-button carts-btn" onClick={handleupdatecart}>Update Cart</button>
-                    </Box>
-
-
-
-                    <Grid container id="coupon" sx={{ mt: { xs: 5, sm: 7, lg: 10 } }} spacing={{ xs: 0, sm: 5, md: 4, lg: 10, xl: 6 }} rowSpacing={4}>
-                        <Grid size={{ xs: 12, sm: 6 }}>
-                            <form onSubmit={handlecoupon}>
-                                <Box sx={{ display: 'flex', gap: { xs: 3, md: 0, lg: 3 } }} className="cart-coupon-box">
-                                    <TextField id="outlined-basic" className="coupon-text" label="Coupon Code" variant="outlined"
-                                        sx={{ width: { xs: '56%', lg: '280px', xl: '350px' }, '& .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input': { padding: '14px' } }}
-                                        onChange={(e) => setCoupon(e.target.value)}
+                                ) : (
+                                    <DataGrid
+                                        rows={cartp}
+                                        getRowId={(row) => row.selectedVariant?._id + "_" + row._id}
+                                        key={gridKey}
+                                        // getRowId={cartp?._id || Math.random()}
+                                        columns={columns}
+                                        initialState={{
+                                            pagination: {
+                                                paginationModel: {
+                                                    pageSize: 15,
+                                                },
+                                            },
+                                        }}
+                                        hideFooterPagination
+                                        rowHeight={80}
+                                        pageSizeOptions={[10]}
+                                        disableRowSelectionOnClick
+                                        checkboxSelection={false}
+                                        sx={{
+                                            '&, [class^=MuiDataGrid]': { border: 'none' }, mt: 3,
+                                            '  & .MuiDataGrid-columnHeaders': {
+                                                borderBottom: 'none',
+                                                '& .MuiDataGrid-columnSeparator': {
+                                                    display: 'none',
+                                                }
+                                            },
+                                            '& .MuiDataGrid-menuIcon, & .MuiDataGrid-iconButtonContainer': { display: 'none' },
+                                            '& .MuiDataGrid-row': { display: 'flex', justifyContent: 'space-between' },
+                                            '& .MuiDataGrid-cell:focus-within': { outline: 0 }
+                                        }} //target every grid's child element with a class attribute that starts with MuiDataGrid
                                     />
-                                    <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
-                                </Box>
-                            </form>
-                        </Grid>
+                                )}
 
-                        <Grid size={{ xs: 12, sm: 6 }}>
-                            <Box sx={{
-                                border: 'solid 1px black', padding: '28px 24px',
-                                maxWidth: { xs: '100%', sm: '550px' }, marginLeft: 'auto'
-                            }} >
-                                <Typography variant="h6">Cart Total</Typography>
 
-                                <Box className='cart-total'>
-                                    <Typography>Subtotal:</Typography>
-                                    <Typography variant="">₹{finalprice}</Typography>
+
+                                <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+                                    <NavLink to='/'><button className="my-custome-button carts-btn">Return To Shope</button></NavLink>
+                                    <button className="my-custome-button carts-btn" onClick={handleupdatecart}>Update Cart</button>
                                 </Box>
 
-                                <Divider />
 
-                                <Box className='cart-total'>
-                                    <Typography>Shipping:</Typography>
-                                    <Typography>Free</Typography>
-                                </Box>
 
-                                <Divider />
+                                <Grid container id="coupon" sx={{ mt: { xs: 5, sm: 7, lg: 10 } }} spacing={{ xs: 0, sm: 5, md: 4, lg: 10, xl: 6 }} rowSpacing={4}>
+                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                        <form onSubmit={handlecoupon}>
+                                            <Box sx={{ display: 'flex', gap: { xs: 3, md: 0, lg: 3 } }} className="cart-coupon-box">
+                                                <TextField id="outlined-basic" className="coupon-text" label="Coupon Code" variant="outlined"
+                                                    sx={{ width: { xs: '56%', lg: '280px', xl: '350px' }, '& .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input': { padding: '14px' } }}
+                                                    onChange={(e) => setCoupon(e.target.value)}
+                                                />
+                                                <button className="my-custome-button cart-coupon-box-btn">Apply Coupon</button>
+                                            </Box>
+                                        </form>
+                                    </Grid>
 
-                                <Box className='cart-total'>
-                                    <Typography>Total:</Typography>
-                                    <Typography variant="">₹{finalprice}</Typography>
-                                </Box>
-                                {
-                                    console.log("cid", data?.data?.body?._id)
-                                }
-                                <NavLink to={`/checkout/${data?.body?._id}/?${query}`}>
-                                    <button className="my-custome-button cardototal-btn" >Procees to checkout</button>
-                                </NavLink>
+                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                        <Box sx={{
+                                            border: 'solid 1px black', padding: '28px 24px',
+                                            maxWidth: { xs: '100%', sm: '550px' }, marginLeft: 'auto'
+                                        }} >
+                                            <Typography variant="h6">Cart Total</Typography>
+
+                                            <Box className='cart-total'>
+                                                <Typography>Subtotal:</Typography>
+                                                <Typography variant="">₹{finalprice}</Typography>
+                                            </Box>
+
+                                            <Divider />
+
+                                            <Box className='cart-total'>
+                                                <Typography>Shipping:</Typography>
+                                                <Typography>Free</Typography>
+                                            </Box>
+
+                                            <Divider />
+
+                                            <Box className='cart-total'>
+                                                <Typography>Total:</Typography>
+                                                <Typography variant="">₹{finalprice}</Typography>
+                                            </Box>
+                                            {
+                                                console.log("cid", data?.data?.body?._id)
+                                            }
+                                            <NavLink to={`/checkout/${data?.body?._id}/?${query}`}>
+                                                <button className="my-custome-button cardototal-btn" >Procees to checkout</button>
+                                            </NavLink>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+                            </>
+                            :
+                            <Box sx={{ textAlign: 'center' }}>
+                                <img src="../../../public/assets/images/cartempty.png" className="emptyimages" />
+                                <Typography fontSize={{ xs:'18px',sm:'22px'}}>Your Cart is Empty</Typography>
+                                <a className="my-custome-button" style={{ margin: '10px auto 0 auto',backgroundColor:'#DB4444',border:'0',color:'white' }} onClick={() => { navigate('/allproduct?type=allproduct') }}>
+                                    Continue Shopping
+                                    </a>
                             </Box>
-                        </Grid>
-                    </Grid>
+                    }
                 </div>
             </section>
         </main>
