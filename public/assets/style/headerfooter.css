@@ -342,16 +342,6 @@ iframe.skiptranslate {
 
 
 
-.todays .swiper-button-prev {
-    /* top:10%; */
-    /* transform: rotate(180deg); */
-}
-
-.todays .swiper-button-next {
-    /* top: 7%; */
-
-}
-
 #category .swiper-button-prev,
 #category .swiper-button-next {
     top: -4%;
@@ -888,11 +878,7 @@ hr {
 /* .musicexp-imgbox img{
     width: 100% !important;
 } */
-.newarrival-grid-box {
-    /* height: 100%; */
-    /* padding: 10px 25px;
-    padding-right: 0; */
-}
+
 
 /* .newarrival-grid-box img {
     width: 100%;
