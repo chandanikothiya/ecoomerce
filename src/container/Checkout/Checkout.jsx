@@ -37,7 +37,7 @@ function Checkout() {
     console.log(id, vid)
     const [addpayment] = useAddPaymentMutation();
     const [finalprice, setFinalprice] = useState();
-     const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const quantity = {};
     const [searchParams, setSearchParams] = useSearchParams();
@@ -340,17 +340,20 @@ function Checkout() {
         e.preventDefault();
         console.log("coupon", coupon)
 
-        const res = await checkcoupon({ code: coupon })
+        const res = await checkcoupon({ code: coupon, products: [varient] })
         console.log("response", res)
 
-        const discount = res?.data?.data?.discount;
+        if (res.data?.success) {
+            const discount = res?.data?.data?.discount;
 
-        const updatedPrice =
-            totalprice - ((totalprice * discount) / 100);
+            const updatedPrice =
+                totalprice - ((totalprice * discount) / 100);
 
-        setFinalprice(updatedPrice);
-        console.log("response", totalprice)
-
+            setFinalprice(updatedPrice);
+            console.log("response", totalprice)
+        } else if (res.error)  {
+             dispatch(setalert({ text: res.error.data?.message, variant: 'error' }))
+        }
     }
 
     console.log("response", finalprice)

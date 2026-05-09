@@ -9,7 +9,7 @@ import { IMG_URL } from "../../utility/url";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAddCartMutation } from "../../redux/api/cart.api";
+import { useAddCartMutation, useGetallCartQuery } from "../../redux/api/cart.api";
 import { useDispatch } from "react-redux";
 import { setalert } from "../../redux/slice/Alert.slice";
 import { useGetCategoryQuery } from "../../redux/api/category.api";
@@ -34,6 +34,8 @@ function Allproducts() {
         error: perror,
         isLoading: pisLoading } = useGetProductQuery();
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
+    
+    const {data:cdata,error:cerror,isLoading:xisloading} = useGetCategoryQuery();
 
     const { data: sdata, error: serror, isLoading: sisloading } = useMoreSellingQuery();
     console.log('sdata', sdata);
@@ -68,6 +70,21 @@ function Allproducts() {
             return null
 
         }).filter(Boolean)
+    } else if (type === 'playstation') {
+        const catid = cdata?.data?.find((v) => v.name.toLowerCase() === 'electronics')
+        console.log("catid",catid,cdata?.data)
+
+        product = pdata?.data?.filter((v) => v.category_id === catid?._id)
+        
+    } else if (type === 'women') {
+         const catid = cdata?.data?.find((v) => v.name.toLowerCase().includes(type))
+        console.log("catid",catid,cdata?.data)
+
+        product = pdata?.data?.filter((v) => v.category_id === catid?._id)
+    } else if (type === 'speaker') {
+        product = pdata?.data?.filter((v) => v.name.toLowerCase().includes(type))
+    } else if (type === 'perfume') {
+        product = pdata?.data?.filter((v) => v.name.toLowerCase().includes(type))
     }
 
 

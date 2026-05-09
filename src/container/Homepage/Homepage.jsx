@@ -398,7 +398,7 @@ function Homepage() {
 
     const formatTime = (time) => String(time).padStart(2, "0");
 
-    const speaker = pdata?.data?.find((v) => v.name.toLowerCase() === "JBL Boombox Portable Bluetooth Speake".toLocaleLowerCase())
+    const speaker = pdata?.data?.find((v) => v.name.toLowerCase() === "JBL Boombox Portable Bluetooth Speaker".toLocaleLowerCase())
     console.log('speaker', speaker)
 
     const [speakerTimeLeft, setSpeakerTimeLeft] = useState({
@@ -428,7 +428,13 @@ function Homepage() {
 
         return () => clearInterval(timer);
 
-    }, []);
+    }, [speaker]);
+    console.log('speaker', speakerTimeLeft)
+
+    const slider = pdata?.data?.filter((v) =>
+        v.name === 'iphone 14' || v.name === 'Samsung Q90R 4K QLED' 
+    );
+    console.log("slideslide", slider)
 
     return (
         <>
@@ -630,7 +636,7 @@ function Homepage() {
                                             }}
                                         >
                                             {
-                                                obj.map((v, i) => (
+                                                slider?.map((v, i) => (
                                                     <SwiperSlide key={i} sx={{ height: '100%' }}>
                                                         <Box
                                                             sx={{
@@ -653,8 +659,8 @@ function Homepage() {
 
                                                             <Box className="hero-text" sx={{ flex: 1 }}>
                                                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                                    {v.subtitle1.includes('iPhone') ? <AppleIcon sx={{ fontSize: { xs: '20px', sm: '30px', md: '35px' } }} /> : ''}
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '10px', sm: '14px', md: '16px' } }}>{v.subtitle1}</Typography>
+                                                                    {v.name.includes('iphone') ? <AppleIcon sx={{ fontSize: { xs: '20px', sm: '30px', md: '35px' } }} /> : ''}
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '10px', sm: '14px', md: '16px' } }}>{v.name}</Typography>
                                                                 </Box>
 
                                                                 <Typography variant="h3" sx={{
@@ -670,13 +676,15 @@ function Homepage() {
                                                                         xs: '13px'
                                                                     }
                                                                 }}>
-                                                                    {v.title3}
+                                                                    Up to 10% off Voucher
                                                                 </Typography>
 
-                                                                <a href="#" className="hero-shop">Shop Now </a><ArrowForwardIcon sx={{ fontSize: { xs: '15px', sm: '20px' }, ml: { sm: 0, md: 0.5 } }} />
+                                                                <NavLink to={uid ? `/checkout/${v?._id}/${v?.variants?.[0]?._id}/?${v?.variants?.[0]?._id}=1` : '/signup'}>
+                                                                    <a href="#" className="hero-shop">Shop Now </a><ArrowForwardIcon sx={{ fontSize: { xs: '15px', sm: '20px' }, ml: { sm: 0, md: 0.5 } }} />
+                                                                </NavLink>
                                                             </Box>
                                                             <Box sx={{ maxWidth: { xs: '50%', sm: '50%', md: '55%', lg: '55%', xl: '90%' }, height: '100%' }}>
-                                                                <img src={v.image} alt="" className="hero-main-img" style={{
+                                                                <img src={IMG_URL + v?.variants?.[0]?.images[0]} alt="" className="hero-main-img" style={{
                                                                     width: '100%',
                                                                     height: 'auto',
                                                                     objectFit: 'contain'
@@ -882,7 +890,7 @@ function Homepage() {
                                                         <Typography gutterBottom variant="h5" component="div" className="bestseal-name">
                                                             {v.name}
                                                         </Typography>
-                                                        <Box sx={{ display: 'flex', columnGap: 2,mb:{xs:0,sm:1}}}>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: { xs: 0, sm: 1 } }}>
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
                                                                 ₹{selectedVariant.flashPrice}
                                                             </Typography>
@@ -951,7 +959,7 @@ function Homepage() {
                                                             // const [selectedColors, setSelectedColors] = useState({});
 
                                                             return (
-                                                                <Box sx={{ display: "flex", gap: "10px", mt: {xs:0,sm:1}, pl: '5px' }}>
+                                                                <Box sx={{ display: "flex", gap: "10px", mt: { xs: 0, sm: 1 }, pl: '5px' }}>
                                                                     {
                                                                         validVariants?.map((v1) => {
                                                                             if (!v1?.color || v1.color.trim() === "") return null;
@@ -975,7 +983,7 @@ function Homepage() {
 
                                                                                     <span
                                                                                         style={{
-                                                                                            
+
                                                                                             borderRadius: "50%",
                                                                                             backgroundColor: v1.color,
                                                                                             display: "inline-block",
@@ -1525,7 +1533,7 @@ function Homepage() {
                                                             <Typography gutterBottom variant="h6" component="div" className="product-name">
                                                                 {v.name}
                                                             </Typography>
-                                                            <Box sx={{ display: 'flex', columnGap: 2, mb:{xs:0,sm:1}, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+                                                            <Box sx={{ display: 'flex', columnGap: 2, mb: { xs: 0, sm: 1 }, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
 
                                                                 <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
                                                                     ₹{v.price}
@@ -1596,7 +1604,7 @@ function Homepage() {
                                                                     // const [selectedColors, setSelectedColors] = useState({});
 
                                                                     return (
-                                                                        <Box sx={{ display: "flex", gap: "10px",  mt: {xs:0,sm:1}, pl: '5px' }}>
+                                                                        <Box sx={{ display: "flex", gap: "10px", mt: { xs: 0, sm: 1 }, pl: '5px' }}>
                                                                             {
                                                                                 validVariants?.map((v1) => {
                                                                                     if (!v1?.color || v1.color.trim() === "") return null;
@@ -1630,8 +1638,8 @@ function Homepage() {
                                                                                                         selectedColor === v1.color
                                                                                                             ? "2px solid black"
                                                                                                             : "none",
-                                                                                                   
-                                                                                                    
+
+
                                                                                                 }}
                                                                                                 className="colorradio"
                                                                                             />
@@ -1745,7 +1753,7 @@ function Homepage() {
                                                         xl: "18px"
                                                     }
                                                 }}>Black and White version of the PS5 coming out on sale.</Typography>
-                                                <a href="#" className="newarrival-shpnow">Shop Now</a>
+                                                <a href="#" className="newarrival-shpnow" onClick={() => { navigate('/allproduct?type=playstation') }}>Shop Now</a>
                                             </div>
                                         </Box>
                                     </Grid>
@@ -1772,7 +1780,7 @@ function Homepage() {
                                                             xl: "18px"
                                                         }
                                                     }}>Featured woman collections that give you another vibe.</Typography>
-                                                    <a href="#" className="newarrival-shpnow">Shop Now</a>
+                                                    <a href="#" className="newarrival-shpnow" onClick={() => { navigate('/allproduct?type=women') }}>Shop Now</a>
                                                 </div>
                                             </Box>
                                         </Grid>
@@ -1800,7 +1808,7 @@ function Homepage() {
                                                                 xl: '18px'
                                                             }
                                                         }}>Amazon wireless speakers</Typography>
-                                                        <a href="#" className="newarrival-shpnow">Shop Now</a>
+                                                        <a href="#" className="newarrival-shpnow" onClick={() => { navigate('/allproduct?type=speaker') }}>Shop Now</a>
                                                     </div>
                                                 </Box>
                                             </Grid>
@@ -1826,7 +1834,7 @@ function Homepage() {
 
                                                             }
                                                         }}>GUCCI INTENSE OUD EDP</Typography>
-                                                        <a href="#" className="newarrival-shpnow">Shop Now</a>
+                                                        <a href="#" className="newarrival-shpnow" onClick={() => { navigate('/allproduct?type=perfume') }}>Shop Now</a>
                                                     </div>
                                                 </Box>
                                             </Grid>
@@ -1944,7 +1952,6 @@ function Homepage() {
                 )}
 
             </main >
-
         </>
     )
 }
