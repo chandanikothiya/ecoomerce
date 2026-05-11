@@ -34,8 +34,8 @@ function Allproducts() {
         error: perror,
         isLoading: pisLoading } = useGetProductQuery();
     console.log("productdata", pdata?.data, pdata?.data[0]?.variants)
-    
-    const {data:cdata,error:cerror,isLoading:xisloading} = useGetCategoryQuery();
+
+    const { data: cdata, error: cerror, isLoading: xisloading } = useGetCategoryQuery();
 
     const { data: sdata, error: serror, isLoading: sisloading } = useMoreSellingQuery();
     console.log('sdata', sdata);
@@ -72,13 +72,13 @@ function Allproducts() {
         }).filter(Boolean)
     } else if (type === 'playstation') {
         const catid = cdata?.data?.find((v) => v.name.toLowerCase() === 'electronics')
-        console.log("catid",catid,cdata?.data)
+        console.log("catid", catid, cdata?.data)
 
         product = pdata?.data?.filter((v) => v.category_id === catid?._id)
-        
+
     } else if (type === 'women') {
-         const catid = cdata?.data?.find((v) => v.name.toLowerCase().includes(type))
-        console.log("catid",catid,cdata?.data)
+        const catid = cdata?.data?.find((v) => v.name.toLowerCase().includes(type))
+        console.log("catid", catid, cdata?.data)
 
         product = pdata?.data?.filter((v) => v.category_id === catid?._id)
     } else if (type === 'speaker') {
@@ -171,7 +171,12 @@ function Allproducts() {
                         <Box className="sub-title">
                             <i className="fa-solid fa-square"></i>
                             <Typography sx={{ fontWeight: 600 }} className="subtitle">
-                                {type === 'flashproduct' ? 'Flash Products' : type === 'allproduct' ? 'Products' : 'Best Selling Products'}
+                                {type === 'flashproduct' ? 'Flash Products' :
+                                    type === 'allproduct' ? 'Products' :
+                                        type === 'playstation' ? 'Playstation' :
+                                            type === 'women' ? `Women's Collection` :
+                                                type === 'speaker' ? 'Speakers' :
+                                                   type === 'perfume' ? 'Perfume' : 'Best Selling Products'}
                             </Typography>
                         </Box>
 
@@ -218,7 +223,11 @@ function Allproducts() {
 
                                         const vdate = new Date(selectedVariant.createdAt);
                                         const last24hours = new Date(Date.now() - 24 * 60 * 60 * 1000)
-                                        const isnew = vdate >= last24hours;
+                                        let isnew = vdate >= last24hours;
+
+                                        if (selectedVariant.isFlashSale) {
+                                            isnew = false;
+                                        }
 
                                         return (
                                             <Grid size={{ xs: 6, sm: 4, md: 3, lg: 3 }}>
@@ -279,11 +288,11 @@ function Allproducts() {
                                                     </Box>
 
 
-                                                    <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important',pt: { xs: 3.5, md: 3 } }}>
+                                                    <CardContent sx={{ outline: 0, pl: 0, pb: '0px !important', pt: { xs: 3.5, md: 3 } }}>
                                                         <Typography gutterBottom variant="h6" component="div" className="product-name">
                                                             {v.name}
                                                         </Typography>
-                                                        <Box sx={{ display: 'flex', columnGap: 2, mb:{xs:0,sm:1}, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+                                                        <Box sx={{ display: 'flex', columnGap: 2, mb: { xs: 0, sm: 1 }, alignItems: 'center', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
 
                                                             <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, color: '#DB4444' }}>
                                                                 ₹{v?.variants?.[0]?.isFlashSale ? v?.variants?.[0]?.flashPrice : v.price}
@@ -355,7 +364,7 @@ function Allproducts() {
                                                                 // const [selectedColors, setSelectedColors] = useState({});
 
                                                                 return (
-                                                                    <Box sx={{ display: "flex", gap: "10px", mt: {xs:0,sm:1}, pl: '5px' }}>
+                                                                    <Box sx={{ display: "flex", gap: "10px", mt: { xs: 0, sm: 1 }, pl: '5px' }}>
                                                                         {
                                                                             validVariants?.map((v1) => {
                                                                                 if (!v1?.color || v1.color.trim() === "") return null;

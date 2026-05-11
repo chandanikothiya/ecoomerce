@@ -117,7 +117,7 @@ function Footer() {
                                             <ListItemText><NavLink to="/wishlist">Wishlist</NavLink></ListItemText>
                                         </MenuItem>
                                         <MenuItem className="my-custome-list">
-                                            <ListItemText>Shop</ListItemText>
+                                            <ListItemText><NavLink to="/allproduct?type=allproduct">Shop</NavLink></ListItemText>
                                         </MenuItem>
                                     </MenuList>
                                 </Box>
