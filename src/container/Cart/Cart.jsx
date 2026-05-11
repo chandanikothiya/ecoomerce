@@ -309,7 +309,7 @@ function Cart() {
                         <Typography sx={{ color: 'text.primary' }} className="breadcrumbs-typo">Cart</Typography>
                     </Breadcrumbs>
                     {
-                        cartp.length > 0 ?
+                        cartp?.length > 0 ?
 
                             <>
                                 {isMobile ? (

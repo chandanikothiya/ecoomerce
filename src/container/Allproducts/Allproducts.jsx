@@ -245,8 +245,6 @@ function Allproducts() {
                                                         }}>
                                                         {
                                                             (() => {
-
-
                                                                 return (
                                                                     <>
                                                                         <CardMedia
