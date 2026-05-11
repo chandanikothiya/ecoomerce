@@ -431,8 +431,8 @@ function Homepage() {
     }, [speaker]);
     console.log('speaker', speakerTimeLeft)
 
-    const slider = pdata?.data?.filter((v) =>
-        v.name === 'iphone 14' || v.name === 'Samsung Q90R 4K QLED' 
+    const slider = pdata?.data?.filter((v) => 
+        v.name === 'iphone 14' || v.name === 'Samsung Q90R 4K QLED' || v.name.includes('tablet')
     );
     console.log("slideslide", slider)
 
@@ -659,7 +659,7 @@ function Homepage() {
 
                                                             <Box className="hero-text" sx={{ flex: 1 }}>
                                                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                                    {v.name.includes('iphone') ? <AppleIcon sx={{ fontSize: { xs: '20px', sm: '30px', md: '35px' } }} /> : ''}
+                                                                    {v.name.includes('iphone') || v?.name?.toLowerCase()?.includes('apple') ? <AppleIcon sx={{ fontSize: { xs: '20px', sm: '30px', md: '35px' } }} /> : ''}
                                                                     <Typography variant="subtitle1" sx={{ fontSize: { xs: '10px', sm: '14px', md: '16px' } }}>{v.name}</Typography>
                                                                 </Box>
 
@@ -689,6 +689,12 @@ function Homepage() {
                                                                     height: 'auto',
                                                                     objectFit: 'contain'
                                                                 }} />
+                                                                {/* <img src="../../../public/assets/images/new/tablet.avif" alt="" className="hero-main-img" style={{
+                                                                    width: '100%',
+                                                                    height: 'auto',
+                                                                    objectFit: 'contain',
+                                                                   
+                                                                }} /> */}
                                                             </Box>
 
                                                         </Box>
