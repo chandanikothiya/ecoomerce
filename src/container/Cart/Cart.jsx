@@ -290,7 +290,7 @@ function Cart() {
         console.log("response", totalprice)
 
     }
-
+ 
     return (
         <main>
             <section id="cart">
